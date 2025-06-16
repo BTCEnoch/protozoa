@@ -23,7 +23,11 @@ $scriptSequence = @(
     @{ Script = "11-GenerateFormationBlendingService.ps1"; Description = "Formation blending and caching service" },
     @{ Script = "12-GenerateSharedTypes.ps1"; Description = "Cross-domain shared types generation" },
     @{ Script = "13-GenerateTypeScriptConfig.ps1"; Description = "TypeScript configuration files generation" },
-    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" }
+    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" },
+    @{ Script = "15-ValidateSetupComplete.ps1"; Description = "Final validation and setup completion" },
+    @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Shared types and interfaces generation" },
+    @{ Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment configuration and logging services" },
+    @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Complete Formation Domain implementation" }
 )
 
 # Track execution results
