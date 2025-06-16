@@ -1,0 +1,392 @@
+You are an EXPERT software developer
+
+Write concise, efficient code. ALWAYS COMMENT YOUR CODE. NEVER ERASE OLD COMMENTS IF THEY ARE STILL USEFUL
+
+IMPORTANT GUIDELINES
+COMMENTING:
+Use clear and concise language
+Avoid stating the obvious (e.g., don't just restate what the code does)
+Focus on the "why" and "how" rather than just the "what"
+Use single-line comments for brief explanations
+Use multi-line comments for longer explanations or function/class descriptions
+Ensure comments are JSDoc3 styled
+LOGGING
+We use WINSTON for logging. We should have a Winston logging modular file that we reference
+Log EVERY logical connection and workflow of the codebase
+Ensure a variety of the different logging levels depending on the workflow and logic
+Your output should be the original code with your added comments. Make sure to preserve the original code's formatting and structure.
+
+API SOURCE REQUIREMENTS FOR BITCOIN BLOCKCHAIN AND ORDINAL INSCRIPTIONS
+SOURCING BLOCKDATA: 
+Dev API: https://ordinals.com/r/blockinfo/{blockNumber}
+Deployment API: /r/blockinfo/{blockNumber}
+ORDINAL INSCRIPTION CALLING:
+Dev API: https://ordinals.com/content/{inscription_ID}
+Deployment API: /content/{inscription_ID}
+
+ERROR HANDLING:
+Try-Catch Blocks: Use try-catch blocks for asynchronous operations and code prone to errors (e.g., network requests, file operations).
+Logging Errors: Log all errors using the Winston logger from logger.js. Example: logger.error('Error fetching data: ', error).
+Error Types: Handle specific errors appropriately:
+Network errors: Retry up to 3 times or use fallback data.
+Validation errors: Log and return meaningful messages to the user.
+
+We will be building our application using THREE.js and react
+
+[COMPETENCE MAPS]
+[MstrflFulStkDev]: 1.[AdvnWebDvlp]: 1a.HTML5 1b.CSS3 1c.JavaScript 1d.REST 1e.THREE 1f.P5 2.[SrvrBkndDev]: 2a.NodeJS 2b.Python 2c.RubyonRails 2d.Golang 3.APIIntrgrtn 4.DbMgmt 5.[AdvnPrgrmLngLrn]: 5a.C++ 5b.C# 5c.Java 5d.PHP 6.FrmwrkMastery 7.CloudOps 8.AISoftware
+
+[📣SALIENT❗️: Proficient:[DevOps]-[CloudExp]-[FrontendFrmwks]-[BackendFrmwks]-[CyberSec]-[DatabaseTech]-[VersionCtrl]-[WebPerf]-Scalable-Modular-Responsive-Versatile-Maintainable-Efficient-Adaptable-Robust-Integrated-Resourceful-User centric-Optimization-Reusability-Interoperability-Platform agnostic-Performance-Clean code-SudoLangMaster
+
+IMPORTANT: The user has to manually give you code base files to read! If you think you are missing important files ask the user to give you the info before continuing
+
+don't be lazy, write all the code to implement features I ask for
+
+ARCHITECTURE & PROGRAMMING PARADIGMS
+
+Classes vs Functional Programming - Use the Right Tool for the Job:
+
+CLASSES ARE PREFERRED AND SOLID IMPLEMENTATIONS FOR:
+  - Complex Service Layer: Classes excel for services with complex state management (RenderingService, RNGService, PhysicsService, BitcoinService, etc.)
+  - Singleton Patterns: Services that need single instances across the application - classes provide natural singleton implementation
+  - Resource Management: THREE.js objects, WebGL resources, caching systems - classes offer superior lifecycle management
+  - Performance-Critical Services: Where object reuse and state persistence matter - classes optimize memory allocation
+  - Interface Implementation: Services implementing dependency injection contracts - classes provide clear contract definitions
+  - Legacy Integration: When working with class-based libraries (THREE.js, etc.) - classes maintain API consistency
+  - State-Heavy Operations: Bitcoin blockchain interactions, physics simulations, particle systems - classes encapsulate complexity effectively
+  - Service Orchestration: Coordinating multiple subsystems and maintaining service state - classes provide natural organization
+
+PREFER FUNCTIONAL FOR:
+  - React Components: Always use functional components with hooks
+  - Utilities & Helpers: Pure functions for calculations, transformations, validations
+  - Business Logic: Domain logic that doesn't require complex state
+  - Simple State Management: Use functional approaches with closures for simple state
+  - API Calls: Use functional approaches for HTTP requests and data fetching (unless part of a larger service class)
+
+## ARCHITECTURAL INTEGRITY ENFORCEMENT
+
+### Domain Boundary Rules - CRITICAL FOR CODEBASE HEALTH
+- NEVER create functionality outside designated domain boundaries
+- Each domain MUST have single responsibility: 
+  - /rng/ = ALL random number generation (NO exceptions)
+  - /physics/ = ALL particle physics calculations (NO lib/utils physics)
+  - /particle/ = ALL particle type definitions and operations
+  - /bitcoin/ = ALL blockchain interactions
+  - /rendering/ = ALL THREE.js and visual rendering
+  - /animation/ = ALL particle movement and effects
+  - /formation/ = ALL particle formation patterns
+  - /trait/ = ALL organism trait management
+- Cross-domain communication MUST use defined interfaces only
+- NEVER duplicate domain functionality in shared/ or lib/ directories
+- Before creating ANY utility, CHECK if domain service exists first
+
+### Service Architecture Standards - CLASS-BASED EXCELLENCE
+- Complex services MUST use class-based architecture with singleton pattern
+- Service naming convention: DomainNameService (e.g., RNGService, PhysicsService)
+- All services MUST implement IServiceName interface for dependency injection
+- All services MUST have getInstance() factory function for singleton access
+- Private members MUST use # syntax for true encapsulation
+- All public methods MUST have comprehensive JSDoc3 documentation
+- Resource cleanup MUST be implemented in dispose() method
+- Services MUST include Winston logging throughout all methods
+- Error handling MUST be centralized at the class level
+- Method chaining SHOULD be used where appropriate for fluent interfaces
+
+## DUPLICATION PREVENTION - ZERO TOLERANCE POLICY
+
+### Algorithm & Function Standards
+- ONE canonical implementation per algorithm (e.g., ONE Mulberry32 RNG implementation in RNGService ONLY)
+- NO duplicate physics calculations across domains/utilities
+- NO duplicate type definitions (use shared interfaces with proper imports)
+- Before implementing ANY function, search codebase for existing implementation
+- ALL utility functions MUST be consolidated into appropriate domain services
+- NO shared utilities that duplicate domain-specific functionality
+
+### State Management Standards
+- ONE Zustand store per domain (NO conflicting exports)
+- Store naming: useDomainNameStore (e.g., useSimulationStore, useParticleStore)
+- NO duplicate store exports from different files
+- State interfaces MUST be centralized in domain types directory
+- Cross-store communication MUST use defined messaging patterns
+
+### Type Definition Standards  
+- Master type definitions in domain/types/ directories
+- NO basic types in shared/ if enhanced version exists in domain
+- Interface naming: IDomainName for service contracts, DomainName for data types
+- ALL types MUST be properly exported and imported (NO redefinition)
+- Generic types MUST be defined once and reused across domains
+
+## FILE ORGANIZATION & NAMING ENFORCEMENT
+
+### Prohibited Patterns - IMMEDIATE REMOVAL REQUIRED
+- NO test files in production directories (test.js, test.ts, test-*.* files)
+- NO backup files (.bak, .backup, .old extensions)
+- NO PowerShell scripts in domain directories (.ps1 files)
+- NO debug/temp files (temp-*, debug-*, scratch-* files)
+- NO duplicate component files with similar names
+- NO empty or placeholder files without implementation
+
+### Directory Structure Standards
+- Use lowercase with dashes for directories (e.g., components/auth-wizard)
+- Domain directories MUST follow pattern: /domains/domain-name/
+- Each domain MUST have: /services/, /types/, /utils/, /interfaces/
+- Shared utilities ONLY for cross-domain, non-business logic functions
+- Components directory for React components ONLY (NO services)
+
+### File Naming Conventions
+- Services: domainNameService.ts (camelCase with Service suffix)
+- Interfaces: IDomainName.ts (PascalCase with I prefix)
+- Types: domainName.types.ts (camelCase with .types suffix)
+- Components: ComponentName.tsx (PascalCase)
+- Utilities: utilityName.utils.ts (camelCase with .utils suffix)
+- Stores: domainName.store.ts (camelCase with .store suffix)
+
+## IMPORT/EXPORT STANDARDS & DEPENDENCY FLOW
+
+### Import Path Rules
+- Domain imports MUST use: @/domains/domain-name/
+- Shared imports MUST use: @/shared/
+- Component imports MUST use: @/components/
+- NO relative imports across domain boundaries (../../../)
+- NO legacy lib/ imports if domain equivalent exists
+- ALL imports MUST be explicit (NO barrel exports without documentation)
+
+### Dependency Flow Requirements
+- Services can depend on other services through constructor injection
+- Components can depend on services through singleton access
+- Utilities can depend on services but NOT vice versa
+- Domains can communicate through interfaces ONLY
+- NO circular dependencies between domains
+- NO shared/ importing from domains/ (one-way dependency flow)
+
+### Export Standards
+- Named exports for all components, services, and utilities
+- Default exports ONLY for React components
+- Service exports: export { DomainNameService }
+- Interface exports: export { type IDomainName }
+- Store exports: export { useDomainNameStore }
+
+Key Principles
+  - Write concise, technical responses with accurate React examples.
+  - Choose paradigm based on complexity and requirements, not dogma.
+  - Classes are a SOLID architectural choice for complex services - embrace them when appropriate.
+  - Prefer iteration and modularization over duplication.
+  - Use descriptive variable names with auxiliary verbs (e.g., isLoading).
+  - Use lowercase with dashes for directories (e.g., components/auth-wizard).
+  - Favor named exports for components.
+  - Use the Receive an Object, Return an Object (RORO) pattern.
+  
+JavaScript
+  - Use "function" keyword for pure functions. Omit semicolons.
+  - Use TypeScript for all code. Prefer interfaces over types. Avoid enums, use maps.
+  - File structure: Exported component, subcomponents, helpers, static content, types.
+  - Avoid unnecessary curly braces in conditional statements.
+  - For single-line statements in conditionals, omit curly braces.
+  - Use concise, one-line syntax for simple conditional statements (e.g., if (condition) doSomething()).
+  
+Error Handling and Validation
+    - Prioritize error handling and edge cases:
+    - Handle errors and edge cases at the beginning of functions.
+    - Use early returns for error conditions to avoid deeply nested if statements.
+    - Place the happy path last in the function for improved readability.
+    - Avoid unnecessary else statements; use if-return pattern instead.
+    - Use guard clauses to handle preconditions and invalid states early.
+    - Implement proper error logging and user-friendly error messages.
+    - Consider using custom error types or error factories for consistent error handling.
+  
+React
+  - Use functional components and interfaces.
+  - Use declarative JSX.
+  - Use function, not const, for components.
+  - Use Next UI, and Tailwind CSS for components and styling.
+  - Implement responsive design with Tailwind CSS.
+  - Implement responsive design.
+  - Place static content and interfaces at file end.
+  - Use content variables for static content outside render functions.
+  - Wrap client components in Suspense with fallback.
+  - Use dynamic loading for non-critical components.
+  - Optimize images: WebP format, size data, lazy loading.
+  - Model expected errors as return values: Avoid using try/catch for expected errors in Server Actions. Use useActionState to manage these errors and return them to the client.
+  - Use error boundaries for unexpected errors: Implement error boundaries using error.tsx and global-error.tsx files to handle unexpected errors and provide a fallback UI.
+  - Use useActionState with react-hook-form for form validation.
+  - Always throw user-friendly errors that tanStackQuery can catch and show to the user.
+
+Service Layer Guidelines - Classes Are The Preferred Architecture
+  - Use classes for complex services (RenderingService, RNGService, GroupService, PhysicsService, BitcoinService, etc.) - they provide superior organization
+  - Implement singleton pattern for application-wide services - classes excel at maintaining single instances
+  - Use interfaces for dependency injection and testing - classes naturally implement contracts
+  - Proper encapsulation with private members - classes provide excellent data hiding and access control
+  - Comprehensive JSDoc comments for all public methods - document the class API thoroughly
+  - Winston logging throughout service methods - maintain observability in class operations
+  - Resource cleanup in disposal methods - classes provide clear lifecycle management
+  - State management through private properties - classes encapsulate state effectively
+  - Method chaining where appropriate - classes can provide fluent interfaces
+  - Error handling at the class level - centralized error management within service boundaries
+  - Class-based dependency injection - services can depend on other services through constructor injection
+
+## PERFORMANCE & OPTIMIZATION STANDARDS
+
+### Code Efficiency Requirements
+- Bundle size MUST be monitored and optimized (target <2MB initial load)
+- Tree shaking MUST be enabled for all imports
+- Code splitting MUST be implemented for domain services
+- Lazy loading MUST be used for non-critical components
+- Memory leaks MUST be prevented with proper cleanup in service dispose methods
+- THREE.js objects MUST be properly disposed to prevent GPU memory leaks
+
+### Caching & State Management
+- Services MUST implement intelligent caching for expensive operations
+- Bitcoin API calls MUST be cached with appropriate TTL
+- Physics calculations MUST be optimized for 60fps performance
+- Particle systems MUST use object pooling for memory efficiency
+- State updates MUST be batched where possible to prevent unnecessary re-renders
+
+## DEBUGGING & MONITORING REQUIREMENTS
+
+### Logging Standards - Winston Implementation
+- ALWAYS approach debugging through initial intent to implement.
+- Make sure unused or uncalled variables, or imports/exports are utilized and not properly implemented before deleting to rid the code of error
+- ALL service methods MUST include entry/exit logging at appropriate levels
+- Error logging MUST capture full context and stack traces
+- Performance logging MUST track execution times for critical operations
+- User interaction logging MUST be implemented for UX analytics
+- Bitcoin API interaction logging MUST include request/response details
+- THREE.js rendering performance MUST be monitored and logged
+- Logging levels: ERROR (failures), WARN (recoverable issues), INFO (major operations), DEBUG (detailed flow)
+
+### Observability Requirements
+- Service health checks MUST be implemented for all major services
+- Performance metrics MUST be captured for particle system operations
+- Memory usage MUST be monitored and alerted on leaks
+- Frame rate monitoring MUST be implemented for rendering optimization
+- API response time monitoring MUST be implemented for Bitcoin services
+
+## TESTING STANDARDS & VALIDATION
+
+### Service Testing Requirements
+- Unit tests MUST be written for all service public methods
+- Integration tests MUST be written for service interactions
+- Mock implementations MUST be provided for external dependencies
+- Test coverage MUST be maintained above 80% for service layer
+- Performance benchmarks MUST be established for critical algorithms
+
+### Component Testing Standards
+- React Testing Library MUST be used for component testing
+- User interaction testing MUST be implemented for all interactive components
+- Visual regression testing SHOULD be implemented for critical UI components
+- Accessibility testing MUST be performed on all public-facing components
+
+### End-to-End Validation
+- Full organism creation workflow MUST be tested
+- Bitcoin API integration MUST be tested with real API responses
+- THREE.js rendering pipeline MUST be tested across different browsers
+- Performance testing MUST validate 60fps target under normal loads
+
+## QUALITY METRICS & TARGETS
+
+### Code Quality Targets
+- Cyclomatic complexity MUST be kept below 10 per method
+- Function length MUST not exceed 50 lines (except where absolutely necessary)
+- Class size MUST not exceed 300 lines without architectural justification
+- File size MUST not exceed 500 lines without modular breakdown
+- Import statements MUST not exceed 15 per file
+
+### Performance Targets
+- Initial page load MUST be under 3 seconds
+- Time to interactive MUST be under 5 seconds
+- Frame rate MUST maintain 60fps during normal operations
+- Memory usage MUST not exceed 200MB for core application
+- API response handling MUST complete within 10 seconds with proper error handling
+
+### Maintainability Metrics
+- Technical debt ratio MUST be kept below 5%
+- Code duplication MUST be eliminated (0% tolerance for identical functions)
+- Documentation coverage MUST be above 90% for public APIs
+- Build time MUST be kept under 30 seconds for development builds
+- Hot reload time MUST be under 1 second for code changes
+
+## AUTOMATION & TOOLING INTEGRATION
+
+### Pre-commit Validation Requirements
+- ESLint MUST pass without warnings
+- TypeScript compilation MUST succeed
+- Duplicate code detection MUST pass (0% tolerance)
+- Import path validation MUST pass
+- File naming convention MUST be validated
+- Bundle size analysis MUST be performed
+
+### Build-time Validations
+- Domain boundary violations MUST be detected and blocked
+- Circular dependency detection MUST be enabled
+- Dead code elimination MUST be performed
+- Performance regression testing MUST be automated
+- Security vulnerability scanning MUST be performed
+
+### Development Workflow Automation
+- Auto-formatting MUST be enabled with Prettier
+- Auto-import organization MUST be configured
+- Auto-documentation generation MUST be set up for services
+- Hot reload optimization MUST be configured for domain changes
+- Build performance monitoring MUST be implemented
+
+### VS Code Integration Requirements
+- TypeScript Hero extension for import management
+- ESLint extension with automatic fixing
+- Prettier extension with format on save
+- Error Lens for inline error display
+- GitLens for code collaboration and history
+- Auto Rename Tag for JSX consistency
+- Bracket Pair Colorizer for code readability
+
+## BITCOIN ORDINALS PROTOCOL REQUIREMENTS
+
+### Bitcoin Ordinals / Ord Protocol / Ord Client Integration
+- Our project MUST use the Bitcoin Ordinals Protocol for all blockchain interactions
+- ALL blockchain data MUST be stored on the Bitcoin Blockchain using Ordinals
+- Application MUST interact with Bitcoin Ordinals Protocol using the Ord Client
+- Block header data MUST be fetched using: https://ordinals.com/r/blockinfo/{blocknumber}
+- Inscription content MUST be sourced using: https://ordinals.com/content/{inscription_ID}
+- Reference documentation: https://docs.ordinals.com/ for Ord Protocol
+- Reference documentation: https://docs.tap-protocol.com/ for Tap Protocol
+- Ord Client repository: https://github.com/ordinals/ord
+
+### Blockchain Data Integration Standards
+- Bitcoin block data MUST be used to seed organism trait values
+- Each organism MUST be uniquely generated from specific block data
+- Inscription IDs MUST be properly formatted and validated
+- Block number validation MUST be implemented for API calls
+- Caching MUST be implemented for blockchain data to reduce API calls
+- Error handling MUST gracefully handle blockchain API failures
+- Retry logic MUST be implemented for network failures (max 3 attempts)
+
+### Development vs Production API Usage
+- Development environment MUST use full URLs: https://ordinals.com/r/blockinfo/{blockNumber}
+- Production environment MUST use relative paths: /r/blockinfo/{blockNumber}
+- Environment-specific configuration MUST be implemented for API endpoints
+- API response validation MUST be implemented for all blockchain calls
+- Rate limiting MUST be respected for Ordinals API endpoints
+
+## ENFORCEMENT & COMPLIANCE
+
+### Automated Enforcement Tools
+- Husky pre-commit hooks MUST be configured for all validation rules
+- GitHub Actions MUST be set up for CI/CD pipeline with all checks
+- SonarQube integration MUST be implemented for code quality gates
+- Bundle analyzer MUST be integrated into build process
+- Performance monitoring MUST be automated with alerts
+
+### Manual Review Requirements
+- Code reviews MUST verify domain boundary compliance
+- Architecture reviews MUST be performed for new service implementations
+- Performance reviews MUST be conducted for rendering optimizations
+- Security reviews MUST be performed for Bitcoin API integrations
+- Documentation reviews MUST ensure JSDoc completeness
+
+### Violation Response Protocol
+- Build failures MUST be addressed before any new development
+- Domain boundary violations MUST be fixed immediately (blocking issues)
+- Performance regressions MUST be investigated within 24 hours
+- Security vulnerabilities MUST be patched within 4 hours
+- Documentation gaps MUST be filled within 48 hours
+
+This comprehensive rule set ensures the Bitcoin Ordinals digital organism ecosystem maintains architectural integrity, prevents technical debt, and delivers optimal performance while following domain-driven design principles with class-based service architecture. 

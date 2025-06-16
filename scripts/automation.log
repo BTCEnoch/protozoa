@@ -1,0 +1,114 @@
+[2025-06-15 21:05:55] [Info] === Project Structure Scaffolding - Phase 1 ===
+[2025-06-15 21:05:56] [Info] Working in project root: D:\Protozoa
+[2025-06-15 21:05:56] [Info] Scaffolding domains: rendering, animation, effect, trait, physics, particle, formation, group, rng, bitcoin
+[2025-06-15 21:05:56] [Info] Creating base directory structure...
+[2025-06-15 21:05:56] [Info] Creating domain-specific directories...
+[2025-06-15 21:05:56] [Success] Domain scaffolded: rendering
+[2025-06-15 21:05:56] [Success] Domain scaffolded: animation
+[2025-06-15 21:05:56] [Success] Domain scaffolded: effect
+[2025-06-15 21:05:56] [Success] Domain scaffolded: trait
+[2025-06-15 21:05:56] [Success] Domain scaffolded: physics
+[2025-06-15 21:05:56] [Success] Domain scaffolded: particle
+[2025-06-15 21:05:56] [Success] Domain scaffolded: formation
+[2025-06-15 21:05:56] [Success] Domain scaffolded: group
+[2025-06-15 21:05:56] [Success] Domain scaffolded: rng
+[2025-06-15 21:05:56] [Success] Domain scaffolded: bitcoin
+[2025-06-15 21:05:56] [Info] Creating shared infrastructure stubs...
+[2025-06-15 21:05:56] [Success] Created shared logger utility
+[2025-06-15 21:05:56] [Success] Created shared types definitions
+[2025-06-15 21:05:56] [Success] Created environment configuration
+[2025-06-15 21:05:56] [Info] Creating ESLint configuration...
+[2025-06-15 21:05:56] [Success] Created ESLint configuration
+[2025-06-15 21:05:56] [Info] Verifying directory structure...
+[2025-06-15 21:05:56] [Error] Project structure scaffolding failed: The term 'Test-DirectoryStructure' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-06-15 21:06:16] [Info] === Project Structure Scaffolding - Phase 1 ===
+[2025-06-15 21:06:16] [Info] Working in project root: D:\Protozoa
+[2025-06-15 21:06:16] [Info] Scaffolding domains: rendering, animation, effect, trait, physics, particle, formation, group, rng, bitcoin
+[2025-06-15 21:06:16] [Info] Creating base directory structure...
+[2025-06-15 21:06:16] [Info] Creating domain-specific directories...
+[2025-06-15 21:06:16] [Success] Domain scaffolded: rendering
+[2025-06-15 21:06:16] [Success] Domain scaffolded: animation
+[2025-06-15 21:06:16] [Success] Domain scaffolded: effect
+[2025-06-15 21:06:16] [Success] Domain scaffolded: trait
+[2025-06-15 21:06:16] [Success] Domain scaffolded: physics
+[2025-06-15 21:06:16] [Success] Domain scaffolded: particle
+[2025-06-15 21:06:16] [Success] Domain scaffolded: formation
+[2025-06-15 21:06:16] [Success] Domain scaffolded: group
+[2025-06-15 21:06:16] [Success] Domain scaffolded: rng
+[2025-06-15 21:06:16] [Success] Domain scaffolded: bitcoin
+[2025-06-15 21:06:17] [Info] Creating shared infrastructure stubs...
+[2025-06-15 21:06:17] [Success] Created shared logger utility
+[2025-06-15 21:06:17] [Success] Created shared types definitions
+[2025-06-15 21:06:17] [Success] Created environment configuration
+[2025-06-15 21:06:17] [Info] Creating ESLint configuration...
+[2025-06-15 21:06:17] [Success] Created ESLint configuration
+[2025-06-15 21:06:17] [Info] Verifying directory structure...
+[2025-06-15 21:06:17] [Success] Directory structure verification passed
+[2025-06-15 21:06:17] [Info] Structure Summary:
+[2025-06-15 21:06:17] [Info]   - 10 domains scaffolded
+[2025-06-15 21:06:17] [Info]   - Shared infrastructure created
+[2025-06-15 21:06:17] [Info]   - Test directories mirrored
+[2025-06-15 21:06:17] [Info]   - TypeScript path aliases configured
+[2025-06-15 21:06:17] [Success] Project structure scaffolding complete!
+[2025-06-15 21:06:17] [Info] Next: Run 02-GenerateDomainStubs.ps1 to create service skeletons
+[2025-06-15 21:52:42] [Info] === ENVIRONMENT CONFIGURATION SERVICE GENERATION ===
+[2025-06-15 21:52:43] [Info] Generating centralized environment configuration for Bitcoin Ordinals API endpoints
+[2025-06-15 21:52:43] [Error] Project structure validation failed: The term 'Test-ProjectStructure' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-06-15 21:53:29] [Info] === ENVIRONMENT CONFIGURATION SERVICE GENERATION ===
+[2025-06-15 21:53:29] [Info] Generating centralized environment configuration for Bitcoin Ordinals API endpoints
+[2025-06-15 21:53:29] [Info] Project structure validation passed
+[2025-06-15 21:53:29] [Info] Environment configuration paths:
+[2025-06-15 21:53:29] [Info]   Config: D:\Protozoa\src\shared\config
+[2025-06-15 21:53:29] [Info]   Service: D:\Protozoa\src\domains\bitcoin\services
+[2025-06-15 21:53:29] [Info]   Types: D:\Protozoa\src\domains\bitcoin\types
+[2025-06-15 21:53:29] [Info] Creating directory: D:\Protozoa\src\shared\config
+[2025-06-15 21:53:29] [Info] Creating directory: D:\Protozoa\src\domains\bitcoin\services
+[2025-06-15 21:53:29] [Info] Creating directory: D:\Protozoa\src\domains\bitcoin\types
+[2025-06-15 21:53:29] [Info] Generating environment types: D:\Protozoa\src\domains\bitcoin\types\environment.types.ts
+[2025-06-15 21:53:29] [Success] Created environment types file
+[2025-06-15 21:53:29] [Info] Generating environment configuration: D:\Protozoa\src\shared\config\environment.config.ts
+[2025-06-15 21:53:29] [Success] Created environment configuration file
+[2025-06-15 21:53:29] [Info] Generating environment service: D:\Protozoa\src\domains\bitcoin\services\EnvironmentService.ts
+[2025-06-15 21:53:29] [Success] Created environment service file
+[2025-06-15 21:53:29] [Info] Environment Configuration Generation Summary:
+[2025-06-15 21:53:29] [Info]   Types: D:\Protozoa\src\domains\bitcoin\types\environment.types.ts
+[2025-06-15 21:53:29] [Info]   Config: D:\Protozoa\src\shared\config\environment.config.ts
+[2025-06-15 21:53:29] [Info]   Service: D:\Protozoa\src\domains\bitcoin\services\EnvironmentService.ts
+[2025-06-15 21:53:29] [Success] Environment Configuration Service generation completed!
+[2025-06-15 21:53:29] [Info] Gap 1 resolved: Centralized EnvConfigService for dev/prod API endpoints
+[2025-06-15 21:54:24] [Info] === PARTICLE INITIALIZATION SERVICE GENERATION ===
+[2025-06-15 21:54:25] [Info] Extracting particle initialization logic into dedicated service
+[2025-06-15 21:54:25] [Info] Project structure validation passed
+[2025-06-15 21:54:25] [Info] Particle service paths:
+[2025-06-15 21:54:25] [Info]   Services: D:\Protozoa\src\domains\particle\services
+[2025-06-15 21:54:25] [Info]   Types: D:\Protozoa\src\domains\particle\types
+[2025-06-15 21:54:25] [Info] Creating directory: D:\Protozoa\src\domains\particle\services
+[2025-06-15 21:54:25] [Info] Creating directory: D:\Protozoa\src\domains\particle\types
+[2025-06-15 21:54:25] [Info] Generating particle initialization types: D:\Protozoa\src\domains\particle\types\particleInit.types.ts
+[2025-06-15 21:54:25] [Success] Created particle initialization types file
+[2025-06-15 21:54:25] [Info] Generating particle initialization service: D:\Protozoa\src\domains\particle\services\ParticleInitService.ts
+[2025-06-15 21:54:25] [Success] Created particle initialization service file
+[2025-06-15 21:54:25] [Info] Particle Initialization Service Generation Summary:
+[2025-06-15 21:54:25] [Info]   Types: D:\Protozoa\src\domains\particle\types\particleInit.types.ts
+[2025-06-15 21:54:25] [Info]   Service: D:\Protozoa\src\domains\particle\services\ParticleInitService.ts
+[2025-06-15 21:54:25] [Success] Particle Initialization Service generation completed!
+[2025-06-15 21:54:25] [Info] Gap 2 resolved: ParticleInitService extracted from ParticleService per audit
+[2025-06-15 21:54:37] [Info] === FORMATION BLENDING & CACHING SERVICE GENERATION ===
+[2025-06-15 21:54:37] [Info] Generating formation blending service with intelligent caching
+[2025-06-15 21:54:37] [Info] Project structure validation passed
+[2025-06-15 21:54:37] [Info] Formation service paths:
+[2025-06-15 21:54:37] [Info]   Services: D:\Protozoa\src\domains\formation\services
+[2025-06-15 21:54:37] [Info]   Types: D:\Protozoa\src\domains\formation\types
+[2025-06-15 21:54:37] [Info]   Utils: D:\Protozoa\src\domains\formation\utils
+[2025-06-15 21:54:37] [Info] Creating directory: D:\Protozoa\src\domains\formation\services
+[2025-06-15 21:54:37] [Info] Creating directory: D:\Protozoa\src\domains\formation\types
+[2025-06-15 21:54:37] [Info] Creating directory: D:\Protozoa\src\domains\formation\utils
+[2025-06-15 21:54:37] [Info] Generating formation blending types: D:\Protozoa\src\domains\formation\types\formationBlending.types.ts
+[2025-06-15 21:54:37] [Success] Created formation blending types file
+[2025-06-15 21:54:37] [Info] Generating formation blending service: D:\Protozoa\src\domains\formation\services\FormationBlendingService.ts
+[2025-06-15 21:54:37] [Success] Created formation blending service file
+[2025-06-15 21:54:37] [Info] Formation Blending & Caching Service Generation Summary:
+[2025-06-15 21:54:37] [Info]   Types: D:\Protozoa\src\domains\formation\types\formationBlending.types.ts
+[2025-06-15 21:54:37] [Info]   Service: D:\Protozoa\src\domains\formation\services\FormationBlendingService.ts
+[2025-06-15 21:54:37] [Success] Formation Blending & Caching Service generation completed!
+[2025-06-15 21:54:37] [Info] Gap 3 resolved: FormationBlendingService with intelligent caching per audit
