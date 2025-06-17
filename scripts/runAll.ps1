@@ -24,6 +24,7 @@ $scriptSequence = @(
     # --- Phase 1 : Shared Infrastructure ---
     @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Unified shared types generation" },
     @{ Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment configuration and logging services" },
+    @{ Script = "18a-SetupLoggingService.ps1"; Description = "Central Winston logging setup" },
     @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Complete Formation Domain implementation" },
     @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" },
 
@@ -57,6 +58,9 @@ $scriptSequence = @(
     @{ Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-based animation" },
     @{ Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Advanced timeline" },
     @{ Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending" },
+
+    # --- Phase 4.5 : Testing Infrastructure ---
+    @{ Script = "18b-SetupTestingFramework.ps1"; Description = "Vitest testing framework setup" },
 
     # --- Phase 5 : CI / CD & Tooling ---
     @{ Script = "45-SetupCICDPipeline.ps1"; Description = "CI/CD pipeline" },
