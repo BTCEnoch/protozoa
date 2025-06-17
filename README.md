@@ -4,6 +4,8 @@
 
 An advanced TypeScript simulation that creates and evolves digital unicellular organisms using Bitcoin Ordinals. Each organism is uniquely seeded from Bitcoin block data, ensuring deterministic but unique traits tied to blockchain history.
 
+**See [`docs/`](docs/README.md) for detailed domain documentation and automation instructions.**
+
 ## 🚀 Quick Start
 
 ```bash
@@ -94,6 +96,7 @@ Complete PowerShell automation package in `/scripts`:
 - **`build_design.md`**: Complete domain-driven architecture (2,180 lines)
 - **`addin.md`**: Additional implementation guides and missing components
 - **`.cursorrules`**: Comprehensive project standards (390 lines)
+- **`docs/` directory**: Organized reference extracted from `build_design.md`
 - **API Integration**: Bitcoin Ordinals protocol documentation
 
 ## 🚦 Project Status
