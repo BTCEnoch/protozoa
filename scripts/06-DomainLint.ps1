@@ -41,9 +41,19 @@ try {
                     # Check for imports from other domains
                     $otherDomains = $domains | Where-Object { $_ -ne $domain }
                     foreach ($otherDomain in $otherDomains) {
-                        if ($content -match "from\s+['\`"].*domains/$otherDomain") {
-                            $violations += "Domain boundary violation in $($file.FullName): imports from $otherDomain domain"
+                        # Check for direct cross-domain imports using alias or relative paths
+                        if ($content -match "from\s+['\`\"]@/domains/$otherDomain") {
+                            $violations += "Domain boundary violation in $($file.FullName): aliased import from $otherDomain domain"
                         }
+                        # Check for relative path escaping own domain folder into another domain
+                        if ($content -match "from\s+['\`\"](\.\./)+domains/$otherDomain") {
+                            $violations += "Domain boundary violation in $($file.FullName): relative import to $otherDomain domain"
+                        }
+                    }
+                    
+                    # Enforce correct alias usage for own domain (no deep relative imports)
+                    if ($content -match "from\s+['\`\"](\.\./)+domains/$domain") {
+                        $violations += "Import path violation in $($file.FullName): use '@/domains/$domain' alias instead of relative path"
                     }
                     
                     # Check for proper service naming

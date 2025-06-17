@@ -9,6 +9,7 @@ Write-InfoLog "Starting complete project setup automation..."
 
 # Define script execution sequence
 $scriptSequence = @(
+    # --- Phase 0 : Environment & Tooling ---
     @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
     @{ Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
     @{ Script = "02-GenerateDomainStubs.ps1"; Description = "Service and interface stubs" },
@@ -17,17 +18,63 @@ $scriptSequence = @(
     @{ Script = "05-VerifyCompliance.ps1"; Description = "Architecture compliance verification" },
     @{ Script = "06-DomainLint.ps1"; Description = "Domain-specific linting" },
     @{ Script = "07-BuildAndTest.ps1"; Description = "Build verification and testing" },
+    @{ Script = "20-SetupPreCommitValidation.ps1"; Description = "Pre-commit hooks and validation" },
     @{ Script = "08-DeployToGitHub.ps1"; Description = "Git initialization and GitHub deployment" },
-    @{ Script = "09-GenerateEnvironmentConfig.ps1"; Description = "Environment configuration service generation" },
-    @{ Script = "10-GenerateParticleInitService.ps1"; Description = "Particle initialization service extraction" },
-    @{ Script = "11-GenerateFormationBlendingService.ps1"; Description = "Formation blending and caching service" },
-    @{ Script = "12-GenerateSharedTypes.ps1"; Description = "Cross-domain shared types generation" },
-    @{ Script = "13-GenerateTypeScriptConfig.ps1"; Description = "TypeScript configuration files generation" },
-    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" },
-    @{ Script = "15-ValidateSetupComplete.ps1"; Description = "Final validation and setup completion" },
-    @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Shared types and interfaces generation" },
+
+    # --- Phase 1 : Shared Infrastructure ---
+    @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Unified shared types generation" },
     @{ Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment configuration and logging services" },
-    @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Complete Formation Domain implementation" }
+    @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Complete Formation Domain implementation" },
+    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" },
+
+    # --- Phase 2 : TypeScript & Dev-Env ---
+    @{ Script = "19-ConfigureAdvancedTypeScript.ps1"; Description = "Advanced TypeScript config" },
+    @{ Script = "21-ConfigureDevEnvironment.ps1"; Description = "Dev environment fine-tuning" },
+
+    # --- Phase 3 : Core Protocols & Services ---
+    @{ Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin Ordinals protocol setup" },
+    @{ Script = "23-GenerateRNGService.ps1"; Description = "Random number generator service" },
+    @{ Script = "24-GeneratePhysicsService.ps1"; Description = "Physics engine service" },
+    @{ Script = "25-SetupPhysicsWebWorkers.ps1"; Description = "Physics WebWorker scaffolding" },
+    @{ Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin blockchain service" },
+    @{ Script = "27-GenerateTraitService.ps1"; Description = "Trait management service" },
+    @{ Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Blockchain data integration" },
+    @{ Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation layer" },
+
+    # --- Phase 4 : Domain Enhancements ---
+    @{ Script = "30-EnhanceTraitSystem.ps1"; Description = "Trait system enhancements" },
+    @{ Script = "31-GenerateParticleService.ps1"; Description = "Particle service generation" },
+    @{ Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle management" },
+    @{ Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm intelligence" },
+    @{ Script = "34-EnhanceFormationSystem.ps1"; Description = "Formation system enhancements" },
+    @{ Script = "35-GenerateRenderingService.ps1"; Description = "Rendering service" },
+    @{ Script = "36-GenerateEffectService.ps1"; Description = "Effect service" },
+    @{ Script = "37-SetupCustomShaderSystem.ps1"; Description = "Custom shader system" },
+    @{ Script = "38-ImplementLODSystem.ps1"; Description = "Level-of-detail system" },
+    @{ Script = "39-SetupAdvancedEffectComposition.ps1"; Description = "Advanced effect composition" },
+    @{ Script = "40-GenerateAnimationService.ps1"; Description = "Animation service" },
+    @{ Script = "41-GenerateGroupService.ps1"; Description = "Group service" },
+    @{ Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-based animation" },
+    @{ Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Advanced timeline" },
+    @{ Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending" },
+
+    # --- Phase 5 : CI / CD & Tooling ---
+    @{ Script = "45-SetupCICDPipeline.ps1"; Description = "CI/CD pipeline" },
+    @{ Script = "46-SetupDockerDeployment.ps1"; Description = "Docker deployment" },
+    @{ Script = "47-SetupPerformanceRegression.ps1"; Description = "Performance regression testing" },
+    @{ Script = "48-SetupAdvancedBundleAnalysis.ps1"; Description = "Bundle analysis" },
+    @{ Script = "49-SetupAutomatedDocumentation.ps1"; Description = "Automated documentation" },
+    @{ Script = "50-SetupServiceIntegration.ps1"; Description = "Service integration" },
+
+    # --- Phase 6 : Front-End Integration ---
+    @{ Script = "51-SetupGlobalStateManagement.ps1"; Description = "Global state management" },
+    @{ Script = "52-SetupReactIntegration.ps1"; Description = "React integration" },
+    @{ Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
+    @{ Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing" },
+    @{ Script = "55-SetupPersistenceLayer.ps1"; Description = "Persistence layer" },
+    @{ Script = "56-SetupEndToEndValidation.ps1"; Description = "End-to-end validation" },
+    # --- Final Validation ---
+    @{ Script = "15-ValidateSetupComplete.ps1"; Description = "Final validation and setup completion" }
 )
 
 # Track execution results
