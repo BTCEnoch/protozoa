@@ -1,3 +1,9 @@
+### ✅ 2025-06-18 – Script-Scrub suite clean
+* Here-string sanitation complete
+* Dependency graph stable – 1 remaining non-critical circular dependency 
+* utils.psm1 import coverage 87.5% (56/64 scripts)
+* Duplicate detector (≤ 5 KB bodies) clean – 0 duplicates
+
 # **Script Checklist for Protozoa Build Automation**
 
 *Comprehensive mapping of build_checklist.md tasks to PowerShell automation scripts*

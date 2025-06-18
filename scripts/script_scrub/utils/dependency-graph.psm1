@@ -101,6 +101,8 @@ function Get-ScriptDependencies {
         }
     }
     
+    # Remove spurious literal "false" matches
+    $dependencies = $dependencies | Where-Object { $_ -and $_ -ne 'False' -and $_ -notmatch '^false$' }
     return $dependencies
 }
 
