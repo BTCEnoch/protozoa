@@ -1,119 +1,86 @@
 ﻿#!/usr/bin/env pwsh
-param([switch]$WhatIf = $false)
+# === fix-content-parsing.ps1 ===
+# Converts all double-quoted HERE-STRING blocks (@" ... "@) to single-quoted
+# form (@' ... '@) across every .ps1 file in the ./scripts directory tree.  This
+# prevents PowerShell from attempting to parse embedded TypeScript/JSON code and
+# eliminates the pervasive "parameter name 'and'" errors raised during
+# template-generation phases.
 
-Write-Host "🔧 Fixing PowerShell parsing issues with HERE-STRING content..." -ForegroundColor Cyan
-
-# Get scripts that failed due to parsing issues
-$problemScripts = @(
-    "17-GenerateEnvironmentConfig.ps1",
-    "18a-SetupLoggingService.ps1",
-    "29-SetupDataValidationLayer.ps1",
-    "32-SetupParticleLifecycleManagement.ps1",
-    "33-ImplementSwarmIntelligence.ps1",
-    "34-EnhanceFormationSystem.ps1",
-    "37-SetupCustomShaderSystem.ps1",
-    "38-ImplementLODSystem.ps1",
-    "39-SetupAdvancedEffectComposition.ps1",
-    "42-SetupPhysicsBasedAnimation.ps1",
-    "43-ImplementAdvancedTimeline.ps1",
-    "44-SetupAnimationBlending.ps1",
-    "45-SetupCICDPipeline.ps1",
-    "46-SetupDockerDeployment.ps1",
-    "47-SetupPerformanceRegression.ps1",
-    "48-SetupAdvancedBundleAnalysis.ps1",
-    "49-SetupAutomatedDocumentation.ps1",
-    "50-SetupServiceIntegration.ps1",
-    "51-SetupGlobalStateManagement.ps1",
-    "52-SetupReactIntegration.ps1",
-    "53-SetupEventBusSystem.ps1",
-    "54-SetupPerformanceTesting.ps1",
-    "55-SetupPersistenceLayer.ps1",
-    "56-SetupEndToEndValidation.ps1"
+param(
+    [Parameter(Mandatory=$false)][switch]$WhatIf = $false,
+    [Parameter(Mandatory=$false)][string]$ScriptsRoot = (Join-Path (Split-Path $MyInvocation.MyCommand.Path -Parent) '.' )
 )
 
-$totalFixed = 0
+Write-Host "🔧 Converting double-quoted HERE-STRING blocks across all scripts…" -ForegroundColor Cyan
+
+# Collect every PowerShell script under the target root (excluding this script itself)
+$problemScripts = Get-ChildItem -Path $ScriptsRoot -Recurse -Filter '*.ps1' |
+    Where-Object { $_.FullName -ne $MyInvocation.MyCommand.Path }
+
+$totalFixed   = 0
 $scriptsModified = 0
 
-foreach ($scriptName in $problemScripts) {
-    $scriptPath = "scripts/$scriptName"
-    if (-not (Test-Path $scriptPath)) {
-        Write-Host "Skipping $scriptName - not found" -ForegroundColor Yellow
-        continue
-    }
-
-    Write-Host "Processing: $scriptName" -ForegroundColor Yellow
+foreach ($file in $problemScripts) {
+    $scriptPath = $file.FullName
 
     $content = Get-Content $scriptPath -Raw
-    $fixesInScript = 0
 
-    # Convert all double-quoted HERE-STRINGs to single-quoted ones
-    # This prevents PowerShell from parsing the content as PowerShell code
+    # Quick reject if file contains no @" tokens – saves time
+    if ($content -notmatch '@"') { continue }
 
     $lines = $content -split "`r`n|`n"
     $newLines = @()
     $inHereString = $false
     $hereStringStartLine = -1
+    $fixesInScript = 0
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        if (-not $inHereString -and $line -match '^\s*\$\w+\s*=\s*@"$') {
-            # Start of double-quoted HERE-STRING - convert to single-quoted
+        # Detect the start of a double-quoted HERE-STRING, e.g. $x = @"  (ignoring trailing spaces)
+        if (-not $inHereString -and $line -match '^\s*\$[A-Za-z0-9_]+\s*=\s*@"\s*$') {
             $inHereString = $true
             $hereStringStartLine = $i
-            $newLines += $line -replace '@"$', "@'"
-            Write-Host "    Found HERE-STRING start at line $($i + 1)" -ForegroundColor Cyan
+            $newLines += ($line -replace '@"\s*$', "@'")
             continue
         }
 
+        # Detect the end of a double-quoted HERE-STRING (`"@`)
         if ($inHereString -and $line -match '^"@\s*$') {
-            # End of double-quoted HERE-STRING - convert to single-quoted
             $inHereString = $false
-            $newLines += $line -replace '^"@', "'@"
+            $newLines += ($line -replace '^"@', "'@")
             $fixesInScript++
-            Write-Host "    Converted HERE-STRING block (lines $($hereStringStartLine + 1)-$($i + 1))" -ForegroundColor Green
             $hereStringStartLine = -1
             continue
         }
 
         if ($inHereString) {
-            # Inside HERE-STRING - escape any single quotes by doubling them
-            $escapedLine = $line -replace [char]39, ([char]39 + [char]39)
-            $newLines += $escapedLine
+            # Inside HERE-STRING – escape any single quotes to preserve content integrity
+            $newLines += $line -replace [char]39, ([char]39 + [char]39)
         } else {
-            # Outside HERE-STRING - keep line as-is
             $newLines += $line
         }
     }
 
-    # Check for unclosed HERE-STRING
-    if ($inHereString) {
-        Write-Host "    WARNING: Unclosed HERE-STRING starting at line $($hereStringStartLine + 1)" -ForegroundColor Red
-    }
-
     if ($fixesInScript -gt 0) {
-        $content = $newLines -join "`r`n"
         $scriptsModified++
         $totalFixed += $fixesInScript
 
         if ($WhatIf) {
-            Write-Host "  Would modify $scriptName" -ForegroundColor Green
+            Write-Host "[DRY-RUN] Would fix $fixesInScript block(s) in $($file.Name)" -ForegroundColor Yellow
         } else {
-            Set-Content -Path $scriptPath -Value $content -Encoding UTF8
-            Write-Host "  Fixed $scriptName" -ForegroundColor Green
+            $newLines -join "`r`n" | Set-Content -Path $scriptPath -Encoding UTF8
+            Write-Host "✓ Fixed $fixesInScript block(s) in $($file.Name)" -ForegroundColor Green
         }
-    } else {
-        Write-Host "  No changes needed for $scriptName" -ForegroundColor Gray
     }
 }
 
 Write-Host "`n🎯 SUMMARY:" -ForegroundColor Cyan
-Write-Host "Scripts processed: $($problemScripts.Count)" -ForegroundColor White
-Write-Host "Scripts modified: $scriptsModified" -ForegroundColor Green
-Write-Host "Total blocks converted: $totalFixed" -ForegroundColor Green
+Write-Host "Scripts scanned   : $($problemScripts.Count)" -ForegroundColor White
+Write-Host "Scripts modified  : $scriptsModified" -ForegroundColor Green
+Write-Host "Blocks converted  : $totalFixed" -ForegroundColor Green
 
-if ($WhatIf) {
-    Write-Host "`nRun without -WhatIf to apply changes" -ForegroundColor Yellow
-} else {
-    Write-Host "`nFixes applied successfully!" -ForegroundColor Green
-}
+if ($WhatIf) { Write-Host "`nRun without -WhatIf to apply changes." -ForegroundColor Yellow }
+
+# Exit with success
+exit 0
