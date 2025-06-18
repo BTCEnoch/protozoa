@@ -19,7 +19,18 @@ param(
 # Import utilities module for consistent logging and file operations
 Import-Module (Join-Path $PSScriptRoot "utils.psm1") -Force
 
-Write-StatusMessage "Starting Formation Domain generation..." "INFO"
+# Helper function for compatibility
+function Write-StatusMessage {
+    param([string]$Message, [string]$Level)
+    switch ($Level) {
+        "INFO" { Write-InfoLog $Message }
+        "SUCCESS" { Write-SuccessLog $Message }
+        "DEBUG" { Write-DebugLog $Message }
+        default { Write-InfoLog $Message }
+    }
+}
+
+Write-InfoLog "Starting Formation Domain generation..."
 
 # Ensure domain directory structure exists
 $formationDomainPath = Join-Path $ProjectRoot "src/domains/formation"
