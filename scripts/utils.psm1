@@ -763,6 +763,83 @@ function Write-SectionHeader {
 # Initialize logging on module import
 Initialize-LogFile
 
+# Missing utility functions that were causing script failures
+function Get-FileLineCount {
+    [CmdletBinding()]
+    [OutputType([int])]
+    param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [string]$FilePath
+    )
+    
+    try {
+        if (-not (Test-Path $FilePath)) {
+            Write-WarningLog "File not found: $FilePath"
+            return 0
+        }
+        
+        $lines = Get-Content $FilePath -ErrorAction Stop
+        $count = if ($lines) { $lines.Count } else { 0 }
+        Write-DebugLog "File $FilePath has $count lines"
+        return $count
+    }
+    catch {
+        Write-ErrorLog "Failed to count lines in $FilePath : $($_.Exception.Message)"
+        return 0
+    }
+}
+
+function Test-TypeScriptCompiles {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory = $false)]
+        [string]$ProjectRoot = "."
+    )
+    
+    try {
+        Push-Location $ProjectRoot
+        
+        # Check if TypeScript is available
+        $tscCommand = Get-Command tsc -ErrorAction SilentlyContinue
+        if (-not $tscCommand) {
+            # Try npx tsc
+            $tscCommand = Get-Command npx -ErrorAction SilentlyContinue
+            if (-not $tscCommand) {
+                Write-WarningLog "TypeScript compiler not found"
+                return $false
+            }
+            $tscCmd = "npx tsc"
+        } else {
+            $tscCmd = "tsc"
+        }
+        
+        # Check if tsconfig.json exists
+        if (-not (Test-Path "tsconfig.json")) {
+            Write-WarningLog "tsconfig.json not found"
+            return $false
+        }
+        
+        Write-InfoLog "Testing TypeScript compilation..."
+        $result = Invoke-Expression "$tscCmd --noEmit" 2>&1
+        
+        if ($LASTEXITCODE -eq 0) {
+            Write-SuccessLog "TypeScript compilation check passed"
+            return $true
+        } else {
+            Write-WarningLog "TypeScript compilation issues detected: $result"
+            return $false
+        }
+    }
+    catch {
+        Write-ErrorLog "TypeScript compilation test failed: $($_.Exception.Message)"
+        return $false
+    }
+    finally {
+        try { Pop-Location -ErrorAction SilentlyContinue } catch { }
+    }
+}
+
 # Export functions with approved verbs and aliases
 Export-ModuleMember -Function @(
     'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
@@ -773,99 +850,9 @@ Export-ModuleMember -Function @(
     'New-DirectoryTree', 'Get-DomainList', 'Get-ServiceName', 'Get-DomainPhaseNumber',
     'Backup-File', 'Remove-FilesSafely',
     'Invoke-ScriptWithErrorHandling',
-    'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
+    'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
+    'Get-FileLineCount', 'Test-TypeScriptCompiles'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
-) 
-# Additional utility functions discovered during validation
-function Initialize-ProjectDependencies {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ProjectRoot = "."
-    )
-    
-    try {
-        Push-Location $ProjectRoot
-        
-        if (Test-Path "package.json") {
-            Write-InfoLog "Installing project dependencies with pnpm..."
-            $result = pnpm install 2>&1
-            
-            if ($LASTEXITCODE -eq 0) {
-                Write-SuccessLog "Dependencies installed successfully"
-                return $true
-            } else {
-                Write-ErrorLog "pnpm install failed: $result"
-                return $false
-            }
-        } else {
-            Write-WarningLog "No package.json found, skipping dependency installation"
-            return $true
-        }
-    }
-    catch {
-        Write-ErrorLog "Dependency installation failed: $($_.Exception.Message)"
-        return $false
-    }
-    finally {
-        try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-    }
-}
-
-function Test-ScriptDependencies {
-    [CmdletBinding()]
-    [OutputType([bool])]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ScriptsPath = $PSScriptRoot
-    )
-    
-    try {
-        # Test that all required modules can be imported
-        $utilsPath = Join-Path $ScriptsPath "utils.psm1"
-        if (-not (Test-Path $utilsPath)) {
-            Write-ErrorLog "utils.psm1 not found at: $utilsPath"
-            return $false
-        }
-        
-        # Test Node.js and pnpm availability
-        if (-not (Test-NodeInstalled)) {
-            Write-WarningLog "Node.js not available - some scripts may fail"
-        }
-        
-        if (-not (Test-PnpmInstalled)) {
-            Write-WarningLog "pnpm not available - dependency installation will fail"
-        }
-        
-        Write-DebugLog "Script dependencies validation passed"
-        return $true
-    }
-    catch {
-        Write-ErrorLog "Script dependencies validation failed: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-function Repair-UtilityModule {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ModulePath = "$PSScriptRoot\utils.psm1"
-    )
-    
-    try {
-        Write-InfoLog "Repairing utility module at: $ModulePath"
-        
-        # Force reimport of the module
-        Remove-Module utils -Force -ErrorAction SilentlyContinue
-        Import-Module $ModulePath -Force
-        
-        Write-SuccessLog "Utility module repaired and reloaded"
-        return $true
-    }
-    catch {
-        Write-ErrorLog "Failed to repair utility module: $($_.Exception.Message)"
-        return $false
-    }
-}
+)
