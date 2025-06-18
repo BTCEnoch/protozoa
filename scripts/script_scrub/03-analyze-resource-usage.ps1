@@ -43,219 +43,106 @@ function Get-ResourceUsagePatterns {
     }
     
     try {
+        # Check file size and skip if too large to prevent performance issues
+        $fileInfo = Get-Item -Path $ScriptPath
+        if ($fileInfo.Length -gt 1MB) {
+            Write-Warning "Skipping large file: $($fileInfo.Name) ($([Math]::Round($fileInfo.Length/1KB))KB)"
+            return $resourcePatterns
+        }
+        
         $content = Get-Content -Path $ScriptPath -Raw
+        if ([string]::IsNullOrEmpty($content)) {
+            return $resourcePatterns
+        }
+        
         $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
         
-        # File I/O operations
-        $filePatterns = @(
-            'Get-Content',
-            'Set-Content',
-            'Add-Content',
-            'Out-File',
-            'Import-Csv',
-            'Export-Csv',
-            'Get-ChildItem',
-            'Copy-Item',
-            'Move-Item',
-            'Remove-Item',
-            'New-Item',
-            'Test-Path',
-            '\[System\.IO\.File\]',
-            '\[System\.IO\.Directory\]'
-        )
-        
-        foreach ($pattern in $filePatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.FileOperations += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                }
-            }
+        # Optimize: Create combined patterns for better performance
+        $patternCategories = @{
+            FileOperations = @(
+                'Get-Content', 'Set-Content', 'Add-Content', 'Out-File', 'Import-Csv', 'Export-Csv',
+                'Get-ChildItem', 'Copy-Item', 'Move-Item', 'Remove-Item', 'New-Item', 'Test-Path',
+                '\[System\.IO\.File\]', '\[System\.IO\.Directory\]'
+            )
+            MemoryIntensive = @(
+                'Get-WmiObject', 'Get-CimInstance', 'Import-Module.*-Global', '\$global:',
+                'foreach.*\$.*in.*Get-ChildItem.*-Recurse', 'Get-Content.*-Raw',
+                '\[System\.Collections\.ArrayList\]', '\[System\.Collections\.Generic'
+            )
+            NetworkCalls = @(
+                'Invoke-WebRequest', 'Invoke-RestMethod', 'Start-BitsTransfer', 'Test-NetConnection',
+                'Get-NetAdapter', 'New-WebServiceProxy', '\[System\.Net\.WebClient\]',
+                '\[System\.Net\.HttpWebRequest\]', 'Download.*String', 'DownloadFile'
+            )
+            ProcessCalls = @(
+                'Start-Process', 'Stop-Process', 'Get-Process', 'Wait-Process', 'Invoke-Expression',
+                '& ".*"', "& '.*'", 'cmd /c', 'powershell -Command', '\[System\.Diagnostics\.Process\]'
+            )
+            DatabaseCalls = @(
+                'Invoke-Sqlcmd', 'New-Object.*System\.Data\.SqlClient', 'System\.Data\.OleDb',
+                'System\.Data\.Odbc', 'Microsoft\.SqlServer', 'Oracle\.DataAccess', 'MySql\.Data'
+            )
+            RegistryAccess = @(
+                'Get-ItemProperty.*HKLM', 'Set-ItemProperty.*HKLM', 'New-ItemProperty.*HKLM',
+                'Remove-ItemProperty.*HKLM', 'Get-ChildItem.*HKLM', '\[Microsoft\.Win32\.Registry\]', 'Registry::'
+            )
+            WMIQueries = @(
+                'Get-WmiObject.*Win32_', 'Get-CimInstance.*Win32_', 'Get-WmiObject.*-Computer',
+                'Get-CimInstance.*-Computer', 'Invoke-WmiMethod', 'Register-WmiEvent'
+            )
+            ServiceCalls = @(
+                'Get-Service', 'Start-Service', 'Stop-Service', 'Restart-Service',
+                'Set-Service', 'New-Service', 'Remove-Service'
+            )
         }
         
-        # Memory-intensive operations
-        $memoryPatterns = @(
-            'Get-WmiObject',
-            'Get-CimInstance', 
-            'Import-Module.*-Global',
-            '\$global:',
-            'foreach.*\$.*in.*Get-ChildItem.*-Recurse',
-            'Get-Content.*-Raw',
-            '\[System\.Collections\.ArrayList\]',
-            '\[System\.Collections\.Generic',
-            'Select-Object.*-First\s+[5-9]\d+',  # Large Select-Object operations
-            'Sort-Object.*-Property.*,.*,'       # Multi-property sorts
-        )
-        
-        foreach ($pattern in $memoryPatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.MemoryIntensive += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    RiskLevel = if ($pattern -like '*-Recurse*' -or $pattern -like '*-Raw*') { 'High' } else { 'Medium' }
+        # Process each category with optimized regex
+        foreach ($category in $patternCategories.Keys) {
+            $categoryPatterns = $patternCategories[$category]
+            
+            # Create a single combined regex pattern for better performance
+            $combinedPattern = '(' + ($categoryPatterns -join '|') + ')'
+            
+            try {
+                $regexMatches = [regex]::Matches($content, $combinedPattern, 'IgnoreCase')
+                
+                foreach ($match in $regexMatches) {
+                    $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+                    
+                    $patternMatch = @{
+                        Pattern = $match.Value
+                        LineNumber = $lineNumber
+                        Context = $match.Value
+                        ScriptName = $scriptName
+                    }
+                    
+                    # Add category-specific properties
+                    switch ($category) {
+                        'MemoryIntensive' {
+                            $patternMatch.RiskLevel = if ($match.Value -like '*-Recurse*' -or $match.Value -like '*-Raw*') { 'High' } else { 'Medium' }
+                        }
+                        'NetworkCalls' {
+                            $patternMatch.RequiresInternet = $true
+                        }
+                        'ProcessCalls' {
+                            $patternMatch.SecurityRisk = if ($match.Value -like '*Invoke-Expression*' -or $match.Value -like '*cmd /c*') { 'High' } else { 'Medium' }
+                        }
+                        'RegistryAccess' {
+                            $patternMatch.RequiresElevation = $true
+                        }
+                        'WMIQueries' {
+                            $patternMatch.PerformanceImpact = 'Medium'
+                        }
+                        'ServiceCalls' {
+                            $patternMatch.RequiresElevation = ($match.Value -like '*Start-*' -or $match.Value -like '*Stop-*' -or $match.Value -like '*Set-*')
+                        }
+                    }
+                    
+                    $resourcePatterns[$category] += $patternMatch
                 }
             }
-        }
-        
-        # Network operations
-        $networkPatterns = @(
-            'Invoke-WebRequest',
-            'Invoke-RestMethod',
-            'Start-BitsTransfer',
-            'Test-NetConnection',
-            'Get-NetAdapter',
-            'New-WebServiceProxy',
-            '\[System\.Net\.WebClient\]',
-            '\[System\.Net\.HttpWebRequest\]',
-            'Download.*String',
-            'DownloadFile'
-        )
-        
-        foreach ($pattern in $networkPatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.NetworkCalls += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    RequiresInternet = $true
-                }
-            }
-        }
-        
-        # Process operations
-        $processPatterns = @(
-            'Start-Process',
-            'Stop-Process',
-            'Get-Process',
-            'Wait-Process',
-            'Invoke-Expression',
-            '& ".*"',
-            "& '.*'",
-            'cmd /c',
-            'powershell -Command',
-            '\[System\.Diagnostics\.Process\]'
-        )
-        
-        foreach ($pattern in $processPatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.ProcessCalls += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    SecurityRisk = if ($pattern -like '*Invoke-Expression*' -or $pattern -like '*cmd /c*') { 'High' } else { 'Medium' }
-                }
-            }
-        }
-        
-        # Database operations
-        $databasePatterns = @(
-            'Invoke-Sqlcmd',
-            'New-Object.*System\.Data\.SqlClient',
-            'System\.Data\.OleDb',
-            'System\.Data\.Odbc',
-            'Microsoft\.SqlServer',
-            'Oracle\.DataAccess',
-            'MySql\.Data'
-        )
-        
-        foreach ($pattern in $databasePatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.DatabaseCalls += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                }
-            }
-        }
-        
-        # Registry operations
-        $registryPatterns = @(
-            'Get-ItemProperty.*HKLM',
-            'Set-ItemProperty.*HKLM',
-            'New-ItemProperty.*HKLM',
-            'Remove-ItemProperty.*HKLM',
-            'Get-ChildItem.*HKLM',
-            '\[Microsoft\.Win32\.Registry\]',
-            'Registry::'
-        )
-        
-        foreach ($pattern in $registryPatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.RegistryAccess += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    RequiresElevation = $true
-                }
-            }
-        }
-        
-        # WMI/CIM queries
-        $wmiPatterns = @(
-            'Get-WmiObject.*Win32_',
-            'Get-CimInstance.*Win32_',
-            'Get-WmiObject.*-Computer',
-            'Get-CimInstance.*-Computer',
-            'Invoke-WmiMethod',
-            'Register-WmiEvent'
-        )
-        
-        foreach ($pattern in $wmiPatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.WMIQueries += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    PerformanceImpact = 'Medium'
-                }
-            }
-        }
-        
-        # Service operations
-        $servicePatterns = @(
-            'Get-Service',
-            'Start-Service',
-            'Stop-Service',
-            'Restart-Service',
-            'Set-Service',
-            'New-Service',
-            'Remove-Service'
-        )
-        
-        foreach ($pattern in $servicePatterns) {
-            $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
-            foreach ($match in $regexMatches) {
-                $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
-                $resourcePatterns.ServiceCalls += @{
-                    Pattern = $pattern
-                    LineNumber = $lineNumber
-                    Context = $match.Value
-                    ScriptName = $scriptName
-                    RequiresElevation = if ($pattern -like '*Start-*' -or $pattern -like '*Stop-*' -or $pattern -like '*Set-*') { $true } else { $false }
-                }
+            catch {
+                Write-Warning "Failed to process $category patterns in $scriptName : $($_.Exception.Message)"
             }
         }
         
@@ -302,54 +189,73 @@ try {
     }
     
     Write-Host "Analyzing resource usage patterns..." -ForegroundColor Green
+    Write-Host "Will analyze $($scripts.Count) scripts with progress logging..." -ForegroundColor Yellow
     
-    # Analyze each script
+    # Analyze each script with progress logging
+    $currentScript = 0
+    $progressInterval = [Math]::Max(1, [Math]::Floor($scripts.Count / 10)) # Update every 10%
+    
     foreach ($script in $scripts) {
-        Write-Host "  Processing: $($script.Name)" -ForegroundColor Gray
+        $currentScript++
         
-        $resourcePatterns = Get-ResourceUsagePatterns -ScriptPath $script.FullName
-        
-        # Aggregate patterns
-        $categories = @($analysisResults.ResourcePatterns.Keys)
-        foreach ($category in $categories) {
-            $analysisResults.ResourcePatterns[$category] += $resourcePatterns[$category]
+        # Progress logging
+        if ($currentScript % $progressInterval -eq 0 -or $currentScript -eq $scripts.Count) {
+            $percentComplete = [Math]::Round(($currentScript / $scripts.Count) * 100, 1)
+            Write-Host "  Progress: $percentComplete% ($currentScript/$($scripts.Count)) - Processing: $($script.Name)" -ForegroundColor Gray
+        } else {
+            Write-Host "  Processing ($currentScript/$($scripts.Count)): $($script.Name)" -ForegroundColor DarkGray
         }
         
-        # Calculate risk profile for this script
-        $riskProfile = @{
-            ScriptName = $script.BaseName
-            FilePath = $script.FullName
-            MemoryRisk = if ($resourcePatterns.MemoryIntensive.Count -gt 0) { 'Medium' } else { 'Low' }
-            NetworkDependency = ($resourcePatterns.NetworkCalls.Count -gt 0)
-            ElevationRequired = ($resourcePatterns.RegistryAccess.Count -gt 0 -or 
-                               ($resourcePatterns.ServiceCalls | Where-Object { $_.RequiresElevation }).Count -gt 0)
-            PerformanceImpact = if ($resourcePatterns.WMIQueries.Count -gt 3 -or $resourcePatterns.MemoryIntensive.Count -gt 2) { 'High' } 
-                               elseif ($resourcePatterns.WMIQueries.Count -gt 0 -or $resourcePatterns.MemoryIntensive.Count -gt 0) { 'Medium' } 
-                               else { 'Low' }
-            ResourceScore = ($resourcePatterns.FileOperations.Count * 1) + 
-                           ($resourcePatterns.MemoryIntensive.Count * 3) + 
-                           ($resourcePatterns.NetworkCalls.Count * 2) + 
-                           ($resourcePatterns.ProcessCalls.Count * 2) + 
-                           ($resourcePatterns.DatabaseCalls.Count * 4) + 
-                           ($resourcePatterns.RegistryAccess.Count * 3) + 
-                           ($resourcePatterns.WMIQueries.Count * 2) + 
-                           ($resourcePatterns.ServiceCalls.Count * 2)
+        try {
+            $resourcePatterns = Get-ResourceUsagePatterns -ScriptPath $script.FullName
+            
+            # Aggregate patterns
+            $categories = @($analysisResults.ResourcePatterns.Keys)
+            foreach ($category in $categories) {
+                if ($resourcePatterns.ContainsKey($category)) {
+                    $analysisResults.ResourcePatterns[$category] += $resourcePatterns[$category]
+                }
+            }
+            
+            # Calculate risk profile for this script
+            $riskProfile = @{
+                ScriptName = $script.BaseName
+                FilePath = $script.FullName
+                MemoryRisk = if ($resourcePatterns.MemoryIntensive.Count -gt 0) { 'Medium' } else { 'Low' }
+                NetworkDependency = ($resourcePatterns.NetworkCalls.Count -gt 0)
+                ElevationRequired = ($resourcePatterns.RegistryAccess.Count -gt 0 -or 
+                                   ($resourcePatterns.ServiceCalls | Where-Object { $_.RequiresElevation }).Count -gt 0)
+                PerformanceImpact = if ($resourcePatterns.WMIQueries.Count -gt 3 -or $resourcePatterns.MemoryIntensive.Count -gt 2) { 'High' } 
+                                   elseif ($resourcePatterns.WMIQueries.Count -gt 0 -or $resourcePatterns.MemoryIntensive.Count -gt 0) { 'Medium' } 
+                                   else { 'Low' }
+                ResourceScore = ($resourcePatterns.FileOperations.Count * 1) + 
+                               ($resourcePatterns.MemoryIntensive.Count * 3) + 
+                               ($resourcePatterns.NetworkCalls.Count * 2) + 
+                               ($resourcePatterns.ProcessCalls.Count * 2) + 
+                               ($resourcePatterns.DatabaseCalls.Count * 4) + 
+                               ($resourcePatterns.RegistryAccess.Count * 3) + 
+                               ($resourcePatterns.WMIQueries.Count * 2) + 
+                               ($resourcePatterns.ServiceCalls.Count * 2)
+            }
+            
+            $analysisResults.ScriptRiskProfiles += $riskProfile
+            
+            # Update statistics
+            if ($riskProfile.MemoryRisk -eq 'High' -or $resourcePatterns.MemoryIntensive.Count -gt 2) {
+                $analysisResults.Statistics.HighMemoryRiskScripts++
+            }
+            if ($riskProfile.NetworkDependency) {
+                $analysisResults.Statistics.NetworkDependentScripts++
+            }
+            if ($riskProfile.ElevationRequired) {
+                $analysisResults.Statistics.ElevationRequiredScripts++
+            }
+            if ($resourcePatterns.DatabaseCalls.Count -gt 0) {
+                $analysisResults.Statistics.DatabaseConnectedScripts++
+            }
         }
-        
-        $analysisResults.ScriptRiskProfiles += $riskProfile
-        
-        # Update statistics
-        if ($riskProfile.MemoryRisk -eq 'High' -or $resourcePatterns.MemoryIntensive.Count -gt 2) {
-            $analysisResults.Statistics.HighMemoryRiskScripts++
-        }
-        if ($riskProfile.NetworkDependency) {
-            $analysisResults.Statistics.NetworkDependentScripts++
-        }
-        if ($riskProfile.ElevationRequired) {
-            $analysisResults.Statistics.ElevationRequiredScripts++
-        }
-        if ($resourcePatterns.DatabaseCalls.Count -gt 0) {
-            $analysisResults.Statistics.DatabaseConnectedScripts++
+        catch {
+            Write-Warning "Failed to analyze $($script.Name): $($_.Exception.Message)"
         }
     }
     

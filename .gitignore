@@ -36,7 +36,6 @@ Thumbs.db
 # Logs
 logs/
 *.log
-scripts/automation.log
 
 # Runtime data
 pids/

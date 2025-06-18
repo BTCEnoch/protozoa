@@ -1,0 +1,1884 @@
+﻿{
+    "Issues":  [
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseApprovedVerbs",
+                       "LineNumber":  15,
+                       "Context":  "function Fix-HereStrings",
+                       "ScriptName":  "fix-here-strings",
+                       "Severity":  "Warning",
+                       "Message":  "The function \u0027Fix-HereStrings\u0027 uses an unapproved verb \u0027Fix\u0027.",
+                       "Suggestion":  "Use an approved PowerShell verb. Run \u0027Get-Verb\u0027 to see approved verbs."
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "01-analyze-dependencies",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "02-detect-duplicates",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "run-analysis",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "00-InitEnvironment",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "01-ScaffoldProjectStructure",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  72,
+                       "Context":  "catch { }",
+                       "ScriptName":  "04-EnforceSingletonPatterns",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "04-EnforceSingletonPatterns",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  80,
+                       "Context":  "catch { }",
+                       "ScriptName":  "05-VerifyCompliance",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "05-VerifyCompliance",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  103,
+                       "Context":  "catch { }",
+                       "ScriptName":  "06-DomainLint",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "06-DomainLint",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  83,
+                       "Context":  "catch { }",
+                       "ScriptName":  "07-BuildAndTest",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "07-BuildAndTest",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "09-DeployTemplates",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  133,
+                       "Context":  "catch { }",
+                       "ScriptName":  "14-FixUtilityFunctions",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "14-FixUtilityFunctions",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  242,
+                       "Context":  "catch { }",
+                       "ScriptName":  "15-ValidateSetupComplete",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                       "LineNumber":  16,
+                       "Context":  "[switch]$Verbose = $false",
+                       "ScriptName":  "18-GenerateFormationDomain",
+                       "Severity":  "Warning",
+                       "Message":  "Script definition has a switch parameter default to true.",
+                       "Suggestion":  "Remove the default value and handle the logic within the script body"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "18a-SetupLoggingService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "18b-SetupTestingFramework",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  247,
+                       "Context":  "catch { }",
+                       "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  235,
+                       "Context":  "catch { }",
+                       "ScriptName":  "20-SetupPreCommitValidation",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "20-SetupPreCommitValidation",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  411,
+                       "Context":  "catch { }",
+                       "ScriptName":  "21-ConfigureDevEnvironment",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "21-ConfigureDevEnvironment",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  435,
+                       "Context":  "catch { }",
+                       "ScriptName":  "22-SetupBitcoinProtocol",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "22-SetupBitcoinProtocol",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  1116,
+                       "Context":  "catch { }",
+                       "ScriptName":  "23-GenerateRNGService",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "23-GenerateRNGService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  1116,
+                       "Context":  "catch { }",
+                       "ScriptName":  "24-GeneratePhysicsService",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "24-GeneratePhysicsService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "25-SetupPhysicsWebWorkers",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  1035,
+                       "Context":  "catch { }",
+                       "ScriptName":  "26-GenerateBitcoinService",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "26-GenerateBitcoinService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  1661,
+                       "Context":  "catch { }",
+                       "ScriptName":  "27-GenerateTraitService",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "27-GenerateTraitService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "28-SetupBlockchainDataIntegration",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "29-SetupDataValidationLayer",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  1279,
+                       "Context":  "catch { }",
+                       "ScriptName":  "31-GenerateParticleService",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "31-GenerateParticleService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "35-GenerateRenderingService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "36-GenerateEffectService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "40-GenerateAnimationService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "41-GenerateGroupService",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                       "LineNumber":  2,
+                       "Context":  "[switch]$WhatIf = $false",
+                       "ScriptName":  "fix-content-parsing",
+                       "Severity":  "Warning",
+                       "Message":  "Script definition has a switch parameter default to true.",
+                       "Suggestion":  "Remove the default value and handle the logic within the script body"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "fix-here-strings",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSPossibleIncorrectComparisonWithNull",
+                       "LineNumber":  120,
+                       "Context":  "$LASTEXITCODE -eq $null",
+                       "ScriptName":  "runAll",
+                       "Severity":  "Warning",
+                       "Message":  "$null should be on the left side of equality comparisons.",
+                       "Suggestion":  "Change \u0027$LASTEXITCODE -eq $null\u0027 to put $null on the left side"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                       "LineNumber":  133,
+                       "Context":  "$null =",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                       "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                       "LineNumber":  150,
+                       "Context":  "$null =",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                       "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                       "LineNumber":  167,
+                       "Context":  "$null =",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                       "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                       "LineNumber":  357,
+                       "Context":  "$null =",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                       "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                       "LineNumber":  828,
+                       "Context":  "$null =",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                       "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                       "LineNumber":  893,
+                       "Context":  "catch { }",
+                       "ScriptName":  "utils",
+                       "Severity":  "Warning",
+                       "Message":  "Empty catch block found. This will hide errors.",
+                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                   },
+                   {
+                       "Fixable":  true,
+                       "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                       "LineNumber":  11,
+                       "Context":  "[switch]$Recurse = $true",
+                       "ScriptName":  "validate-templates",
+                       "Severity":  "Warning",
+                       "Message":  "Script definition has a switch parameter default to true.",
+                       "Suggestion":  "Remove the default value and handle the logic within the script body"
+                   }
+               ],
+    "IssuesByRule":  {
+                         "PSUseApprovedVerbs":  [
+                                                    {
+                                                        "Fixable":  false,
+                                                        "RuleName":  "PSUseApprovedVerbs",
+                                                        "LineNumber":  15,
+                                                        "Context":  "function Fix-HereStrings",
+                                                        "ScriptName":  "fix-here-strings",
+                                                        "Severity":  "Warning",
+                                                        "Message":  "The function \u0027Fix-HereStrings\u0027 uses an unapproved verb \u0027Fix\u0027.",
+                                                        "Suggestion":  "Use an approved PowerShell verb. Run \u0027Get-Verb\u0027 to see approved verbs."
+                                                    }
+                                                ],
+                         "PSAvoidAssignmentToAutomaticVariable":  [
+                                                                      {
+                                                                          "Fixable":  true,
+                                                                          "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                                                          "LineNumber":  133,
+                                                                          "Context":  "$null =",
+                                                                          "ScriptName":  "utils",
+                                                                          "Severity":  "Warning",
+                                                                          "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                                                          "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                                                      },
+                                                                      {
+                                                                          "Fixable":  true,
+                                                                          "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                                                          "LineNumber":  150,
+                                                                          "Context":  "$null =",
+                                                                          "ScriptName":  "utils",
+                                                                          "Severity":  "Warning",
+                                                                          "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                                                          "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                                                      },
+                                                                      {
+                                                                          "Fixable":  true,
+                                                                          "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                                                          "LineNumber":  167,
+                                                                          "Context":  "$null =",
+                                                                          "ScriptName":  "utils",
+                                                                          "Severity":  "Warning",
+                                                                          "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                                                          "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                                                      },
+                                                                      {
+                                                                          "Fixable":  true,
+                                                                          "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                                                          "LineNumber":  357,
+                                                                          "Context":  "$null =",
+                                                                          "ScriptName":  "utils",
+                                                                          "Severity":  "Warning",
+                                                                          "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                                                          "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                                                      },
+                                                                      {
+                                                                          "Fixable":  true,
+                                                                          "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                                                          "LineNumber":  828,
+                                                                          "Context":  "$null =",
+                                                                          "ScriptName":  "utils",
+                                                                          "Severity":  "Warning",
+                                                                          "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                                                          "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                                                      }
+                                                                  ],
+                         "PSAvoidDefaultValueSwitchParameter":  [
+                                                                    {
+                                                                        "Fixable":  true,
+                                                                        "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                                        "LineNumber":  16,
+                                                                        "Context":  "[switch]$Verbose = $false",
+                                                                        "ScriptName":  "18-GenerateFormationDomain",
+                                                                        "Severity":  "Warning",
+                                                                        "Message":  "Script definition has a switch parameter default to true.",
+                                                                        "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                                    },
+                                                                    {
+                                                                        "Fixable":  true,
+                                                                        "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                                        "LineNumber":  2,
+                                                                        "Context":  "[switch]$WhatIf = $false",
+                                                                        "ScriptName":  "fix-content-parsing",
+                                                                        "Severity":  "Warning",
+                                                                        "Message":  "Script definition has a switch parameter default to true.",
+                                                                        "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                                    },
+                                                                    {
+                                                                        "Fixable":  true,
+                                                                        "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                                        "LineNumber":  11,
+                                                                        "Context":  "[switch]$Recurse = $true",
+                                                                        "ScriptName":  "validate-templates",
+                                                                        "Severity":  "Warning",
+                                                                        "Message":  "Script definition has a switch parameter default to true.",
+                                                                        "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                                    }
+                                                                ],
+                         "PSUseShouldProcessForStateChangingFunctions":  [
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "01-analyze-dependencies",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "02-detect-duplicates",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "run-analysis",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "00-InitEnvironment",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "01-ScaffoldProjectStructure",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "04-EnforceSingletonPatterns",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "05-VerifyCompliance",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "06-DomainLint",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "07-BuildAndTest",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "09-DeployTemplates",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "14-FixUtilityFunctions",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "18a-SetupLoggingService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "18b-SetupTestingFramework",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "20-SetupPreCommitValidation",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "21-ConfigureDevEnvironment",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "22-SetupBitcoinProtocol",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "23-GenerateRNGService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "24-GeneratePhysicsService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "25-SetupPhysicsWebWorkers",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "26-GenerateBitcoinService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "27-GenerateTraitService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "28-SetupBlockchainDataIntegration",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "29-SetupDataValidationLayer",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "31-GenerateParticleService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "35-GenerateRenderingService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "36-GenerateEffectService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "40-GenerateAnimationService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "41-GenerateGroupService",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "fix-here-strings",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             }
+                                                                         ],
+                         "PSPossibleIncorrectComparisonWithNull":  [
+                                                                       {
+                                                                           "Fixable":  true,
+                                                                           "RuleName":  "PSPossibleIncorrectComparisonWithNull",
+                                                                           "LineNumber":  120,
+                                                                           "Context":  "$LASTEXITCODE -eq $null",
+                                                                           "ScriptName":  "runAll",
+                                                                           "Severity":  "Warning",
+                                                                           "Message":  "$null should be on the left side of equality comparisons.",
+                                                                           "Suggestion":  "Change \u0027$LASTEXITCODE -eq $null\u0027 to put $null on the left side"
+                                                                       }
+                                                                   ],
+                         "PSAvoidEmptyCatchBlock":  [
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  72,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "04-EnforceSingletonPatterns",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  80,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "05-VerifyCompliance",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  103,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "06-DomainLint",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  83,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "07-BuildAndTest",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  133,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "14-FixUtilityFunctions",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  242,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "15-ValidateSetupComplete",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  247,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  235,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "20-SetupPreCommitValidation",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  411,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "21-ConfigureDevEnvironment",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  435,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "22-SetupBitcoinProtocol",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  1116,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "23-GenerateRNGService",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  1116,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "24-GeneratePhysicsService",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  1035,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "26-GenerateBitcoinService",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  1661,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "27-GenerateTraitService",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  1279,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "31-GenerateParticleService",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        },
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                            "LineNumber":  893,
+                                                            "Context":  "catch { }",
+                                                            "ScriptName":  "utils",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Empty catch block found. This will hide errors.",
+                                                            "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                        }
+                                                    ]
+                     },
+    "ScriptDirectory":  "D:\\Protozoa\\scripts",
+    "Timestamp":  "2025-06-18 03:52:56",
+    "Statistics":  {
+                       "WarningIssues":  56,
+                       "TotalIssues":  56,
+                       "ErrorIssues":  0,
+                       "InformationIssues":  0,
+                       "FixableIssues":  9,
+                       "TotalScripts":  71,
+                       "SkippedLargeFiles":  0
+                   },
+    "Summary":  [
+                    "WARNING: Found 56 warning-level code quality issues that should be addressed",
+                    "INFO: 9 issues can be automatically fixed",
+                    "TOP ISSUES:",
+                    "  - PSUseShouldProcessForStateChangingFunctions: 30 occurrences",
+                    "  - PSAvoidEmptyCatchBlock: 16 occurrences",
+                    "  - PSAvoidAssignmentToAutomaticVariable: 5 occurrences"
+                ],
+    "SeverityFilter":  "All",
+    "IssuesByScript":  {
+                           "49-SetupAutomatedDocumentation":  [
+
+                                                              ],
+                           "29-SetupDataValidationLayer":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "29-SetupDataValidationLayer",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "05-VerifyCompliance":  [
+                                                       {
+                                                           "Fixable":  false,
+                                                           "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                           "LineNumber":  80,
+                                                           "Context":  "catch { }",
+                                                           "ScriptName":  "05-VerifyCompliance",
+                                                           "Severity":  "Warning",
+                                                           "Message":  "Empty catch block found. This will hide errors.",
+                                                           "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                       },
+                                                       {
+                                                           "Fixable":  false,
+                                                           "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                           "LineNumber":  1,
+                                                           "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                           "ScriptName":  "05-VerifyCompliance",
+                                                           "Severity":  "Warning",
+                                                           "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                           "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                       }
+                                                   ],
+                           "09-DeployTemplates":  [
+                                                      {
+                                                          "Fixable":  false,
+                                                          "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                          "LineNumber":  1,
+                                                          "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                          "ScriptName":  "09-DeployTemplates",
+                                                          "Severity":  "Warning",
+                                                          "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                          "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                      }
+                                                  ],
+                           "46-SetupDockerDeployment":  [
+
+                                                        ],
+                           "ast-parser":  [
+
+                                          ],
+                           "19-ConfigureAdvancedTypeScript":  [
+                                                                  {
+                                                                      "Fixable":  false,
+                                                                      "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                      "LineNumber":  247,
+                                                                      "Context":  "catch { }",
+                                                                      "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                                                                      "Severity":  "Warning",
+                                                                      "Message":  "Empty catch block found. This will hide errors.",
+                                                                      "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                                  },
+                                                                  {
+                                                                      "Fixable":  false,
+                                                                      "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                      "LineNumber":  1,
+                                                                      "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                      "ScriptName":  "19-ConfigureAdvancedTypeScript",
+                                                                      "Severity":  "Warning",
+                                                                      "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                      "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                  }
+                                                              ],
+                           "utils":  [
+                                         {
+                                             "Fixable":  true,
+                                             "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                             "LineNumber":  133,
+                                             "Context":  "$null =",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                             "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                         },
+                                         {
+                                             "Fixable":  true,
+                                             "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                             "LineNumber":  150,
+                                             "Context":  "$null =",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                             "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                         },
+                                         {
+                                             "Fixable":  true,
+                                             "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                             "LineNumber":  167,
+                                             "Context":  "$null =",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                             "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                         },
+                                         {
+                                             "Fixable":  true,
+                                             "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                             "LineNumber":  357,
+                                             "Context":  "$null =",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                             "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                         },
+                                         {
+                                             "Fixable":  true,
+                                             "RuleName":  "PSAvoidAssignmentToAutomaticVariable",
+                                             "LineNumber":  828,
+                                             "Context":  "$null =",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "The Variable \u0027null\u0027 is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.",
+                                             "Suggestion":  "Use a different variable name instead of \u0027null\u0027"
+                                         },
+                                         {
+                                             "Fixable":  false,
+                                             "RuleName":  "PSAvoidEmptyCatchBlock",
+                                             "LineNumber":  893,
+                                             "Context":  "catch { }",
+                                             "ScriptName":  "utils",
+                                             "Severity":  "Warning",
+                                             "Message":  "Empty catch block found. This will hide errors.",
+                                             "Suggestion":  "Add proper error handling or logging in the catch block"
+                                         }
+                                     ],
+                           "23-GenerateRNGService":  [
+                                                         {
+                                                             "Fixable":  false,
+                                                             "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                             "LineNumber":  1116,
+                                                             "Context":  "catch { }",
+                                                             "ScriptName":  "23-GenerateRNGService",
+                                                             "Severity":  "Warning",
+                                                             "Message":  "Empty catch block found. This will hide errors.",
+                                                             "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                         },
+                                                         {
+                                                             "Fixable":  false,
+                                                             "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                             "LineNumber":  1,
+                                                             "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                             "ScriptName":  "23-GenerateRNGService",
+                                                             "Severity":  "Warning",
+                                                             "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                             "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                         }
+                                                     ],
+                           "42-SetupPhysicsBasedAnimation":  [
+
+                                                             ],
+                           "39-SetupAdvancedEffectComposition":  [
+
+                                                                 ],
+                           "45-SetupCICDPipeline":  [
+
+                                                    ],
+                           "50-SetupServiceIntegration":  [
+
+                                                          ],
+                           "36-GenerateEffectService":  [
+                                                            {
+                                                                "Fixable":  false,
+                                                                "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                "LineNumber":  1,
+                                                                "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                "ScriptName":  "36-GenerateEffectService",
+                                                                "Severity":  "Warning",
+                                                                "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                            }
+                                                        ],
+                           "15-ValidateSetupComplete":  [
+                                                            {
+                                                                "Fixable":  false,
+                                                                "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                "LineNumber":  242,
+                                                                "Context":  "catch { }",
+                                                                "ScriptName":  "15-ValidateSetupComplete",
+                                                                "Severity":  "Warning",
+                                                                "Message":  "Empty catch block found. This will hide errors.",
+                                                                "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                            }
+                                                        ],
+                           "24-GeneratePhysicsService":  [
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                 "LineNumber":  1116,
+                                                                 "Context":  "catch { }",
+                                                                 "ScriptName":  "24-GeneratePhysicsService",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Empty catch block found. This will hide errors.",
+                                                                 "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                             },
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                 "LineNumber":  1,
+                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                 "ScriptName":  "24-GeneratePhysicsService",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                             }
+                                                         ],
+                           "08-DeployToGitHub":  [
+
+                                                 ],
+                           "03-MoveAndCleanCodebase":  [
+
+                                                       ],
+                           "21-ConfigureDevEnvironment":  [
+                                                              {
+                                                                  "Fixable":  false,
+                                                                  "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                  "LineNumber":  411,
+                                                                  "Context":  "catch { }",
+                                                                  "ScriptName":  "21-ConfigureDevEnvironment",
+                                                                  "Severity":  "Warning",
+                                                                  "Message":  "Empty catch block found. This will hide errors.",
+                                                                  "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                              },
+                                                              {
+                                                                  "Fixable":  false,
+                                                                  "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                  "LineNumber":  1,
+                                                                  "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                  "ScriptName":  "21-ConfigureDevEnvironment",
+                                                                  "Severity":  "Warning",
+                                                                  "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                  "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                              }
+                                                          ],
+                           "51-SetupGlobalStateManagement":  [
+
+                                                             ],
+                           "04-EnforceSingletonPatterns":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                   "LineNumber":  72,
+                                                                   "Context":  "catch { }",
+                                                                   "ScriptName":  "04-EnforceSingletonPatterns",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Empty catch block found. This will hide errors.",
+                                                                   "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                               },
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "04-EnforceSingletonPatterns",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "20-SetupPreCommitValidation":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                   "LineNumber":  235,
+                                                                   "Context":  "catch { }",
+                                                                   "ScriptName":  "20-SetupPreCommitValidation",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Empty catch block found. This will hide errors.",
+                                                                   "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                               },
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "20-SetupPreCommitValidation",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "10-GenerateParticleInitService":  [
+
+                                                              ],
+                           "28-SetupBlockchainDataIntegration":  [
+                                                                     {
+                                                                         "Fixable":  false,
+                                                                         "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                         "LineNumber":  1,
+                                                                         "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                         "ScriptName":  "28-SetupBlockchainDataIntegration",
+                                                                         "Severity":  "Warning",
+                                                                         "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                         "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                     }
+                                                                 ],
+                           "35-GenerateRenderingService":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "35-GenerateRenderingService",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "04-code-quality-analysis":  [
+
+                                                        ],
+                           "22-SetupBitcoinProtocol":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                               "LineNumber":  435,
+                                                               "Context":  "catch { }",
+                                                               "ScriptName":  "22-SetupBitcoinProtocol",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Empty catch block found. This will hide errors.",
+                                                               "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                           },
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "22-SetupBitcoinProtocol",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "18a-SetupLoggingService":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "18a-SetupLoggingService",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "fix-here-strings":  [
+                                                    {
+                                                        "Fixable":  false,
+                                                        "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                        "LineNumber":  1,
+                                                        "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                        "ScriptName":  "fix-here-strings",
+                                                        "Severity":  "Warning",
+                                                        "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                        "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                    }
+                                                ],
+                           "25-SetupPhysicsWebWorkers":  [
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                 "LineNumber":  1,
+                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                 "ScriptName":  "25-SetupPhysicsWebWorkers",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                             }
+                                                         ],
+                           "31-GenerateParticleService":  [
+                                                              {
+                                                                  "Fixable":  false,
+                                                                  "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                  "LineNumber":  1279,
+                                                                  "Context":  "catch { }",
+                                                                  "ScriptName":  "31-GenerateParticleService",
+                                                                  "Severity":  "Warning",
+                                                                  "Message":  "Empty catch block found. This will hide errors.",
+                                                                  "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                              },
+                                                              {
+                                                                  "Fixable":  false,
+                                                                  "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                  "LineNumber":  1,
+                                                                  "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                  "ScriptName":  "31-GenerateParticleService",
+                                                                  "Severity":  "Warning",
+                                                                  "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                  "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                              }
+                                                          ],
+                           "run-analysis":  [
+                                                {
+                                                    "Fixable":  false,
+                                                    "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                    "LineNumber":  1,
+                                                    "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                    "ScriptName":  "run-analysis",
+                                                    "Severity":  "Warning",
+                                                    "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                    "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                }
+                                            ],
+                           "00-InitEnvironment":  [
+                                                      {
+                                                          "Fixable":  false,
+                                                          "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                          "LineNumber":  1,
+                                                          "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                          "ScriptName":  "00-InitEnvironment",
+                                                          "Severity":  "Warning",
+                                                          "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                          "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                      }
+                                                  ],
+                           "18-GenerateFormationDomain":  [
+                                                              {
+                                                                  "Fixable":  true,
+                                                                  "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                                  "LineNumber":  16,
+                                                                  "Context":  "[switch]$Verbose = $false",
+                                                                  "ScriptName":  "18-GenerateFormationDomain",
+                                                                  "Severity":  "Warning",
+                                                                  "Message":  "Script definition has a switch parameter default to true.",
+                                                                  "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                              }
+                                                          ],
+                           "44-SetupAnimationBlending":  [
+
+                                                         ],
+                           "03-analyze-resource-usage":  [
+
+                                                         ],
+                           "17-GenerateEnvironmentConfig":  [
+
+                                                            ],
+                           "validate-templates":  [
+                                                      {
+                                                          "Fixable":  true,
+                                                          "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                          "LineNumber":  11,
+                                                          "Context":  "[switch]$Recurse = $true",
+                                                          "ScriptName":  "validate-templates",
+                                                          "Severity":  "Warning",
+                                                          "Message":  "Script definition has a switch parameter default to true.",
+                                                          "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                      }
+                                                  ],
+                           "01-analyze-dependencies":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "01-analyze-dependencies",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "40-GenerateAnimationService":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "40-GenerateAnimationService",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "02-GenerateDomainStubs":  [
+
+                                                      ],
+                           "14-FixUtilityFunctions":  [
+                                                          {
+                                                              "Fixable":  false,
+                                                              "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                              "LineNumber":  133,
+                                                              "Context":  "catch { }",
+                                                              "ScriptName":  "14-FixUtilityFunctions",
+                                                              "Severity":  "Warning",
+                                                              "Message":  "Empty catch block found. This will hide errors.",
+                                                              "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                          },
+                                                          {
+                                                              "Fixable":  false,
+                                                              "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                              "LineNumber":  1,
+                                                              "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                              "ScriptName":  "14-FixUtilityFunctions",
+                                                              "Severity":  "Warning",
+                                                              "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                              "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                          }
+                                                      ],
+                           "11-GenerateFormationBlendingService":  [
+
+                                                                   ],
+                           "55-SetupPersistenceLayer":  [
+
+                                                        ],
+                           "41-GenerateGroupService":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "41-GenerateGroupService",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "53-SetupEventBusSystem":  [
+
+                                                      ],
+                           "37-SetupCustomShaderSystem":  [
+
+                                                          ],
+                           "26-GenerateBitcoinService":  [
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                                 "LineNumber":  1035,
+                                                                 "Context":  "catch { }",
+                                                                 "ScriptName":  "26-GenerateBitcoinService",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Empty catch block found. This will hide errors.",
+                                                                 "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                             },
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                 "LineNumber":  1,
+                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                 "ScriptName":  "26-GenerateBitcoinService",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                             }
+                                                         ],
+                           "fix-content-parsing":  [
+                                                       {
+                                                           "Fixable":  true,
+                                                           "RuleName":  "PSAvoidDefaultValueSwitchParameter",
+                                                           "LineNumber":  2,
+                                                           "Context":  "[switch]$WhatIf = $false",
+                                                           "ScriptName":  "fix-content-parsing",
+                                                           "Severity":  "Warning",
+                                                           "Message":  "Script definition has a switch parameter default to true.",
+                                                           "Suggestion":  "Remove the default value and handle the logic within the script body"
+                                                       }
+                                                   ],
+                           "27-GenerateTraitService":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                               "LineNumber":  1661,
+                                                               "Context":  "catch { }",
+                                                               "ScriptName":  "27-GenerateTraitService",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Empty catch block found. This will hide errors.",
+                                                               "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                           },
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "27-GenerateTraitService",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "01-ScaffoldProjectStructure":  [
+                                                               {
+                                                                   "Fixable":  false,
+                                                                   "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                   "LineNumber":  1,
+                                                                   "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                   "ScriptName":  "01-ScaffoldProjectStructure",
+                                                                   "Severity":  "Warning",
+                                                                   "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                   "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                               }
+                                                           ],
+                           "16-GenerateSharedTypesService":  [
+
+                                                             ],
+                           "33-ImplementSwarmIntelligence":  [
+
+                                                             ],
+                           "runAll":  [
+                                          {
+                                              "Fixable":  true,
+                                              "RuleName":  "PSPossibleIncorrectComparisonWithNull",
+                                              "LineNumber":  120,
+                                              "Context":  "$LASTEXITCODE -eq $null",
+                                              "ScriptName":  "runAll",
+                                              "Severity":  "Warning",
+                                              "Message":  "$null should be on the left side of equality comparisons.",
+                                              "Suggestion":  "Change \u0027$LASTEXITCODE -eq $null\u0027 to put $null on the left side"
+                                          }
+                                      ],
+                           "48-SetupAdvancedBundleAnalysis":  [
+
+                                                              ],
+                           "06-DomainLint":  [
+                                                 {
+                                                     "Fixable":  false,
+                                                     "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                     "LineNumber":  103,
+                                                     "Context":  "catch { }",
+                                                     "ScriptName":  "06-DomainLint",
+                                                     "Severity":  "Warning",
+                                                     "Message":  "Empty catch block found. This will hide errors.",
+                                                     "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                 },
+                                                 {
+                                                     "Fixable":  false,
+                                                     "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                     "LineNumber":  1,
+                                                     "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                     "ScriptName":  "06-DomainLint",
+                                                     "Severity":  "Warning",
+                                                     "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                     "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                 }
+                                             ],
+                           "32-SetupParticleLifecycleManagement":  [
+
+                                                                   ],
+                           "30-EnhanceTraitSystem":  [
+
+                                                     ],
+                           "34-EnhanceFormationSystem":  [
+
+                                                         ],
+                           "47-SetupPerformanceRegression":  [
+
+                                                             ],
+                           "38-ImplementLODSystem":  [
+
+                                                     ],
+                           "18b-SetupTestingFramework":  [
+                                                             {
+                                                                 "Fixable":  false,
+                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                 "LineNumber":  1,
+                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                 "ScriptName":  "18b-SetupTestingFramework",
+                                                                 "Severity":  "Warning",
+                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                             }
+                                                         ],
+                           "56-SetupEndToEndValidation":  [
+
+                                                          ],
+                           "43-ImplementAdvancedTimeline":  [
+
+                                                            ],
+                           "05-performance-analysis":  [
+
+                                                       ],
+                           "dependency-graph":  [
+
+                                                ],
+                           "52-SetupReactIntegration":  [
+
+                                                        ],
+                           "02-detect-duplicates":  [
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                            "LineNumber":  1,
+                                                            "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                            "ScriptName":  "02-detect-duplicates",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                            "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                        }
+                                                    ],
+                           "07-BuildAndTest":  [
+                                                   {
+                                                       "Fixable":  false,
+                                                       "RuleName":  "PSAvoidEmptyCatchBlock",
+                                                       "LineNumber":  83,
+                                                       "Context":  "catch { }",
+                                                       "ScriptName":  "07-BuildAndTest",
+                                                       "Severity":  "Warning",
+                                                       "Message":  "Empty catch block found. This will hide errors.",
+                                                       "Suggestion":  "Add proper error handling or logging in the catch block"
+                                                   },
+                                                   {
+                                                       "Fixable":  false,
+                                                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                       "LineNumber":  1,
+                                                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                       "ScriptName":  "07-BuildAndTest",
+                                                       "Severity":  "Warning",
+                                                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                   }
+                                               ],
+                           "54-SetupPerformanceTesting":  [
+
+                                                          ]
+                       }
+}

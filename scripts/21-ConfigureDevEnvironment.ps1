@@ -1,4 +1,4 @@
-# 21-ConfigureDevEnvironment.ps1 - Phase 1 Infrastructure Enhancement
+﻿# 21-ConfigureDevEnvironment.ps1 - Phase 1 Infrastructure Enhancement
 # Configures VS Code workspace settings and development tooling for optimal DX
 # ARCHITECTURE: Development environment optimization with extension recommendations
 # Reference: script_checklist.md lines 21-ConfigureDevEnvironment.ps1
@@ -24,7 +24,7 @@ $ErrorActionPreference = "Stop"
 try {
     Write-StepHeader "Development Environment Configuration - Phase 1 Infrastructure Enhancement"
     Write-InfoLog "Configuring VS Code workspace and development tooling"
-    
+
     # Define paths
     $vscodeDir = Join-Path $ProjectRoot ".vscode"
     $settingsPath = Join-Path $vscodeDir "settings.json"
@@ -33,11 +33,11 @@ try {
     $tasksPath = Join-Path $vscodeDir "tasks.json"
     $prettierConfigPath = Join-Path $ProjectRoot ".prettierrc.json"
     $editorConfigPath = Join-Path $ProjectRoot ".editorconfig"
-    
+
     # Create .vscode directory
     New-Item -Path $vscodeDir -ItemType Directory -Force | Out-Null
     Write-InfoLog "Created .vscode directory"
-    
+
     # Generate VS Code workspace settings
     Write-InfoLog "Generating VS Code workspace settings"
     $vscodeSettings = @{
@@ -46,7 +46,7 @@ try {
         "typescript.suggest.autoImports" = $true
         "typescript.updateImportsOnFileMove.enabled" = "always"
         "typescript.preferences.importModuleSpecifier" = "relative"
-        
+
         # Editor settings for code quality
         "editor.formatOnSave" = $true
         "editor.formatOnPaste" = $true
@@ -58,13 +58,13 @@ try {
         "editor.tabSize" = 2
         "editor.insertSpaces" = $true
         "editor.detectIndentation" = $false
-        
+
         # File associations
         "files.associations" = @{
             "*.tsx" = "typescriptreact"
             "*.ts" = "typescript"
         }
-        
+
         # Search and file explorer
         "search.exclude" = @{
             "**/node_modules" = $true
@@ -82,36 +82,36 @@ try {
             "**/dist" = $true
             "**/build" = $true
         }
-        
+
         # ESLint settings
         "eslint.workingDirectories" = @(".")
         "eslint.validate" = @("typescript", "typescriptreact")
-        
+
         # Prettier settings
         "prettier.requireConfig" = $true
         "prettier.useEditorConfig" = $true
-        
+
         # Error Lens settings for inline error display
         "errorLens.enabledDiagnosticLevels" = @("error", "warning", "info")
         "errorLens.excludeBySource" = @("cSpell")
-        
+
         # GitLens settings
         "gitlens.codeLens.enabled" = $true
         "gitlens.currentLine.enabled" = $true
         "gitlens.hovers.enabled" = $true
-        
+
         # Auto Rename Tag settings
         "auto-rename-tag.activationOnLanguage" = @("*")
-        
+
         # Bracket pair colorizer settings
         "editor.bracketPairColorization.enabled" = $true
         "editor.guides.bracketPairs" = $true
     }
-    
+
     $vscodeSettingsJson = $vscodeSettings | ConvertTo-Json -Depth 10
     Set-Content -Path $settingsPath -Value $vscodeSettingsJson -Encoding UTF8
     Write-SuccessLog "VS Code workspace settings configured"
-    
+
     # Generate recommended extensions
     Write-InfoLog "Generating recommended VS Code extensions"
     $extensions = @{
@@ -121,47 +121,47 @@ try {
             "bradlc.vscode-tailwindcss"
             "esbenp.prettier-vscode"
             "dbaeumer.vscode-eslint"
-            
+
             # TypeScript Hero for import management
             "rbbit.typescript-hero"
-            
+
             # Error Lens for inline error display
             "usernamehw.errorlens"
-            
+
             # GitLens for Git integration
             "eamodio.gitlens"
-            
+
             # Auto Rename Tag for JSX consistency
             "formulahendry.auto-rename-tag"
-            
+
             # Additional productivity extensions
             "ms-vscode.vscode-json"
             "redhat.vscode-yaml"
             "ms-vscode.powershell"
             "ms-vscode.vscode-markdown"
-            
+
             # THREE.js and WebGL support
             "slevesque.shader"
             "dtoplak.vscode-glsllint"
-            
+
             # Testing support
             "vitest.explorer"
-            
+
             # Docker support for deployment
             "ms-azuretools.vscode-docker"
         )
-        
+
         unwantedRecommendations = @(
             # Extensions that might conflict with our setup
             "ms-vscode.vscode-typescript"
             "hookyqr.beautify"
         )
     }
-    
+
     $extensionsJson = $extensions | ConvertTo-Json -Depth 10
     Set-Content -Path $extensionsPath -Value $extensionsJson -Encoding UTF8
     Write-SuccessLog "VS Code extensions recommendations configured"
-    
+
     # Generate Prettier configuration
     Write-InfoLog "Generating Prettier configuration"
     $prettierConfig = @{
@@ -179,11 +179,11 @@ try {
         jsxSingleQuote = $true
         jsxBracketSameLine = $false
     }
-    
+
     $prettierConfigJson = $prettierConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $prettierConfigPath -Value $prettierConfigJson -Encoding UTF8
     Write-SuccessLog "Prettier configuration created"
-    
+
     # Generate EditorConfig for cross-editor consistency
     Write-InfoLog "Generating EditorConfig for cross-editor consistency"
     $editorConfig = @"
@@ -231,10 +231,10 @@ indent_size = 2
 [*.{css,scss,sass}]
 indent_size = 2
 "@
-    
+
     Set-Content -Path $editorConfigPath -Value $editorConfig -Encoding UTF8
     Write-SuccessLog "EditorConfig created for cross-editor consistency"
-    
+
     # Generate VS Code tasks configuration
     Write-InfoLog "Generating VS Code tasks configuration"
     $tasks = @{
@@ -274,11 +274,11 @@ indent_size = 2
             }
         )
     }
-    
+
     $tasksJson = $tasks | ConvertTo-Json -Depth 10
     Set-Content -Path $tasksPath -Value $tasksJson -Encoding UTF8
     Write-SuccessLog "VS Code tasks configuration created"
-    
+
     # Generate VS Code launch configuration for debugging
     Write-InfoLog "Generating VS Code launch configuration for debugging"
     $launch = @{
@@ -394,13 +394,13 @@ indent_size = 2
             }
         )
     }
-    
+
     $launchJson = $launch | ConvertTo-Json -Depth 10
     Set-Content -Path $launchPath -Value $launchJson -Encoding UTF8
     Write-SuccessLog "VS Code launch configuration created for debugging"
-    
+
     Write-InfoLog "Development environment configuration completed"
-    
+
     exit 0
 }
 catch {
@@ -409,4 +409,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

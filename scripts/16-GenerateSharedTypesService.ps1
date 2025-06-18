@@ -1,4 +1,4 @@
-# 16-GenerateSharedTypesService.ps1
+﻿# 16-GenerateSharedTypesService.ps1
 # Generates comprehensive shared types and interfaces for cross-domain communication
 # Addresses critical gap: Cross-domain shared types per audit requirements
 
@@ -6,7 +6,7 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]$ProjectRoot = (Get-Location).Path,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$WhatIf
 )
@@ -223,7 +223,7 @@ export interface IVisualTraits {
  */
 export interface IBehavioralTraits {
   aggressiveness: number; // 1-10 scale
-  sociability: number; // 1-10 scale  
+  sociability: number; // 1-10 scale
   energy: number; // 1-10 scale
   adaptability: number; // 1-10 scale
   curiosity: number; // 1-10 scale
@@ -607,7 +607,7 @@ export interface IEffectTriggeredEvent extends IEffectEvent {
 /**
  * Union type for all domain events
  */
-export type DomainEvent = 
+export type DomainEvent =
   | IParticleCreatedEvent
   | IParticleUpdatedEvent
   | IParticleRemovedEvent
@@ -682,4 +682,4 @@ if (-not $WhatIf) {
     Write-InfoLog "  ✅ index.ts - Central export point"
     Write-InfoLog ""
     Write-InfoLog "Critical Gap 'Shared Types/Interfaces Defined' has been RESOLVED!"
-} 
+}

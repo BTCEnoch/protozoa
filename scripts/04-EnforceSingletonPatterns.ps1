@@ -1,4 +1,4 @@
-# 04-EnforceSingletonPatterns.ps1
+﻿# 04-EnforceSingletonPatterns.ps1
 # Enforces singleton patterns across all domain services
 # Referenced from build_design.md singleton pattern requirements
 
@@ -22,19 +22,19 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Singleton Pattern Enforcement - Phase 4"
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Validating singleton patterns in project: $ProjectRoot"
-    
+
     # Check for service files and validate singleton patterns
     $domains = Get-DomainList
     $violations = @()
-    
+
     foreach ($domain in $domains) {
         $servicePath = "src/domains/$domain/services"
         if (Test-Path $servicePath) {
             $serviceFiles = Get-ChildItem -Path $servicePath -Filter "*.ts" -ErrorAction SilentlyContinue
-            
+
             foreach ($file in $serviceFiles) {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
                 if ($content) {
@@ -42,7 +42,7 @@ try {
                     if ($content -notmatch "static\s+#instance" -and $content -notmatch "getInstance\(\)") {
                         $violations += "Missing singleton pattern: $($file.FullName)"
                     }
-                    
+
                     # Check for dispose method
                     if ($content -notmatch "dispose\(\)") {
                         $violations += "Missing dispose method: $($file.FullName)"
@@ -51,7 +51,7 @@ try {
             }
         }
     }
-    
+
     if ($violations.Count -eq 0) {
         Write-SuccessLog "All singleton patterns validated successfully"
     } else {
@@ -60,7 +60,7 @@ try {
             Write-WarningLog "  - $violation"
         }
     }
-    
+
     Write-SuccessLog "Singleton pattern enforcement completed"
     exit 0
 }
@@ -70,4 +70,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

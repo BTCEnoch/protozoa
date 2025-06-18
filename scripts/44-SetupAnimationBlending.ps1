@@ -19,11 +19,10 @@ try {
   New-Item -Path $interfacesPath -ItemType Directory -Force | Out-Null
 
   # Interface definition
-  $iface = @"
-/**
-"@
-* IAnimationBlendingService – provides blend-tree creation and state transitions.
-*/
+  $iface = @'
+/**
+ * IAnimationBlendingService – provides blend-tree creation and state transitions.
+ */
 export interface BlendNode { id: string; weight: number; children?: BlendNode[] }
 export interface IAnimationBlendingService {
   setBlendTree(root: BlendNode): void
@@ -31,13 +30,12 @@ export interface IAnimationBlendingService {
   update(delta: number): void
   dispose(): void
 }
-"@
+'@
   Set-Content -Path (Join-Path $interfacesPath 'IAnimationBlendingService.ts') -Value $iface -Encoding UTF8
 
   # Implementation
-  $impl = @"
-import { createServiceLogger } from '@/shared/lib/logger'
-"@
+  $impl = @'
+import { createServiceLogger } from '@/shared/lib/logger'
 import type { IAnimationBlendingService, BlendNode } from '@/domains/animation/interfaces/IAnimationBlendingService'
 import { animationService } from '@/domains/animation/services/animationService'
 
@@ -78,9 +76,9 @@ class AnimationBlendingService implements IAnimationBlendingService {
 }
 
 export const animationBlendingService = AnimationBlendingService.getInstance()
-"@
+'@
   Set-Content -Path (Join-Path $servicesPath 'animationBlendingService.ts') -Value $impl -Encoding UTF8
 
   Write-SuccessLog "AnimationBlendingService generated"
   exit 0
-} catch { Write-ErrorLog "Animation blending generation failed: $($_.Exception.Message)"; exit 1 }
+} catch { Write-ErrorLog "Animation blending generation failed: $($_.Exception.Message)"; exit 1 } 

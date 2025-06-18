@@ -1,4 +1,4 @@
-# 11-GenerateFormationBlendingService.ps1
+﻿# 11-GenerateFormationBlendingService.ps1
 # Generates FormationBlendingService with caching for formation pattern management
 # Addresses critical gap: Formation Blending & Caching utility per audit requirements
 
@@ -6,7 +6,7 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]$ProjectRoot = (Get-Location).Path,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$WhatIf
 )
@@ -86,19 +86,19 @@ export interface FormationMetadata {
   readonly rotation: Vector3;
 }
 
-export type FormationType = 
-  | 'spiral' 
-  | 'cluster' 
-  | 'grid' 
-  | 'wave' 
-  | 'organic' 
+export type FormationType =
+  | 'spiral'
+  | 'cluster'
+  | 'grid'
+  | 'wave'
+  | 'organic'
   | 'geometric';
 
-export type SymmetryType = 
-  | 'none' 
-  | 'radial' 
-  | 'bilateral' 
-  | 'rotational' 
+export type SymmetryType =
+  | 'none'
+  | 'radial'
+  | 'bilateral'
+  | 'rotational'
   | 'translational';
 
 export interface BlendingConfig {
@@ -108,10 +108,10 @@ export interface BlendingConfig {
   readonly normalizeWeights: boolean;
 }
 
-export type BlendingMethod = 
-  | 'linear' 
-  | 'cubic' 
-  | 'spherical' 
+export type BlendingMethod =
+  | 'linear'
+  | 'cubic'
+  | 'spherical'
   | 'weighted';
 
 export interface CacheConfig {
@@ -155,7 +155,7 @@ $formationBlendingServiceContent = @"
 import { Vector3 } from 'three';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '@/shared/utils/logger';
-import { 
+import {
   IFormationBlendingService,
   FormationPattern,
   BlendingConfig,
@@ -178,7 +178,7 @@ export class FormationBlendingService implements IFormationBlendingService {
     misses: 0,
     totalRequests: 0
   };
-  
+
   readonly #config: CacheConfig = {
     maxSize: 100,
     ttl: 300000, // 5 minutes
@@ -213,14 +213,14 @@ export class FormationBlendingService implements IFormationBlendingService {
    */
   blendFormations(formations: FormationPattern[], weights: number[]): FormationPattern {
     this.#validateNotDisposed();
-    
+
     if (!formations.length || formations.length !== weights.length) {
       throw new Error('Invalid formations or weights for blending');
     }
 
     // Generate cache key
     const cacheKey = this.#generateCacheKey(formations, weights);
-    
+
     // Check cache first
     const cached = this.getCachedBlend(cacheKey);
     if (cached) {
@@ -229,10 +229,10 @@ export class FormationBlendingService implements IFormationBlendingService {
 
     // Perform blending
     const blended = this.#performBlending(formations, weights, this.#defaultBlendingConfig);
-    
+
     // Cache result
     this.setCachedBlend(cacheKey, blended);
-    
+
     logger.debug('Formation blending completed', {
       inputCount: formations.length,
       outputPositions: blended.positions.length,
@@ -248,7 +248,7 @@ export class FormationBlendingService implements IFormationBlendingService {
   getCachedBlend(key: string): FormationPattern | null {
     this.#validateNotDisposed();
     this.#cacheStats.totalRequests++;
-    
+
     const entry = this.#cache.get(key);
     if (!entry) {
       this.#cacheStats.misses++;
@@ -263,7 +263,7 @@ export class FormationBlendingService implements IFormationBlendingService {
     }
 
     this.#cacheStats.hits++;
-    
+
     // Update access count
     const updatedEntry: CacheEntry = {
       ...entry,
@@ -279,7 +279,7 @@ export class FormationBlendingService implements IFormationBlendingService {
    */
   setCachedBlend(key: string, pattern: FormationPattern): void {
     this.#validateNotDisposed();
-    
+
     // Enforce cache size limit
     if (this.#cache.size >= this.#config.maxSize) {
       this.#evictLeastRecentlyUsed();
@@ -300,11 +300,11 @@ export class FormationBlendingService implements IFormationBlendingService {
    */
   clearCache(): void {
     this.#validateNotDisposed();
-    
+
     const cacheSize = this.#cache.size;
     this.#cache.clear();
     this.#cacheStats = { hits: 0, misses: 0, totalRequests: 0 };
-    
+
     logger.info('Formation blending cache cleared', { previousSize: cacheSize });
   }
 
@@ -313,7 +313,7 @@ export class FormationBlendingService implements IFormationBlendingService {
    */
   getCacheStats(): CacheStats {
     this.#validateNotDisposed();
-    
+
     const totalRequests = this.#cacheStats.totalRequests;
     return {
       size: this.#cache.size,
@@ -328,12 +328,12 @@ export class FormationBlendingService implements IFormationBlendingService {
    * Perform the actual blending operation
    */
   #performBlending(
-    formations: FormationPattern[], 
-    weights: number[], 
+    formations: FormationPattern[],
+    weights: number[],
     config: BlendingConfig
   ): FormationPattern {
     // Normalize weights if requested
-    const normalizedWeights = config.normalizeWeights 
+    const normalizedWeights = config.normalizeWeights
       ? this.#normalizeWeights(weights)
       : weights;
 
@@ -350,7 +350,7 @@ export class FormationBlendingService implements IFormationBlendingService {
         if (i < formation.positions.length) {
           const weight = normalizedWeights[formationIndex];
           const pos = formation.positions[i];
-          
+
           blendedPos.add(pos.clone().multiplyScalar(weight));
           totalWeight += weight;
         }
@@ -440,7 +440,7 @@ export class FormationBlendingService implements IFormationBlendingService {
     logger.info('FormationBlendingService disposing', {
       cacheStats: this.getCacheStats()
     });
-    
+
     this.clearCache();
     this.#isDisposed = true;
     FormationBlendingService.#instance = null;
@@ -475,4 +475,4 @@ Write-InfoLog "  Service: $formationBlendingServiceFile"
 Write-InfoLog ""
 
 Write-SuccessLog "Formation Blending & Caching Service generation completed!"
-Write-InfoLog "Gap 3 resolved: FormationBlendingService with intelligent caching per audit" 
+Write-InfoLog "Gap 3 resolved: FormationBlendingService with intelligent caching per audit"

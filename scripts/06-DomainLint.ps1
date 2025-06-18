@@ -1,4 +1,4 @@
-# 06-DomainLint.ps1
+﻿# 06-DomainLint.ps1
 # Domain-specific linting and boundary enforcement
 # Referenced from build_design.md domain boundary requirements
 
@@ -22,19 +22,19 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Domain-Specific Linting - Phase 6"
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Running domain linting in project: $ProjectRoot"
-    
+
     $violations = @()
     $domains = Get-DomainList
-    
+
     # Check domain boundary violations
     foreach ($domain in $domains) {
         $domainPath = "src/domains/$domain"
         if (Test-Path $domainPath) {
             $domainFiles = Get-ChildItem -Path $domainPath -Filter "*.ts" -Recurse -ErrorAction SilentlyContinue
-            
+
             foreach ($file in $domainFiles) {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
                 if ($content) {
@@ -50,12 +50,12 @@ try {
                             $violations += "Domain boundary violation in $($file.FullName): relative import to $otherDomain domain"
                         }
                     }
-                    
+
                     # Enforce correct alias usage for own domain (no deep relative imports)
                     if ($content -match "from\s+[`"'](\.\./).*domains/$domain") {
                         $violations += "Import path violation in $($file.FullName): use '@/domains/$domain' alias instead of relative path"
                     }
-                    
+
                     # Check for proper service naming
                     if ($file.Name -like "*Service.ts" -and $content -notmatch "class\s+\w+Service") {
                         $violations += "Service naming violation in $($file.FullName): missing Service class"
@@ -64,7 +64,7 @@ try {
             }
         }
     }
-    
+
     # Run ESLint if available
     if ((Test-Path "package.json") -and (Get-Command pnpm -ErrorAction SilentlyContinue)) {
         Write-InfoLog "Running ESLint..."
@@ -81,7 +81,7 @@ try {
             Write-WarningLog "ESLint execution failed: $($_.Exception.Message)"
         }
     }
-    
+
     # Report results
     if ($violations.Count -eq 0) {
         Write-SuccessLog "All domain linting checks passed"
@@ -91,7 +91,7 @@ try {
             Write-WarningLog "  - $violation"
         }
     }
-    
+
     Write-SuccessLog "Domain linting completed"
     exit 0
 }
@@ -101,4 +101,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

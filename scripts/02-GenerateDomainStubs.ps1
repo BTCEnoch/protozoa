@@ -1,4 +1,4 @@
-# 02-GenerateDomainStubs.ps1
+﻿# 02-GenerateDomainStubs.ps1
 # Creates compilable service + interface skeletons with correct singleton/export patterns
 # Referenced from build_design.md domain implementations and .cursorrules standards
 
@@ -15,15 +15,15 @@ foreach ($domain in $domains) {
     $interfaceName = "I$serviceName"
     $serviceFilePath = "src/domains/$domain/services/$serviceName.ts"
     $typesFilePath = "src/domains/$domain/types/index.ts"
-    
+
     # Skip if service already exists
     if (Test-Path $serviceFilePath) {
         Write-WarningLog "Service already exists, skipping: $serviceFilePath"
         continue
     }
-    
+
     Write-InfoLog "Generating $serviceName stub..."
-    
+
     # Generate service-specific interface based on domain
     $interfaceContent = switch ($domain) {
         'rng' { @'
@@ -157,7 +157,7 @@ export interface I{0} {
 }
 '@ -f $serviceName }
     }
-    
+
     # Create types file with interface
     $typesContent = @"
 // src/domains/$domain/types/index.ts
@@ -166,9 +166,9 @@ export interface I{0} {
 
 $interfaceContent
 "@
-    
+
     Set-Content -Path $typesFilePath -Value $typesContent
-    
+
     # Generate service implementation stub
     $serviceContent = @"
 // src/domains/$domain/services/$serviceName.ts
@@ -186,14 +186,14 @@ import { createServiceLogger } from '@/shared/lib/logger';
 class $serviceName implements $interfaceName {
   static #instance: $serviceName | null = null;
   #log = createServiceLogger('$($domain.ToUpper())_SERVICE');
-  
+
   /**
    * Private constructor enforces singleton pattern.
    */
   private constructor() {
     this.#log.info('$serviceName initialized');
   }
-  
+
   /**
    * Singleton accessor - returns existing instance or creates new one.
    */
@@ -203,9 +203,9 @@ class $serviceName implements $interfaceName {
     }
     return $serviceName.#instance;
   }
-  
+
   // TODO: Implement interface methods here
-  
+
   /**
    * Disposes of service resources and resets singleton instance.
    */
@@ -218,7 +218,7 @@ class $serviceName implements $interfaceName {
 // Singleton export as required by .cursorrules
 export const $($domain)Service = $serviceName.getInstance();
 "@
-    
+
     Set-Content -Path $serviceFilePath -Value $serviceContent
     Write-SuccessLog "Generated: $serviceFilePath"
 }
@@ -284,4 +284,4 @@ Write-InfoLog "  - Winston logging configured"
 Write-InfoLog "  - Proper dispose() methods added"
 
 Write-SuccessLog "Domain service stub generation complete!"
-Write-InfoLog "Next: Run 03-MoveAndCleanCodebase.ps1 to clean legacy files" 
+Write-InfoLog "Next: Run 03-MoveAndCleanCodebase.ps1 to clean legacy files"

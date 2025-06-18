@@ -1,3 +1,0 @@
-import create from 'zustand';
-interface ParticleUIState{ selected:string|null; select:(id:string|null)=>void }
-export const useParticleStore=create<ParticleUIState>(set=>({selected:null,select:id=>set({selected:id})}))

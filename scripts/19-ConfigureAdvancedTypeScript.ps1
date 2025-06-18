@@ -1,4 +1,4 @@
-# 19-ConfigureAdvancedTypeScript.ps1 - Phase 1 Infrastructure Enhancement
+﻿# 19-ConfigureAdvancedTypeScript.ps1 - Phase 1 Infrastructure Enhancement
 # Configures advanced TypeScript settings with strict validation and path mapping
 # ARCHITECTURE: Domain boundary enforcement through TypeScript configuration
 # Reference: script_checklist.md lines 19-ConfigureAdvancedTypeScript.ps1
@@ -24,21 +24,21 @@ $ErrorActionPreference = "Stop"
 try {
     Write-StepHeader "Advanced TypeScript Configuration - Phase 1 Infrastructure Enhancement"
     Write-InfoLog "Configuring strict TypeScript settings with domain boundary enforcement"
-    
+
     # Define paths
     $srcPath = Join-Path $ProjectRoot "src"
     $tsConfigPath = Join-Path $ProjectRoot "tsconfig.json"
     $tsConfigAppPath = Join-Path $ProjectRoot "tsconfig.app.json"
     $tsConfigNodePath = Join-Path $ProjectRoot "tsconfig.node.json"
-    
+
     # Ensure src directory exists
     if (-not (Test-Path $srcPath)) {
         New-Item -Path $srcPath -ItemType Directory -Force | Out-Null
         Write-InfoLog "Created src directory structure"
     }
-    
+
     Write-SuccessLog "Advanced TypeScript configuration setup initialized"
-    
+
     # Generate main tsconfig.json with strict settings
     Write-InfoLog "Generating main tsconfig.json with strict validation"
     $mainTsConfig = @{
@@ -53,7 +53,7 @@ try {
             noImplicitReturns = $true
             noFallthroughCasesInSwitch = $true
             noUncheckedIndexedAccess = $true
-            
+
             # Module resolution
             target = "ES2022"
             lib = @("ES2022", "DOM", "DOM.Iterable")
@@ -62,7 +62,7 @@ try {
             esModuleInterop = $true
             allowSyntheticDefaultImports = $true
             forceConsistentCasingInFileNames = $true
-            
+
             # Path mapping for domain boundaries
             baseUrl = "."
             paths = @{
@@ -73,7 +73,7 @@ try {
                 "@/lib/*" = @("./src/lib/*")
                 "@/types/*" = @("./src/types/*")
             }
-            
+
             # Output and module settings
             module = "ESNext"
             moduleResolution = "bundler"
@@ -81,7 +81,7 @@ try {
             isolatedModules = $true
             noEmit = $true
             jsx = "react-jsx"
-            
+
             # Advanced options for performance
             incremental = $true
             composite = $false
@@ -89,13 +89,13 @@ try {
             declarationMap = $true
             sourceMap = $true
         }
-        
+
         # Include/exclude patterns
         include = @(
             "src/**/*"
             "vite.config.ts"
         )
-        
+
         exclude = @(
             "node_modules"
             "dist"
@@ -106,18 +106,18 @@ try {
             "**/*.spec.ts"
             "**/*.spec.tsx"
         )
-        
+
         # TypeScript references for better performance
         references = @(
             @{ path = "./tsconfig.app.json" }
             @{ path = "./tsconfig.node.json" }
         )
     }
-    
+
     $mainTsConfigJson = $mainTsConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $tsConfigPath -Value $mainTsConfigJson -Encoding UTF8
     Write-SuccessLog "Main tsconfig.json generated with strict settings"
-    
+
     # Generate tsconfig.app.json for application code
     Write-InfoLog "Generating tsconfig.app.json for application code"
     $appTsConfig = @{
@@ -132,16 +132,16 @@ try {
         exclude = @(
             "src/**/*.test.ts"
             "src/**/*.test.tsx"
-            "src/**/*.spec.ts"  
+            "src/**/*.spec.ts"
             "src/**/*.spec.tsx"
             "node_modules"
         )
     }
-    
+
     $appTsConfigJson = $appTsConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $tsConfigAppPath -Value $appTsConfigJson -Encoding UTF8
     Write-SuccessLog "tsconfig.app.json generated for application code"
-    
+
     # Generate tsconfig.node.json for build tools
     Write-InfoLog "Generating tsconfig.node.json for build tools"
     $nodeTsConfig = @{
@@ -162,16 +162,16 @@ try {
             "src/**/*"
         )
     }
-    
+
     $nodeTsConfigJson = $nodeTsConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $tsConfigNodePath -Value $nodeTsConfigJson -Encoding UTF8
     Write-SuccessLog "tsconfig.node.json generated for build tools"
-    
+
     # Create custom type definitions for Bitcoin Ordinals API
     Write-InfoLog "Creating custom type definitions for Bitcoin Ordinals API"
     $typesDir = Join-Path $srcPath "types"
     New-Item -Path $typesDir -ItemType Directory -Force | Out-Null
-    
+
     $ordinalsTypes = @"
 /**
  * @fileoverview Bitcoin Ordinals API Type Definitions
@@ -231,12 +231,12 @@ declare global {
 
 export {};
 "@
-    
+
     Set-Content -Path (Join-Path $typesDir "bitcoin-ordinals.d.ts") -Value $ordinalsTypes -Encoding UTF8
     Write-SuccessLog "Bitcoin Ordinals API type definitions created"
-    
+
     Write-InfoLog "Advanced TypeScript configuration setup completed"
-    
+
     exit 0
 }
 catch {
@@ -245,4 +245,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

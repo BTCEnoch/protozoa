@@ -1,12 +1,4 @@
 ﻿{
-    "references":  [
-                       {
-                           "path":  "./tsconfig.app.json"
-                       },
-                       {
-                           "path":  "./tsconfig.node.json"
-                       }
-                   ],
     "include":  [
                     "src/**/*",
                     "vite.config.ts"
@@ -23,7 +15,7 @@
                 ],
     "compilerOptions":  {
                             "noImplicitAny":  true,
-                            "declarationMap":  true,
+                            "declarationMap":  false,
                             "strict":  true,
                             "lib":  [
                                         "ES2022",
@@ -50,7 +42,7 @@
                             "noFallthroughCasesInSwitch":  true,
                             "skipLibCheck":  false,
                             "strictBindCallApply":  true,
-                            "declaration":  true,
+                            "declaration":  false,
                             "resolveJsonModule":  true,
                             "strictFunctionTypes":  true,
                             "paths":  {

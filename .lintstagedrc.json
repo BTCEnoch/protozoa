@@ -1,0 +1,19 @@
+﻿{
+    "*.{ts,tsx}":  [
+                       "eslint --fix",
+                       "prettier --write",
+                       "git add"
+                   ],
+    "*.{js,jsx}":  [
+                       "eslint --fix",
+                       "prettier --write",
+                       "git add"
+                   ],
+    "*.ps1":  [
+                  "pwsh -Command \u0027Import-Module PSScriptAnalyzer; Invoke-ScriptAnalyzer \u0027"
+              ],
+    "*.{json,md,yml,yaml}":  [
+                                 "prettier --write",
+                                 "git add"
+                             ]
+}

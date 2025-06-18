@@ -1,4 +1,4 @@
-# 03-MoveAndCleanCodebase.ps1
+﻿# 03-MoveAndCleanCodebase.ps1
 # Moves test files out of src, removes legacy/duplicate files, and updates import references
 # Referenced from build_design.md Section 11 - "Automation Script – Codebase Restructure"
 
@@ -32,24 +32,24 @@ Write-InfoLog "Moving test files out of src directory..."
 if (Test-Path "src") {
     # Find all test files in src (files with "test" in name or .test.* extensions)
     $testFiles = Get-ChildItem -Path "src" -Recurse | Where-Object {
-        $_.Name -match "test" -or 
-        $_.Name -match "\.test\." -or 
+        $_.Name -match "test" -or
+        $_.Name -match "\.test\." -or
         $_.Name -match "\.spec\." -or
         $_.Name -match "_test\." -or
         $_.Name -match "-test\."
     }
-    
+
     foreach ($testFile in $testFiles) {
         # Calculate relative path from src
         $relativePath = $testFile.FullName.Substring((Resolve-Path "src").Path.Length + 1)
         $targetPath = Join-Path "tests" $relativePath
         $targetDir = Split-Path $targetPath -Parent
-        
+
         # Create target directory if it doesn't exist
         if (!(Test-Path $targetDir)) {
             New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
         }
-        
+
         Write-InfoLog "Moving test file: $($testFile.Name) -> tests/$relativePath"
         Move-Item $testFile.FullName $targetPath -Force
     }
@@ -112,17 +112,17 @@ Get-ChildItem -Path "src" -Include "*.ts", "*.tsx" -Recurse | ForEach-Object {
     $filePath = $_.FullName
     $content = Get-Content $filePath -Raw
     $originalContent = $content
-    
+
     # Fix relative imports to use path aliases - escape regex properly for PowerShell
     $content = $content -replace "from\s+[""'](\.\./)+domains/([a-zA-Z]+)/", "from '@/domains/`$2/"
     $content = $content -replace "from\s+[""'](\.\./)+shared/", "from '@/shared/"
     $content = $content -replace "from\s+[""'](\.\./)+components/", "from '@/components/"
-    
+
     # Fix old import patterns that reference src/ directly
     $content = $content -replace "from\s+[""']src/domains/([a-zA-Z]+)/", "from '@/domains/`$1/"
     $content = $content -replace "from\s+[""']src/shared/", "from '@/shared/"
     $content = $content -replace "from\s+[""']src/components/", "from '@/components/"
-    
+
     if ($content -ne $originalContent) {
         Set-Content $filePath $content -NoNewline
         $importFixes++
@@ -188,4 +188,4 @@ Write-InfoLog "  - Import paths updated: $importFixes files"
 Write-InfoLog "  - Oversize files found: $($oversizeFiles.Count)"
 
 Write-SuccessLog "Codebase migration and cleanup complete!"
-Write-InfoLog "Next: Run 04-EnforceSingletonPatterns.ps1 to standardize service patterns" 
+Write-InfoLog "Next: Run 04-EnforceSingletonPatterns.ps1 to standardize service patterns"

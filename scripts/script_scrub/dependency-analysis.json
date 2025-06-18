@@ -1,0 +1,1758 @@
+﻿{
+    "Recommendations":  [
+                            "CRITICAL: Found 67 circular dependencies that must be resolved",
+                            "INFO: 64 isolated scripts found - verify if consolidation is possible"
+                        ],
+    "ScriptDirectory":  "D:\\Protozoa\\scripts",
+    "Timestamp":  "2025-06-18 03:22:04",
+    "ImportAnalysis":  {
+                           "49-SetupAutomatedDocumentation":  {
+                                                                  "Imports":  {
+                                                                                  "StartLine":  9,
+                                                                                  "FilePath":  "D:\\Protozoa\\scripts\\49-SetupAutomatedDocumentation.ps1",
+                                                                                  "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                  "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                  "Type":  "Import-Module"
+                                                                              },
+                                                                  "ImportCount":  5,
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\49-SetupAutomatedDocumentation.ps1",
+                                                                  "UsesUtils":  true
+                                                              },
+                           "29-SetupDataValidationLayer":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  12,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\29-SetupDataValidationLayer.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\29-SetupDataValidationLayer.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "05-VerifyCompliance":  {
+                                                       "Imports":  {
+                                                                       "StartLine":  14,
+                                                                       "FilePath":  "D:\\Protozoa\\scripts\\05-VerifyCompliance.ps1",
+                                                                       "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                       "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                       "Type":  "Import-Module"
+                                                                   },
+                                                       "ImportCount":  5,
+                                                       "FilePath":  "D:\\Protozoa\\scripts\\05-VerifyCompliance.ps1",
+                                                       "UsesUtils":  true
+                                                   },
+                           "09-DeployTemplates":  {
+                                                      "Imports":  {
+                                                                      "StartLine":  19,
+                                                                      "FilePath":  "D:\\Protozoa\\scripts\\09-DeployTemplates.ps1",
+                                                                      "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                      "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                      "Type":  "Import-Module"
+                                                                  },
+                                                      "ImportCount":  5,
+                                                      "FilePath":  "D:\\Protozoa\\scripts\\09-DeployTemplates.ps1",
+                                                      "UsesUtils":  true
+                                                  },
+                           "46-SetupDockerDeployment":  {
+                                                            "Imports":  {
+                                                                            "StartLine":  9,
+                                                                            "FilePath":  "D:\\Protozoa\\scripts\\46-SetupDockerDeployment.ps1",
+                                                                            "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                            "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                            "Type":  "Import-Module"
+                                                                        },
+                                                            "ImportCount":  5,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\46-SetupDockerDeployment.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "19-ConfigureAdvancedTypeScript":  {
+                                                                  "Imports":  {
+                                                                                  "StartLine":  15,
+                                                                                  "FilePath":  "D:\\Protozoa\\scripts\\19-ConfigureAdvancedTypeScript.ps1",
+                                                                                  "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                  "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                  "Type":  "Import-Module"
+                                                                              },
+                                                                  "ImportCount":  5,
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\19-ConfigureAdvancedTypeScript.ps1",
+                                                                  "UsesUtils":  true
+                                                              },
+                           "run-analysis":  {
+                                                "Imports":  {
+
+                                                            },
+                                                "ImportCount":  0,
+                                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\run-analysis.ps1",
+                                                "UsesUtils":  false
+                                            },
+                           "23-GenerateRNGService":  {
+                                                         "Imports":  {
+                                                                         "StartLine":  15,
+                                                                         "FilePath":  "D:\\Protozoa\\scripts\\23-GenerateRNGService.ps1",
+                                                                         "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                         "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                         "Type":  "Import-Module"
+                                                                     },
+                                                         "ImportCount":  5,
+                                                         "FilePath":  "D:\\Protozoa\\scripts\\23-GenerateRNGService.ps1",
+                                                         "UsesUtils":  true
+                                                     },
+                           "42-SetupPhysicsBasedAnimation":  {
+                                                                 "Imports":  {
+                                                                                 "StartLine":  9,
+                                                                                 "FilePath":  "D:\\Protozoa\\scripts\\42-SetupPhysicsBasedAnimation.ps1",
+                                                                                 "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                 "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                 "Type":  "Import-Module"
+                                                                             },
+                                                                 "ImportCount":  5,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\42-SetupPhysicsBasedAnimation.ps1",
+                                                                 "UsesUtils":  true
+                                                             },
+                           "39-SetupAdvancedEffectComposition":  {
+                                                                     "Imports":  {
+                                                                                     "StartLine":  9,
+                                                                                     "FilePath":  "D:\\Protozoa\\scripts\\39-SetupAdvancedEffectComposition.ps1",
+                                                                                     "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                     "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                     "Type":  "Import-Module"
+                                                                                 },
+                                                                     "ImportCount":  5,
+                                                                     "FilePath":  "D:\\Protozoa\\scripts\\39-SetupAdvancedEffectComposition.ps1",
+                                                                     "UsesUtils":  true
+                                                                 },
+                           "45-SetupCICDPipeline":  {
+                                                        "Imports":  {
+                                                                        "StartLine":  9,
+                                                                        "FilePath":  "D:\\Protozoa\\scripts\\45-SetupCICDPipeline.ps1",
+                                                                        "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                        "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                        "Type":  "Import-Module"
+                                                                    },
+                                                        "ImportCount":  5,
+                                                        "FilePath":  "D:\\Protozoa\\scripts\\45-SetupCICDPipeline.ps1",
+                                                        "UsesUtils":  true
+                                                    },
+                           "50-SetupServiceIntegration":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  9,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\50-SetupServiceIntegration.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\50-SetupServiceIntegration.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "36-GenerateEffectService":  {
+                                                            "Imports":  {
+                                                                            "StartLine":  13,
+                                                                            "FilePath":  "D:\\Protozoa\\scripts\\36-GenerateEffectService.ps1",
+                                                                            "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                            "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                            "Type":  "Import-Module"
+                                                                        },
+                                                            "ImportCount":  5,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\36-GenerateEffectService.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "15-ValidateSetupComplete":  {
+                                                            "Imports":  [
+                                                                            {
+                                                                                "StartLine":  18,
+                                                                                "FilePath":  "D:\\Protozoa\\scripts\\15-ValidateSetupComplete.ps1",
+                                                                                "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                "Type":  "Import-Module"
+                                                                            },
+                                                                            {
+                                                                                "StartLine":  45,
+                                                                                "FilePath":  "D:\\Protozoa\\scripts\\15-ValidateSetupComplete.ps1",
+                                                                                "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                                "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                "Type":  "Import-Module"
+                                                                            }
+                                                                        ],
+                                                            "ImportCount":  2,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\15-ValidateSetupComplete.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "24-GeneratePhysicsService":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  15,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\24-GeneratePhysicsService.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\24-GeneratePhysicsService.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "08-DeployToGitHub":  {
+                                                     "Imports":  {
+                                                                     "StartLine":  5,
+                                                                     "FilePath":  "D:\\Protozoa\\scripts\\08-DeployToGitHub.ps1",
+                                                                     "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                     "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                     "Type":  "Import-Module"
+                                                                 },
+                                                     "ImportCount":  5,
+                                                     "FilePath":  "D:\\Protozoa\\scripts\\08-DeployToGitHub.ps1",
+                                                     "UsesUtils":  true
+                                                 },
+                           "38-ImplementLODSystem":  {
+                                                         "Imports":  {
+                                                                         "StartLine":  9,
+                                                                         "FilePath":  "D:\\Protozoa\\scripts\\38-ImplementLODSystem.ps1",
+                                                                         "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                         "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                         "Type":  "Import-Module"
+                                                                     },
+                                                         "ImportCount":  5,
+                                                         "FilePath":  "D:\\Protozoa\\scripts\\38-ImplementLODSystem.ps1",
+                                                         "UsesUtils":  true
+                                                     },
+                           "03-MoveAndCleanCodebase":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  5,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\03-MoveAndCleanCodebase.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\03-MoveAndCleanCodebase.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "21-ConfigureDevEnvironment":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  15,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\21-ConfigureDevEnvironment.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\21-ConfigureDevEnvironment.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "51-SetupGlobalStateManagement":  {
+                                                                 "Imports":  {
+                                                                                 "StartLine":  6,
+                                                                                 "FilePath":  "D:\\Protozoa\\scripts\\51-SetupGlobalStateManagement.ps1",
+                                                                                 "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                 "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                 "Type":  "Import-Module"
+                                                                             },
+                                                                 "ImportCount":  5,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\51-SetupGlobalStateManagement.ps1",
+                                                                 "UsesUtils":  true
+                                                             },
+                           "04-EnforceSingletonPatterns":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  14,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\04-EnforceSingletonPatterns.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\04-EnforceSingletonPatterns.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "20-SetupPreCommitValidation":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  15,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\20-SetupPreCommitValidation.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\20-SetupPreCommitValidation.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "10-GenerateParticleInitService":  {
+                                                                  "Imports":  {
+                                                                                  "StartLine":  16,
+                                                                                  "FilePath":  "D:\\Protozoa\\scripts\\10-GenerateParticleInitService.ps1",
+                                                                                  "FullText":  "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop",
+                                                                                  "ModulePath":  "$PSScriptRoot/utils.psm1",
+                                                                                  "Type":  "Import-Module"
+                                                                              },
+                                                                  "ImportCount":  5,
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\10-GenerateParticleInitService.ps1",
+                                                                  "UsesUtils":  true
+                                                              },
+                           "28-SetupBlockchainDataIntegration":  {
+                                                                     "Imports":  {
+                                                                                     "StartLine":  13,
+                                                                                     "FilePath":  "D:\\Protozoa\\scripts\\28-SetupBlockchainDataIntegration.ps1",
+                                                                                     "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                     "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                     "Type":  "Import-Module"
+                                                                                 },
+                                                                     "ImportCount":  5,
+                                                                     "FilePath":  "D:\\Protozoa\\scripts\\28-SetupBlockchainDataIntegration.ps1",
+                                                                     "UsesUtils":  true
+                                                                 },
+                           "35-GenerateRenderingService":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  13,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\35-GenerateRenderingService.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\35-GenerateRenderingService.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "04-code-quality-analysis":  {
+                                                            "Imports":  {
+                                                                            "StartLine":  26,
+                                                                            "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\04-code-quality-analysis.ps1",
+                                                                            "FullText":  "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force",
+                                                                            "ModulePath":  "$PSScriptRoot\\utils\\ast-parser.psm1",
+                                                                            "Type":  "Import-Module"
+                                                                        },
+                                                            "ImportCount":  5,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\04-code-quality-analysis.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "22-SetupBitcoinProtocol":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  15,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\22-SetupBitcoinProtocol.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\22-SetupBitcoinProtocol.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "54-SetupPerformanceTesting":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  9,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\54-SetupPerformanceTesting.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\54-SetupPerformanceTesting.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "18a-SetupLoggingService":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  16,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\18a-SetupLoggingService.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\18a-SetupLoggingService.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "fix-here-strings":  {
+                                                    "Imports":  {
+
+                                                                },
+                                                    "ImportCount":  0,
+                                                    "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\utils\\fix-here-strings.ps1",
+                                                    "UsesUtils":  false
+                                                },
+                           "25-SetupPhysicsWebWorkers":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  13,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\25-SetupPhysicsWebWorkers.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\25-SetupPhysicsWebWorkers.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "31-GenerateParticleService":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  15,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\31-GenerateParticleService.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\31-GenerateParticleService.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "14-FixUtilityFunctions":  {
+                                                          "Imports":  [
+                                                                          {
+                                                                              "StartLine":  21,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\14-FixUtilityFunctions.ps1",
+                                                                              "FullText":  "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$ScriptsRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                                          {
+                                                                              "StartLine":  230,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\14-FixUtilityFunctions.ps1",
+                                                                              "FullText":  "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force",
+                                                                              "ModulePath":  "$ScriptsRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          }
+                                                                      ],
+                                                          "ImportCount":  2,
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\14-FixUtilityFunctions.ps1",
+                                                          "UsesUtils":  true
+                                                      },
+                           "00-InitEnvironment":  {
+                                                      "Imports":  {
+                                                                      "StartLine":  28,
+                                                                      "FilePath":  "D:\\Protozoa\\scripts\\00-InitEnvironment.ps1",
+                                                                      "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                      "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                      "Type":  "Import-Module"
+                                                                  },
+                                                      "ImportCount":  5,
+                                                      "FilePath":  "D:\\Protozoa\\scripts\\00-InitEnvironment.ps1",
+                                                      "UsesUtils":  true
+                                                  },
+                           "18-GenerateFormationDomain":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  20,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\18-GenerateFormationDomain.ps1",
+                                                                              "FullText":  "Import-Module (Join-Path $PSScriptRoot \"utils.psm1\") -Force",
+                                                                              "ModulePath":  "(Join-Path $PSScriptRoot utils.psm1)",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\18-GenerateFormationDomain.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "44-SetupAnimationBlending":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  9,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\44-SetupAnimationBlending.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\44-SetupAnimationBlending.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "03-analyze-resource-usage":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  25,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\03-analyze-resource-usage.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils\\ast-parser.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\03-analyze-resource-usage.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "17-GenerateEnvironmentConfig":  {
+                                                                "Imports":  {
+                                                                                "StartLine":  16,
+                                                                                "FilePath":  "D:\\Protozoa\\scripts\\17-GenerateEnvironmentConfig.ps1",
+                                                                                "FullText":  "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop",
+                                                                                "ModulePath":  "$PSScriptRoot/utils.psm1",
+                                                                                "Type":  "Import-Module"
+                                                                            },
+                                                                "ImportCount":  5,
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\17-GenerateEnvironmentConfig.ps1",
+                                                                "UsesUtils":  true
+                                                            },
+                           "01-analyze-dependencies":  {
+                                                           "Imports":  [
+                                                                           {
+                                                                               "StartLine":  18,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils\\dependency-graph.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils\\dependency-graph.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                                           {
+                                                                               "StartLine":  19,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils\\ast-parser.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           }
+                                                                       ],
+                                                           "ImportCount":  2,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "40-GenerateAnimationService":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  13,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\40-GenerateAnimationService.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\40-GenerateAnimationService.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "02-GenerateDomainStubs":  {
+                                                          "Imports":  {
+                                                                          "StartLine":  5,
+                                                                          "FilePath":  "D:\\Protozoa\\scripts\\02-GenerateDomainStubs.ps1",
+                                                                          "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                          "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                          "Type":  "Import-Module"
+                                                                      },
+                                                          "ImportCount":  5,
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\02-GenerateDomainStubs.ps1",
+                                                          "UsesUtils":  true
+                                                      },
+                           "55-SetupPersistenceLayer":  {
+                                                            "Imports":  {
+                                                                            "StartLine":  9,
+                                                                            "FilePath":  "D:\\Protozoa\\scripts\\55-SetupPersistenceLayer.ps1",
+                                                                            "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                            "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                            "Type":  "Import-Module"
+                                                                        },
+                                                            "ImportCount":  5,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\55-SetupPersistenceLayer.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "11-GenerateFormationBlendingService":  {
+                                                                       "Imports":  {
+                                                                                       "StartLine":  16,
+                                                                                       "FilePath":  "D:\\Protozoa\\scripts\\11-GenerateFormationBlendingService.ps1",
+                                                                                       "FullText":  "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop",
+                                                                                       "ModulePath":  "$PSScriptRoot/utils.psm1",
+                                                                                       "Type":  "Import-Module"
+                                                                                   },
+                                                                       "ImportCount":  5,
+                                                                       "FilePath":  "D:\\Protozoa\\scripts\\11-GenerateFormationBlendingService.ps1",
+                                                                       "UsesUtils":  true
+                                                                   },
+                           "41-GenerateGroupService":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  13,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\41-GenerateGroupService.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\41-GenerateGroupService.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "53-SetupEventBusSystem":  {
+                                                          "Imports":  {
+                                                                          "StartLine":  9,
+                                                                          "FilePath":  "D:\\Protozoa\\scripts\\53-SetupEventBusSystem.ps1",
+                                                                          "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                          "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                          "Type":  "Import-Module"
+                                                                      },
+                                                          "ImportCount":  5,
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\53-SetupEventBusSystem.ps1",
+                                                          "UsesUtils":  true
+                                                      },
+                           "37-SetupCustomShaderSystem":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  9,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\37-SetupCustomShaderSystem.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\37-SetupCustomShaderSystem.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "26-GenerateBitcoinService":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  15,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\26-GenerateBitcoinService.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\26-GenerateBitcoinService.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "fix-content-parsing":  {
+                                                       "Imports":  {
+
+                                                                   },
+                                                       "ImportCount":  0,
+                                                       "FilePath":  "D:\\Protozoa\\scripts\\fix-content-parsing.ps1",
+                                                       "UsesUtils":  false
+                                                   },
+                           "27-GenerateTraitService":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  15,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\27-GenerateTraitService.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\27-GenerateTraitService.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "01-ScaffoldProjectStructure":  {
+                                                               "Imports":  {
+                                                                               "StartLine":  18,
+                                                                               "FilePath":  "D:\\Protozoa\\scripts\\01-ScaffoldProjectStructure.ps1",
+                                                                               "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                               "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                               "Type":  "Import-Module"
+                                                                           },
+                                                               "ImportCount":  5,
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\01-ScaffoldProjectStructure.ps1",
+                                                               "UsesUtils":  true
+                                                           },
+                           "16-GenerateSharedTypesService":  {
+                                                                 "Imports":  {
+                                                                                 "StartLine":  16,
+                                                                                 "FilePath":  "D:\\Protozoa\\scripts\\16-GenerateSharedTypesService.ps1",
+                                                                                 "FullText":  "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop",
+                                                                                 "ModulePath":  "$PSScriptRoot/utils.psm1",
+                                                                                 "Type":  "Import-Module"
+                                                                             },
+                                                                 "ImportCount":  5,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\16-GenerateSharedTypesService.ps1",
+                                                                 "UsesUtils":  true
+                                                             },
+                           "runAll":  {
+                                          "Imports":  {
+                                                          "StartLine":  5,
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\runAll.ps1",
+                                                          "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                          "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                          "Type":  "Import-Module"
+                                                      },
+                                          "ImportCount":  5,
+                                          "FilePath":  "D:\\Protozoa\\scripts\\runAll.ps1",
+                                          "UsesUtils":  true
+                                      },
+                           "48-SetupAdvancedBundleAnalysis":  {
+                                                                  "Imports":  {
+                                                                                  "StartLine":  9,
+                                                                                  "FilePath":  "D:\\Protozoa\\scripts\\48-SetupAdvancedBundleAnalysis.ps1",
+                                                                                  "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                  "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                  "Type":  "Import-Module"
+                                                                              },
+                                                                  "ImportCount":  5,
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\48-SetupAdvancedBundleAnalysis.ps1",
+                                                                  "UsesUtils":  true
+                                                              },
+                           "06-DomainLint":  {
+                                                 "Imports":  {
+                                                                 "StartLine":  14,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\06-DomainLint.ps1",
+                                                                 "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                 "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                 "Type":  "Import-Module"
+                                                             },
+                                                 "ImportCount":  5,
+                                                 "FilePath":  "D:\\Protozoa\\scripts\\06-DomainLint.ps1",
+                                                 "UsesUtils":  true
+                                             },
+                           "32-SetupParticleLifecycleManagement":  {
+                                                                       "Imports":  {
+                                                                                       "StartLine":  9,
+                                                                                       "FilePath":  "D:\\Protozoa\\scripts\\32-SetupParticleLifecycleManagement.ps1",
+                                                                                       "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                       "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                       "Type":  "Import-Module"
+                                                                                   },
+                                                                       "ImportCount":  5,
+                                                                       "FilePath":  "D:\\Protozoa\\scripts\\32-SetupParticleLifecycleManagement.ps1",
+                                                                       "UsesUtils":  true
+                                                                   },
+                           "30-EnhanceTraitSystem":  {
+                                                         "Imports":  {
+                                                                         "StartLine":  8,
+                                                                         "FilePath":  "D:\\Protozoa\\scripts\\30-EnhanceTraitSystem.ps1",
+                                                                         "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                         "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                         "Type":  "Import-Module"
+                                                                     },
+                                                         "ImportCount":  5,
+                                                         "FilePath":  "D:\\Protozoa\\scripts\\30-EnhanceTraitSystem.ps1",
+                                                         "UsesUtils":  true
+                                                     },
+                           "34-EnhanceFormationSystem":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  9,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\34-EnhanceFormationSystem.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\34-EnhanceFormationSystem.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "47-SetupPerformanceRegression":  {
+                                                                 "Imports":  {
+                                                                                 "StartLine":  9,
+                                                                                 "FilePath":  "D:\\Protozoa\\scripts\\47-SetupPerformanceRegression.ps1",
+                                                                                 "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                 "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                 "Type":  "Import-Module"
+                                                                             },
+                                                                 "ImportCount":  5,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\47-SetupPerformanceRegression.ps1",
+                                                                 "UsesUtils":  true
+                                                             },
+                           "33-ImplementSwarmIntelligence":  {
+                                                                 "Imports":  {
+                                                                                 "StartLine":  9,
+                                                                                 "FilePath":  "D:\\Protozoa\\scripts\\33-ImplementSwarmIntelligence.ps1",
+                                                                                 "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                 "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                 "Type":  "Import-Module"
+                                                                             },
+                                                                 "ImportCount":  5,
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\33-ImplementSwarmIntelligence.ps1",
+                                                                 "UsesUtils":  true
+                                                             },
+                           "18b-SetupTestingFramework":  {
+                                                             "Imports":  {
+                                                                             "StartLine":  15,
+                                                                             "FilePath":  "D:\\Protozoa\\scripts\\18b-SetupTestingFramework.ps1",
+                                                                             "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                             "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                             "Type":  "Import-Module"
+                                                                         },
+                                                             "ImportCount":  5,
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\18b-SetupTestingFramework.ps1",
+                                                             "UsesUtils":  true
+                                                         },
+                           "56-SetupEndToEndValidation":  {
+                                                              "Imports":  {
+                                                                              "StartLine":  9,
+                                                                              "FilePath":  "D:\\Protozoa\\scripts\\56-SetupEndToEndValidation.ps1",
+                                                                              "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                              "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                              "Type":  "Import-Module"
+                                                                          },
+                                                              "ImportCount":  5,
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\56-SetupEndToEndValidation.ps1",
+                                                              "UsesUtils":  true
+                                                          },
+                           "43-ImplementAdvancedTimeline":  {
+                                                                "Imports":  {
+                                                                                "StartLine":  9,
+                                                                                "FilePath":  "D:\\Protozoa\\scripts\\43-ImplementAdvancedTimeline.ps1",
+                                                                                "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                                "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                                "Type":  "Import-Module"
+                                                                            },
+                                                                "ImportCount":  5,
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\43-ImplementAdvancedTimeline.ps1",
+                                                                "UsesUtils":  true
+                                                            },
+                           "05-performance-analysis":  {
+                                                           "Imports":  {
+                                                                           "StartLine":  31,
+                                                                           "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\05-performance-analysis.ps1",
+                                                                           "FullText":  "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force",
+                                                                           "ModulePath":  "$PSScriptRoot\\utils\\ast-parser.psm1",
+                                                                           "Type":  "Import-Module"
+                                                                       },
+                                                           "ImportCount":  5,
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\05-performance-analysis.ps1",
+                                                           "UsesUtils":  true
+                                                       },
+                           "52-SetupReactIntegration":  {
+                                                            "Imports":  {
+                                                                            "StartLine":  6,
+                                                                            "FilePath":  "D:\\Protozoa\\scripts\\52-SetupReactIntegration.ps1",
+                                                                            "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                            "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                            "Type":  "Import-Module"
+                                                                        },
+                                                            "ImportCount":  5,
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\52-SetupReactIntegration.ps1",
+                                                            "UsesUtils":  true
+                                                        },
+                           "02-detect-duplicates":  {
+                                                        "Imports":  {
+                                                                        "StartLine":  18,
+                                                                        "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1",
+                                                                        "FullText":  "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop",
+                                                                        "ModulePath":  "$PSScriptRoot\\utils\\ast-parser.psm1",
+                                                                        "Type":  "Import-Module"
+                                                                    },
+                                                        "ImportCount":  5,
+                                                        "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1",
+                                                        "UsesUtils":  true
+                                                    },
+                           "07-BuildAndTest":  {
+                                                   "Imports":  {
+                                                                   "StartLine":  14,
+                                                                   "FilePath":  "D:\\Protozoa\\scripts\\07-BuildAndTest.ps1",
+                                                                   "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop",
+                                                                   "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                   "Type":  "Import-Module"
+                                                               },
+                                                   "ImportCount":  5,
+                                                   "FilePath":  "D:\\Protozoa\\scripts\\07-BuildAndTest.ps1",
+                                                   "UsesUtils":  true
+                                               },
+                           "validate-templates":  {
+                                                      "Imports":  {
+                                                                      "StartLine":  17,
+                                                                      "FilePath":  "D:\\Protozoa\\scripts\\validate-templates.ps1",
+                                                                      "FullText":  "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force",
+                                                                      "ModulePath":  "$PSScriptRoot\\utils.psm1",
+                                                                      "Type":  "Import-Module"
+                                                                  },
+                                                      "ImportCount":  5,
+                                                      "FilePath":  "D:\\Protozoa\\scripts\\validate-templates.ps1",
+                                                      "UsesUtils":  true
+                                                  }
+                       },
+    "DependencyGraph":  {
+                            "29-SetupDataValidationLayer":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\29-SetupDataValidationLayer.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "05-VerifyCompliance":  {
+                                                        "FilePath":  "D:\\Protozoa\\scripts\\05-VerifyCompliance.ps1",
+                                                        "Dependencies":  {
+
+                                                                         },
+                                                        "Dependents":  [
+
+                                                                       ]
+                                                    },
+                            "09-DeployTemplates":  {
+                                                       "FilePath":  "D:\\Protozoa\\scripts\\09-DeployTemplates.ps1",
+                                                       "Dependencies":  {
+
+                                                                        },
+                                                       "Dependents":  [
+
+                                                                      ]
+                                                   },
+                            "25-SetupPhysicsWebWorkers":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\25-SetupPhysicsWebWorkers.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "49-SetupAutomatedDocumentation":  {
+                                                                   "FilePath":  "D:\\Protozoa\\scripts\\49-SetupAutomatedDocumentation.ps1",
+                                                                   "Dependencies":  {
+
+                                                                                    },
+                                                                   "Dependents":  [
+
+                                                                                  ]
+                                                               },
+                            "run-analysis":  {
+                                                 "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\run-analysis.ps1",
+                                                 "Dependencies":  [
+                                                                      "01-analyze-dependencies",
+                                                                      "02-detect-duplicates"
+                                                                  ],
+                                                 "Dependents":  [
+
+                                                                ]
+                                             },
+                            "23-GenerateRNGService":  {
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\23-GenerateRNGService.ps1",
+                                                          "Dependencies":  {
+
+                                                                           },
+                                                          "Dependents":  [
+
+                                                                         ]
+                                                      },
+                            "42-SetupPhysicsBasedAnimation":  {
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\42-SetupPhysicsBasedAnimation.ps1",
+                                                                  "Dependencies":  {
+
+                                                                                   },
+                                                                  "Dependents":  [
+
+                                                                                 ]
+                                                              },
+                            "39-SetupAdvancedEffectComposition":  {
+                                                                      "FilePath":  "D:\\Protozoa\\scripts\\39-SetupAdvancedEffectComposition.ps1",
+                                                                      "Dependencies":  {
+
+                                                                                       },
+                                                                      "Dependents":  [
+
+                                                                                     ]
+                                                                  },
+                            "45-SetupCICDPipeline":  {
+                                                         "FilePath":  "D:\\Protozoa\\scripts\\45-SetupCICDPipeline.ps1",
+                                                         "Dependencies":  {
+
+                                                                          },
+                                                         "Dependents":  [
+
+                                                                        ]
+                                                     },
+                            "50-SetupServiceIntegration":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\50-SetupServiceIntegration.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "36-GenerateEffectService":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\36-GenerateEffectService.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "15-ValidateSetupComplete":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\15-ValidateSetupComplete.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "24-GeneratePhysicsService":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\24-GeneratePhysicsService.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "08-DeployToGitHub":  {
+                                                      "FilePath":  "D:\\Protozoa\\scripts\\08-DeployToGitHub.ps1",
+                                                      "Dependencies":  {
+
+                                                                       },
+                                                      "Dependents":  [
+
+                                                                     ]
+                                                  },
+                            "03-MoveAndCleanCodebase":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\03-MoveAndCleanCodebase.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "21-ConfigureDevEnvironment":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\21-ConfigureDevEnvironment.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "51-SetupGlobalStateManagement":  {
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\51-SetupGlobalStateManagement.ps1",
+                                                                  "Dependencies":  {
+
+                                                                                   },
+                                                                  "Dependents":  [
+
+                                                                                 ]
+                                                              },
+                            "04-EnforceSingletonPatterns":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\04-EnforceSingletonPatterns.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "19-ConfigureAdvancedTypeScript":  {
+                                                                   "FilePath":  "D:\\Protozoa\\scripts\\19-ConfigureAdvancedTypeScript.ps1",
+                                                                   "Dependencies":  {
+
+                                                                                    },
+                                                                   "Dependents":  [
+
+                                                                                  ]
+                                                               },
+                            "20-SetupPreCommitValidation":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\20-SetupPreCommitValidation.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "10-GenerateParticleInitService":  {
+                                                                   "FilePath":  "D:\\Protozoa\\scripts\\10-GenerateParticleInitService.ps1",
+                                                                   "Dependencies":  {
+
+                                                                                    },
+                                                                   "Dependents":  [
+
+                                                                                  ]
+                                                               },
+                            "28-SetupBlockchainDataIntegration":  {
+                                                                      "FilePath":  "D:\\Protozoa\\scripts\\28-SetupBlockchainDataIntegration.ps1",
+                                                                      "Dependencies":  {
+
+                                                                                       },
+                                                                      "Dependents":  [
+
+                                                                                     ]
+                                                                  },
+                            "35-GenerateRenderingService":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\35-GenerateRenderingService.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "04-code-quality-analysis":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\04-code-quality-analysis.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "22-SetupBitcoinProtocol":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\22-SetupBitcoinProtocol.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "46-SetupDockerDeployment":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\46-SetupDockerDeployment.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "18a-SetupLoggingService":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\18a-SetupLoggingService.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "fix-here-strings":  {
+                                                     "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\utils\\fix-here-strings.ps1",
+                                                     "Dependencies":  {
+
+                                                                      },
+                                                     "Dependents":  [
+
+                                                                    ]
+                                                 },
+                            "18-GenerateFormationDomain":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\18-GenerateFormationDomain.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "31-GenerateParticleService":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\31-GenerateParticleService.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "14-FixUtilityFunctions":  {
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\14-FixUtilityFunctions.ps1",
+                                                           "Dependencies":  {
+
+                                                                            },
+                                                           "Dependents":  [
+
+                                                                          ]
+                                                       },
+                            "00-InitEnvironment":  {
+                                                       "FilePath":  "D:\\Protozoa\\scripts\\00-InitEnvironment.ps1",
+                                                       "Dependencies":  {
+
+                                                                        },
+                                                       "Dependents":  [
+
+                                                                      ]
+                                                   },
+                            "44-SetupAnimationBlending":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\44-SetupAnimationBlending.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "03-analyze-resource-usage":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\03-analyze-resource-usage.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "17-GenerateEnvironmentConfig":  {
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\17-GenerateEnvironmentConfig.ps1",
+                                                                 "Dependencies":  {
+
+                                                                                  },
+                                                                 "Dependents":  [
+
+                                                                                ]
+                                                             },
+                            "validate-templates":  {
+                                                       "FilePath":  "D:\\Protozoa\\scripts\\validate-templates.ps1",
+                                                       "Dependencies":  {
+
+                                                                        },
+                                                       "Dependents":  [
+
+                                                                      ]
+                                                   },
+                            "01-analyze-dependencies":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+                                                                               "run-analysis"
+                                                                           ]
+                                                        },
+                            "40-GenerateAnimationService":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\40-GenerateAnimationService.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "02-GenerateDomainStubs":  {
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\02-GenerateDomainStubs.ps1",
+                                                           "Dependencies":  {
+
+                                                                            },
+                                                           "Dependents":  [
+
+                                                                          ]
+                                                       },
+                            "55-SetupPersistenceLayer":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\55-SetupPersistenceLayer.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "11-GenerateFormationBlendingService":  {
+                                                                        "FilePath":  "D:\\Protozoa\\scripts\\11-GenerateFormationBlendingService.ps1",
+                                                                        "Dependencies":  {
+
+                                                                                         },
+                                                                        "Dependents":  [
+
+                                                                                       ]
+                                                                    },
+                            "41-GenerateGroupService":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\41-GenerateGroupService.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "53-SetupEventBusSystem":  {
+                                                           "FilePath":  "D:\\Protozoa\\scripts\\53-SetupEventBusSystem.ps1",
+                                                           "Dependencies":  {
+
+                                                                            },
+                                                           "Dependents":  [
+
+                                                                          ]
+                                                       },
+                            "37-SetupCustomShaderSystem":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\37-SetupCustomShaderSystem.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "26-GenerateBitcoinService":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\26-GenerateBitcoinService.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "fix-content-parsing":  {
+                                                        "FilePath":  "D:\\Protozoa\\scripts\\fix-content-parsing.ps1",
+                                                        "Dependencies":  {
+
+                                                                         },
+                                                        "Dependents":  [
+
+                                                                       ]
+                                                    },
+                            "27-GenerateTraitService":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\27-GenerateTraitService.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "01-ScaffoldProjectStructure":  {
+                                                                "FilePath":  "D:\\Protozoa\\scripts\\01-ScaffoldProjectStructure.ps1",
+                                                                "Dependencies":  {
+
+                                                                                 },
+                                                                "Dependents":  [
+
+                                                                               ]
+                                                            },
+                            "16-GenerateSharedTypesService":  {
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\16-GenerateSharedTypesService.ps1",
+                                                                  "Dependencies":  {
+
+                                                                                   },
+                                                                  "Dependents":  [
+
+                                                                                 ]
+                                                              },
+                            "33-ImplementSwarmIntelligence":  {
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\33-ImplementSwarmIntelligence.ps1",
+                                                                  "Dependencies":  {
+
+                                                                                   },
+                                                                  "Dependents":  [
+
+                                                                                 ]
+                                                              },
+                            "runAll":  {
+                                           "FilePath":  "D:\\Protozoa\\scripts\\runAll.ps1",
+                                           "Dependencies":  {
+
+                                                            },
+                                           "Dependents":  [
+
+                                                          ]
+                                       },
+                            "48-SetupAdvancedBundleAnalysis":  {
+                                                                   "FilePath":  "D:\\Protozoa\\scripts\\48-SetupAdvancedBundleAnalysis.ps1",
+                                                                   "Dependencies":  {
+
+                                                                                    },
+                                                                   "Dependents":  [
+
+                                                                                  ]
+                                                               },
+                            "06-DomainLint":  {
+                                                  "FilePath":  "D:\\Protozoa\\scripts\\06-DomainLint.ps1",
+                                                  "Dependencies":  {
+
+                                                                   },
+                                                  "Dependents":  [
+
+                                                                 ]
+                                              },
+                            "32-SetupParticleLifecycleManagement":  {
+                                                                        "FilePath":  "D:\\Protozoa\\scripts\\32-SetupParticleLifecycleManagement.ps1",
+                                                                        "Dependencies":  {
+
+                                                                                         },
+                                                                        "Dependents":  [
+
+                                                                                       ]
+                                                                    },
+                            "30-EnhanceTraitSystem":  {
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\30-EnhanceTraitSystem.ps1",
+                                                          "Dependencies":  {
+
+                                                                           },
+                                                          "Dependents":  [
+
+                                                                         ]
+                                                      },
+                            "34-EnhanceFormationSystem":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\34-EnhanceFormationSystem.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "47-SetupPerformanceRegression":  {
+                                                                  "FilePath":  "D:\\Protozoa\\scripts\\47-SetupPerformanceRegression.ps1",
+                                                                  "Dependencies":  {
+
+                                                                                   },
+                                                                  "Dependents":  [
+
+                                                                                 ]
+                                                              },
+                            "38-ImplementLODSystem":  {
+                                                          "FilePath":  "D:\\Protozoa\\scripts\\38-ImplementLODSystem.ps1",
+                                                          "Dependencies":  {
+
+                                                                           },
+                                                          "Dependents":  [
+
+                                                                         ]
+                                                      },
+                            "18b-SetupTestingFramework":  {
+                                                              "FilePath":  "D:\\Protozoa\\scripts\\18b-SetupTestingFramework.ps1",
+                                                              "Dependencies":  {
+
+                                                                               },
+                                                              "Dependents":  [
+
+                                                                             ]
+                                                          },
+                            "56-SetupEndToEndValidation":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\56-SetupEndToEndValidation.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           },
+                            "43-ImplementAdvancedTimeline":  {
+                                                                 "FilePath":  "D:\\Protozoa\\scripts\\43-ImplementAdvancedTimeline.ps1",
+                                                                 "Dependencies":  {
+
+                                                                                  },
+                                                                 "Dependents":  [
+
+                                                                                ]
+                                                             },
+                            "05-performance-analysis":  {
+                                                            "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\05-performance-analysis.ps1",
+                                                            "Dependencies":  {
+
+                                                                             },
+                                                            "Dependents":  [
+
+                                                                           ]
+                                                        },
+                            "52-SetupReactIntegration":  {
+                                                             "FilePath":  "D:\\Protozoa\\scripts\\52-SetupReactIntegration.ps1",
+                                                             "Dependencies":  {
+
+                                                                              },
+                                                             "Dependents":  [
+
+                                                                            ]
+                                                         },
+                            "02-detect-duplicates":  {
+                                                         "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1",
+                                                         "Dependencies":  {
+
+                                                                          },
+                                                         "Dependents":  [
+                                                                            "run-analysis"
+                                                                        ]
+                                                     },
+                            "07-BuildAndTest":  {
+                                                    "FilePath":  "D:\\Protozoa\\scripts\\07-BuildAndTest.ps1",
+                                                    "Dependencies":  {
+
+                                                                     },
+                                                    "Dependents":  [
+
+                                                                   ]
+                                                },
+                            "54-SetupPerformanceTesting":  {
+                                                               "FilePath":  "D:\\Protozoa\\scripts\\54-SetupPerformanceTesting.ps1",
+                                                               "Dependencies":  {
+
+                                                                                },
+                                                               "Dependents":  [
+
+                                                                              ]
+                                                           }
+                        },
+    "Statistics":  {
+                       "TotalScripts":  67,
+                       "ScriptsWithDependents":  2,
+                       "ScriptsWithDependencies":  3,
+                       "UtilsUsageCount":  58,
+                       "IsolatedScripts":  64,
+                       "CircularDependencyCount":  67
+                   },
+    "CircularDependencies":  [
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false,
+                                 false
+                             ],
+    "UtilsUsage":  {
+                       "37-SetupCustomShaderSystem":  {
+                                                          "ImportLine":  9,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "26-GenerateBitcoinService":  {
+                                                         "ImportLine":  15,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "08-DeployToGitHub":  {
+                                                 "ImportLine":  5,
+                                                 "ImportType":  "Import-Module"
+                                             },
+                       "42-SetupPhysicsBasedAnimation":  {
+                                                             "ImportLine":  9,
+                                                             "ImportType":  "Import-Module"
+                                                         },
+                       "29-SetupDataValidationLayer":  {
+                                                           "ImportLine":  12,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "14-FixUtilityFunctions":  {
+                                                      "ImportLine":  [
+                                                                         21,
+                                                                         230
+                                                                     ],
+                                                      "ImportType":  [
+                                                                         "Import-Module",
+                                                                         "Import-Module"
+                                                                     ]
+                                                  },
+                       "49-SetupAutomatedDocumentation":  {
+                                                              "ImportLine":  9,
+                                                              "ImportType":  "Import-Module"
+                                                          },
+                       "18b-SetupTestingFramework":  {
+                                                         "ImportLine":  15,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "15-ValidateSetupComplete":  {
+                                                        "ImportLine":  [
+                                                                           18,
+                                                                           45
+                                                                       ],
+                                                        "ImportType":  [
+                                                                           "Import-Module",
+                                                                           "Import-Module"
+                                                                       ]
+                                                    },
+                       "34-EnhanceFormationSystem":  {
+                                                         "ImportLine":  9,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "44-SetupAnimationBlending":  {
+                                                         "ImportLine":  9,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "55-SetupPersistenceLayer":  {
+                                                        "ImportLine":  9,
+                                                        "ImportType":  "Import-Module"
+                                                    },
+                       "51-SetupGlobalStateManagement":  {
+                                                             "ImportLine":  6,
+                                                             "ImportType":  "Import-Module"
+                                                         },
+                       "22-SetupBitcoinProtocol":  {
+                                                       "ImportLine":  15,
+                                                       "ImportType":  "Import-Module"
+                                                   },
+                       "10-GenerateParticleInitService":  {
+                                                              "ImportLine":  16,
+                                                              "ImportType":  "Import-Module"
+                                                          },
+                       "04-EnforceSingletonPatterns":  {
+                                                           "ImportLine":  14,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "03-MoveAndCleanCodebase":  {
+                                                       "ImportLine":  5,
+                                                       "ImportType":  "Import-Module"
+                                                   },
+                       "38-ImplementLODSystem":  {
+                                                     "ImportLine":  9,
+                                                     "ImportType":  "Import-Module"
+                                                 },
+                       "46-SetupDockerDeployment":  {
+                                                        "ImportLine":  9,
+                                                        "ImportType":  "Import-Module"
+                                                    },
+                       "45-SetupCICDPipeline":  {
+                                                    "ImportLine":  9,
+                                                    "ImportType":  "Import-Module"
+                                                },
+                       "16-GenerateSharedTypesService":  {
+                                                             "ImportLine":  16,
+                                                             "ImportType":  "Import-Module"
+                                                         },
+                       "23-GenerateRNGService":  {
+                                                     "ImportLine":  15,
+                                                     "ImportType":  "Import-Module"
+                                                 },
+                       "52-SetupReactIntegration":  {
+                                                        "ImportLine":  6,
+                                                        "ImportType":  "Import-Module"
+                                                    },
+                       "54-SetupPerformanceTesting":  {
+                                                          "ImportLine":  9,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "validate-templates":  {
+                                                  "ImportLine":  17,
+                                                  "ImportType":  "Import-Module"
+                                              },
+                       "07-BuildAndTest":  {
+                                               "ImportLine":  14,
+                                               "ImportType":  "Import-Module"
+                                           },
+                       "50-SetupServiceIntegration":  {
+                                                          "ImportLine":  9,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "40-GenerateAnimationService":  {
+                                                           "ImportLine":  13,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "20-SetupPreCommitValidation":  {
+                                                           "ImportLine":  15,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "31-GenerateParticleService":  {
+                                                          "ImportLine":  15,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "18a-SetupLoggingService":  {
+                                                       "ImportLine":  16,
+                                                       "ImportType":  "Import-Module"
+                                                   },
+                       "21-ConfigureDevEnvironment":  {
+                                                          "ImportLine":  15,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "53-SetupEventBusSystem":  {
+                                                      "ImportLine":  9,
+                                                      "ImportType":  "Import-Module"
+                                                  },
+                       "25-SetupPhysicsWebWorkers":  {
+                                                         "ImportLine":  13,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "01-ScaffoldProjectStructure":  {
+                                                           "ImportLine":  18,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "runAll":  {
+                                      "ImportLine":  5,
+                                      "ImportType":  "Import-Module"
+                                  },
+                       "17-GenerateEnvironmentConfig":  {
+                                                            "ImportLine":  16,
+                                                            "ImportType":  "Import-Module"
+                                                        },
+                       "11-GenerateFormationBlendingService":  {
+                                                                   "ImportLine":  16,
+                                                                   "ImportType":  "Import-Module"
+                                                               },
+                       "43-ImplementAdvancedTimeline":  {
+                                                            "ImportLine":  9,
+                                                            "ImportType":  "Import-Module"
+                                                        },
+                       "47-SetupPerformanceRegression":  {
+                                                             "ImportLine":  9,
+                                                             "ImportType":  "Import-Module"
+                                                         },
+                       "48-SetupAdvancedBundleAnalysis":  {
+                                                              "ImportLine":  9,
+                                                              "ImportType":  "Import-Module"
+                                                          },
+                       "30-EnhanceTraitSystem":  {
+                                                     "ImportLine":  8,
+                                                     "ImportType":  "Import-Module"
+                                                 },
+                       "06-DomainLint":  {
+                                             "ImportLine":  14,
+                                             "ImportType":  "Import-Module"
+                                         },
+                       "36-GenerateEffectService":  {
+                                                        "ImportLine":  13,
+                                                        "ImportType":  "Import-Module"
+                                                    },
+                       "56-SetupEndToEndValidation":  {
+                                                          "ImportLine":  9,
+                                                          "ImportType":  "Import-Module"
+                                                      },
+                       "05-VerifyCompliance":  {
+                                                   "ImportLine":  14,
+                                                   "ImportType":  "Import-Module"
+                                               },
+                       "09-DeployTemplates":  {
+                                                  "ImportLine":  19,
+                                                  "ImportType":  "Import-Module"
+                                              },
+                       "35-GenerateRenderingService":  {
+                                                           "ImportLine":  13,
+                                                           "ImportType":  "Import-Module"
+                                                       },
+                       "33-ImplementSwarmIntelligence":  {
+                                                             "ImportLine":  9,
+                                                             "ImportType":  "Import-Module"
+                                                         },
+                       "00-InitEnvironment":  {
+                                                  "ImportLine":  28,
+                                                  "ImportType":  "Import-Module"
+                                              },
+                       "39-SetupAdvancedEffectComposition":  {
+                                                                 "ImportLine":  9,
+                                                                 "ImportType":  "Import-Module"
+                                                             },
+                       "41-GenerateGroupService":  {
+                                                       "ImportLine":  13,
+                                                       "ImportType":  "Import-Module"
+                                                   },
+                       "02-GenerateDomainStubs":  {
+                                                      "ImportLine":  5,
+                                                      "ImportType":  "Import-Module"
+                                                  },
+                       "27-GenerateTraitService":  {
+                                                       "ImportLine":  15,
+                                                       "ImportType":  "Import-Module"
+                                                   },
+                       "24-GeneratePhysicsService":  {
+                                                         "ImportLine":  15,
+                                                         "ImportType":  "Import-Module"
+                                                     },
+                       "28-SetupBlockchainDataIntegration":  {
+                                                                 "ImportLine":  13,
+                                                                 "ImportType":  "Import-Module"
+                                                             },
+                       "32-SetupParticleLifecycleManagement":  {
+                                                                   "ImportLine":  9,
+                                                                   "ImportType":  "Import-Module"
+                                                               },
+                       "19-ConfigureAdvancedTypeScript":  {
+                                                              "ImportLine":  15,
+                                                              "ImportType":  "Import-Module"
+                                                          }
+                   }
+}

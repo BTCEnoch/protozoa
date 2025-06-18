@@ -1,4 +1,4 @@
-# 07-BuildAndTest.ps1
+﻿# 07-BuildAndTest.ps1
 # Build validation and testing
 # Referenced from build_design.md testing requirements
 
@@ -22,16 +22,16 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Build and Test Validation - Phase 7"
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Running build validation in project: $ProjectRoot"
-    
+
     # Check if package.json exists
     if (-not (Test-Path "package.json")) {
         Write-WarningLog "No package.json found - skipping build tests"
         exit 0
     }
-    
+
     # TypeScript compilation check
     if (Get-Command pnpm -ErrorAction SilentlyContinue) {
         Write-InfoLog "Checking TypeScript compilation..."
@@ -47,7 +47,7 @@ try {
         catch {
             Write-WarningLog "TypeScript compilation check failed: $($_.Exception.Message)"
         }
-        
+
         # Run tests if available
         Write-InfoLog "Checking for test scripts..."
         $packageJson = Get-Content "package.json" | ConvertFrom-Json
@@ -71,7 +71,7 @@ try {
     } else {
         Write-WarningLog "pnpm not available - skipping build checks"
     }
-    
+
     Write-SuccessLog "Build and test validation completed"
     exit 0
 }
@@ -81,4 +81,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

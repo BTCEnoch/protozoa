@@ -1,4 +1,4 @@
-# 20-SetupPreCommitValidation.ps1 - Phase 1 Infrastructure Enhancement
+﻿# 20-SetupPreCommitValidation.ps1 - Phase 1 Infrastructure Enhancement
 # Sets up Husky Git hooks and pre-commit validation for code quality enforcement
 # ARCHITECTURE: Automated code quality gates with domain boundary validation
 # Reference: script_checklist.md lines 20-SetupPreCommitValidation.ps1
@@ -24,17 +24,17 @@ $ErrorActionPreference = "Stop"
 try {
     Write-StepHeader "Pre-commit Validation Setup - Phase 1 Infrastructure Enhancement"
     Write-InfoLog "Installing Husky and configuring Git hooks for automated validation"
-    
+
     # Define paths
     $huskyDir = Join-Path $ProjectRoot ".husky"
     $packageJsonPath = Join-Path $ProjectRoot "package.json"
     $lintStagedConfigPath = Join-Path $ProjectRoot ".lintstagedrc.json"
     $preCommitHookPath = Join-Path $huskyDir "pre-commit"
-    
+
     # Install Husky and lint-staged if not already installed
     Write-InfoLog "Installing Husky and lint-staged packages"
     Push-Location $ProjectRoot
-    
+
     # Check if package.json exists
     if (-not (Test-Path $packageJsonPath)) {
         Write-InfoLog "Creating package.json"
@@ -66,19 +66,19 @@ try {
                 vitest = "^1.0.4"
             }
         }
-        
+
         $packageJsonContent = $packageJson | ConvertTo-Json -Depth 10
         Set-Content -Path $packageJsonPath -Value $packageJsonContent -Encoding UTF8
         Write-SuccessLog "Package.json created with required dependencies"
     }
-    
+
     # Install dependencies
     & npm install
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to install npm dependencies"
     }
     Write-SuccessLog "Dependencies installed successfully"
-    
+
     # Initialize Husky
     Write-InfoLog "Initializing Husky Git hooks"
     & npx husky install
@@ -86,7 +86,7 @@ try {
         throw "Failed to initialize Husky"
     }
     Write-SuccessLog "Husky initialized successfully"
-    
+
     # Create pre-commit hook
     Write-InfoLog "Creating pre-commit hook with comprehensive validation"
     $preCommitContent = @"
@@ -108,7 +108,7 @@ fi
 
 # Run domain boundary validation
 echo "🏗️ Validating domain boundaries..."
-pwsh -File "./scripts/05-VerifyCompliance.ps1"  
+pwsh -File "./scripts/05-VerifyCompliance.ps1"
 if [ `$? -ne 0 ]; then
   echo "❌ Domain boundary validation failed"
   exit 1
@@ -124,15 +124,15 @@ fi
 
 echo "✅ All pre-commit validations passed!"
 "@
-    
+
     Set-Content -Path $preCommitHookPath -Value $preCommitContent -Encoding UTF8
-    
+
     # Make the hook executable
     if ($IsLinux -or $IsMacOS) {
         chmod +x $preCommitHookPath
     }
     Write-SuccessLog "Pre-commit hook created successfully"
-    
+
     # Create lint-staged configuration
     Write-InfoLog "Creating lint-staged configuration for incremental validation"
     $lintStagedConfig = @{
@@ -154,11 +154,11 @@ echo "✅ All pre-commit validations passed!"
             "pwsh -Command 'Import-Module PSScriptAnalyzer; Invoke-ScriptAnalyzer $_'"
         )
     }
-    
+
     $lintStagedConfigJson = $lintStagedConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $lintStagedConfigPath -Value $lintStagedConfigJson -Encoding UTF8
     Write-SuccessLog "Lint-staged configuration created"
-    
+
     # Create ESLint configuration for domain boundary enforcement
     Write-InfoLog "Creating ESLint configuration with domain boundary rules"
     $eslintConfigPath = Join-Path $ProjectRoot ".eslintrc.json"
@@ -203,13 +203,13 @@ echo "✅ All pre-commit validations passed!"
                     )
                 }
             )
-            
+
             # TypeScript specific rules
             "@typescript-eslint/no-unused-vars" = "error"
             "@typescript-eslint/no-explicit-any" = "error"
             "@typescript-eslint/prefer-const" = "error"
             "@typescript-eslint/no-non-null-assertion" = "error"
-            
+
             # General code quality rules
             "prefer-const" = "error"
             "no-var" = "error"
@@ -217,14 +217,14 @@ echo "✅ All pre-commit validations passed!"
             "eqeqeq" = "error"
         }
     }
-    
+
     $eslintConfigJson = $eslintConfig | ConvertTo-Json -Depth 10
     Set-Content -Path $eslintConfigPath -Value $eslintConfigJson -Encoding UTF8
     Write-SuccessLog "ESLint configuration created with domain boundary rules"
-    
+
     Pop-Location
     Write-SuccessLog "Pre-commit validation setup completed successfully"
-    
+
     exit 0
 }
 catch {
@@ -233,4 +233,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

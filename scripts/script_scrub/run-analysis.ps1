@@ -40,96 +40,208 @@ try {
             CriticalIssues = 0
             WarningIssues = 0
             InfoIssues = 0
+            TotalRecommendations = 0
+            PerformanceIssues = 0
         }
         Summary = @()
     }
     
-    # Step 1: Dependency Analysis
-    Write-Host "`n--- STEP 1: DEPENDENCY ANALYSIS ---" -ForegroundColor Magenta
-    try {
-        $depOutputFile = Join-Path $OutputDirectory "dependency-analysis.json"
-        & "$PSScriptRoot\01-analyze-dependencies.ps1" -ScriptDirectory $ScriptDirectory -OutputFile $depOutputFile
+    # Define analysis steps with progress tracking
+    $analysisSteps = @(
+        @{ 
+            Name = "Dependency Analysis"
+            Script = "01-analyze-dependencies.ps1"
+            OutputFile = "dependency-analysis.json"
+            Description = "Analyzing script dependencies and relationships"
+        },
+        @{ 
+            Name = "Duplicate Detection"
+            Script = "02-detect-duplicates.ps1"
+            OutputFile = "duplicate-analysis.json"
+            Description = "Detecting duplicate code and similar functions"
+        },
+        @{ 
+            Name = "Resource Usage Analysis"
+            Script = "03-analyze-resource-usage.ps1"
+            OutputFile = "resource-usage-analysis.json"
+            Description = "Analyzing resource usage patterns and potential issues"
+        },
+        @{ 
+            Name = "Code Quality Analysis"
+            Script = "04-code-quality-analysis.ps1"
+            OutputFile = "code-quality-analysis.json"
+            Description = "Checking code quality and best practices"
+        },
+        @{ 
+            Name = "Performance Analysis"
+            Script = "05-performance-analysis.ps1"
+            OutputFile = "performance-analysis.json"
+            Description = "Analyzing script performance and execution metrics"
+        }
+    )
+    
+    Write-Host "`nStarting comprehensive analysis with $($analysisSteps.Count) steps..." -ForegroundColor Green
+    Write-Host "Estimated completion time: 2-5 minutes depending on script count" -ForegroundColor Yellow
+    
+    # Execute each analysis step with progress tracking
+    $currentStep = 0
+    foreach ($step in $analysisSteps) {
+        $currentStep++
+        $percentComplete = [Math]::Round(($currentStep / $analysisSteps.Count) * 100, 1)
         
-        if (Test-Path $depOutputFile) {
-            $depResults = Get-Content $depOutputFile | ConvertFrom-Json
-            $analysisResults.AnalysisSteps += @{
-                Step = "Dependency Analysis"
-                Status = "Success"
-                OutputFile = $depOutputFile
-                Issues = @{
-                    CircularDependencies = $depResults.Statistics.CircularDependencyCount
-                    IsolatedScripts = $depResults.Statistics.IsolatedScripts
-                }
-                Recommendations = $depResults.Recommendations
+        Write-Host "`n--- STEP $currentStep/$($analysisSteps.Count): $($step.Name.ToUpper()) ($percentComplete%) ---" -ForegroundColor Magenta
+        Write-Host "$($step.Description)..." -ForegroundColor Gray
+        
+        try {
+            $outputFile = Join-Path $OutputDirectory $step.OutputFile
+            $scriptPath = Join-Path $PSScriptRoot $step.Script
+            
+            # Check if script exists
+            if (-not (Test-Path $scriptPath)) {
+                throw "Analysis script not found: $scriptPath"
             }
             
-            # Add to overall counts
-            $analysisResults.OverallResults.CriticalIssues += $depResults.Statistics.CircularDependencyCount
-            if ($depResults.Statistics.IsolatedScripts -gt 5) {
-                $analysisResults.OverallResults.InfoIssues += 1
+            # Execute analysis with timing
+            $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+            
+            # Run with optimized parameters for faster execution
+            switch ($step.Script) {
+                "05-performance-analysis.ps1" {
+                    & $scriptPath -ScriptDirectory $ScriptDirectory -OutputFile $outputFile -SampleRuns 1 -SkipSlowScripts
+                }
+                default {
+                    & $scriptPath -ScriptDirectory $ScriptDirectory -OutputFile $outputFile
+                }
+            }
+            
+            $stopwatch.Stop()
+            $executionTime = [Math]::Round($stopwatch.ElapsedMilliseconds / 1000, 2)
+            
+            # Process results if output file exists
+            if (Test-Path $outputFile) {
+                try {
+                    $stepResults = Get-Content $outputFile | ConvertFrom-Json
+                    
+                    # Create step summary
+                    $stepSummary = @{
+                        Step = $step.Name
+                        Status = "Success"
+                        OutputFile = $outputFile
+                        ExecutionTime = "${executionTime}s"
+                        Issues = @{}
+                        Recommendations = @()
+                    }
+                    
+                    # Extract relevant metrics based on step type
+                    switch ($step.Script) {
+                        "01-analyze-dependencies.ps1" {
+                            $stepSummary.Issues = @{
+                                CircularDependencies = if ($stepResults.Statistics.CircularDependencyCount) { $stepResults.Statistics.CircularDependencyCount } else { 0 }
+                                IsolatedScripts = if ($stepResults.Statistics.IsolatedScripts) { $stepResults.Statistics.IsolatedScripts } else { 0 }
+                            }
+                            $analysisResults.OverallResults.CriticalIssues += $stepSummary.Issues.CircularDependencies
+                            if ($stepSummary.Issues.IsolatedScripts -gt 5) {
+                                $analysisResults.OverallResults.InfoIssues += 1
+                            }
+                        }
+                        "02-detect-duplicates.ps1" {
+                            $stepSummary.Issues = @{
+                                ExactDuplicates = if ($stepResults.Statistics.ExactDuplicates) { $stepResults.Statistics.ExactDuplicates } else { 0 }
+                                SimilarFunctions = if ($stepResults.Statistics.SimilarFunctions) { $stepResults.Statistics.SimilarFunctions } else { 0 }
+                            }
+                            $analysisResults.OverallResults.CriticalIssues += $stepSummary.Issues.ExactDuplicates
+                            $analysisResults.OverallResults.WarningIssues += $stepSummary.Issues.SimilarFunctions
+                        }
+                        "03-analyze-resource-usage.ps1" {
+                            $stepSummary.Issues = @{
+                                HighMemoryRiskScripts = if ($stepResults.Statistics.HighMemoryRiskScripts) { $stepResults.Statistics.HighMemoryRiskScripts } else { 0 }
+                                NetworkDependentScripts = if ($stepResults.Statistics.NetworkDependentScripts) { $stepResults.Statistics.NetworkDependentScripts } else { 0 }
+                            }
+                            $analysisResults.OverallResults.WarningIssues += $stepSummary.Issues.HighMemoryRiskScripts
+                            $analysisResults.OverallResults.InfoIssues += $stepSummary.Issues.NetworkDependentScripts
+                        }
+                        "04-code-quality-analysis.ps1" {
+                            $stepSummary.Issues = @{
+                                ErrorIssues = if ($stepResults.Statistics.ErrorIssues) { $stepResults.Statistics.ErrorIssues } else { 0 }
+                                WarningIssues = if ($stepResults.Statistics.WarningIssues) { $stepResults.Statistics.WarningIssues } else { 0 }
+                                FixableIssues = if ($stepResults.Statistics.FixableIssues) { $stepResults.Statistics.FixableIssues } else { 0 }
+                            }
+                            $analysisResults.OverallResults.CriticalIssues += $stepSummary.Issues.ErrorIssues
+                            $analysisResults.OverallResults.WarningIssues += $stepSummary.Issues.WarningIssues
+                        }
+                        "05-performance-analysis.ps1" {
+                            $stepSummary.Issues = @{
+                                PoorPerformanceScripts = if ($stepResults.Statistics.PoorPerformanceScripts) { $stepResults.Statistics.PoorPerformanceScripts } else { 0 }
+                                HighMemoryScripts = if ($stepResults.Statistics.HighMemoryScripts) { $stepResults.Statistics.HighMemoryScripts } else { 0 }
+                                TotalRecommendations = if ($stepResults.Statistics.TotalRecommendations) { $stepResults.Statistics.TotalRecommendations } else { 0 }
+                            }
+                            $analysisResults.OverallResults.PerformanceIssues += $stepSummary.Issues.PoorPerformanceScripts
+                            $analysisResults.OverallResults.WarningIssues += $stepSummary.Issues.HighMemoryScripts
+                            $analysisResults.OverallResults.TotalRecommendations += $stepSummary.Issues.TotalRecommendations
+                        }
+                    }
+                    
+                    # Add recommendations if available
+                    if ($stepResults.Recommendations) {
+                        $stepSummary.Recommendations = $stepResults.Recommendations
+                    }
+                    
+                    $analysisResults.AnalysisSteps += $stepSummary
+                    
+                    Write-Host "✅ $($step.Name) completed successfully in ${executionTime}s" -ForegroundColor Green
+                }
+                catch {
+                    Write-Warning "⚠️ Could not parse results from $($step.Name): $($_.Exception.Message)"
+                    $analysisResults.AnalysisSteps += @{
+                        Step = $step.Name
+                        Status = "Completed with parsing errors"
+                        OutputFile = $outputFile
+                        ExecutionTime = "${executionTime}s"
+                        Error = "Result parsing failed: $($_.Exception.Message)"
+                    }
+                }
+            } else {
+                throw "Output file not created: $outputFile"
             }
         }
-        Write-Host "✅ Dependency analysis completed successfully" -ForegroundColor Green
-    }
-    catch {
-        Write-Warning "❌ Dependency analysis failed: $($_.Exception.Message)"
-        $analysisResults.AnalysisSteps += @{
-            Step = "Dependency Analysis"
-            Status = "Failed"
-            Error = $_.Exception.Message
+        catch {
+            Write-Warning "❌ $($step.Name) failed: $($_.Exception.Message)"
+            $analysisResults.AnalysisSteps += @{
+                Step = $step.Name
+                Status = "Failed"
+                Error = $_.Exception.Message
+                ExecutionTime = if ($stopwatch) { "$([Math]::Round($stopwatch.ElapsedMilliseconds / 1000, 2))s" } else { "Unknown" }
+            }
         }
     }
     
-    # Step 2: Duplicate Detection
-    Write-Host "`n--- STEP 2: DUPLICATE DETECTION ---" -ForegroundColor Magenta
-    try {
-        $dupOutputFile = Join-Path $OutputDirectory "duplicate-analysis.json"
-        & "$PSScriptRoot\02-detect-duplicates.ps1" -ScriptDirectory $ScriptDirectory -OutputFile $dupOutputFile
-        
-        if (Test-Path $dupOutputFile) {
-            $dupResults = Get-Content $dupOutputFile | ConvertFrom-Json
-            $analysisResults.AnalysisSteps += @{
-                Step = "Duplicate Detection"
-                Status = "Success"
-                OutputFile = $dupOutputFile
-                Issues = @{
-                    ExactDuplicates = $dupResults.Statistics.ExactDuplicates
-                    SimilarNames = $dupResults.Statistics.SimilarNames
-                }
-                Recommendations = $dupResults.Recommendations
-            }
-            
-            # Add to overall counts
-            $analysisResults.OverallResults.CriticalIssues += $dupResults.Statistics.ExactDuplicates
-            $analysisResults.OverallResults.WarningIssues += $dupResults.Statistics.SimilarNames
-        }
-        Write-Host "✅ Duplicate detection completed successfully" -ForegroundColor Green
-    }
-    catch {
-        Write-Warning "❌ Duplicate detection failed: $($_.Exception.Message)"
-        $analysisResults.AnalysisSteps += @{
-            Step = "Duplicate Detection"
-            Status = "Failed"
-            Error = $_.Exception.Message
-        }
-    }
+    Write-Host "`n--- ANALYSIS COMPLETE - GENERATING SUMMARY ---" -ForegroundColor Magenta
     
     # Calculate total issues
     $analysisResults.OverallResults.TotalIssues = 
         $analysisResults.OverallResults.CriticalIssues + 
         $analysisResults.OverallResults.WarningIssues + 
-        $analysisResults.OverallResults.InfoIssues
+        $analysisResults.OverallResults.InfoIssues +
+        $analysisResults.OverallResults.PerformanceIssues
     
     # Generate executive summary
     $analysisResults.Summary += "=== SCRIPT SCRUB ANALYSIS SUMMARY ==="
     $analysisResults.Summary += "Analysis Date: $($analysisResults.Timestamp)"
     $analysisResults.Summary += "Scripts Directory: $ScriptDirectory"
     $analysisResults.Summary += ""
+    $analysisResults.Summary += "ANALYSIS STEPS COMPLETED:"
+    foreach ($step in $analysisResults.AnalysisSteps) {
+        $status = if ($step.Status -eq "Success") { "✅" } else { "❌" }
+        $analysisResults.Summary += "  $status $($step.Step) - $($step.Status)"
+    }
+    $analysisResults.Summary += ""
     $analysisResults.Summary += "ISSUE SUMMARY:"
     $analysisResults.Summary += "  Total Issues: $($analysisResults.OverallResults.TotalIssues)"
     $analysisResults.Summary += "  Critical Issues: $($analysisResults.OverallResults.CriticalIssues)"
     $analysisResults.Summary += "  Warning Issues: $($analysisResults.OverallResults.WarningIssues)"
     $analysisResults.Summary += "  Info Issues: $($analysisResults.OverallResults.InfoIssues)"
+    $analysisResults.Summary += "  Performance Issues: $($analysisResults.OverallResults.PerformanceIssues)"
+    $analysisResults.Summary += "  Total Recommendations: $($analysisResults.OverallResults.TotalRecommendations)"
     $analysisResults.Summary += ""
     
     if ($analysisResults.OverallResults.TotalIssues -eq 0) {

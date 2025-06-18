@@ -1,9 +1,0 @@
-export interface EffectLayer{ name:string; weight:number; params?:Record<string,unknown> }
-export interface IEffectComposerService{
-  addLayer(layer:EffectLayer):void
-  removeLayer(name:string):void
-  play():void
-  stop():void
-  update(delta:number):void
-  dispose():void
-}

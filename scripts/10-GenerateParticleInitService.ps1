@@ -1,4 +1,4 @@
-# 10-GenerateParticleInitService.ps1
+﻿# 10-GenerateParticleInitService.ps1
 # Generates ParticleInitService to extract initialization logic from ParticleService
 # Addresses critical gap: ParticleInitService extraction per audit requirements
 
@@ -6,7 +6,7 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]$ProjectRoot = (Get-Location).Path,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$WhatIf
 )
@@ -128,7 +128,7 @@ import { Vector3 } from 'three';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '@/shared/utils/logger';
 import { rngService } from '@/domains/rng/services/RNGService';
-import { 
+import {
   IParticleInitService,
   IParticleInitConfig,
   IParticle,
@@ -165,7 +165,7 @@ export class ParticleInitService implements IParticleInitService {
    */
   initializeParticle(config: IParticleInitConfig): IParticle {
     this.#validateNotDisposed();
-    
+
     if (!this.validateInitConfig(config)) {
       throw new Error('Invalid particle initialization configuration');
     }
@@ -183,7 +183,7 @@ export class ParticleInitService implements IParticleInitService {
     };
 
     this.#particleCount++;
-    
+
     logger.debug('Particle initialized', {
       id: particle.id,
       position: particle.position,
@@ -199,14 +199,14 @@ export class ParticleInitService implements IParticleInitService {
    */
   initializeFromBlockData(blockData: any): IParticle {
     this.#validateNotDisposed();
-    
+
     if (!blockData || !blockData.nonce) {
       throw new Error('Invalid block data for particle initialization');
     }
 
     // Seed RNG with block nonce for deterministic traits
     const seededRng = rngService.createSeededGenerator(blockData.nonce);
-    
+
     const config: IParticleInitConfig = {
       position: new Vector3(
         seededRng() * 100 - 50,
@@ -238,9 +238,9 @@ export class ParticleInitService implements IParticleInitService {
    */
   createRandomParticle(bounds: BoundingBox): IParticle {
     this.#validateNotDisposed();
-    
+
     const rng = rngService.getRandom();
-    
+
     const config: IParticleInitConfig = {
       position: new Vector3(
         bounds.min.x + rng() * (bounds.max.x - bounds.min.x),
@@ -266,13 +266,13 @@ export class ParticleInitService implements IParticleInitService {
    */
   validateInitConfig(config: IParticleInitConfig): boolean {
     this.#validateNotDisposed();
-    
+
     if (!config) return false;
     if (!config.position || !config.velocity) return false;
     if (config.mass <= 0 || config.radius <= 0) return false;
     if (config.lifespan <= 0) return false;
     if (!config.traits) return false;
-    
+
     return true;
   }
 
@@ -282,7 +282,7 @@ export class ParticleInitService implements IParticleInitService {
   #generateTraitsFromBlockData(blockData: any, rng: () => number): ParticleTraits {
     const hash = blockData.hash || '';
     const hashValue = parseInt(hash.substring(0, 8), 16) || 0;
-    
+
     return {
       color: `hsl($\{hashValue % 360}, 70%, 50%)`,
       opacity: 0.3 + (rng() * 0.7),
@@ -314,7 +314,7 @@ export class ParticleInitService implements IParticleInitService {
     logger.info('ParticleInitService disposing', {
       totalParticlesCreated: this.#particleCount
     });
-    
+
     this.#isDisposed = true;
     this.#particleCount = 0;
     ParticleInitService.#instance = null;
@@ -349,4 +349,4 @@ Write-InfoLog "  Service: $particleInitServiceFile"
 Write-InfoLog ""
 
 Write-SuccessLog "Particle Initialization Service generation completed!"
-Write-InfoLog "Gap 2 resolved: ParticleInitService extracted from ParticleService per audit" 
+Write-InfoLog "Gap 2 resolved: ParticleInitService extracted from ParticleService per audit"

@@ -1,36 +1,93 @@
 ﻿{
-    "ScriptDirectory":  "..",
-    "Timestamp":  "2025-06-17 20:11:31",
+    "ScriptDirectory":  "D:\\Protozoa\\scripts",
+    "Timestamp":  "2025-06-18 03:50:08",
     "OverallResults":  {
-                           "InfoIssues":  0,
-                           "WarningIssues":  0,
                            "CriticalIssues":  0,
-                           "TotalIssues":  0
+                           "InfoIssues":  1,
+                           "TotalRecommendations":  113,
+                           "WarningIssues":  59,
+                           "PerformanceIssues":  0,
+                           "TotalIssues":  60
                        },
     "AnalysisSteps":  [
                           {
+                              "ExecutionTime":  "0.38s",
                               "Step":  "Dependency Analysis",
-                              "Error":  "At D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1:113 char:85\r\n+ ...  (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path\r\n+                                                                    ~~~~~~\nUnexpected token \u0027?.Path\u0027 in expression or statement.",
+                              "Error":  "Dependency analysis failed: Could not open the alternate data stream \u0027\\Protozoa\\scripts\\script_scrub\\results\\dependency-analysis.json\u0027 of the file \u0027D:\\Protozoa\\scripts\\script_scrub\\D\u0027.",
                               "Status":  "Failed"
                           },
                           {
+                              "ExecutionTime":  "167.27s",
                               "Step":  "Duplicate Detection",
-                              "Error":  "At D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1:262 char:85\r\n+ ...  (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path\r\n+                                                                    ~~~~~~\nUnexpected token \u0027?.Path\u0027 in expression or statement.",
+                              "Error":  "Duplicate analysis failed: Could not open the alternate data stream \u0027\\Protozoa\\scripts\\script_scrub\\results\\duplicate-analysis.json\u0027 of the file \u0027D:\\Protozoa\\scripts\\script_scrub\\D\u0027.",
                               "Status":  "Failed"
+                          },
+                          {
+                              "Step":  "Resource Usage Analysis",
+                              "OutputFile":  "D:\\Protozoa\\scripts\\script_scrub\\results\\resource-usage-analysis.json",
+                              "ExecutionTime":  "0.78s",
+                              "Recommendations":  [
+                                                      "WARNING: 3 scripts have high memory usage risk - consider optimization",
+                                                      "INFO: 1 scripts require network connectivity - ensure internet access during execution",
+                                                      "CRITICAL: 1 scripts require administrator privileges - run as administrator",
+                                                      "INFO: 1 scripts connect to databases - ensure database connectivity and credentials"
+                                                  ],
+                              "Status":  "Success",
+                              "Issues":  {
+                                             "NetworkDependentScripts":  1,
+                                             "HighMemoryRiskScripts":  3
+                                         }
+                          },
+                          {
+                              "Step":  "Code Quality Analysis",
+                              "OutputFile":  "D:\\Protozoa\\scripts\\script_scrub\\results\\code-quality-analysis.json",
+                              "ExecutionTime":  "0.82s",
+                              "Recommendations":  [
+
+                                                  ],
+                              "Status":  "Success",
+                              "Issues":  {
+                                             "FixableIssues":  9,
+                                             "WarningIssues":  56,
+                                             "ErrorIssues":  0
+                                         }
+                          },
+                          {
+                              "Step":  "Performance Analysis",
+                              "OutputFile":  "D:\\Protozoa\\scripts\\script_scrub\\results\\performance-analysis.json",
+                              "ExecutionTime":  "287.82s",
+                              "Recommendations":  [
+
+                                                  ],
+                              "Status":  "Success",
+                              "Issues":  {
+                                             "HighMemoryScripts":  0,
+                                             "PoorPerformanceScripts":  0,
+                                             "TotalRecommendations":  113
+                                         }
                           }
                       ],
     "OutputDirectory":  "D:\\Protozoa\\scripts\\script_scrub\\results",
     "Summary":  [
                     "=== SCRIPT SCRUB ANALYSIS SUMMARY ===",
-                    "Analysis Date: 2025-06-17 20:11:31",
-                    "Scripts Directory: ..",
+                    "Analysis Date: 2025-06-18 03:50:08",
+                    "Scripts Directory: D:\\Protozoa\\scripts",
+                    "",
+                    "ANALYSIS STEPS COMPLETED:",
+                    "  âŒ Dependency Analysis - Failed",
+                    "  âŒ Duplicate Detection - Failed",
+                    "  âœ… Resource Usage Analysis - Success",
+                    "  âœ… Code Quality Analysis - Success",
+                    "  âœ… Performance Analysis - Success",
                     "",
                     "ISSUE SUMMARY:",
-                    "  Total Issues: 0",
+                    "  Total Issues: 60",
                     "  Critical Issues: 0",
-                    "  Warning Issues: 0",
-                    "  Info Issues: 0",
+                    "  Warning Issues: 59",
+                    "  Info Issues: 1",
+                    "  Performance Issues: 0",
+                    "  Total Recommendations: 113",
                     "",
-                    "ðŸŽ‰ EXCELLENT: No critical issues found! Scripts are ready for execution."
+                    "âš ï¸ WARNING: Found 59 warning issues that should be reviewed."
                 ]
 }

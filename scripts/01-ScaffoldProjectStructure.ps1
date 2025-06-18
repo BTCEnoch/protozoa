@@ -1,4 +1,4 @@
-# 01-ScaffoldProjectStructure.ps1
+﻿# 01-ScaffoldProjectStructure.ps1
 # Creates domain-driven directory structure with enhanced error handling
 # Referenced from build_design.md Section 1 - "Project Structure and Scaffolding"
 
@@ -8,7 +8,7 @@
 param(
     [Parameter(Mandatory = $false)]
     [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$Force
 )
@@ -26,15 +26,15 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Project Structure Scaffolding - Phase 1"
-    
+
     # Validate project root
     if (-not (Test-Path $ProjectRoot)) {
         throw "Project root does not exist: $ProjectRoot"
     }
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Working in project root: $ProjectRoot"
-    
+
     # Get domain list from centralized configuration
     $domains = Get-DomainList
     Write-InfoLog "Scaffolding domains: $($domains -join ', ')"
@@ -61,13 +61,13 @@ foreach ($domain in $domains) {
     $domainPaths = @(
         "src/domains/$domain",
         "src/domains/$domain/services",
-        "src/domains/$domain/types", 
+        "src/domains/$domain/types",
         "src/domains/$domain/data",
         "tests/$domain",
         "tests/$domain/services",
         "tests/$domain/types"
     )
-    
+
     New-DirectoryTree -Paths $domainPaths
     Write-SuccessLog "Domain scaffolded: $domain"
 }
@@ -189,7 +189,7 @@ interface EnvironmentConfig {
 function detectEnvironment(): EnvironmentConfig {
   const isDev = process.env.NODE_ENV === 'development';
   const isProd = process.env.NODE_ENV === 'production';
-  
+
   return {
     apiBaseUrl: isDev ? 'https://ordinals.com' : '',
     isProduction: isProd,
@@ -269,7 +269,7 @@ Write-InfoLog "  - TypeScript path aliases configured"
 
     Write-SuccessLog "Project structure scaffolding complete!"
     Write-InfoLog "Next: Run 02-GenerateDomainStubs.ps1 to create service skeletons"
-    
+
     exit 0
 }
 catch {
@@ -283,4 +283,4 @@ finally {
     catch {
         # Ignore pop-location errors
     }
-} 
+}

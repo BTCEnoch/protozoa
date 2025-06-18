@@ -1,11 +1,15 @@
 ﻿{
+    "SimilarFunctions":  [
+
+                         ],
     "ScriptDirectory":  "D:\\Protozoa\\scripts",
-    "Timestamp":  "2025-06-17 16:47:33",
+    "Timestamp":  "2025-06-18 03:33:08",
     "Statistics":  {
+                       "SimilarFunctions":  0,
                        "ExactDuplicates":  0,
                        "SimilarNames":  0,
-                       "TotalFunctions":  2,
-                       "TotalScripts":  59
+                       "TotalFunctions":  14,
+                       "TotalScripts":  68
                    },
     "SimilarNames":  [
 

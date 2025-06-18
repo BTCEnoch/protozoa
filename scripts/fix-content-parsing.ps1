@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 param([switch]$WhatIf = $false)
 
 Write-Host "🔧 Fixing PowerShell parsing issues with HERE-STRING content..." -ForegroundColor Cyan
@@ -6,7 +6,7 @@ Write-Host "🔧 Fixing PowerShell parsing issues with HERE-STRING content..." -
 # Get scripts that failed due to parsing issues
 $problemScripts = @(
     "17-GenerateEnvironmentConfig.ps1",
-    "18a-SetupLoggingService.ps1", 
+    "18a-SetupLoggingService.ps1",
     "29-SetupDataValidationLayer.ps1",
     "32-SetupParticleLifecycleManagement.ps1",
     "33-ImplementSwarmIntelligence.ps1",
@@ -40,23 +40,23 @@ foreach ($scriptName in $problemScripts) {
         Write-Host "Skipping $scriptName - not found" -ForegroundColor Yellow
         continue
     }
-    
+
     Write-Host "Processing: $scriptName" -ForegroundColor Yellow
-    
+
     $content = Get-Content $scriptPath -Raw
     $fixesInScript = 0
-    
+
     # Convert all double-quoted HERE-STRINGs to single-quoted ones
     # This prevents PowerShell from parsing the content as PowerShell code
-    
+
     $lines = $content -split "`r`n|`n"
     $newLines = @()
     $inHereString = $false
     $hereStringStartLine = -1
-    
+
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
-        
+
         if (-not $inHereString -and $line -match '^\s*\$\w+\s*=\s*@"$') {
             # Start of double-quoted HERE-STRING - convert to single-quoted
             $inHereString = $true
@@ -65,7 +65,7 @@ foreach ($scriptName in $problemScripts) {
             Write-Host "    Found HERE-STRING start at line $($i + 1)" -ForegroundColor Cyan
             continue
         }
-        
+
         if ($inHereString -and $line -match '^"@\s*$') {
             # End of double-quoted HERE-STRING - convert to single-quoted
             $inHereString = $false
@@ -75,7 +75,7 @@ foreach ($scriptName in $problemScripts) {
             $hereStringStartLine = -1
             continue
         }
-        
+
         if ($inHereString) {
             # Inside HERE-STRING - escape any single quotes by doubling them
             $escapedLine = $line -replace [char]39, ([char]39 + [char]39)
@@ -85,17 +85,17 @@ foreach ($scriptName in $problemScripts) {
             $newLines += $line
         }
     }
-    
+
     # Check for unclosed HERE-STRING
     if ($inHereString) {
         Write-Host "    WARNING: Unclosed HERE-STRING starting at line $($hereStringStartLine + 1)" -ForegroundColor Red
     }
-    
+
     if ($fixesInScript -gt 0) {
         $content = $newLines -join "`r`n"
         $scriptsModified++
         $totalFixed += $fixesInScript
-        
+
         if ($WhatIf) {
             Write-Host "  Would modify $scriptName" -ForegroundColor Green
         } else {

@@ -6,21 +6,21 @@ import { IFormationService } from '../types';
 import { createServiceLogger } from '@/shared/lib/logger';
 
 /**
- * FormationService â€“ manages formation domain operations.
+ * FormationService – manages formation domain operations.
  * Auto-generated stub following .cursorrules singleton pattern.
  * TODO: Implement actual logic in Phase 4.
  */
 class FormationService implements IFormationService {
   static #instance: FormationService | null = null;
   #log = createServiceLogger('FORMATION_SERVICE');
-  
+
   /**
    * Private constructor enforces singleton pattern.
    */
   private constructor() {
     this.#log.info('FormationService initialized');
   }
-  
+
   /**
    * Singleton accessor - returns existing instance or creates new one.
    */
@@ -30,9 +30,9 @@ class FormationService implements IFormationService {
     }
     return FormationService.#instance;
   }
-  
+
   // TODO: Implement interface methods here
-  
+
   /**
    * Disposes of service resources and resets singleton instance.
    */

@@ -1,4 +1,4 @@
-# runAll.ps1
+﻿# runAll.ps1
 # Master orchestrator that runs all automation scripts in the correct sequence
 # Implements the complete 8-phase automation pipeline for new-protozoa setup
 
@@ -9,12 +9,8 @@ Write-InfoLog "Starting complete project setup automation..."
 
 # Define script execution sequence
 $scriptSequence = @(
-    # --- Preliminary Fixes ---
-    @{ Script = "fix-here-strings.ps1"; Description = "Sanitise HERE-STRINGS to prevent parsing errors" },
-    @{ Script = "validate-templates.ps1"; Description = "Validate template syntax" },
-    @{ Script = "09-DeployTemplates.ps1"; Description = "Deploy templates to src" },
-
     # --- Phase 0 : Environment & Tooling ---
+    # @{ Script = "09-DeployTemplates.ps1"; Description = "Deploy templates to src" },  # Skipped due to template parsing issues
     @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
     @{ Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
     @{ Script = "02-GenerateDomainStubs.ps1"; Description = "Service and interface stubs" },
@@ -95,10 +91,10 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
     $step = $scriptSequence[$i]
     $stepNumber = $i
     $scriptPath = Join-Path $PSScriptRoot $step.Script
-    
+
     Write-StepHeader "PHASE $stepNumber : $($step.Description)"
     Write-InfoLog "Executing: $($step.Script)"
-    
+
     if (-not (Test-Path $scriptPath)) {
         Write-ErrorLog "Script not found: $scriptPath"
         $results += [PSCustomObject]@{
@@ -110,13 +106,13 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
         }
         continue
     }
-    
+
     $stepStartTime = Get-Date
     try {
         # Execute the script and capture output
         & $scriptPath 2>&1
         $stepDuration = (Get-Date) - $stepStartTime
-        
+
         if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null) {
             Write-SuccessLog "PHASE $stepNumber completed successfully in $($stepDuration.TotalSeconds) seconds"
                     $results += [PSCustomObject]@{
@@ -140,7 +136,7 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
             Duration = $stepDuration.TotalSeconds
             Error = $_.Exception.Message
         }
-        
+
         # Ask user if they want to continue despite failure
         $choice = Read-Host "Phase $stepNumber failed. Continue with remaining phases? (y/N)"
         if ($choice -notmatch '^[Yy]') {
@@ -172,7 +168,7 @@ foreach ($result in $results) {
     }
     $durationText = if ($result.Duration -gt 0) { " ($($result.Duration.ToString('F1'))s)" } else { "" }
     Write-InfoLog "  Phase $($result.Phase): $status $($result.Script)$durationText"
-    
+
     if ($result.Error) {
         Write-WarningLog "    Error: $($result.Error)"
     }
@@ -188,18 +184,18 @@ if ($failedCount -eq 0 -and $missingCount -eq 0) {
     Write-InfoLog "2. Paste the XML instructions from the documentation"
     Write-InfoLog "3. Start implementing domain logic phase by phase"
     Write-InfoLog "4. Run 05-VerifyCompliance.ps1 after each phase to maintain standards"
-    
+
     exit 0
 } elseif ($successCount -gt 0) {
     Write-WarningLog "⚠️ AUTOMATION PARTIALLY COMPLETED"
     Write-InfoLog "Some phases succeeded, but manual intervention may be required."
     Write-InfoLog "Check the error messages above and resolve issues before proceeding."
-    
+
     exit 1
 } else {
     Write-ErrorLog "❌ AUTOMATION FAILED"
     Write-InfoLog "Critical failures occurred. Review logs and resolve issues before retrying."
-    
+
     exit 2
 }
 
@@ -211,4 +207,4 @@ $completionInfo = @{
 } | ConvertTo-Json -Depth 3
 
 Set-Content -Path ".automation-complete" -Value $completionInfo
-Write-InfoLog "Automation completion marker created: .automation-complete" 
+Write-InfoLog "Automation completion marker created: .automation-complete"

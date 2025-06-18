@@ -27,14 +27,26 @@ $ErrorActionPreference = "Stop"
 function Get-LevenshteinDistance {
     param(
         [string]$String1,
-        [string]$String2
+        [string]$String2,
+        [int]$MaxLength = 1000  # Limit comparison to first 1000 chars for performance
     )
     
     if ([string]::IsNullOrEmpty($String1)) { return $String2.Length }
     if ([string]::IsNullOrEmpty($String2)) { return $String1.Length }
     
+    # Truncate strings if they're too long for performance
+    if ($String1.Length -gt $MaxLength) { $String1 = $String1.Substring(0, $MaxLength) }
+    if ($String2.Length -gt $MaxLength) { $String2 = $String2.Substring(0, $MaxLength) }
+    
     $len1 = $String1.Length
     $len2 = $String2.Length
+    
+    # Early termination for very different lengths
+    $lengthDiff = [Math]::Abs($len1 - $len2)
+    $maxLen = [Math]::Max($len1, $len2)
+    if ($maxLen -gt 0 -and ($lengthDiff / $maxLen) -gt 0.5) {
+        return $maxLen  # Strings are too different in length
+    }
     
     # Create matrix as array of arrays to avoid PowerShell multidimensional array syntax issues
     $matrix = @()
@@ -181,9 +193,23 @@ try {
     # Detect similar function bodies using Levenshtein distance
     Write-Host "Detecting similar function bodies (>70% similarity)..." -ForegroundColor Green
     $similarFunctions = @()
-    
+
+    $totalComparisons = [Math]::Floor(($allFunctions.Count * ($allFunctions.Count - 1)) / 2)
+    $currentComparison = 0
+    $progressInterval = [Math]::Max(1, [Math]::Floor($totalComparisons / 20)) # Update every 5%
+
+    Write-Host "Will perform $totalComparisons function comparisons..." -ForegroundColor Yellow
+
     for ($i = 0; $i -lt $allFunctions.Count; $i++) {
         for ($j = $i + 1; $j -lt $allFunctions.Count; $j++) {
+            $currentComparison++
+            
+            # Progress logging every N comparisons
+            if ($currentComparison % $progressInterval -eq 0 -or $currentComparison -eq $totalComparisons) {
+                $percentComplete = [Math]::Round(($currentComparison / $totalComparisons) * 100, 1)
+                Write-Host "  Progress: $percentComplete% ($currentComparison/$totalComparisons)" -ForegroundColor Gray
+            }
+            
             $func1 = $allFunctions[$i]
             $func2 = $allFunctions[$j]
             
@@ -197,24 +223,35 @@ try {
                 continue
             }
             
-            $similarity = Get-SimilarityPercentage -String1 $func1.Body -String2 $func2.Body
+            # Skip very large functions to avoid performance issues
+            if ($func1.BodyLength -gt 5000 -or $func2.BodyLength -gt 5000) {
+                continue
+            }
             
-            if ($similarity -ge 70) {
-                $similarFunctions += @{
-                    Function1 = @{
-                        Name = $func1.Name
-                        FileName = $func1.FileName
-                        StartLine = $func1.StartLine
-                        BodyLength = $func1.BodyLength
+            try {
+                $similarity = Get-SimilarityPercentage -String1 $func1.Body -String2 $func2.Body
+                
+                if ($similarity -ge 70) {
+                    Write-Host "  Found similarity: $($func1.Name) vs $($func2.Name) = $similarity%" -ForegroundColor Green
+                    $similarFunctions += @{
+                        Function1 = @{
+                            Name = $func1.Name
+                            FileName = $func1.FileName
+                            StartLine = $func1.StartLine
+                            BodyLength = $func1.BodyLength
+                        }
+                        Function2 = @{
+                            Name = $func2.Name
+                            FileName = $func2.FileName
+                            StartLine = $func2.StartLine
+                            BodyLength = $func2.BodyLength
+                        }
+                        SimilarityPercentage = $similarity
                     }
-                    Function2 = @{
-                        Name = $func2.Name
-                        FileName = $func2.FileName
-                        StartLine = $func2.StartLine
-                        BodyLength = $func2.BodyLength
-                    }
-                    SimilarityPercentage = $similarity
                 }
+            }
+            catch {
+                Write-Warning "Failed to compare $($func1.Name) vs $($func2.Name): $($_.Exception.Message)"
             }
         }
     }

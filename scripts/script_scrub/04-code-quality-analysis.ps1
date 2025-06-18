@@ -36,20 +36,24 @@ function Test-AutomaticVariableAssignment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     foreach ($autoVar in $AutomaticVariables) {
         # Pattern to find assignments to automatic variables
         $pattern = "\`$$autoVar\s*="
-        $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
+        $regexMatches = [regex]::Matches($Content, $pattern, 'IgnoreCase')
         
         foreach ($match in $regexMatches) {
-            $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+            $lineNumber = ($Content.Substring(0, $match.Index) -split "`n").Count
             $issues += @{
                 RuleName = 'PSAvoidAssignmentToAutomaticVariable'
                 Severity = 'Warning'
@@ -70,11 +74,15 @@ function Test-NullComparison {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     # Pattern to find incorrect null comparisons (variable -eq $null instead of $null -eq variable)
@@ -86,10 +94,10 @@ function Test-NullComparison {
     )
     
     foreach ($pattern in $patterns) {
-        $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
+        $regexMatches = [regex]::Matches($Content, $pattern, 'IgnoreCase')
         
         foreach ($match in $regexMatches) {
-            $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+            $lineNumber = ($Content.Substring(0, $match.Index) -split "`n").Count
             $issues += @{
                 RuleName = 'PSPossibleIncorrectComparisonWithNull'
                 Severity = 'Warning'
@@ -110,19 +118,23 @@ function Test-SwitchParameterDefaults {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     # Pattern to find switch parameters with default values
     $pattern = '\[switch\]\s*\$\w+\s*=\s*(?:\$true|\$false)'
-    $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
+    $regexMatches = [regex]::Matches($Content, $pattern, 'IgnoreCase')
     
     foreach ($match in $regexMatches) {
-        $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+        $lineNumber = ($Content.Substring(0, $match.Index) -split "`n").Count
         $issues += @{
             RuleName = 'PSAvoidDefaultValueSwitchParameter'
             Severity = 'Warning'
@@ -142,11 +154,15 @@ function Test-UnapprovedVerbs {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     # Get approved verbs
@@ -154,14 +170,14 @@ function Test-UnapprovedVerbs {
     
     # Pattern to find function definitions
     $functionPattern = 'function\s+(\w+)-(\w+)'
-    $regexMatches = [regex]::Matches($content, $functionPattern, 'IgnoreCase')
+    $regexMatches = [regex]::Matches($Content, $functionPattern, 'IgnoreCase')
     
     foreach ($match in $regexMatches) {
         $verb = $match.Groups[1].Value
         $noun = $match.Groups[2].Value
         
         if ($approvedVerbs -notcontains $verb) {
-            $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+            $lineNumber = ($Content.Substring(0, $match.Index) -split "`n").Count
             $issues += @{
                 RuleName = 'PSUseApprovedVerbs'
                 Severity = 'Warning'
@@ -182,19 +198,23 @@ function Test-EmptyCatchBlocks {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     # Pattern to find empty catch blocks
     $pattern = 'catch\s*\{\s*\}'
-    $regexMatches = [regex]::Matches($content, $pattern, 'IgnoreCase')
+    $regexMatches = [regex]::Matches($Content, $pattern, 'IgnoreCase')
     
     foreach ($match in $regexMatches) {
-        $lineNumber = ($content.Substring(0, $match.Index) -split "`n").Count
+        $lineNumber = ($Content.Substring(0, $match.Index) -split "`n").Count
         $issues += @{
             RuleName = 'PSAvoidEmptyCatchBlock'
             Severity = 'Warning'
@@ -214,15 +234,19 @@ function Test-UsingShouldProcess {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath
+        [string]$ScriptPath,
+        [Parameter(Mandatory = $false)]
+        [string]$Content
     )
     
     $issues = @()
-    $content = Get-Content -Path $ScriptPath -Raw
+    if (-not $Content) {
+        $Content = Get-Content -Path $ScriptPath -Raw
+    }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
     
     # Check if script uses SupportsShouldProcess but doesn't call ShouldProcess
-    if ($content -match 'SupportsShouldProcess' -and $content -notmatch '\$PSCmdlet\.ShouldProcess') {
+    if ($Content -match 'SupportsShouldProcess' -and $Content -notmatch '\$PSCmdlet\.ShouldProcess') {
         $issues += @{
             RuleName = 'PSUseShouldProcessForStateChangingFunctions'
             Severity = 'Warning'
@@ -259,6 +283,7 @@ try {
             WarningIssues = 0
             InformationIssues = 0
             FixableIssues = 0
+            SkippedLargeFiles = 0
         }
         Issues = @()
         IssuesByScript = @{}
@@ -266,7 +291,8 @@ try {
         Summary = @()
     }
     
-    Write-Host "Running quality checks..." -ForegroundColor Green
+    Write-Host "Running quality checks with progress logging..." -ForegroundColor Green
+    Write-Host "Will analyze $($scripts.Count) scripts..." -ForegroundColor Yellow
     
     # Define quality test functions
     $qualityTests = @(
@@ -278,55 +304,86 @@ try {
         @{ Name = 'UsingShouldProcess'; Function = 'Test-UsingShouldProcess' }
     )
     
-    # Run quality tests on each script
+    # Run quality tests on each script with progress logging
+    $currentScript = 0
+    $progressInterval = [Math]::Max(1, [Math]::Floor($scripts.Count / 10)) # Update every 10%
+    
     foreach ($script in $scripts) {
-        Write-Host "  Processing: $($script.Name)" -ForegroundColor Gray
-        $scriptIssues = @()
+        $currentScript++
         
-        foreach ($test in $qualityTests) {
-            try {
-                $testFunction = Get-Item "function:$($test.Function)"
-                $issues = & $testFunction -ScriptPath $script.FullName
-                $scriptIssues += $issues
-            }
-            catch {
-                Write-Warning "Failed to run $($test.Name) test on $($script.Name): $($_.Exception.Message)"
-            }
+        # Progress logging
+        if ($currentScript % $progressInterval -eq 0 -or $currentScript -eq $scripts.Count) {
+            $percentComplete = [Math]::Round(($currentScript / $scripts.Count) * 100, 1)
+            Write-Host "  Progress: $percentComplete% ($currentScript/$($scripts.Count)) - Processing: $($script.Name)" -ForegroundColor Gray
+        } else {
+            Write-Host "  Processing ($currentScript/$($scripts.Count)): $($script.Name)" -ForegroundColor DarkGray
         }
         
-        # Filter by severity if specified
-        if ($Severity -ne 'All') {
-            $scriptIssues = $scriptIssues | Where-Object { $_.Severity -eq $Severity }
+        try {
+            # Check file size and skip if too large to prevent performance issues
+            $fileInfo = Get-Item -Path $script.FullName
+            if ($fileInfo.Length -gt 1MB) {
+                Write-Warning "Skipping large file: $($fileInfo.Name) ($([Math]::Round($fileInfo.Length/1KB))KB)"
+                $analysisResults.Statistics.SkippedLargeFiles++
+                continue
+            }
+            
+            $scriptIssues = @()
+            
+            # Read file content once and pass to all tests
+            $content = Get-Content -Path $script.FullName -Raw
+            if ([string]::IsNullOrEmpty($content)) {
+                continue
+            }
+            
+            foreach ($test in $qualityTests) {
+                try {
+                    $testFunction = Get-Item "function:$($test.Function)"
+                    $issues = & $testFunction -ScriptPath $script.FullName -Content $content
+                    $scriptIssues += $issues
+                }
+                catch {
+                    Write-Warning "Failed to run $($test.Name) test on $($script.Name): $($_.Exception.Message)"
+                }
+            }
+            
+            # Filter by severity if specified
+            if ($Severity -ne 'All') {
+                $scriptIssues = $scriptIssues | Where-Object { $_.Severity -eq $Severity }
+            }
+            
+            # Filter by fixable issues if specified
+            if ($FixableIssuesOnly) {
+                $scriptIssues = $scriptIssues | Where-Object { $_.Fixable -eq $true }
+            }
+            
+            # Add to results
+            $analysisResults.Issues += $scriptIssues
+            $analysisResults.IssuesByScript[$script.BaseName] = $scriptIssues
+            
+            # Update statistics
+            foreach ($issue in $scriptIssues) {
+                $analysisResults.Statistics.TotalIssues++
+                
+                switch ($issue.Severity) {
+                    'Error' { $analysisResults.Statistics.ErrorIssues++ }
+                    'Warning' { $analysisResults.Statistics.WarningIssues++ }
+                    'Information' { $analysisResults.Statistics.InformationIssues++ }
+                }
+                
+                if ($issue.Fixable) {
+                    $analysisResults.Statistics.FixableIssues++
+                }
+                
+                # Group by rule
+                if (-not $analysisResults.IssuesByRule.ContainsKey($issue.RuleName)) {
+                    $analysisResults.IssuesByRule[$issue.RuleName] = @()
+                }
+                $analysisResults.IssuesByRule[$issue.RuleName] += $issue
+            }
         }
-        
-        # Filter by fixable issues if specified
-        if ($FixableIssuesOnly) {
-            $scriptIssues = $scriptIssues | Where-Object { $_.Fixable -eq $true }
-        }
-        
-        # Add to results
-        $analysisResults.Issues += $scriptIssues
-        $analysisResults.IssuesByScript[$script.BaseName] = $scriptIssues
-        
-        # Update statistics
-        foreach ($issue in $scriptIssues) {
-            $analysisResults.Statistics.TotalIssues++
-            
-            switch ($issue.Severity) {
-                'Error' { $analysisResults.Statistics.ErrorIssues++ }
-                'Warning' { $analysisResults.Statistics.WarningIssues++ }
-                'Information' { $analysisResults.Statistics.InformationIssues++ }
-            }
-            
-            if ($issue.Fixable) {
-                $analysisResults.Statistics.FixableIssues++
-            }
-            
-            # Group by rule
-            if (-not $analysisResults.IssuesByRule.ContainsKey($issue.RuleName)) {
-                $analysisResults.IssuesByRule[$issue.RuleName] = @()
-            }
-            $analysisResults.IssuesByRule[$issue.RuleName] += $issue
+        catch {
+            Write-Warning "Failed to analyze $($script.Name): $($_.Exception.Message)"
         }
     }
     

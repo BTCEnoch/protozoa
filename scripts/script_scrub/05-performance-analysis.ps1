@@ -67,10 +67,12 @@ function Measure-ScriptPerformance {
     }
     
     try {
-        Write-Host "    Measuring performance for $($performanceData.ScriptName)..." -ForegroundColor Gray
+        Write-Host "    Measuring performance for $($performanceData.ScriptName) ($Runs run(s))..." -ForegroundColor Gray
         
         for ($i = 1; $i -le $Runs; $i++) {
-            Write-Host "      Run $i/$Runs..." -ForegroundColor DarkGray
+            if ($Runs -gt 1) {
+                Write-Host "      Run $i/$Runs..." -ForegroundColor DarkGray
+            }
             
             # Get initial memory
             $initialMemory = [System.GC]::GetTotalMemory($false)
@@ -79,59 +81,79 @@ function Measure-ScriptPerformance {
             $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             
             try {
-                # Execute script with timeout
+                # Execute script with timeout using a more efficient approach
                 $job = Start-Job -ScriptBlock {
                     param($ScriptPath)
-                    & $ScriptPath -WhatIf 2>$null
+                    try {
+                        # Use -WhatIf and capture limited output to reduce overhead
+                        $output = & $ScriptPath -WhatIf 2>&1 | Select-Object -First 50
+                        return @{
+                            Success = $true
+                            Output = $output
+                            OutputCount = if ($output) { @($output).Count } else { 0 }
+                        }
+                    }
+                    catch {
+                        return @{
+                            Success = $false
+                            Error = $_.Exception.Message
+                            OutputCount = 0
+                        }
+                    }
                 } -ArgumentList $ScriptPath
                 
                 $completed = Wait-Job $job -Timeout $TimeoutSeconds
                 
                 if ($null -eq $completed) {
-                    Stop-Job $job
-                    Remove-Job $job
+                    Stop-Job $job -Force
+                    Remove-Job $job -Force
                     throw "Script execution timed out after $TimeoutSeconds seconds"
                 }
                 
-                $result = Receive-Job $job
-                Remove-Job $job
+                $jobResult = Receive-Job $job
+                Remove-Job $job -Force
                 
                 $stopwatch.Stop()
                 
                 # Get final memory
                 $finalMemory = [System.GC]::GetTotalMemory($true)
-                $memoryUsed = $finalMemory - $initialMemory
+                $memoryUsed = [Math]::Max(0, $finalMemory - $initialMemory)
                 
-                # Process and store execution results
-                $executionResult = @{
-                    Output = $result
-                    OutputLines = if ($result) { @($result).Count } else { 0 }
-                    HasErrors = $false
-                    ErrorCount = 0
+                # Process execution results
+                if ($jobResult -and $jobResult.Success) {
+                    $executionResult = @{
+                        Output = $jobResult.Output
+                        OutputLines = $jobResult.OutputCount
+                        HasErrors = $false
+                        ErrorCount = 0
+                    }
+                    
+                    # Check for error indicators in output
+                    if ($jobResult.Output) {
+                        $errorIndicators = @($jobResult.Output | Where-Object { $_ -match "error|exception|failed" -and $_ -notmatch "warning" })
+                        $executionResult.HasErrors = $errorIndicators.Count -gt 0
+                        $executionResult.ErrorCount = $errorIndicators.Count
+                    }
+                } else {
+                    $executionResult = @{
+                        Output = $null
+                        OutputLines = 0
+                        HasErrors = $true
+                        ErrorCount = 1
+                        FailureReason = if ($jobResult) { $jobResult.Error } else { "Unknown execution failure" }
+                    }
                 }
                 
-                # Check for error indicators in output
-                if ($result) {
-                    $errorIndicators = @($result | Where-Object { $_ -match "error|exception|failed|warning" })
-                    $executionResult.HasErrors = $errorIndicators.Count -gt 0
-                    $executionResult.ErrorCount = $errorIndicators.Count
-                }
-                
-                # Store execution metadata
-                if (-not $performanceData.ContainsKey('ExecutionResults')) {
-                    $performanceData.ExecutionResults = @()
-                }
                 $performanceData.ExecutionResults += $executionResult
-                
                 $performanceData.ExecutionTimes += $stopwatch.ElapsedMilliseconds
-                $performanceData.MemoryUsage += [Math]::Max(0, $memoryUsed)
+                $performanceData.MemoryUsage += $memoryUsed
                 
             }
             catch {
                 $stopwatch.Stop()
                 Write-Warning "Run $i failed: $($_.Exception.Message)"
                 
-                # Store failure information in execution results
+                # Store failure information
                 $failureResult = @{
                     Output = $null
                     OutputLines = 0
@@ -140,17 +162,13 @@ function Measure-ScriptPerformance {
                     FailureReason = $_.Exception.Message
                 }
                 
-                if (-not $performanceData.ContainsKey('ExecutionResults')) {
-                    $performanceData.ExecutionResults = @()
-                }
                 $performanceData.ExecutionResults += $failureResult
-                
                 $performanceData.ExecutionTimes += -1  # Mark failed runs
                 $performanceData.MemoryUsage += 0
             }
         }
         
-        # Calculate statistics
+        # Calculate statistics from valid runs only
         $validTimes = $performanceData.ExecutionTimes | Where-Object { $_ -gt 0 }
         if ($validTimes.Count -gt 0) {
             $performanceData.AverageExecutionTime = ($validTimes | Measure-Object -Average).Average
@@ -373,6 +391,7 @@ try {
         $_.Name -notlike "*test*" -and $_.Name -notlike "*temp*" 
     }
     Write-Host "Found $($scripts.Count) PowerShell scripts to analyze" -ForegroundColor Green
+    Write-Host "Performance analysis will include static analysis and limited execution testing..." -ForegroundColor Yellow
     
     # Initialize results
     $analysisResults = @{
@@ -384,6 +403,7 @@ try {
             TotalScripts = $scripts.Count
             SuccessfullyAnalyzed = 0
             FailedAnalysis = 0
+            SkippedLargeFiles = 0
             AverageExecutionTime = 0
             TotalExecutionTime = 0
             PoorPerformanceScripts = 0
@@ -399,21 +419,50 @@ try {
         Summary = @()
     }
     
-    Write-Host "Running performance analysis..." -ForegroundColor Green
+    Write-Host "Running performance analysis with progress logging..." -ForegroundColor Green
+    Write-Host "Will analyze $($scripts.Count) scripts..." -ForegroundColor Yellow
     
-    # Analyze each script
+    # Analyze each script with progress logging
+    $currentScript = 0
+    $progressInterval = [Math]::Max(1, [Math]::Floor($scripts.Count / 10)) # Update every 10%
+    
     foreach ($script in $scripts) {
-        Write-Host "  Processing: $($script.Name)" -ForegroundColor Gray
+        $currentScript++
         
-        # Skip slow scripts if requested
-        if ($SkipSlowScripts -and $script.Length -gt 200KB) {
-            Write-Host "    Skipping large script (>200KB)" -ForegroundColor DarkGray
-            continue
+        # Progress logging
+        if ($currentScript % $progressInterval -eq 0 -or $currentScript -eq $scripts.Count) {
+            $percentComplete = [Math]::Round(($currentScript / $scripts.Count) * 100, 1)
+            Write-Host "  Progress: $percentComplete% ($currentScript/$($scripts.Count)) - Processing: $($script.Name)" -ForegroundColor Gray
+        } else {
+            Write-Host "  Processing ($currentScript/$($scripts.Count)): $($script.Name)" -ForegroundColor DarkGray
         }
         
         try {
-            # Measure performance
-            $performanceData = Measure-ScriptPerformance -ScriptPath $script.FullName -Runs $SampleRuns -TimeoutSeconds $TimeoutSeconds
+            # Check file size and skip if too large to prevent performance issues
+            $fileInfo = Get-Item -Path $script.FullName
+            if ($fileInfo.Length -gt 500KB) {
+                Write-Warning "Skipping large file: $($fileInfo.Name) ($([Math]::Round($fileInfo.Length/1KB))KB)"
+                $analysisResults.Statistics.SkippedLargeFiles++
+                continue
+            }
+            
+            # Skip slow scripts if requested and file is moderately large
+            if ($SkipSlowScripts -and $script.Length -gt 100KB) {
+                Write-Host "    Skipping large script (>100KB) due to SkipSlowScripts flag" -ForegroundColor DarkGray
+                $analysisResults.Statistics.SkippedLargeFiles++
+                continue
+            }
+            
+            # Use reduced sample runs for faster analysis
+            $actualRuns = if ($fileInfo.Length -gt 50KB) { 1 } else { [Math]::Min($SampleRuns, 2) }
+            $actualTimeout = if ($fileInfo.Length -gt 50KB) { 30 } else { $TimeoutSeconds }
+            
+            if ($actualRuns -lt $SampleRuns) {
+                Write-Host "    Using $actualRuns run(s) for performance (file size: $([Math]::Round($fileInfo.Length/1KB))KB)" -ForegroundColor DarkGray
+            }
+            
+            # Measure performance with optimized parameters
+            $performanceData = Measure-ScriptPerformance -ScriptPath $script.FullName -Runs $actualRuns -TimeoutSeconds $actualTimeout
             
             # Calculate performance rating
             $performanceData = Get-PerformanceRating -PerformanceData $performanceData

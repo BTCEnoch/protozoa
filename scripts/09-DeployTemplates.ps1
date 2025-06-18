@@ -10,10 +10,7 @@ param(
     [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
 
     [Parameter(Mandatory=$false)]
-    [switch]$Recurse = $true,
-
-    [Parameter(Mandatory=$false)]
-    [switch]$WhatIf
+    [switch]$Recurse
 )
 
 Import-Module "$PSScriptRoot\utils.psm1" -Force
@@ -27,17 +24,28 @@ if (-not (Test-Path $TemplatesRoot)) {
     exit 1
 }
 
-$searchOption = if ($Recurse) { '-Recurse' } else { '' }
-$templates = Get-ChildItem -Path $TemplatesRoot -File @($searchOption)
+# Default to recursive behavior unless explicitly disabled
+$useRecurse = -not $PSBoundParameters.ContainsKey('Recurse') -or $Recurse
+$templates = if ($useRecurse) { 
+    Get-ChildItem -Path $TemplatesRoot -File -Recurse 
+} else { 
+    Get-ChildItem -Path $TemplatesRoot -File 
+}
 
 $deployed = 0
 foreach ($tpl in $templates) {
-    $rel = $tpl.FullName.Substring($TemplatesRoot.Length).TrimStart('\\','/')
-    $relDest = $rel -replace '\\.?template$',''
-    $destPath = Join-Path $ProjectRoot "src/$relDest"
-
-    Write-TemplateFile -TemplateRelPath $rel -DestinationPath $destPath -TokenMap @{ PROJECT = 'protozoa' }
-    $deployed++
+    try {
+        $rel = $tpl.FullName.Substring($TemplatesRoot.Length).TrimStart('\', '/')
+        $relDest = $rel -replace '\.template$',''
+        $destPath = Join-Path $ProjectRoot "src\$relDest"
+        
+        Write-InfoLog "Processing template: $rel -> $destPath"
+        Write-TemplateFile -TemplateRelPath $rel -DestinationPath $destPath
+        $deployed++
+    }
+    catch {
+        Write-ErrorLog "Failed to process template $($tpl.Name): $($_.Exception.Message)"
+    }
 }
 
 Write-SuccessLog "Template deployment completed ($deployed file(s) written)."

@@ -1,4 +1,4 @@
-# 22-SetupBitcoinProtocol.ps1 - Phase 1 Infrastructure Enhancement
+﻿# 22-SetupBitcoinProtocol.ps1 - Phase 1 Infrastructure Enhancement
 # Configures Bitcoin network settings and API endpoint management for Ordinals Protocol
 # ARCHITECTURE: Bitcoin Ordinals Protocol integration with environment-based configuration
 # Reference: script_checklist.md lines 22-SetupBitcoinProtocol.ps1
@@ -24,18 +24,18 @@ $ErrorActionPreference = "Stop"
 try {
     Write-StepHeader "Bitcoin Protocol Configuration - Phase 1 Infrastructure Enhancement"
     Write-InfoLog "Configuring Bitcoin Ordinals Protocol integration and API endpoints"
-    
+
     # Define paths
     $srcPath = Join-Path $ProjectRoot "src"
     $configPath = Join-Path $srcPath "config"
     $bitcoinConfigPath = Join-Path $configPath "bitcoin.config.ts"
     $envPath = Join-Path $ProjectRoot ".env"
     $envExamplePath = Join-Path $ProjectRoot ".env.example"
-    
+
     # Create config directory
     New-Item -Path $configPath -ItemType Directory -Force | Out-Null
     Write-InfoLog "Created config directory"
-    
+
     # Generate Bitcoin configuration file
     Write-InfoLog "Generating Bitcoin network configuration"
     $bitcoinConfig = @"
@@ -123,7 +123,7 @@ function getCurrentEnvironment(): 'development' | 'production' {
  */
 export const bitcoinProtocolConfig: BitcoinProtocolConfig = {
   network: (process.env.BITCOIN_NETWORK as BitcoinNetwork) || 'mainnet',
-  
+
   api: {
     development: {
       baseUrl: 'https://ordinals.com',
@@ -140,19 +140,19 @@ export const bitcoinProtocolConfig: BitcoinProtocolConfig = {
       timeout: 10000, // 10 seconds
     },
   },
-  
+
   validation: {
     minBlockHeight: 767430, // First Ordinals inscription block
     maxBlockOffset: 10, // Maximum blocks ahead of current tip
     validateBlockHash: true,
   },
-  
+
   cache: {
     blockDataTTL: 3600, // 1 hour
     inscriptionDataTTL: 86400, // 24 hours
     maxCacheSize: 100, // 100 MB
   },
-  
+
   retry: {
     maxAttempts: 3,
     baseDelay: 1000, // 1 second
@@ -166,13 +166,13 @@ export const bitcoinProtocolConfig: BitcoinProtocolConfig = {
 export function getAPIEndpoints(): APIEndpoints {
   const env = getCurrentEnvironment();
   const endpoints = bitcoinProtocolConfig.api[env];
-  
+
   logger.info('Using API endpoints for environment', {
     environment: env,
     baseUrl: endpoints.baseUrl,
     rateLimit: endpoints.rateLimit,
   });
-  
+
   return endpoints;
 }
 
@@ -181,7 +181,7 @@ export function getAPIEndpoints(): APIEndpoints {
  */
 export function validateBlockNumber(blockNumber: number): boolean {
   const config = bitcoinProtocolConfig.validation;
-  
+
   if (blockNumber < config.minBlockHeight) {
     logger.warn('Block number below minimum height', {
       blockNumber,
@@ -189,8 +189,8 @@ export function validateBlockNumber(blockNumber: number): boolean {
     });
     return false;
   }
-  
-  // Note: Maximum validation would require current tip, 
+
+  // Note: Maximum validation would require current tip,
   // which should be checked by the service implementation
   return true;
 }
@@ -202,12 +202,12 @@ export function validateInscriptionId(inscriptionId: string): boolean {
   // Basic inscription ID format validation
   // Format: <txid>i<index> (64-character hex + 'i' + number)
   const inscriptionIdPattern = /^[a-fA-F0-9]{64}i\d+$/;
-  
+
   if (!inscriptionIdPattern.test(inscriptionId)) {
     logger.warn('Invalid inscription ID format', { inscriptionId });
     return false;
   }
-  
+
   return true;
 }
 
@@ -230,11 +230,11 @@ export function getCacheConfig() {
  */
 export function formatAPIUrl(endpoint: string, params: Record<string, string>): string {
   let url = endpoint;
-  
+
   Object.entries(params).forEach(([key, value]) => {
     url = url.replace(`{${key}}`, encodeURIComponent(value));
   });
-  
+
   return url;
 }
 
@@ -243,10 +243,10 @@ logger.info('Bitcoin protocol configuration loaded', {
   environment: getCurrentEnvironment(),
 });
 "@
-    
+
     Set-Content -Path $bitcoinConfigPath -Value $bitcoinConfig -Encoding UTF8
     Write-SuccessLog "Bitcoin network configuration created"
-    
+
     # Generate environment configuration
     Write-InfoLog "Generating environment configuration files"
     $envExample = @"
@@ -282,10 +282,10 @@ LOG_FILE_PATH=./logs/bitcoin-service.log
 ENABLE_MOCK_DATA=false
 MOCK_DELAY_MS=500
 "@
-    
+
     Set-Content -Path $envExamplePath -Value $envExample -Encoding UTF8
     Write-SuccessLog "Environment example file created"
-    
+
     # Create .env file if it doesn't exist
     if (-not (Test-Path $envPath)) {
         Write-InfoLog "Creating .env file from example"
@@ -294,7 +294,7 @@ MOCK_DELAY_MS=500
     } else {
         Write-InfoLog ".env file already exists - skipping creation"
     }
-    
+
     # Create rate limiting utility
     Write-InfoLog "Creating rate limiting utility"
     $rateLimitUtilPath = Join-Path $configPath "rate-limiter.ts"
@@ -419,12 +419,12 @@ export function createBitcoinAPIRateLimiter(maxRequestsPerMinute: number): RateL
   });
 }
 "@
-    
+
     Set-Content -Path $rateLimitUtilPath -Value $rateLimitUtil -Encoding UTF8
     Write-SuccessLog "Rate limiting utility created"
-    
+
     Write-InfoLog "Bitcoin Protocol configuration completed"
-    
+
     exit 0
 }
 catch {
@@ -433,4 +433,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

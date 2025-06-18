@@ -1,4 +1,4 @@
-# 29-SetupDataValidationLayer.ps1 - Phase 3 Enhancement
+﻿# 29-SetupDataValidationLayer.ps1 - Phase 3 Enhancement
 # Generates DataValidationService to validate bitcoin block data and inscriptions
 # Reference: script_checklist.md | build_design.md lines 1700-1800
 #Requires -Version 5.1
@@ -19,13 +19,12 @@ try {
   $interfaces = Join-Path $validationDomainPath "interfaces"
   New-Item -Path $services -ItemType Directory -Force | Out-Null
   New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
-  
+
   # Interface
   $iface = @'
-/**
-'@
-* IDataValidationService – validates block info, inscriptions and merkle proofs.
-*/
+/**
+ * IDataValidationService – validates block info, inscriptions and merkle proofs.
+ */
 export interface IDataValidationService {
   validateBlockInfo(data: unknown): boolean
   validateInscription(content: string): boolean
@@ -37,8 +36,7 @@ export interface IDataValidationService {
 
   # Implementation
   $impl = @'
-import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
-'@
+import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
 import type { IDataValidationService } from '@/domains/bitcoin/interfaces/IDataValidationService'
 
 export class DataValidationService implements IDataValidationService {

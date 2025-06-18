@@ -1,4 +1,4 @@
-# 15-ValidateSetupComplete.ps1
+﻿# 15-ValidateSetupComplete.ps1
 # Comprehensive validation that Concerns #3 and #4 are completely resolved
 # Tests script dependencies and TypeScript configuration
 
@@ -8,7 +8,7 @@
 param(
     [Parameter(Mandatory = $false)]
     [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$Detailed
 )
@@ -26,20 +26,20 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Setup Validation - Concerns #3 & #4 Resolution"
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Validating setup in project root: $ProjectRoot"
-    
+
     $allTestsPassed = $true
     $testResults = @()
-    
+
     # Test 1: Validate Concern #3 - Script Dependencies
     Write-InfoLog "🔍 Testing Concern #3: Script Dependencies Resolution"
-    
+
     $concern3Tests = @(
         @{
             Name = "utils.psm1 module import"
-            Test = { 
+            Test = {
                 try {
                     Remove-Module utils -Force -ErrorAction SilentlyContinue
                     Import-Module "$PSScriptRoot\utils.psm1" -Force
@@ -65,7 +65,7 @@ try {
         },
         @{
             Name = "All logging functions available"
-            Test = { 
+            Test = {
                 $logFunctions = @('Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog')
                 foreach ($func in $logFunctions) {
                     if (-not (Get-Command $func -ErrorAction SilentlyContinue)) { return $false }
@@ -74,7 +74,7 @@ try {
             }
         }
     )
-    
+
     foreach ($test in $concern3Tests) {
         try {
             $result = & $test.Test
@@ -93,15 +93,15 @@ try {
             $allTestsPassed = $false
         }
     }
-    
+
     # Test 2: Validate Concern #4 - TypeScript Configuration
     Write-InfoLog ""
     Write-InfoLog "🔍 Testing Concern #4: TypeScript Configuration"
-    
+
     $concern4Tests = @(
         @{
             Name = "package.json exists and is valid"
-            Test = { 
+            Test = {
                 if (-not (Test-Path "package.json")) { return $false }
                 try {
                     $pkg = Get-Content "package.json" | ConvertFrom-Json
@@ -163,7 +163,7 @@ try {
             }
         }
     )
-    
+
     foreach ($test in $concern4Tests) {
         try {
             $result = & $test.Test
@@ -182,22 +182,22 @@ try {
             $allTestsPassed = $false
         }
     }
-    
+
     # Summary Report
     Write-InfoLog ""
     Write-StepHeader "VALIDATION SUMMARY"
-    
+
     $concern3Results = $testResults | Where-Object { $_.Category -eq "Concern #3" }
     $concern4Results = $testResults | Where-Object { $_.Category -eq "Concern #4" }
-    
+
     $concern3Passed = ($concern3Results | Where-Object { $_.Status -eq "PASS" }).Count
     $concern3Total = $concern3Results.Count
     $concern4Passed = ($concern4Results | Where-Object { $_.Status -eq "PASS" }).Count
     $concern4Total = $concern4Results.Count
-    
+
     Write-InfoLog "Concern #3 (Script Dependencies): $concern3Passed/$concern3Total tests passed"
     Write-InfoLog "Concern #4 (TypeScript Configuration): $concern4Passed/$concern4Total tests passed"
-    
+
     if ($allTestsPassed) {
         Write-SuccessLog ""
         Write-SuccessLog "🎉 ALL VALIDATION TESTS PASSED!"
@@ -211,13 +211,13 @@ try {
         Write-InfoLog "  1. Run 'pnpm install' to install dependencies"
         Write-InfoLog "  2. Begin domain implementation with Cursor AI"
         Write-InfoLog "  3. Use the generated service stubs as starting points"
-        
+
         exit 0
     } else {
         Write-ErrorLog ""
         Write-ErrorLog "❌ VALIDATION FAILED"
         Write-ErrorLog "Some tests did not pass. Please review the errors above."
-        
+
         if ($Detailed) {
             Write-InfoLog ""
             Write-InfoLog "Detailed test results:"
@@ -230,7 +230,7 @@ try {
                 Write-InfoLog "  $status [$($_.Category)] $($_.Test)"
             }
         }
-        
+
         exit 1
     }
 }
@@ -240,4 +240,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}

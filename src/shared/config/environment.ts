@@ -12,7 +12,7 @@ interface EnvironmentConfig {
 function detectEnvironment(): EnvironmentConfig {
   const isDev = process.env.NODE_ENV === 'development';
   const isProd = process.env.NODE_ENV === 'production';
-  
+
   return {
     apiBaseUrl: isDev ? 'https://ordinals.com' : '',
     isProduction: isProd,

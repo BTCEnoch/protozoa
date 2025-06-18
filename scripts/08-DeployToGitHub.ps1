@@ -1,4 +1,4 @@
-# 08-DeployToGitHub.ps1
+﻿# 08-DeployToGitHub.ps1
 # Initializes git repository and pushes the complete automation package to GitHub
 # Target repository: https://github.com/BTCEnoch/protozoa
 
@@ -254,7 +254,7 @@ Write-InfoLog "Creating initial commit..."
 $commitMessage = "🚀 Initial commit: Complete new-protozoa automation package
 
 - PowerShell automation scripts for 8-phase setup
-- Domain-driven TypeScript architecture scaffolding  
+- Domain-driven TypeScript architecture scaffolding
 - Service stubs with singleton patterns and interfaces
 - Shared infrastructure (logging, types, config)
 - Comprehensive documentation and usage guides
@@ -326,4 +326,4 @@ $deploymentSummary = @{
 Set-Content -Path ".deployment-info" -Value $deploymentSummary
 Write-InfoLog "Deployment summary saved to .deployment-info"
 
-Write-SuccessLog "GitHub deployment script completed!" 
+Write-SuccessLog "GitHub deployment script completed!"

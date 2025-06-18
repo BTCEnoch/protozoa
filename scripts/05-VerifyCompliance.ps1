@@ -1,4 +1,4 @@
-# 05-VerifyCompliance.ps1
+﻿# 05-VerifyCompliance.ps1
 # Verifies architectural compliance with .cursorrules standards
 # Referenced from build_design.md compliance requirements
 
@@ -22,12 +22,12 @@ $ErrorActionPreference = "Stop"
 
 try {
     Write-StepHeader "Architecture Compliance Verification - Phase 5"
-    
+
     Push-Location $ProjectRoot
     Write-InfoLog "Verifying compliance in project: $ProjectRoot"
-    
+
     $violations = @()
-    
+
     # Check file size limits (500 lines)
     if (Test-Path "src") {
         $tsFiles = Get-ChildItem -Path "src" -Filter "*.ts" -Recurse -ErrorAction SilentlyContinue
@@ -38,7 +38,7 @@ try {
             }
         }
     }
-    
+
     # Check for cross-domain imports
     if (Test-Path "src/domains") {
         $domainFiles = Get-ChildItem -Path "src/domains" -Filter "*.ts" -Recurse -ErrorAction SilentlyContinue
@@ -49,7 +49,7 @@ try {
             }
         }
     }
-    
+
     # Check for backup files
     $backupPatterns = @("*.bak", "*.backup", "*.old", "*.temp")
     foreach ($pattern in $backupPatterns) {
@@ -58,7 +58,7 @@ try {
             $violations += "Backup file found: $($file.FullName)"
         }
     }
-    
+
     # Report results
     if ($violations.Count -eq 0) {
         Write-SuccessLog "All compliance checks passed"
@@ -68,7 +68,7 @@ try {
             Write-WarningLog "  - $violation"
         }
     }
-    
+
     Write-SuccessLog "Compliance verification completed"
     exit 0
 }
@@ -78,4 +78,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-} 
+}
