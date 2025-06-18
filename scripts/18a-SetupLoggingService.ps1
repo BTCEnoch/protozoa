@@ -85,8 +85,9 @@ export function createServiceLogger(service: string) {
         $existingContent = Get-Content $loggerPath -Raw
         if (-not ($existingContent | Select-String -Pattern "Central Winston Logger")) {
             Write-WarningLog "Existing logger.ts detected but header missing - backing up and overwriting"
-            Backup-File -FilePath $loggerPath | Out-Null
+            $backupPath = "$loggerPath.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
             if (-not $DryRun) { 
+                Copy-Item -Path $loggerPath -Destination $backupPath -Force
                 Set-Content -Path $loggerPath -Value $loggerContent -Encoding UTF8 
             }
         }
