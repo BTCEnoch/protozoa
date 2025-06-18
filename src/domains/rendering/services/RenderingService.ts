@@ -1,5 +1,4 @@
-﻿
-/**
+﻿/**
  * @fileoverview RenderingService Implementation
  * @description Singleton THREE.js renderer orchestrating scene, camera, and domain integrations.
  */
@@ -51,11 +50,16 @@ class RenderingService implements IRenderingService {
 
   /** Initialize renderer on canvas and wire dependencies */
   public initialize(canvas: HTMLCanvasElement, deps: { formation?: IFormationService; effect?: IEffectService } = {}): void {
-    // Attach DOM element
-    if (canvas && this.#renderer.domElement.parentElement -ne ) {
+    // Attach renderer canvas, re-parent if necessary
+    if (
+      this.#renderer.domElement.parentElement &&
+      this.#renderer.domElement.parentElement !== canvas
+    ) {
       this.#renderer.domElement.remove()
     }
-    canvas.appendChild(this.#renderer.domElement)
+    if (!canvas.contains(this.#renderer.domElement)) {
+      canvas.appendChild(this.#renderer.domElement)
+    }
 
     // Dependency injection
     this.#formationService = deps.formation
@@ -67,7 +71,7 @@ class RenderingService implements IRenderingService {
   /** Render a single frame */
   public renderFrame(delta: number): void {
     this.#renderer.render(this.#scene, this.#camera)
-    this.#perf.debug(Frame rendered in ms)
+    this.#perf.debug(`Frame rendered in ${delta.toFixed(2)} ms`)
   }
 
   public addObject(obj: Object3D): void {
