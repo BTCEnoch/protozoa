@@ -1,13 +1,5 @@
-# 40-DeployTemplates.ps1
-# Scans templates directory and deploys each template to the appropriate destination path under /src.
-# Destination path is derived by stripping the first path segment (domains/…) and prefixing with src/.
-# Example:
-#   templates/domains/particle/interfaces/ILifecycleEngine.ts.template
-#     => src/domains/particle/interfaces/ILifecycleEngine.ts
-#
-# Replaces optional tokens using -TokenMap (currently just "PROJECT" token as placeholder).
-#
-# This script supersedes the inline generation logic of phases 32-56, enabling a template-based workflow.
+# 09-DeployTemplates.ps1
+# Scans templates directory and deploys each template to the src tree. See header in previous version.
 
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -40,11 +32,8 @@ $templates = Get-ChildItem -Path $TemplatesRoot -File @($searchOption)
 
 $deployed = 0
 foreach ($tpl in $templates) {
-    # Build destination path
-    $rel = $tpl.FullName.Substring($TemplatesRoot.Length).TrimStart('\','/')
-    # Remove .template suffix
-    $relDest = $rel -replace '\.template$',''
-    # Prefix with src/
+    $rel = $tpl.FullName.Substring($TemplatesRoot.Length).TrimStart('\\','/')
+    $relDest = $rel -replace '\\.?template$',''
     $destPath = Join-Path $ProjectRoot "src/$relDest"
 
     Write-TemplateFile -TemplateRelPath $rel -DestinationPath $destPath -TokenMap @{ PROJECT = 'protozoa' }

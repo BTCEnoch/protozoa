@@ -12,7 +12,7 @@ $scriptSequence = @(
     # --- Preliminary Fixes ---
     @{ Script = "fix-here-strings.ps1"; Description = "Sanitise HERE-STRINGS to prevent parsing errors" },
     @{ Script = "validate-templates.ps1"; Description = "Validate template syntax" },
-    @{ Script = "40-DeployTemplates.ps1"; Description = "Deploy templates to src" },
+    @{ Script = "09-DeployTemplates.ps1"; Description = "Deploy templates to src" },
 
     # --- Phase 0 : Environment & Tooling ---
     @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
