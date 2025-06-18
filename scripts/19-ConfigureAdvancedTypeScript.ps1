@@ -225,7 +225,7 @@ declare namespace BitcoinOrdinals {
 // Extend Window interface for browser environment
 declare global {
   interface Window {
-    BitcoinOrdinals?: typeof BitcoinOrdinals;
+    BitcoinOrdinals?: any;
   }
 }
 

@@ -345,9 +345,7 @@ export interface ApiError {
     Set-Content -Path (Join-Path $typesPath "bitcoin.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Bitcoin types generated successfully"
 
-    # Generate Bitcoin Service implementation - Part 1 (Class structure)
-    Write-InfoLog "Generating BitcoinService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @'
+    # REMOVED: Old two-part service generation (serviceContent1) - now using consolidated approach
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -475,12 +473,9 @@ export class BitcoinService implements IBitcoinService {
 }
 '@
 
-    Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "BitcoinService implementation Part 1 generated successfully"
-
-    # Generate Bitcoin Service implementation - Part 2 (API methods and completion)
-    Write-InfoLog "Generating BitcoinService implementation - Part 2 (API methods and completion)"
-    $serviceContent2 = @'
+    # CONSOLIDATED: Generate complete BitcoinService in single operation (Fix for duplicate class definitions)
+    Write-InfoLog "Generating complete BitcoinService implementation (consolidated to prevent duplicates)"
+    $consolidatedServiceContent = @'
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -974,8 +969,8 @@ export class BitcoinService implements IBitcoinService {
 export const bitcoinService = BitcoinService.getInstance();
 '@
 
-    # Append Part 2 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent2 -Encoding UTF8
+    # Write complete consolidated service (replaces old two-part approach)
+    Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $consolidatedServiceContent -Encoding UTF8
     Write-SuccessLog "BitcoinService implementation Part 2 generated successfully"
 
     # Generate export index file

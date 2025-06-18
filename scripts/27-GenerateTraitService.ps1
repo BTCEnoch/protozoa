@@ -67,99 +67,7 @@ export interface TraitConfig {
   cacheSize?: number;
 }
 
-/**
- * Organism trait collection
- */
-export interface OrganismTraits {
-  /** Unique organism identifier */
-  organismId: string;
-  /** Parent organism IDs for inheritance */
-  parentIds?: string[];
-  /** Block number used for trait generation */
-  blockNumber: number;
-  /** Visual appearance traits */
-  visual: VisualTraits;
-  /** Behavioral pattern traits */
-  behavioral: BehavioralTraits;
-  /** Physical property traits */
-  physical: PhysicalTraits;
-  /** Evolutionary traits */
-  evolutionary: EvolutionaryTraits;
-  /** Generation timestamp */
-  generatedAt: number;
-  /** Mutation history */
-  mutationHistory: MutationRecord[];
-}
-
-/**
- * Visual appearance traits
- */
-export interface VisualTraits {
-  /** Primary color (RGB hex) */
-  primaryColor: string;
-  /** Secondary color (RGB hex) */
-  secondaryColor: string;
-  /** Size multiplier (0.5-2.0) */
-  size: number;
-  /** Opacity (0.0-1.0) */
-  opacity: number;
-  /** Shape identifier */
-  shape: string;
-  /** Particle count multiplier */
-  particleDensity: number;
-  /** Glow intensity (0.0-1.0) */
-  glowIntensity: number;
-}
-
-/**
- * Behavioral pattern traits
- */
-export interface BehavioralTraits {
-  /** Movement speed multiplier */
-  speed: number;
-  /** Aggression level (0.0-1.0) */
-  aggression: number;
-  /** Social tendency (0.0-1.0) */
-  sociability: number;
-  /** Exploration drive (0.0-1.0) */
-  curiosity: number;
-  /** Energy efficiency (0.0-1.0) */
-  efficiency: number;
-  /** Adaptation rate (0.0-1.0) */
-  adaptability: number;
-}
-
-/**
- * Physical property traits
- */
-export interface PhysicalTraits {
-  /** Mass multiplier */
-  mass: number;
-  /** Collision radius multiplier */
-  collisionRadius: number;
-  /** Energy capacity multiplier */
-  energyCapacity: number;
-  /** Durability multiplier */
-  durability: number;
-  /** Regeneration rate */
-  regeneration: number;
-}
-
-/**
- * Evolutionary traits
- */
-export interface EvolutionaryTraits {
-  /** Current generation number */
-  generation: number;
-  /** Fitness score */
-  fitness: number;
-  /** Mutation resistance (0.0-1.0) */
-  stability: number;
-  /** Reproductive success rate */
-  reproductivity: number;
-  /** Lifespan multiplier */
-  longevity: number;
-}
+// MOVED: All trait interfaces moved to trait.types.ts to centralize type definitions and prevent circular imports
 
 /**
  * Trait service interface defining organism trait management
@@ -274,6 +182,100 @@ export interface TraitGenerationParams {
  * Generation type
  */
 export type GenerationType = "genesis" | "inheritance" | "mutation" | "crossover";
+
+/**
+ * Organism trait collection (moved from ITraitService.ts to centralize type definitions)
+ */
+export interface OrganismTraits {
+  /** Unique organism identifier */
+  organismId: string;
+  /** Parent organism IDs for inheritance */
+  parentIds?: string[];
+  /** Block number used for trait generation */
+  blockNumber: number;
+  /** Visual appearance traits */
+  visual: VisualTraits;
+  /** Behavioral pattern traits */
+  behavioral: BehavioralTraits;
+  /** Physical property traits */
+  physical: PhysicalTraits;
+  /** Evolutionary traits */
+  evolutionary: EvolutionaryTraits;
+  /** Generation timestamp */
+  generatedAt: number;
+  /** Mutation history */
+  mutationHistory: MutationRecord[];
+}
+
+/**
+ * Visual appearance traits
+ */
+export interface VisualTraits {
+  /** Primary color (RGB hex) */
+  primaryColor: string;
+  /** Secondary color (RGB hex) */
+  secondaryColor: string;
+  /** Size multiplier (0.5-2.0) */
+  size: number;
+  /** Opacity (0.0-1.0) */
+  opacity: number;
+  /** Shape identifier */
+  shape: string;
+  /** Particle count multiplier */
+  particleDensity: number;
+  /** Glow intensity (0.0-1.0) */
+  glowIntensity: number;
+}
+
+/**
+ * Behavioral pattern traits
+ */
+export interface BehavioralTraits {
+  /** Movement speed multiplier */
+  speed: number;
+  /** Aggression level (0.0-1.0) */
+  aggression: number;
+  /** Social tendency (0.0-1.0) */
+  sociability: number;
+  /** Exploration drive (0.0-1.0) */
+  curiosity: number;
+  /** Energy efficiency (0.0-1.0) */
+  efficiency: number;
+  /** Adaptation rate (0.0-1.0) */
+  adaptability: number;
+}
+
+/**
+ * Physical property traits
+ */
+export interface PhysicalTraits {
+  /** Mass multiplier */
+  mass: number;
+  /** Collision radius multiplier */
+  collisionRadius: number;
+  /** Energy capacity multiplier */
+  energyCapacity: number;
+  /** Durability multiplier */
+  durability: number;
+  /** Regeneration rate */
+  regeneration: number;
+}
+
+/**
+ * Evolutionary traits
+ */
+export interface EvolutionaryTraits {
+  /** Current generation number */
+  generation: number;
+  /** Fitness score */
+  fitness: number;
+  /** Mutation resistance (0.0-1.0) */
+  stability: number;
+  /** Reproductive success rate */
+  reproductivity: number;
+  /** Lifespan multiplier */
+  longevity: number;
+}
 
 /**
  * Trait service performance metrics
@@ -454,12 +456,9 @@ export class TraitService implements ITraitService {
 }
 '@
 
-    Set-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 1 generated successfully"
-
-    # Generate Trait Service implementation - Part 2 (Core methods)
-    Write-InfoLog "Generating TraitService implementation - Part 2 (Core methods)"
-    $serviceContent2 = @'
+    # CONSOLIDATED: Generate complete TraitService in single operation (Fix for 3x duplicate class definitions)
+    Write-InfoLog "Generating complete TraitService implementation (consolidated to prevent duplicates)"
+    $consolidatedTraitServiceContent = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -467,16 +466,15 @@ export class TraitService implements ITraitService {
  * @version 1.0.0
  */
 
+import { ITraitService, TraitConfig } from "@/domains/trait/interfaces/ITraitService";
 import {
-  ITraitService,
-  TraitConfig,
   OrganismTraits,
   VisualTraits,
   BehavioralTraits,
   PhysicalTraits,
   EvolutionaryTraits,
   TraitMetrics
-} from "@/domains/trait/interfaces/ITraitService";
+} from "@/domains/trait/types/trait.types";
 import {
   TraitCategory,
   TraitType,
@@ -1024,12 +1022,7 @@ export class TraitService implements ITraitService {
 }
 '@
 
-    # Append Part 2 to the service file
-    Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent2 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 2 generated successfully"
-
-    # Generate Trait Service implementation - Part 3 (Helper methods and completion)
-    Write-InfoLog "Generating TraitService implementation - Part 3 (Helper methods and completion)"
+    # REMOVED: Old multi-part append operations that created 3x duplicate classes
     $serviceContent3 = @'
 /**
  * @fileoverview Trait Service Implementation
@@ -1598,9 +1591,9 @@ export class TraitService implements ITraitService {
 export const traitService = TraitService.getInstance();
 '@
 
-    # Append Part 3 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent3 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 3 generated successfully"
+    # Write complete consolidated service (replaces old three-part approach)
+    Set-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $consolidatedTraitServiceContent -Encoding UTF8
+    Write-SuccessLog "TraitService implementation generated successfully (consolidated)"
 
     # Generate export index file
     Write-InfoLog "Generating Trait domain export index"

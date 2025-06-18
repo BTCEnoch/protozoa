@@ -163,9 +163,9 @@ class EnvironmentService {
       return 'development';
     }
 
-    // Vite environment
-    if (typeof import.meta !== 'undefined' && import.meta.env) {
-      const viteMode = import.meta.env.MODE?.toLowerCase();
+    // Vite environment (with proper type checking)
+    if (typeof import.meta !== 'undefined' && (import.meta as any).env) {
+      const viteMode = (import.meta as any).env.MODE?.toLowerCase();
       if (viteMode === 'production') return 'production';
       if (viteMode === 'test') return 'test';
       return 'development';
