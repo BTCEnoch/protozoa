@@ -1,4 +1,4 @@
-﻿# utils.psm1 - Enhanced shared utilities for new-protozoa automation scripts
+# utils.psm1 - Enhanced shared utilities for new-protozoa automation scripts
 # Implements PowerShell best practices with centralized logging, parameter validation, and error handling
 
 #Requires -Version 5.1
@@ -775,7 +775,7 @@ function Get-FileLineCount {
         .PARAMETER Path
             The path to the file whose lines should be counted.
         .OUTPUTS
-            [int]  â€“ total line count (0 on error)
+            [int]  – total line count (0 on error)
     #>
     [CmdletBinding()]
     [OutputType([int])]
@@ -859,7 +859,7 @@ function Write-TemplateFile {
         .PARAMETER TokenMap
             Hashtable containing token/value pairs for placeholder replacement.
         .PARAMETER ProjectRoot
-            Root of the repository â€“ defaults to the parent directory of the current
+            Root of the repository – defaults to the parent directory of the current
             script (works for both scripts/ and scripts/script_scrub/ callers).
         .PARAMETER Force
             Overwrite existing destination file without prompting. When not specified
@@ -907,7 +907,7 @@ function Write-TemplateFile {
         # Read template content
         $content = Get-Content -Path $templatePath -Raw
 
-        # Token replacement â€“ {{TOKEN}}
+        # Token replacement – {{TOKEN}}
         foreach ($key in $TokenMap.Keys) {
             $pattern = "{{${key}}}"
             $content = $content -replace [regex]::Escape($pattern), [string]$TokenMap[$key]
@@ -936,11 +936,11 @@ function Test-TemplateSyntax {
             Validates template file syntax for common error patterns.
         .DESCRIPTION
             Performs lightweight checks on template files (e.g. .ts.template, .json.template)
-            to ensure placeholder formatting and â€“ for JSON â€“ basic structural validity.
+            to ensure placeholder formatting and – for JSON – basic structural validity.
         .PARAMETER TemplatePath
             The absolute or relative path to the template file to validate.
         .OUTPUTS
-            [bool] â€“ $true when valid, otherwise $false.
+            [bool] – $true when valid, otherwise $false.
     #>
     [CmdletBinding()]
     [OutputType([bool])]
@@ -957,7 +957,7 @@ function Test-TemplateSyntax {
 
         $content = Get-Content $TemplatePath -Raw -ErrorAction Stop
 
-        # Validate TypeScript/TSX templates â€“ placeholder pattern only
+        # Validate TypeScript/TSX templates – placeholder pattern only
         if ($TemplatePath -match '\.tsx?\.template$') {
             if ($content -notmatch '{{[^}]+}}') {
                 Write-WarningLog "Template appears to have no placeholders: $TemplatePath"
@@ -1003,7 +1003,7 @@ Export-ModuleMember -Function @(
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
     'Write-TemplateFile',
-    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )
@@ -1855,7 +1855,7 @@ function Get-FileLineCount {
         .PARAMETER Path
             The path to the file whose lines should be counted.
         .OUTPUTS
-            [int]  â€“ total line count (0 on error)
+            [int]  – total line count (0 on error)
     #>
     [CmdletBinding()]
     [OutputType([int])]
@@ -1939,7 +1939,7 @@ function Write-TemplateFile {
         .PARAMETER TokenMap
             Hashtable containing token/value pairs for placeholder replacement.
         .PARAMETER ProjectRoot
-            Root of the repository â€“ defaults to the parent directory of the current
+            Root of the repository – defaults to the parent directory of the current
             script (works for both scripts/ and scripts/script_scrub/ callers).
         .PARAMETER Force
             Overwrite existing destination file without prompting. When not specified
@@ -1987,7 +1987,7 @@ function Write-TemplateFile {
         # Read template content
         $content = Get-Content -Path $templatePath -Raw
 
-        # Token replacement â€“ {{TOKEN}}
+        # Token replacement – {{TOKEN}}
         foreach ($key in $TokenMap.Keys) {
             $pattern = "{{${key}}}"
             $content = $content -replace [regex]::Escape($pattern), [string]$TokenMap[$key]
@@ -2016,11 +2016,11 @@ function Test-TemplateSyntax {
             Validates template file syntax for common error patterns.
         .DESCRIPTION
             Performs lightweight checks on template files (e.g. .ts.template, .json.template)
-            to ensure placeholder formatting and â€“ for JSON â€“ basic structural validity.
+            to ensure placeholder formatting and – for JSON – basic structural validity.
         .PARAMETER TemplatePath
             The absolute or relative path to the template file to validate.
         .OUTPUTS
-            [bool] â€“ $true when valid, otherwise $false.
+            [bool] – $true when valid, otherwise $false.
     #>
     [CmdletBinding()]
     [OutputType([bool])]
@@ -2037,7 +2037,7 @@ function Test-TemplateSyntax {
 
         $content = Get-Content $TemplatePath -Raw -ErrorAction Stop
 
-        # Validate TypeScript/TSX templates â€“ placeholder pattern only
+        # Validate TypeScript/TSX templates – placeholder pattern only
         if ($TemplatePath -match '\.tsx?\.template$') {
             if ($content -notmatch '{{[^}]+}}') {
                 Write-WarningLog "Template appears to have no placeholders: $TemplatePath"
@@ -2985,7 +2985,7 @@ function Get-FileLineCount {
         .PARAMETER Path
             The path to the file whose lines should be counted.
         .OUTPUTS
-            [int]  â€“ total line count (0 on error)
+            [int]  – total line count (0 on error)
     #>
     [CmdletBinding()]
     [OutputType([int])]
@@ -3069,7 +3069,7 @@ function Write-TemplateFile {
         .PARAMETER TokenMap
             Hashtable containing token/value pairs for placeholder replacement.
         .PARAMETER ProjectRoot
-            Root of the repository â€“ defaults to the parent directory of the current
+            Root of the repository – defaults to the parent directory of the current
             script (works for both scripts/ and scripts/script_scrub/ callers).
         .PARAMETER Force
             Overwrite existing destination file without prompting. When not specified
@@ -3117,7 +3117,7 @@ function Write-TemplateFile {
         # Read template content
         $content = Get-Content -Path $templatePath -Raw
 
-        # Token replacement â€“ {{TOKEN}}
+        # Token replacement – {{TOKEN}}
         foreach ($key in $TokenMap.Keys) {
             $pattern = "{{${key}}}"
             $content = $content -replace [regex]::Escape($pattern), [string]$TokenMap[$key]
@@ -3146,11 +3146,11 @@ function Test-TemplateSyntax {
             Validates template file syntax for common error patterns.
         .DESCRIPTION
             Performs lightweight checks on template files (e.g. .ts.template, .json.template)
-            to ensure placeholder formatting and â€“ for JSON â€“ basic structural validity.
+            to ensure placeholder formatting and – for JSON – basic structural validity.
         .PARAMETER TemplatePath
             The absolute or relative path to the template file to validate.
         .OUTPUTS
-            [bool] â€“ $true when valid, otherwise $false.
+            [bool] – $true when valid, otherwise $false.
     #>
     [CmdletBinding()]
     [OutputType([bool])]
@@ -3167,7 +3167,7 @@ function Test-TemplateSyntax {
 
         $content = Get-Content $TemplatePath -Raw -ErrorAction Stop
 
-        # Validate TypeScript/TSX templates â€“ placeholder pattern only
+        # Validate TypeScript/TSX templates – placeholder pattern only
         if ($TemplatePath -match '\.tsx?\.template$') {
             if ($content -notmatch '{{[^}]+}}') {
                 Write-WarningLog "Template appears to have no placeholders: $TemplatePath"
@@ -3323,3 +3323,5 @@ function Repair-UtilityModule {
 
 
 
+
+# End of module - all utility functions consolidated above
