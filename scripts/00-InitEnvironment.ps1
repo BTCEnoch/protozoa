@@ -52,17 +52,33 @@ try {
         Write-SuccessLog "PowerShell environment validated: $($PSVersionTable.PSVersion)"
     }
     
-    # Check administrator privileges for global installs
-    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
-    if (-not $isAdmin) {
-        Write-WarningLog "Not running as administrator. Some global installs may require elevation."
-        Write-InfoLog "Consider running PowerShell as Administrator for best results."
-    } else {
-        Write-SuccessLog "Running with administrator privileges"
+    # Determine OS platform for cross-platform compatibility
+    $osIsWindows = $PSVersionTable.Platform -eq 'Win32NT'
+    $osIsLinux   = $PSVersionTable.Platform -eq 'Unix'
+    $osIsMacOS   = $PSVersionTable.Platform -eq 'MacOSX'
+
+    # Updated administrator / root privilege check (cross-platform)
+    try {
+        if ($osIsWindows) {
+            $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
+        }
+        else {
+            # On *nix systems treat UID 0 as admin/root
+            $uid = & id -u 2>$null
+            $isAdmin = ($uid -eq 0)
+        }
     }
-    
+    catch {
+        # Fallback – assume non-elevated
+        $isAdmin = $false
+        Write-DebugLog "Admin check failed – defaulting to non-admin: $($_.Exception.Message)"
+    }
+
+    $elevationMsg = if ($isAdmin) { 'Running with elevated privileges' } else { 'Not running with elevated privileges – some global installs may require sudo/administrator rights.' }
+    Write-InfoLog $elevationMsg
+
     # Node.js Installation
-    if (-not $SkipNodeInstall) {
+    if (-not $SkipNodeInstall -and $osIsWindows) {
         Invoke-ScriptWithErrorHandling -OperationName "Node.js Installation" -ScriptBlock {
             Write-InfoLog "Checking Node.js installation (target: $NodeVersion)..."
             
@@ -111,6 +127,8 @@ try {
                 }
             }
         }
+    } elseif (-not $SkipNodeInstall -and -not $osIsWindows) {
+        Write-InfoLog "Node.js installation via script is only automated on Windows. Detected non-Windows OS – skipping automatic Node.js install. Please ensure Node >=18 is available in PATH."
     } else {
         Write-InfoLog "Skipping Node.js installation (SkipNodeInstall flag specified)"
     }
@@ -164,12 +182,12 @@ try {
         try {
             # Initialize package.json if it doesn't exist
             if (-not (Test-Path "package.json")) {
-                Write-InfoLog "Initializing package.json..."
-                $initResult = pnpm init -y 2>&1
+                Write-InfoLog "Initializing package.json with npm..."
+                $initResult = npm init -y 2>&1
                 if ($LASTEXITCODE -eq 0) {
                     Write-SuccessLog "package.json created"
                 } else {
-                    throw "pnpm init failed: $initResult"
+                    throw "npm init failed: $initResult"
                 }
             } else {
                 Write-InfoLog "package.json already exists"
