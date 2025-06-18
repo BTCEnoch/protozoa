@@ -112,3 +112,15 @@
 [2025-06-15 21:54:37] [Info]   Service: D:\Protozoa\src\domains\formation\services\FormationBlendingService.ts
 [2025-06-15 21:54:37] [Success] Formation Blending & Caching Service generation completed!
 [2025-06-15 21:54:37] [Info] Gap 3 resolved: FormationBlendingService with intelligent caching per audit
+[2025-06-18 06:35:56] [Info] === NEW-PROTOZOA AUTOMATION PIPELINE ===
+[2025-06-18 06:35:56] [Info] Starting complete project setup automation...
+[2025-06-18 06:35:56] [Info] === PHASE 0 : Environment setup and dependencies ===
+[2025-06-18 06:35:56] [Info] Executing: 00-InitEnvironment.ps1
+[2025-06-18 06:35:56] [Info] === Environment Initialization - Phase 0 ===
+[2025-06-18 06:35:56] [Success] PowerShell environment validated: 7.4.2
+[2025-06-18 06:35:56] [Error] Environment initialization failed: Exception calling "GetCurrent" with "0" argument(s): "Windows Principal functionality is not supported on this platform."
+[2025-06-18 06:35:56] [Error] Stack trace: at <ScriptBlock>, /workspace/scripts/00-InitEnvironment.ps1: line 56
+at <ScriptBlock>, /workspace/scripts/runAll.ps1: line 112
+at <ScriptBlock>, <No file>: line 1
+[2025-06-18 06:35:56] [Info] Error details saved to: .env-setup-failed
+[2025-06-18 06:35:56] [Error] PHASE 0 FAILED: Script exited with code 1
