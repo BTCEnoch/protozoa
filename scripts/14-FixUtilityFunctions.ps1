@@ -232,13 +232,12 @@ function Repair-UtilityModule {
     Write-SuccessLog "Utility functions validation and fix completed!"
 
     if (-not $ValidateOnly) {
-        Write-InfoLog ""
         Write-InfoLog "Summary of actions taken:"
         Write-InfoLog "  ✅ Scanned all PowerShell scripts for function dependencies"
         Write-InfoLog "  ✅ Added missing utility functions to utils.psm1"
         Write-InfoLog "  ✅ Updated module exports"
         Write-InfoLog "  ✅ Reloaded utils.psm1 module"
-        Write-InfoLog ""
+        Write-InfoLog "Utility functions fix process completed successfully"
         Write-InfoLog "Concern #3 (Script Dependencies) has been completely resolved!"
     }
 

@@ -112,4 +112,4 @@ export function createServiceLogger(service: string) {
 } catch {
     Write-ErrorLog "SetupLoggingService failed: $($_.Exception.Message)"
     exit 1
-} 
+}

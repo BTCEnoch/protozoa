@@ -672,14 +672,13 @@ if (-not $WhatIf) {
 Write-SuccessLog "Shared types generation completed!"
 
 if (-not $WhatIf) {
-    Write-InfoLog ""
-    Write-InfoLog "Generated shared types:"
+    Write-InfoLog "Generated shared types summary:"
     Write-InfoLog "  ✅ vectorTypes.ts - Vector and mathematical interfaces"
     Write-InfoLog "  ✅ entityTypes.ts - Core domain entity definitions"
     Write-InfoLog "  ✅ configTypes.ts - Service configuration interfaces"
     Write-InfoLog "  ✅ loggingTypes.ts - Logging and error handling types"
     Write-InfoLog "  ✅ eventTypes.ts - Inter-domain event interfaces"
     Write-InfoLog "  ✅ index.ts - Central export point"
-    Write-InfoLog ""
+    Write-InfoLog "Shared types generation completed successfully"
     Write-InfoLog "Critical Gap 'Shared Types/Interfaces Defined' has been RESOLVED!"
 }
