@@ -63,18 +63,18 @@ try {
 
     # Generate vitest.config.ts
     $vitestConfigPath = Join-Path $ProjectRoot "vitest.config.ts"
-    $vitestConfig = @"
-import { defineConfig } from 'vitest/config'
+    $vitestConfig = @'
+import { defineConfig } from ''vitest/config''
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'node',
-    coverage: { provider: 'v8' },
-    include: ['src/**/*.test.{ts,tsx}'],
+    environment: ''node'',
+    coverage: { provider: ''v8'' },
+    include: [''src/**/*.test.{ts,tsx}''],
   }
 })
-"@
+'@
     if (-not (Test-Path $vitestConfigPath)) {
         if (-not $DryRun) { Set-Content -Path $vitestConfigPath -Value $vitestConfig -Encoding UTF8 }
         Write-InfoLog "vitest.config.ts created"
@@ -84,13 +84,13 @@ export default defineConfig({
     $testsDir = Join-Path $ProjectRoot "src"
     $sampleTest = Join-Path $testsDir "sample.test.ts"
     if (-not (Test-Path $sampleTest)) {
-        $sampleContent = @"
-import { expect, test } from 'vitest'
+        $sampleContent = @'
+import { expect, test } from ''vitest''
 
-test('sample addition', () => {
+test(''sample addition'', () => {
   expect(1 + 1).toBe(2)
 })
-"@
+'@
         if (-not $DryRun) {
             if (-not (Test-Path $testsDir)) { New-Item -ItemType Directory -Path $testsDir -Force | Out-Null }
             Set-Content -Path $sampleTest -Value $sampleContent -Encoding UTF8

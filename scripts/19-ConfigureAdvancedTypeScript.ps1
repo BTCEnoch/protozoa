@@ -172,7 +172,7 @@ try {
     $typesDir = Join-Path $srcPath "types"
     New-Item -Path $typesDir -ItemType Directory -Force | Out-Null
 
-    $ordinalsTypes = @"
+    $ordinalsTypes = @'
 /**
  * @fileoverview Bitcoin Ordinals API Type Definitions
  * @description Custom TypeScript definitions for Bitcoin Ordinals Protocol
@@ -230,7 +230,7 @@ declare global {
 }
 
 export {};
-"@
+'@
 
     Set-Content -Path (Join-Path $typesDir "bitcoin-ordinals.d.ts") -Value $ordinalsTypes -Encoding UTF8
     Write-SuccessLog "Bitcoin Ordinals API type definitions created"

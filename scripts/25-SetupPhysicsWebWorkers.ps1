@@ -31,7 +31,7 @@ try {
     New-Item -Path $workersPath -ItemType Directory -Force | Out-Null
 
     # Worker TypeScript file
-    $workerContent = @"
+    $workerContent = @'
 /* eslint-disable no-restricted-globals */
 /**
  * physicsWorker.ts – WebWorker entry for physics calculations
@@ -40,7 +40,7 @@ try {
  * Utilizes minimal imports to keep bundle light.
  */
 
-import { Vector3 } from 'three'
+import { Vector3 } from ''three''
 
 /** Simple message contracts */
 interface WorkerRequest<T = unknown> { id: number; task: string; payload: T }
@@ -56,7 +56,7 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const { id, task, payload } = e.data
   let result: unknown
   switch (task) {
-    case 'gravity':
+    case ''gravity'':
       // payload expected { position: Vector3Plain, delta: number }
       result = applyGravity(new Vector3(payload.position.x, payload.position.y, payload.position.z), payload.delta)
       break
@@ -66,24 +66,24 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const response: WorkerResponse = { id, result }
   ;(self as DedicatedWorkerGlobalScope).postMessage(response)
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $workersPath "physicsWorker.ts") -Value $workerContent -Encoding UTF8
     Write-SuccessLog "physicsWorker.ts generated"
 
     # Worker manager service (workerPool)
-    $managerContent = @"
+    $managerContent = @'
 /**
  * workerManager.ts – Manages a pool of physics WebWorkers
  */
 
-import { createServiceLogger } from '@/shared/lib/logger'
+import { createServiceLogger } from ''@/shared/lib/logger''
 
 interface TaskRequest { task: string; payload: unknown; resolve: (v: any)=>void; reject: (e: any)=>void }
 
 export class WorkerManager {
   static #instance: WorkerManager | null = null
-  #log = createServiceLogger('PHYSICS_WORKER_MANAGER')
+  #log = createServiceLogger(''PHYSICS_WORKER_MANAGER'')
   #workers: Worker[] = []
   #availability: boolean[] = []
   #queue: TaskRequest[] = []
@@ -91,12 +91,12 @@ export class WorkerManager {
 
   private constructor(workerCount = navigator.hardwareConcurrency || 4) {
     for (let i = 0; i < workerCount; i++) {
-      const w = new Worker(new URL('../workers/physicsWorker.ts', import.meta.url), { type: 'module' })
+      const w = new Worker(new URL(''../workers/physicsWorker.ts'', import.meta.url), { type: ''module'' })
       w.onmessage = (e) => this.#handleResponse(e.data)
       this.#workers.push(w)
       this.#availability.push(true)
     }
-    this.#log.info('Physics worker pool created', { workerCount })
+    this.#log.info(''Physics worker pool created'', { workerCount })
   }
 
   public static getInstance(): WorkerManager {
@@ -137,10 +137,10 @@ export class WorkerManager {
     this.#workers = []
     this.#availability = []
     this.#queue = []
-    this.#log.info('All physics workers terminated')
+    this.#log.info(''All physics workers terminated'')
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "workerManager.ts") -Value $managerContent -Encoding UTF8
     Write-SuccessLog "workerManager.ts generated"

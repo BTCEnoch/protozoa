@@ -43,7 +43,7 @@ try {
 
     # Generate Physics service interface
     Write-InfoLog "Generating IPhysicsService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview Physics Service Interface Definition
  * @description Defines the contract for physics simulation services
@@ -51,7 +51,7 @@ try {
  * @version 1.0.0
  */
 
-import { Vector3 } from 'three';
+import { Vector3 } from ''three'';
 
 /**
  * Configuration options for physics service initialization
@@ -184,14 +184,14 @@ export interface PhysicsMetrics {
   /** Memory usage in MB */
   memoryUsage: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $interfacesPath "IPhysicsService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IPhysicsService interface generated successfully"
 
     # Generate Physics types
     Write-InfoLog "Generating Physics types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview Physics Types Definition
  * @description Type definitions for physics simulation domain
@@ -199,17 +199,17 @@ export interface PhysicsMetrics {
  * @version 1.0.0
  */
 
-import { Vector3 } from 'three';
+import { Vector3 } from ''three'';
 
 /**
  * Physics simulation algorithm types
  */
-export type PhysicsAlgorithm = 'verlet' | 'euler' | 'runge-kutta';
+export type PhysicsAlgorithm = ''verlet'' | ''euler'' | ''runge-kutta'';
 
 /**
  * Collision detection methods
  */
-export type CollisionMethod = 'basic' | 'spatial-hash' | 'octree' | 'bvh';
+export type CollisionMethod = ''basic'' | ''spatial-hash'' | ''octree'' | ''bvh'';
 
 /**
  * Physics simulation state
@@ -245,22 +245,22 @@ export interface SpatialCell {
  * Geometry distribution patterns
  */
 export type DistributionPattern =
-  | 'grid'
-  | 'circle'
-  | 'sphere'
-  | 'random'
-  | 'fibonacci'
-  | 'hexagonal';
+  | ''grid''
+  | ''circle''
+  | ''sphere''
+  | ''random''
+  | ''fibonacci''
+  | ''hexagonal'';
 
 /**
  * Kinematic interpolation types
  */
 export type InterpolationType =
-  | 'linear'
-  | 'smooth'
-  | 'ease-in'
-  | 'ease-out'
-  | 'ease-in-out';
+  | ''linear''
+  | ''smooth''
+  | ''ease-in''
+  | ''ease-out''
+  | ''ease-in-out'';
 
 /**
  * Geometry bounds definition
@@ -281,22 +281,22 @@ export interface GeometryBounds {
  */
 export interface IntegratorState {
   /** Position integration method */
-  positionMethod: 'euler' | 'verlet' | 'rk4';
+  positionMethod: ''euler'' | ''verlet'' | ''rk4'';
   /** Velocity integration method */
-  velocityMethod: 'euler' | 'verlet' | 'rk4';
+  velocityMethod: ''euler'' | ''verlet'' | ''rk4'';
   /** Integration step size */
   stepSize: number;
   /** Sub-steps per frame */
   subSteps: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $typesPath "physics.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Physics types generated successfully"
 
     # Generate Physics Service implementation - Complete simplified version
     Write-InfoLog "Generating PhysicsService implementation - Simplified kinematic helpers"
-    $serviceContent = @"
+    $serviceContent = @'
 /**
  * @fileoverview Physics Service Implementation (Simplified)
  * @description Kinematic helpers and geometry utilities - formations handle movement
@@ -304,8 +304,8 @@ export interface IntegratorState {
  * @version 1.0.0
  */
 
-import { Vector3, Matrix4, Quaternion } from 'three';
-import { IPhysicsService, PhysicsConfig, ParticlePhysics, Transform, PhysicsMetrics } from '@/domains/physics/interfaces/IPhysicsService';
+import { Vector3, Matrix4, Quaternion } from ''three'';
+import { IPhysicsService, PhysicsConfig, ParticlePhysics, Transform, PhysicsMetrics } from ''@/domains/physics/interfaces/IPhysicsService'';
 import {
   PhysicsState,
   DistributionPattern,
@@ -313,8 +313,8 @@ import {
   GeometryBounds,
   PhysicsAlgorithm,
   CollisionMethod
-} from '@/domains/physics/types/physics.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from ''@/domains/physics/types/physics.types'';
+import { createServiceLogger } from ''@/shared/lib/logger'';
 
 /**
  * Physics Service implementing high-performance particle physics simulation
@@ -356,7 +356,7 @@ export class PhysicsService implements IPhysicsService {
   #constraints: Map<string, PhysicsConstraint>;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('PhysicsService');
+  #logger = createServiceLogger(''PhysicsService'');
 
   /** Frame timing for performance monitoring */
   #frameStartTime: number = 0;
@@ -367,7 +367,7 @@ export class PhysicsService implements IPhysicsService {
    * Initializes physics service with optimal defaults
    */
   private constructor() {
-    this.#logger.info('Initializing PhysicsService singleton instance');
+    this.#logger.info(''Initializing PhysicsService singleton instance'');
 
     // Initialize default configuration
     this.#config = {
@@ -385,8 +385,8 @@ export class PhysicsService implements IPhysicsService {
       isRunning: false,
       simulationTime: 0,
       lastDeltaTime: 0,
-      algorithm: 'verlet',
-      collisionMethod: 'spatial-hash',
+      algorithm: ''verlet'',
+      collisionMethod: ''spatial-hash'',
       activeParticles: 0
     };
 
@@ -410,13 +410,13 @@ export class PhysicsService implements IPhysicsService {
 
     // Initialize integrator
     this.#integrator = {
-      positionMethod: 'verlet',
-      velocityMethod: 'verlet',
+      positionMethod: ''verlet'',
+      velocityMethod: ''verlet'',
       stepSize: 1/60,
       subSteps: 1
     };
 
-    this.#logger.info('PhysicsService initialized successfully', {
+    this.#logger.info(''PhysicsService initialized successfully'', {
       targetFPS: this.#config.targetFPS,
       workerThreads: this.#config.useWorkerThreads,
       workerCount: this.#config.workerThreadCount
@@ -435,14 +435,14 @@ export class PhysicsService implements IPhysicsService {
     return PhysicsService.#instance;
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceContent -Encoding UTF8
     Write-SuccessLog "PhysicsService implementation generated successfully"
 
     # Generate additional service methods
     Write-InfoLog "Adding simplified physics service methods"
-    $serviceMethods = @"
+    $serviceMethods = @'
 /**
  * Physics Service implementing kinematic helpers and geometry utilities
  * Simplified service - formations now handle all movement calculations
@@ -462,7 +462,7 @@ export class PhysicsService implements IPhysicsService {
   #metrics: PhysicsMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('PhysicsService');
+  #logger = createServiceLogger(''PhysicsService'');
 
   /** Frame timing for performance monitoring */
   #frameStartTime: number = 0;
@@ -473,7 +473,7 @@ export class PhysicsService implements IPhysicsService {
    * Initializes physics service with kinematic helpers
    */
   private constructor() {
-    this.#logger.info('Initializing PhysicsService singleton instance (kinematic mode)');
+    this.#logger.info(''Initializing PhysicsService singleton instance (kinematic mode)'');
 
     // Initialize default configuration
     this.#config = {
@@ -491,8 +491,8 @@ export class PhysicsService implements IPhysicsService {
       isRunning: false,
       simulationTime: 0,
       lastDeltaTime: 0,
-      algorithm: 'euler', // Simplified
-      collisionMethod: 'basic', // No complex collision detection
+      algorithm: ''euler'', // Simplified
+      collisionMethod: ''basic'', // No complex collision detection
       activeParticles: 0
     };
 
@@ -505,7 +505,7 @@ export class PhysicsService implements IPhysicsService {
       memoryUsage: 0
     };
 
-    this.#logger.info('PhysicsService initialized successfully (simplified kinematic mode)');
+    this.#logger.info(''PhysicsService initialized successfully (simplified kinematic mode)'');
   }
 
   /**
@@ -525,14 +525,14 @@ export class PhysicsService implements IPhysicsService {
    * @param config - Optional physics configuration
    */
   public async initialize(config?: PhysicsConfig): Promise<void> {
-    this.#logger.info('Initializing PhysicsService with configuration', { config });
+    this.#logger.info(''Initializing PhysicsService with configuration'', { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
     }
 
     this.#state.isRunning = true;
-    this.#logger.info('PhysicsService initialization completed (kinematic mode)');
+    this.#logger.info(''PhysicsService initialization completed (kinematic mode)'');
   }
 
   /**
@@ -546,22 +546,22 @@ export class PhysicsService implements IPhysicsService {
     this.#frameStartTime = performance.now();
     const positions: Vector3[] = [];
 
-    this.#logger.debug('Distributing particles', { count, pattern, bounds });
+    this.#logger.debug(''Distributing particles'', { count, pattern, bounds });
 
     switch (pattern) {
-      case 'grid':
+      case ''grid'':
         positions.push(...this.#distributeGrid(count, bounds));
         break;
-      case 'circle':
+      case ''circle'':
         positions.push(...this.#distributeCircle(count, bounds));
         break;
-      case 'sphere':
+      case ''sphere'':
         positions.push(...this.#distributeSphere(count, bounds));
         break;
-      case 'fibonacci':
+      case ''fibonacci'':
         positions.push(...this.#distributeFibonacci(count, bounds));
         break;
-      case 'random':
+      case ''random'':
       default:
         positions.push(...this.#distributeRandom(count, bounds));
         break;
@@ -762,14 +762,14 @@ export class PhysicsService implements IPhysicsService {
    * Reset physics simulation state
    */
   public reset(): void {
-    this.#logger.info('Resetting physics simulation state');
+    this.#logger.info(''Resetting physics simulation state'');
 
     this.#state = {
       isRunning: false,
       simulationTime: 0,
       lastDeltaTime: 0,
-      algorithm: 'verlet',
-      collisionMethod: 'spatial-hash',
+      algorithm: ''verlet'',
+      collisionMethod: ''spatial-hash'',
       activeParticles: 0
     };
 
@@ -778,14 +778,14 @@ export class PhysicsService implements IPhysicsService {
     this.#constraints.clear();
     this.#frameHistory = [];
 
-    this.#logger.info('Physics simulation reset completed');
+    this.#logger.info(''Physics simulation reset completed'');
   }
 
   /**
    * Dispose of resources and cleanup worker threads
    */
   public dispose(): void {
-    this.#logger.info('Disposing PhysicsService resources');
+    this.#logger.info(''Disposing PhysicsService resources'');
 
     // Terminate worker threads
     this.#workers.forEach(worker => {
@@ -803,7 +803,7 @@ export class PhysicsService implements IPhysicsService {
     // Reset singleton instance
     PhysicsService.#instance = null;
 
-    this.#logger.info('PhysicsService disposal completed');
+    this.#logger.info(''PhysicsService disposal completed'');
   }
 
   // Private helper methods
@@ -812,7 +812,7 @@ export class PhysicsService implements IPhysicsService {
    * Initialize worker thread pool
    */
   async #initializeWorkers(): Promise<void> {
-    this.#logger.info('Initializing physics worker threads', {
+    this.#logger.info(''Initializing physics worker threads'', {
       count: this.#config.workerThreadCount
     });
 
@@ -822,7 +822,7 @@ export class PhysicsService implements IPhysicsService {
       const workerPromise = new Promise<void>((resolve, reject) => {
         try {
           // Create physics worker (implementation would reference actual worker file)
-          const worker = new Worker('/src/domains/physics/workers/physicsWorker.js');
+          const worker = new Worker(''/src/domains/physics/workers/physicsWorker.js'');
 
           worker.onmessage = (e) => {
             this.#handleWorkerMessage(i, e.data);
@@ -838,7 +838,7 @@ export class PhysicsService implements IPhysicsService {
 
           // Send initialization message
           worker.postMessage({
-            type: 'INIT',
+            type: ''INIT'',
             payload: { config: this.#config },
             messageId: `init_${i}`,
             timestamp: Date.now()
@@ -854,7 +854,7 @@ export class PhysicsService implements IPhysicsService {
     }
 
     await Promise.all(workerPromises);
-    this.#logger.info('All physics workers initialized successfully');
+    this.#logger.info(''All physics workers initialized successfully'');
   }
 
   /**
@@ -864,16 +864,16 @@ export class PhysicsService implements IPhysicsService {
    */
   #handleWorkerMessage(workerId: number, message: WorkerMessage): void {
     switch (message.type) {
-      case 'WORKER_READY':
+      case ''WORKER_READY'':
         this.#workerAvailable[workerId] = true;
         break;
 
-      case 'PHYSICS_UPDATE':
+      case ''PHYSICS_UPDATE'':
         // Handle physics update completion
         this.#workerAvailable[workerId] = true;
         break;
 
-      case 'WORKER_ERROR':
+      case ''WORKER_ERROR'':
         this.#logger.error(`Worker ${workerId} reported error`, {
           error: message.payload
         });
@@ -881,7 +881,7 @@ export class PhysicsService implements IPhysicsService {
         break;
 
       default:
-        this.#logger.warn('Unknown worker message type', {
+        this.#logger.warn(''Unknown worker message type'', {
           workerId,
           type: message.type
         });
@@ -901,7 +901,7 @@ export class PhysicsService implements IPhysicsService {
     if (availableWorkers.length === 0) {
       // Fallback to main thread if no workers available
       this.#updatePhysicsMainThread(deltaTime, particles);
-      this.#logger.warn('No workers available, falling back to main thread');
+      this.#logger.warn(''No workers available, falling back to main thread'');
       return;
     }
 
@@ -924,17 +924,17 @@ export class PhysicsService implements IPhysicsService {
 
           const onMessage = (e: MessageEvent) => {
             if (e.data.messageId === messageId) {
-              worker.removeEventListener('message', onMessage);
+              worker.removeEventListener(''message'', onMessage);
               // Update particles with results
               Object.assign(workerParticles, e.data.payload.particles);
               resolve();
             }
           };
 
-          worker.addEventListener('message', onMessage);
+          worker.addEventListener(''message'', onMessage);
 
           worker.postMessage({
-            type: 'PHYSICS_UPDATE',
+            type: ''PHYSICS_UPDATE'',
             messageId,
             timestamp: Date.now(),
             payload: {
@@ -987,7 +987,7 @@ export class PhysicsService implements IPhysicsService {
     this.#checkCollisions(particles);
   }
   }
-"@
+'@
 
     # Write the complete service methods to file (replacing the initial stub)
     Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceMethods -Encoding UTF8
@@ -1003,7 +1003,7 @@ export class PhysicsService implements IPhysicsService {
 
     # Generate basic physics worker template
     Write-InfoLog "Generating physics worker template"
-    $workerContent = @"
+    $workerContent = @'
 // Physics Worker Thread
 // This worker handles physics calculations off the main thread
 // for improved performance with large particle counts
@@ -1012,19 +1012,19 @@ self.onmessage = function(e) {
   const { type, payload, messageId, timestamp } = e.data;
 
   switch (type) {
-    case 'INIT':
+    case ''INIT'':
       // Initialize worker with configuration
       handleInit(payload, messageId);
       break;
 
-    case 'PHYSICS_UPDATE':
+    case ''PHYSICS_UPDATE'':
       // Process physics update
       handlePhysicsUpdate(payload, messageId);
       break;
 
     default:
       self.postMessage({
-        type: 'WORKER_ERROR',
+        type: ''WORKER_ERROR'',
         messageId,
         timestamp: Date.now(),
         payload: { error: `Unknown message type: ${type}` }
@@ -1035,10 +1035,10 @@ self.onmessage = function(e) {
 function handleInit(config, messageId) {
   // Worker initialization logic would go here
   self.postMessage({
-    type: 'WORKER_READY',
+    type: ''WORKER_READY'',
     messageId,
     timestamp: Date.now(),
-    payload: { status: 'ready' }
+    payload: { status: ''ready'' }
   });
 }
 
@@ -1051,20 +1051,20 @@ function handlePhysicsUpdate(data, messageId) {
 
   // For demonstration, just return the particles unchanged
   self.postMessage({
-    type: 'PHYSICS_UPDATE',
+    type: ''PHYSICS_UPDATE'',
     messageId,
     timestamp: Date.now(),
     payload: { particles }
   });
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $workersPath "physicsWorker.js") -Value $workerContent -Encoding UTF8
     Write-SuccessLog "Physics worker template generated successfully"
 
     # Generate export index file
     Write-InfoLog "Generating Physics domain export index"
-    $indexContent = @"
+    $indexContent = @'
 /**
  * @fileoverview Physics Domain Exports
  * @description Main export file for Physics domain
@@ -1073,7 +1073,7 @@ function handlePhysicsUpdate(data, messageId) {
  */
 
 // Service exports
-export { PhysicsService, physicsService } from './services/physicsService';
+export { PhysicsService, physicsService } from ''./services/physicsService'';
 
 // Interface exports
 export type {
@@ -1082,7 +1082,7 @@ export type {
   ParticlePhysics,
   Transform,
   PhysicsMetrics
-} from './interfaces/IPhysicsService';
+} from ''./interfaces/IPhysicsService'';
 
 // Type exports
 export type {
@@ -1092,8 +1092,8 @@ export type {
   GeometryBounds,
   PhysicsAlgorithm,
   CollisionMethod
-} from './types/physics.types';
-"@
+} from ''./types/physics.types'';
+'@
 
     Set-Content -Path (Join-Path $physicsDomainPath "index.ts") -Value $indexContent -Encoding UTF8
     Write-SuccessLog "Physics domain export index generated successfully"

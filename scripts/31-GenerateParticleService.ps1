@@ -43,7 +43,7 @@ try {
 
     # Generate Particle service interface
     Write-InfoLog "Generating IParticleService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview Particle Service Interface Definition
  * @description Defines the contract for particle system management services
@@ -51,7 +51,7 @@ try {
  * @version 1.0.0
  */
 
-import { Vector3, Scene, BufferGeometry, Material } from 'three';
+import { Vector3, Scene, BufferGeometry, Material } from ''three'';
 
 /**
  * Configuration options for Particle service initialization
@@ -188,14 +188,14 @@ export interface IParticleService {
    */
   dispose(): void;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $interfacesPath "IParticleService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IParticleService interface generated successfully"
 
     # Generate Particle types
     Write-InfoLog "Generating Particle types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview Particle Types Definition
  * @description Type definitions for particle system management domain
@@ -203,22 +203,22 @@ export interface IParticleService {
  * @version 1.0.0
  */
 
-import { Vector3, BufferGeometry, Material } from 'three';
+import { Vector3, BufferGeometry, Material } from ''three'';
 
 /**
  * Particle type identifiers
  */
-export type ParticleType = 'core' | 'membrane' | 'nucleus' | 'cytoplasm' | 'organelle' | 'effect';
+export type ParticleType = ''core'' | ''membrane'' | ''nucleus'' | ''cytoplasm'' | ''organelle'' | ''effect'';
 
 /**
  * Particle rendering modes
  */
-export type RenderingMode = 'instanced' | 'geometry' | 'points' | 'sprites';
+export type RenderingMode = ''instanced'' | ''geometry'' | ''points'' | ''sprites'';
 
 /**
  * Particle blending modes
  */
-export type BlendingMode = 'normal' | 'additive' | 'subtractive' | 'multiply';
+export type BlendingMode = ''normal'' | ''additive'' | ''subtractive'' | ''multiply'';
 
 /**
  * Particle system configuration
@@ -387,14 +387,14 @@ export interface ParticleCulling {
   /** Occlusion culling threshold */
   occlusionThreshold: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $typesPath "particle.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Particle types generated successfully"
 
     # Generate Particle Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating ParticleService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview Particle Service Implementation
  * @description High-performance particle system with THREE.js integration and GPU optimization
@@ -402,14 +402,14 @@ export interface ParticleCulling {
  * @version 1.0.0
  */
 
-import { Vector3, Scene, Mesh, InstancedMesh, BufferGeometry, Material } from 'three';
+import { Vector3, Scene, Mesh, InstancedMesh, BufferGeometry, Material } from ''three'';
 import {
   IParticleService,
   ParticleConfig,
   ParticleInstance,
   ParticleSystem,
   ParticleMetrics
-} from '@/domains/particle/interfaces/IParticleService';
+} from ''@/domains/particle/interfaces/IParticleService'';
 import {
   ParticleType,
   RenderingMode,
@@ -422,8 +422,8 @@ import {
   ParticleBatch,
   ParticleLOD,
   ParticleCulling
-} from '@/domains/particle/types/particle.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from ''@/domains/particle/types/particle.types'';
+import { createServiceLogger } from ''@/shared/lib/logger'';
 
 /**
  * Particle Service implementing high-performance particle system management
@@ -441,7 +441,7 @@ export class ParticleService implements IParticleService {
   #metrics: ParticleMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('ParticleService');
+  #logger = createServiceLogger(''ParticleService'');
 
   /** Active particle systems */
   #systems: Map<string, ParticleSystem>;
@@ -477,14 +477,14 @@ export class ParticleService implements IParticleService {
    * Initializes particle service with performance optimizations
    */
   private constructor() {
-    this.#logger.info('Initializing ParticleService singleton instance');
+    this.#logger.info(''Initializing ParticleService singleton instance'');
 
     // Initialize default configuration
     this.#config = {
       maxParticles: 10000,
       useInstancing: true,
       useObjectPooling: true,
-      defaultMaterial: 'standard',
+      defaultMaterial: ''standard'',
       enableLOD: true,
       cullingDistance: 100
     };
@@ -528,7 +528,7 @@ export class ParticleService implements IParticleService {
     // Initialize object pool
     this.#initializeObjectPool();
 
-    this.#logger.info('ParticleService initialized successfully', {
+    this.#logger.info(''ParticleService initialized successfully'', {
       maxParticles: this.#config.maxParticles,
       useInstancing: this.#config.useInstancing,
       useObjectPooling: this.#config.useObjectPooling
@@ -547,21 +547,21 @@ export class ParticleService implements IParticleService {
     return ParticleService.#instance;
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent1 -Encoding UTF8
     Write-SuccessLog "ParticleService implementation Part 1 generated successfully"
 
     # Generate Particle Service implementation - Part 2A (Core methods - first batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2A (Core methods - first batch)"
-    $serviceContent2A = @"
+    $serviceContent2A = @'
 
   /**
    * Initialize the Particle service with configuration
    * @param config - Optional particle configuration
    */
   public async initialize(config?: ParticleConfig): Promise<void> {
-    this.#logger.info('Initializing ParticleService with configuration', { config });
+    this.#logger.info(''Initializing ParticleService with configuration'', { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
@@ -572,7 +572,7 @@ export class ParticleService implements IParticleService {
       this.#initializeObjectPool();
     }
 
-    this.#logger.info('ParticleService initialization completed');
+    this.#logger.info(''ParticleService initialization completed'');
   }
 
   /**
@@ -581,10 +581,10 @@ export class ParticleService implements IParticleService {
    * @returns Created particle system
    */
   public createSystem(systemConfig: ParticleSystemConfig): ParticleSystem {
-    this.#logger.info('Creating particle system', { systemId: systemConfig.id });
+    this.#logger.info(''Creating particle system'', { systemId: systemConfig.id });
 
     if (this.#systems.has(systemConfig.id)) {
-      throw new Error(`Particle system with ID '${systemConfig.id}' already exists`);
+      throw new Error(`Particle system with ID ''${systemConfig.id}'' already exists`);
     }
 
     const system: ParticleSystem = {
@@ -602,7 +602,7 @@ export class ParticleService implements IParticleService {
     this.#systems.set(systemConfig.id, system);
     this.#metrics.activeSystems++;
 
-    this.#logger.info('Particle system created successfully', {
+    this.#logger.info(''Particle system created successfully'', {
       systemId: systemConfig.id,
       maxParticles: systemConfig.maxParticles
     });
@@ -619,14 +619,14 @@ export class ParticleService implements IParticleService {
   public addParticles(systemId: string, particleData: ParticleCreationData[]): string[] {
     const system = this.#systems.get(systemId);
     if (!system) {
-      throw new Error(`Particle system '${systemId}' not found`);
+      throw new Error(`Particle system ''${systemId}'' not found`);
     }
 
     const createdIds: string[] = [];
 
     for (const data of particleData) {
       if (system.activeParticles >= system.maxParticles) {
-        this.#logger.warn('System particle limit reached', {
+        this.#logger.warn(''System particle limit reached'', {
           systemId,
           maxParticles: system.maxParticles
         });
@@ -642,7 +642,7 @@ export class ParticleService implements IParticleService {
       }
     }
 
-    this.#logger.info('Particles added to system', {
+    this.#logger.info(''Particles added to system'', {
       systemId,
       particlesAdded: createdIds.length,
       totalActive: system.activeParticles
@@ -659,7 +659,7 @@ export class ParticleService implements IParticleService {
   public removeParticles(systemId: string, particleIds: string[]): void {
     const system = this.#systems.get(systemId);
     if (!system) {
-      throw new Error(`Particle system '${systemId}' not found`);
+      throw new Error(`Particle system ''${systemId}'' not found`);
     }
 
     let removedCount = 0;
@@ -676,13 +676,13 @@ export class ParticleService implements IParticleService {
       }
     }
 
-    this.#logger.info('Particles removed from system', {
+    this.#logger.info(''Particles removed from system'', {
       systemId,
       particlesRemoved: removedCount,
       totalActive: system.activeParticles
     });
   }
-"@
+'@
 
     # Append Part 2A to the service file
     Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2A -Encoding UTF8
@@ -690,7 +690,7 @@ export class ParticleService implements IParticleService {
 
     # Generate Particle Service implementation - Part 2B (Core methods - second batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2B (Core methods - second batch)"
-    $serviceContent2B = @"
+    $serviceContent2B = @'
 
   /**
    * Update all particle systems
@@ -710,9 +710,9 @@ export class ParticleService implements IParticleService {
     }
 
     // Update performance metrics
-    this.#updateMetrics('update');
+    this.#updateMetrics(''update'');
 
-    this.#logger.debug('Particle systems updated', {
+    this.#logger.debug(''Particle systems updated'', {
       activeSystems: this.#metrics.activeSystems,
       totalParticles: this.#metrics.totalParticles,
       particlesUpdated: this.#metrics.particlesUpdated,
@@ -728,7 +728,7 @@ export class ParticleService implements IParticleService {
       this.#updateSystem(system, deltaTime);
     }
 
-    this.#updateMetrics('update');
+    this.#updateMetrics(''update'');
   }
 
   /**
@@ -751,9 +751,9 @@ export class ParticleService implements IParticleService {
     }
 
     // Update render performance metrics
-    this.#updateMetrics('render', renderStartTime);
+    this.#updateMetrics(''render'', renderStartTime);
 
-    this.#logger.debug('Particle systems rendered', {
+    this.#logger.debug(''Particle systems rendered'', {
       activeSystems: this.#metrics.activeSystems,
       particlesRendered: this.#metrics.particlesRendered,
       batchesRendered: this.#metrics.batchesRendered,
@@ -769,7 +769,7 @@ export class ParticleService implements IParticleService {
       this.#renderSystem(system, scene);
     }
 
-    this.#updateMetrics('render', renderStartTime);
+    this.#updateMetrics(''render'', renderStartTime);
   }
 
   /**
@@ -814,7 +814,7 @@ export class ParticleService implements IParticleService {
    * Dispose of resources and cleanup
    */
   public dispose(): void {
-    this.#logger.info('Disposing ParticleService resources');
+    this.#logger.info(''Disposing ParticleService resources'');
 
     // Clear all particle systems
     for (const system of this.#systems.values()) {
@@ -857,9 +857,9 @@ export class ParticleService implements IParticleService {
     // Reset singleton instance
     ParticleService.#instance = null;
 
-    this.#logger.info('ParticleService disposal completed');
+    this.#logger.info(''ParticleService disposal completed'');
   }
-    this.#logger.info('Disposing ParticleService resources');
+    this.#logger.info(''Disposing ParticleService resources'');
 
     // Clear all systems
     for (const system of this.#systems.values()) {
@@ -881,7 +881,7 @@ export class ParticleService implements IParticleService {
     // Reset singleton instance
     ParticleService.#instance = null;
 
-    this.#logger.info('ParticleService disposal completed');
+    this.#logger.info(''ParticleService disposal completed'');
   }
 
   // Private helper methods
@@ -890,7 +890,7 @@ export class ParticleService implements IParticleService {
    * Initialize object pool for particle instances
    */
   #initializeObjectPool(): void {
-    this.#logger.info('Initializing particle object pool', {
+    this.#logger.info(''Initializing particle object pool'', {
       maxParticles: this.#config.maxParticles
     });
 
@@ -899,7 +899,7 @@ export class ParticleService implements IParticleService {
 
     for (let i = 0; i < this.#config.maxParticles!; i++) {
       const particle: ParticleInstance = {
-        id: '',
+        id: '''',
         position: new Vector3(),
         velocity: new Vector3(),
         scale: new Vector3(1, 1, 1),
@@ -909,7 +909,7 @@ export class ParticleService implements IParticleService {
         age: 0,
         lifetime: 10,
         active: false,
-        type: 'core',
+        type: ''core'',
         userData: {}
       };
 
@@ -917,9 +917,9 @@ export class ParticleService implements IParticleService {
       this.#poolIndices.push(i);
     }
 
-    this.#logger.info('Particle object pool initialized successfully');
+    this.#logger.info(''Particle object pool initialized successfully'');
   }
-"@
+'@
 
     # Append Part 2B to the service file
     Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2B -Encoding UTF8
@@ -927,7 +927,7 @@ export class ParticleService implements IParticleService {
 
     # Generate Particle Service implementation - Part 3 (Helper methods and completion)
     Write-InfoLog "Generating ParticleService implementation - Part 3 (Helper methods and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 
   /**
    * Create particle from creation data
@@ -936,7 +936,7 @@ export class ParticleService implements IParticleService {
    */
   #createParticle(data: ParticleCreationData): ParticleInstance | null {
     if (this.#poolIndices.length === 0) {
-      this.#logger.warn('Particle pool exhausted');
+      this.#logger.warn(''Particle pool exhausted'');
       return null;
     }
 
@@ -966,7 +966,7 @@ export class ParticleService implements IParticleService {
    */
   #returnParticleToPool(particle: ParticleInstance): void {
     particle.active = false;
-    particle.id = '';
+    particle.id = '''';
     particle.userData = {};
 
     // Find pool index and return it
@@ -1061,11 +1061,11 @@ export class ParticleService implements IParticleService {
    * @param operation - Operation type
    * @param startTime - Optional start time for render operations
    */
-  #updateMetrics(operation: 'update' | 'render', startTime?: number): void {
+  #updateMetrics(operation: ''update'' | ''render'', startTime?: number): void {
     const endTime = performance.now();
     const duration = endTime - (startTime || this.#frameStartTime);
 
-    if (operation === 'update') {
+    if (operation === ''update'') {
       this.#updateHistory.push(duration);
       if (this.#updateHistory.length > 60) {
         this.#updateHistory.shift();
@@ -1185,7 +1185,7 @@ export class ParticleService implements IParticleService {
     );
 
     // Placeholder for instanced attribute updates
-    this.#logger.debug('Updating instanced attributes', {
+    this.#logger.debug(''Updating instanced attributes'', {
       systemId: system.id,
       particles: maxParticles,
       lodLevel
@@ -1205,7 +1205,7 @@ export class ParticleService implements IParticleService {
     );
     batch.needsUpdate = true;
 
-    this.#logger.debug('Batch updated', {
+    this.#logger.debug(''Batch updated'', {
       batchId: batch.id,
       instanceCount: batch.instanceCount,
       lodLevel
@@ -1215,7 +1215,7 @@ export class ParticleService implements IParticleService {
 
 // Export singleton instance getter
 export const particleService = ParticleService.getInstance();
-"@
+'@
 
     # Append Part 3 to complete the service
     Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent3 -Encoding UTF8
@@ -1223,7 +1223,7 @@ export const particleService = ParticleService.getInstance();
 
     # Generate export index file
     Write-InfoLog "Generating Particle domain export index"
-    $indexContent = @"
+    $indexContent = @'
 /**
  * @fileoverview Particle Domain Exports
  * @description Main export file for Particle domain
@@ -1232,7 +1232,7 @@ export const particleService = ParticleService.getInstance();
  */
 
 // Service exports
-export { ParticleService, particleService } from './services/particleService';
+export { ParticleService, particleService } from ''./services/particleService'';
 
 // Interface exports
 export type {
@@ -1241,7 +1241,7 @@ export type {
   ParticleInstance,
   ParticleSystem,
   ParticleMetrics
-} from './interfaces/IParticleService';
+} from ''./interfaces/IParticleService'';
 
 // Type exports
 export type {
@@ -1256,8 +1256,8 @@ export type {
   ParticleBatch,
   ParticleLOD,
   ParticleCulling
-} from './types/particle.types';
-"@
+} from ''./types/particle.types'';
+'@
 
     Set-Content -Path (Join-Path $particleDomainPath "index.ts") -Value $indexContent -Encoding UTF8
     Write-SuccessLog "Particle domain export index generated successfully"
