@@ -43,7 +43,7 @@ try {
 
     # Generate Trait service interface
     Write-InfoLog "Generating ITraitService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview Trait Service Interface Definition
  * @description Defines the contract for organism trait management services
@@ -199,14 +199,14 @@ export interface ITraitService {
    */
   dispose(): void;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $interfacesPath "ITraitService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "ITraitService interface generated successfully"
 
     # Generate Trait types
     Write-InfoLog "Generating Trait types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview Trait Types Definition
  * @description Type definitions for organism trait management domain
@@ -217,12 +217,12 @@ export interface ITraitService {
 /**
  * Trait categories
  */
-export type TraitCategory = 'visual' | 'behavioral' | 'physical' | 'evolutionary';
+export type TraitCategory = "visual" | "behavioral" | "physical" | "evolutionary";
 
 /**
  * Trait data types
  */
-export type TraitType = 'number' | 'string' | 'boolean' | 'color' | 'enum';
+export type TraitType = "number" | "string" | "boolean" | "color" | "enum";
 
 /**
  * Mutation record for tracking trait changes
@@ -273,7 +273,7 @@ export interface TraitGenerationParams {
 /**
  * Generation type
  */
-export type GenerationType = 'genesis' | 'inheritance' | 'mutation' | 'crossover';
+export type GenerationType = "genesis" | "inheritance" | "mutation" | "crossover";
 
 /**
  * Trait service performance metrics
@@ -330,14 +330,14 @@ export interface InheritanceWeights {
   /** Block data influence (0.0-1.0) */
   blockWeight: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $typesPath "trait.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Trait types generated successfully"
 
     # Generate Trait Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating TraitService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -354,7 +354,7 @@ import {
   PhysicalTraits,
   EvolutionaryTraits,
   TraitMetrics
-} from '@/domains/trait/interfaces/ITraitService';
+} from "@/domains/trait/interfaces/ITraitService";
 import {
   TraitCategory,
   TraitType,
@@ -365,8 +365,8 @@ import {
   RGBColor,
   TraitRange,
   InheritanceWeights
-} from '@/domains/trait/types/trait.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/trait/types/trait.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * Trait Service implementing advanced organism trait generation and evolution
@@ -384,7 +384,7 @@ export class TraitService implements ITraitService {
   #metrics: TraitMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('TraitService');
+  #logger = createServiceLogger("TraitService");
 
   /** Generated traits cache */
   #traitsCache: Map<string, OrganismTraits>;
@@ -400,7 +400,7 @@ export class TraitService implements ITraitService {
    * Initializes trait service with genetic algorithms
    */
   private constructor() {
-    this.#logger.info('Initializing TraitService singleton instance');
+    this.#logger.info("Initializing TraitService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -429,12 +429,12 @@ export class TraitService implements ITraitService {
     // Initialize collections
     this.#traitsCache = new Map();
     this.#traitRanges = new Map();
-    this.#availableShapes = ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond'];
+    this.#availableShapes = ["circle", "square", "triangle", "hexagon", "star", "diamond"];
 
     // Initialize trait ranges
     this.#initializeTraitRanges();
 
-    this.#logger.info('TraitService initialized successfully', {
+    this.#logger.info("TraitService initialized successfully", {
       useBitcoinSeeding: this.#config.useBitcoinSeeding,
       baseMutationRate: this.#config.baseMutationRate
     });
@@ -452,14 +452,14 @@ export class TraitService implements ITraitService {
     return TraitService.#instance;
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent1 -Encoding UTF8
     Write-SuccessLog "TraitService implementation Part 1 generated successfully"
 
     # Generate Trait Service implementation - Part 2 (Core methods)
     Write-InfoLog "Generating TraitService implementation - Part 2 (Core methods)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -476,7 +476,7 @@ import {
   PhysicalTraits,
   EvolutionaryTraits,
   TraitMetrics
-} from '@/domains/trait/interfaces/ITraitService';
+} from "@/domains/trait/interfaces/ITraitService";
 import {
   TraitCategory,
   TraitType,
@@ -487,8 +487,8 @@ import {
   RGBColor,
   TraitRange,
   InheritanceWeights
-} from '@/domains/trait/types/trait.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/trait/types/trait.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * Trait Service implementing advanced organism trait generation and evolution
@@ -506,7 +506,7 @@ export class TraitService implements ITraitService {
   #metrics: TraitMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('TraitService');
+  #logger = createServiceLogger("TraitService");
 
   /** Generated traits cache */
   #traitsCache: Map<string, OrganismTraits>;
@@ -522,7 +522,7 @@ export class TraitService implements ITraitService {
    * Initializes trait service with genetic algorithms
    */
   private constructor() {
-    this.#logger.info('Initializing TraitService singleton instance');
+    this.#logger.info("Initializing TraitService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -551,12 +551,12 @@ export class TraitService implements ITraitService {
     // Initialize collections
     this.#traitsCache = new Map();
     this.#traitRanges = new Map();
-    this.#availableShapes = ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond'];
+    this.#availableShapes = ["circle", "square", "triangle", "hexagon", "star", "diamond"];
 
     // Initialize trait ranges
     this.#initializeTraitRanges();
 
-    this.#logger.info('TraitService initialized successfully', {
+    this.#logger.info("TraitService initialized successfully", {
       useBitcoinSeeding: this.#config.useBitcoinSeeding,
       baseMutationRate: this.#config.baseMutationRate
     });
@@ -579,13 +579,13 @@ export class TraitService implements ITraitService {
    * @param config - Optional trait configuration
    */
   public async initialize(config?: TraitConfig): Promise<void> {
-    this.#logger.info('Initializing TraitService with configuration', { config });
+    this.#logger.info("Initializing TraitService with configuration", { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
     }
 
-    this.#logger.info('TraitService initialization completed');
+    this.#logger.info("TraitService initialization completed");
   }
 
   /**
@@ -596,10 +596,10 @@ export class TraitService implements ITraitService {
    */
   public async generateTraits(blockNumber: number, parentIds?: string[]): Promise<OrganismTraits> {
     const startTime = performance.now();
-    this.#logger.info('Generating organism traits', { blockNumber, parentIds });
+    this.#logger.info("Generating organism traits", { blockNumber, parentIds });
 
     // Check cache first
-    const cacheKey = `${blockNumber}_${parentIds?.join(',') || 'genesis'}`;
+    const cacheKey = `${blockNumber}_${parentIds?.join(",") || "genesis"}`;
     const cached = this.#traitsCache.get(cacheKey);
     if (cached) {
       this.#updateCacheHitRate(true);
@@ -607,7 +607,7 @@ export class TraitService implements ITraitService {
     }
 
     try {
-      const generationType: GenerationType = parentIds?.length ? 'inheritance' : 'genesis';
+      const generationType: GenerationType = parentIds?.length ? "inheritance" : "genesis";
 
       // Generate organism ID
       const organismId = this.#generateOrganismId(blockNumber);
@@ -643,7 +643,7 @@ export class TraitService implements ITraitService {
       this.#updateMetrics(startTime, generationType);
       this.#updateCacheHitRate(false);
 
-      this.#logger.info('Organism traits generated successfully', {
+      this.#logger.info("Organism traits generated successfully", {
         organismId,
         blockNumber,
         generationType
@@ -651,7 +651,7 @@ export class TraitService implements ITraitService {
 
       return traits;
     } catch (error) {
-      this.#logger.error('Failed to generate organism traits', { blockNumber, error });
+      this.#logger.error("Failed to generate organism traits", { blockNumber, error });
       throw error;
     }
   }
@@ -666,7 +666,7 @@ export class TraitService implements ITraitService {
     const startTime = performance.now();
     const rate = mutationRate || this.#config.baseMutationRate!;
 
-    this.#logger.info('Mutating organism traits', {
+    this.#logger.info("Mutating organism traits", {
       organismId: traits.organismId,
       mutationRate: rate
     });
@@ -691,9 +691,9 @@ export class TraitService implements ITraitService {
 
     // Update metrics
     this.#metrics.totalMutations++;
-    this.#updateMetrics(startTime, 'mutation');
+    this.#updateMetrics(startTime, "mutation");
 
-    this.#logger.info('Organism traits mutated successfully', {
+    this.#logger.info("Organism traits mutated successfully", {
       organismId: traits.organismId,
       mutationsApplied: mutations.length
     });
@@ -713,7 +713,7 @@ export class TraitService implements ITraitService {
    * Dispose of resources and cleanup
    */
   public dispose(): void {
-    this.#logger.info('Disposing TraitService resources');
+    this.#logger.info("Disposing TraitService resources");
 
     this.#traitsCache.clear();
     this.#traitRanges.clear();
@@ -721,7 +721,7 @@ export class TraitService implements ITraitService {
     // Reset singleton instance
     TraitService.#instance = null;
 
-    this.#logger.info('TraitService disposal completed');
+    this.#logger.info("TraitService disposal completed");
   }
 
   // Private helper methods
@@ -731,31 +731,31 @@ export class TraitService implements ITraitService {
    */
   #initializeTraitRanges(): void {
     // Visual trait ranges
-    this.#traitRanges.set('size', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('opacity', { min: 0.3, max: 1.0, default: 0.8 });
-    this.#traitRanges.set('particleDensity', { min: 0.5, max: 3.0, default: 1.0 });
-    this.#traitRanges.set('glowIntensity', { min: 0.0, max: 1.0, default: 0.3 });
+    this.#traitRanges.set("size", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("opacity", { min: 0.3, max: 1.0, default: 0.8 });
+    this.#traitRanges.set("particleDensity", { min: 0.5, max: 3.0, default: 1.0 });
+    this.#traitRanges.set("glowIntensity", { min: 0.0, max: 1.0, default: 0.3 });
 
     // Behavioral trait ranges
-    this.#traitRanges.set('speed', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('aggression', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('sociability', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('curiosity', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('efficiency', { min: 0.3, max: 1.0, default: 0.7 });
-    this.#traitRanges.set('adaptability', { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("speed", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("aggression", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("sociability", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("curiosity", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("efficiency", { min: 0.3, max: 1.0, default: 0.7 });
+    this.#traitRanges.set("adaptability", { min: 0.0, max: 1.0, default: 0.5 });
 
     // Physical trait ranges
-    this.#traitRanges.set('mass', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('collisionRadius', { min: 0.7, max: 1.5, default: 1.0 });
-    this.#traitRanges.set('energyCapacity', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('durability', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('regeneration', { min: 0.1, max: 1.0, default: 0.3 });
+    this.#traitRanges.set("mass", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("collisionRadius", { min: 0.7, max: 1.5, default: 1.0 });
+    this.#traitRanges.set("energyCapacity", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("durability", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("regeneration", { min: 0.1, max: 1.0, default: 0.3 });
 
     // Evolutionary trait ranges
-    this.#traitRanges.set('fitness', { min: 0.0, max: 100.0, default: 50.0 });
-    this.#traitRanges.set('stability', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('reproductivity', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('longevity', { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("fitness", { min: 0.0, max: 100.0, default: 50.0 });
+    this.#traitRanges.set("stability", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("reproductivity", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("longevity", { min: 0.5, max: 2.0, default: 1.0 });
   }
 
   /**
@@ -780,11 +780,11 @@ export class TraitService implements ITraitService {
     return {
       primaryColor: this.#generateColor(hash, 0),
       secondaryColor: this.#generateColor(hash, 1),
-      size: this.#generateTraitValue('size', hash, 2),
-      opacity: this.#generateTraitValue('opacity', hash, 3),
+      size: this.#generateTraitValue("size", hash, 2),
+      opacity: this.#generateTraitValue("opacity", hash, 3),
       shape: this.#availableShapes[hash[4] % this.#availableShapes.length],
-      particleDensity: this.#generateTraitValue('particleDensity', hash, 5),
-      glowIntensity: this.#generateTraitValue('glowIntensity', hash, 6)
+      particleDensity: this.#generateTraitValue("particleDensity", hash, 5),
+      glowIntensity: this.#generateTraitValue("glowIntensity", hash, 6)
     };
   }
 
@@ -797,12 +797,12 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 1);
 
     return {
-      speed: this.#generateTraitValue('speed', hash, 0),
-      aggression: this.#generateTraitValue('aggression', hash, 1),
-      sociability: this.#generateTraitValue('sociability', hash, 2),
-      curiosity: this.#generateTraitValue('curiosity', hash, 3),
-      efficiency: this.#generateTraitValue('efficiency', hash, 4),
-      adaptability: this.#generateTraitValue('adaptability', hash, 5)
+      speed: this.#generateTraitValue("speed", hash, 0),
+      aggression: this.#generateTraitValue("aggression", hash, 1),
+      sociability: this.#generateTraitValue("sociability", hash, 2),
+      curiosity: this.#generateTraitValue("curiosity", hash, 3),
+      efficiency: this.#generateTraitValue("efficiency", hash, 4),
+      adaptability: this.#generateTraitValue("adaptability", hash, 5)
     };
   }
 
@@ -815,11 +815,11 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 2);
 
     return {
-      mass: this.#generateTraitValue('mass', hash, 0),
-      collisionRadius: this.#generateTraitValue('collisionRadius', hash, 1),
-      energyCapacity: this.#generateTraitValue('energyCapacity', hash, 2),
-      durability: this.#generateTraitValue('durability', hash, 3),
-      regeneration: this.#generateTraitValue('regeneration', hash, 4)
+      mass: this.#generateTraitValue("mass", hash, 0),
+      collisionRadius: this.#generateTraitValue("collisionRadius", hash, 1),
+      energyCapacity: this.#generateTraitValue("energyCapacity", hash, 2),
+      durability: this.#generateTraitValue("durability", hash, 3),
+      regeneration: this.#generateTraitValue("regeneration", hash, 4)
     };
   }
 
@@ -833,11 +833,11 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 3);
 
     return {
-      generation: generationType === 'genesis' ? 0 : 1,
-      fitness: this.#generateTraitValue('fitness', hash, 0),
-      stability: this.#generateTraitValue('stability', hash, 1),
-      reproductivity: this.#generateTraitValue('reproductivity', hash, 2),
-      longevity: this.#generateTraitValue('longevity', hash, 3)
+      generation: generationType === "genesis" ? 0 : 1,
+      fitness: this.#generateTraitValue("fitness", hash, 0),
+      stability: this.#generateTraitValue("stability", hash, 1),
+      reproductivity: this.#generateTraitValue("reproductivity", hash, 2),
+      longevity: this.#generateTraitValue("longevity", hash, 3)
     };
   }
 
@@ -852,7 +852,7 @@ export class TraitService implements ITraitService {
     const g = hash[(offset + 1) % hash.length] % 256;
     const b = hash[(offset + 2) % hash.length] % 256;
 
-    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
   }
 
   /**
@@ -898,14 +898,14 @@ export class TraitService implements ITraitService {
   #mutateVisualTraits(visual: VisualTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldSize = visual.size;
-      visual.size = this.#mutateNumericTrait(visual.size, 'size', 0.1);
-      mutations.push(this.#createMutationRecord('visual', 'size', oldSize, visual.size, rate));
+      visual.size = this.#mutateNumericTrait(visual.size, "size", 0.1);
+      mutations.push(this.#createMutationRecord("visual", "size", oldSize, visual.size, rate));
     }
 
     if (Math.random() < rate) {
       const oldOpacity = visual.opacity;
-      visual.opacity = this.#mutateNumericTrait(visual.opacity, 'opacity', 0.05);
-      mutations.push(this.#createMutationRecord('visual', 'opacity', oldOpacity, visual.opacity, rate));
+      visual.opacity = this.#mutateNumericTrait(visual.opacity, "opacity", 0.05);
+      mutations.push(this.#createMutationRecord("visual", "opacity", oldOpacity, visual.opacity, rate));
     }
   }
 
@@ -918,8 +918,8 @@ export class TraitService implements ITraitService {
   #mutateBehavioralTraits(behavioral: BehavioralTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldSpeed = behavioral.speed;
-      behavioral.speed = this.#mutateNumericTrait(behavioral.speed, 'speed', 0.1);
-      mutations.push(this.#createMutationRecord('behavioral', 'speed', oldSpeed, behavioral.speed, rate));
+      behavioral.speed = this.#mutateNumericTrait(behavioral.speed, "speed", 0.1);
+      mutations.push(this.#createMutationRecord("behavioral", "speed", oldSpeed, behavioral.speed, rate));
     }
   }
 
@@ -932,8 +932,8 @@ export class TraitService implements ITraitService {
   #mutatePhysicalTraits(physical: PhysicalTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldMass = physical.mass;
-      physical.mass = this.#mutateNumericTrait(physical.mass, 'mass', 0.1);
-      mutations.push(this.#createMutationRecord('physical', 'mass', oldMass, physical.mass, rate));
+      physical.mass = this.#mutateNumericTrait(physical.mass, "mass", 0.1);
+      mutations.push(this.#createMutationRecord("physical", "mass", oldMass, physical.mass, rate));
     }
   }
 
@@ -948,8 +948,8 @@ export class TraitService implements ITraitService {
 
     if (Math.random() < rate) {
       const oldFitness = evolutionary.fitness;
-      evolutionary.fitness = this.#mutateNumericTrait(evolutionary.fitness, 'fitness', 5.0);
-      mutations.push(this.#createMutationRecord('evolutionary', 'fitness', oldFitness, evolutionary.fitness, rate));
+      evolutionary.fitness = this.#mutateNumericTrait(evolutionary.fitness, "fitness", 5.0);
+      mutations.push(this.#createMutationRecord("evolutionary", "fitness", oldFitness, evolutionary.fitness, rate));
     }
   }
 
@@ -1022,7 +1022,7 @@ export class TraitService implements ITraitService {
     }
   }
 }
-"@
+'@
 
     # Append Part 2 to the service file
     Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent2 -Encoding UTF8
@@ -1030,7 +1030,7 @@ export class TraitService implements ITraitService {
 
     # Generate Trait Service implementation - Part 3 (Helper methods and completion)
     Write-InfoLog "Generating TraitService implementation - Part 3 (Helper methods and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -1047,7 +1047,7 @@ import {
   PhysicalTraits,
   EvolutionaryTraits,
   TraitMetrics
-} from '@/domains/trait/interfaces/ITraitService';
+} from "@/domains/trait/interfaces/ITraitService";
 import {
   TraitCategory,
   TraitType,
@@ -1058,8 +1058,8 @@ import {
   RGBColor,
   TraitRange,
   InheritanceWeights
-} from '@/domains/trait/types/trait.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/trait/types/trait.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * Trait Service implementing advanced organism trait generation and evolution
@@ -1077,7 +1077,7 @@ export class TraitService implements ITraitService {
   #metrics: TraitMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('TraitService');
+  #logger = createServiceLogger("TraitService");
 
   /** Generated traits cache */
   #traitsCache: Map<string, OrganismTraits>;
@@ -1093,7 +1093,7 @@ export class TraitService implements ITraitService {
    * Initializes trait service with genetic algorithms
    */
   private constructor() {
-    this.#logger.info('Initializing TraitService singleton instance');
+    this.#logger.info("Initializing TraitService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -1122,12 +1122,12 @@ export class TraitService implements ITraitService {
     // Initialize collections
     this.#traitsCache = new Map();
     this.#traitRanges = new Map();
-    this.#availableShapes = ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond'];
+    this.#availableShapes = ["circle", "square", "triangle", "hexagon", "star", "diamond"];
 
     // Initialize trait ranges
     this.#initializeTraitRanges();
 
-    this.#logger.info('TraitService initialized successfully', {
+    this.#logger.info("TraitService initialized successfully", {
       useBitcoinSeeding: this.#config.useBitcoinSeeding,
       baseMutationRate: this.#config.baseMutationRate
     });
@@ -1150,13 +1150,13 @@ export class TraitService implements ITraitService {
    * @param config - Optional trait configuration
    */
   public async initialize(config?: TraitConfig): Promise<void> {
-    this.#logger.info('Initializing TraitService with configuration', { config });
+    this.#logger.info("Initializing TraitService with configuration", { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
     }
 
-    this.#logger.info('TraitService initialization completed');
+    this.#logger.info("TraitService initialization completed");
   }
 
   /**
@@ -1167,10 +1167,10 @@ export class TraitService implements ITraitService {
    */
   public async generateTraits(blockNumber: number, parentIds?: string[]): Promise<OrganismTraits> {
     const startTime = performance.now();
-    this.#logger.info('Generating organism traits', { blockNumber, parentIds });
+    this.#logger.info("Generating organism traits", { blockNumber, parentIds });
 
     // Check cache first
-    const cacheKey = `${blockNumber}_${parentIds?.join(',') || 'genesis'}`;
+    const cacheKey = `${blockNumber}_${parentIds?.join(",") || "genesis"}`;
     const cached = this.#traitsCache.get(cacheKey);
     if (cached) {
       this.#updateCacheHitRate(true);
@@ -1178,7 +1178,7 @@ export class TraitService implements ITraitService {
     }
 
     try {
-      const generationType: GenerationType = parentIds?.length ? 'inheritance' : 'genesis';
+      const generationType: GenerationType = parentIds?.length ? "inheritance" : "genesis";
 
       // Generate organism ID
       const organismId = this.#generateOrganismId(blockNumber);
@@ -1214,7 +1214,7 @@ export class TraitService implements ITraitService {
       this.#updateMetrics(startTime, generationType);
       this.#updateCacheHitRate(false);
 
-      this.#logger.info('Organism traits generated successfully', {
+      this.#logger.info("Organism traits generated successfully", {
         organismId,
         blockNumber,
         generationType
@@ -1222,7 +1222,7 @@ export class TraitService implements ITraitService {
 
       return traits;
     } catch (error) {
-      this.#logger.error('Failed to generate organism traits', { blockNumber, error });
+      this.#logger.error("Failed to generate organism traits", { blockNumber, error });
       throw error;
     }
   }
@@ -1237,7 +1237,7 @@ export class TraitService implements ITraitService {
     const startTime = performance.now();
     const rate = mutationRate || this.#config.baseMutationRate!;
 
-    this.#logger.info('Mutating organism traits', {
+    this.#logger.info("Mutating organism traits", {
       organismId: traits.organismId,
       mutationRate: rate
     });
@@ -1262,9 +1262,9 @@ export class TraitService implements ITraitService {
 
     // Update metrics
     this.#metrics.totalMutations++;
-    this.#updateMetrics(startTime, 'mutation');
+    this.#updateMetrics(startTime, "mutation");
 
-    this.#logger.info('Organism traits mutated successfully', {
+    this.#logger.info("Organism traits mutated successfully", {
       organismId: traits.organismId,
       mutationsApplied: mutations.length
     });
@@ -1284,7 +1284,7 @@ export class TraitService implements ITraitService {
    * Dispose of resources and cleanup
    */
   public dispose(): void {
-    this.#logger.info('Disposing TraitService resources');
+    this.#logger.info("Disposing TraitService resources");
 
     this.#traitsCache.clear();
     this.#traitRanges.clear();
@@ -1292,7 +1292,7 @@ export class TraitService implements ITraitService {
     // Reset singleton instance
     TraitService.#instance = null;
 
-    this.#logger.info('TraitService disposal completed');
+    this.#logger.info("TraitService disposal completed");
   }
 
   // Private helper methods
@@ -1302,31 +1302,31 @@ export class TraitService implements ITraitService {
    */
   #initializeTraitRanges(): void {
     // Visual trait ranges
-    this.#traitRanges.set('size', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('opacity', { min: 0.3, max: 1.0, default: 0.8 });
-    this.#traitRanges.set('particleDensity', { min: 0.5, max: 3.0, default: 1.0 });
-    this.#traitRanges.set('glowIntensity', { min: 0.0, max: 1.0, default: 0.3 });
+    this.#traitRanges.set("size", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("opacity", { min: 0.3, max: 1.0, default: 0.8 });
+    this.#traitRanges.set("particleDensity", { min: 0.5, max: 3.0, default: 1.0 });
+    this.#traitRanges.set("glowIntensity", { min: 0.0, max: 1.0, default: 0.3 });
 
     // Behavioral trait ranges
-    this.#traitRanges.set('speed', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('aggression', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('sociability', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('curiosity', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('efficiency', { min: 0.3, max: 1.0, default: 0.7 });
-    this.#traitRanges.set('adaptability', { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("speed", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("aggression", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("sociability", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("curiosity", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("efficiency", { min: 0.3, max: 1.0, default: 0.7 });
+    this.#traitRanges.set("adaptability", { min: 0.0, max: 1.0, default: 0.5 });
 
     // Physical trait ranges
-    this.#traitRanges.set('mass', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('collisionRadius', { min: 0.7, max: 1.5, default: 1.0 });
-    this.#traitRanges.set('energyCapacity', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('durability', { min: 0.5, max: 2.0, default: 1.0 });
-    this.#traitRanges.set('regeneration', { min: 0.1, max: 1.0, default: 0.3 });
+    this.#traitRanges.set("mass", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("collisionRadius", { min: 0.7, max: 1.5, default: 1.0 });
+    this.#traitRanges.set("energyCapacity", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("durability", { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("regeneration", { min: 0.1, max: 1.0, default: 0.3 });
 
     // Evolutionary trait ranges
-    this.#traitRanges.set('fitness', { min: 0.0, max: 100.0, default: 50.0 });
-    this.#traitRanges.set('stability', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('reproductivity', { min: 0.0, max: 1.0, default: 0.5 });
-    this.#traitRanges.set('longevity', { min: 0.5, max: 2.0, default: 1.0 });
+    this.#traitRanges.set("fitness", { min: 0.0, max: 100.0, default: 50.0 });
+    this.#traitRanges.set("stability", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("reproductivity", { min: 0.0, max: 1.0, default: 0.5 });
+    this.#traitRanges.set("longevity", { min: 0.5, max: 2.0, default: 1.0 });
   }
 
   /**
@@ -1351,11 +1351,11 @@ export class TraitService implements ITraitService {
     return {
       primaryColor: this.#generateColor(hash, 0),
       secondaryColor: this.#generateColor(hash, 1),
-      size: this.#generateTraitValue('size', hash, 2),
-      opacity: this.#generateTraitValue('opacity', hash, 3),
+      size: this.#generateTraitValue("size", hash, 2),
+      opacity: this.#generateTraitValue("opacity", hash, 3),
       shape: this.#availableShapes[hash[4] % this.#availableShapes.length],
-      particleDensity: this.#generateTraitValue('particleDensity', hash, 5),
-      glowIntensity: this.#generateTraitValue('glowIntensity', hash, 6)
+      particleDensity: this.#generateTraitValue("particleDensity", hash, 5),
+      glowIntensity: this.#generateTraitValue("glowIntensity", hash, 6)
     };
   }
 
@@ -1368,12 +1368,12 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 1);
 
     return {
-      speed: this.#generateTraitValue('speed', hash, 0),
-      aggression: this.#generateTraitValue('aggression', hash, 1),
-      sociability: this.#generateTraitValue('sociability', hash, 2),
-      curiosity: this.#generateTraitValue('curiosity', hash, 3),
-      efficiency: this.#generateTraitValue('efficiency', hash, 4),
-      adaptability: this.#generateTraitValue('adaptability', hash, 5)
+      speed: this.#generateTraitValue("speed", hash, 0),
+      aggression: this.#generateTraitValue("aggression", hash, 1),
+      sociability: this.#generateTraitValue("sociability", hash, 2),
+      curiosity: this.#generateTraitValue("curiosity", hash, 3),
+      efficiency: this.#generateTraitValue("efficiency", hash, 4),
+      adaptability: this.#generateTraitValue("adaptability", hash, 5)
     };
   }
 
@@ -1386,11 +1386,11 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 2);
 
     return {
-      mass: this.#generateTraitValue('mass', hash, 0),
-      collisionRadius: this.#generateTraitValue('collisionRadius', hash, 1),
-      energyCapacity: this.#generateTraitValue('energyCapacity', hash, 2),
-      durability: this.#generateTraitValue('durability', hash, 3),
-      regeneration: this.#generateTraitValue('regeneration', hash, 4)
+      mass: this.#generateTraitValue("mass", hash, 0),
+      collisionRadius: this.#generateTraitValue("collisionRadius", hash, 1),
+      energyCapacity: this.#generateTraitValue("energyCapacity", hash, 2),
+      durability: this.#generateTraitValue("durability", hash, 3),
+      regeneration: this.#generateTraitValue("regeneration", hash, 4)
     };
   }
 
@@ -1404,11 +1404,11 @@ export class TraitService implements ITraitService {
     const hash = this.#hashBlock(blockNumber + 3);
 
     return {
-      generation: generationType === 'genesis' ? 0 : 1,
-      fitness: this.#generateTraitValue('fitness', hash, 0),
-      stability: this.#generateTraitValue('stability', hash, 1),
-      reproductivity: this.#generateTraitValue('reproductivity', hash, 2),
-      longevity: this.#generateTraitValue('longevity', hash, 3)
+      generation: generationType === "genesis" ? 0 : 1,
+      fitness: this.#generateTraitValue("fitness", hash, 0),
+      stability: this.#generateTraitValue("stability", hash, 1),
+      reproductivity: this.#generateTraitValue("reproductivity", hash, 2),
+      longevity: this.#generateTraitValue("longevity", hash, 3)
     };
   }
 
@@ -1423,7 +1423,7 @@ export class TraitService implements ITraitService {
     const g = hash[(offset + 1) % hash.length] % 256;
     const b = hash[(offset + 2) % hash.length] % 256;
 
-    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
   }
 
   /**
@@ -1469,14 +1469,14 @@ export class TraitService implements ITraitService {
   #mutateVisualTraits(visual: VisualTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldSize = visual.size;
-      visual.size = this.#mutateNumericTrait(visual.size, 'size', 0.1);
-      mutations.push(this.#createMutationRecord('visual', 'size', oldSize, visual.size, rate));
+      visual.size = this.#mutateNumericTrait(visual.size, "size", 0.1);
+      mutations.push(this.#createMutationRecord("visual", "size", oldSize, visual.size, rate));
     }
 
     if (Math.random() < rate) {
       const oldOpacity = visual.opacity;
-      visual.opacity = this.#mutateNumericTrait(visual.opacity, 'opacity', 0.05);
-      mutations.push(this.#createMutationRecord('visual', 'opacity', oldOpacity, visual.opacity, rate));
+      visual.opacity = this.#mutateNumericTrait(visual.opacity, "opacity", 0.05);
+      mutations.push(this.#createMutationRecord("visual", "opacity", oldOpacity, visual.opacity, rate));
     }
   }
 
@@ -1489,8 +1489,8 @@ export class TraitService implements ITraitService {
   #mutateBehavioralTraits(behavioral: BehavioralTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldSpeed = behavioral.speed;
-      behavioral.speed = this.#mutateNumericTrait(behavioral.speed, 'speed', 0.1);
-      mutations.push(this.#createMutationRecord('behavioral', 'speed', oldSpeed, behavioral.speed, rate));
+      behavioral.speed = this.#mutateNumericTrait(behavioral.speed, "speed", 0.1);
+      mutations.push(this.#createMutationRecord("behavioral", "speed", oldSpeed, behavioral.speed, rate));
     }
   }
 
@@ -1503,8 +1503,8 @@ export class TraitService implements ITraitService {
   #mutatePhysicalTraits(physical: PhysicalTraits, rate: number, mutations: MutationRecord[]): void {
     if (Math.random() < rate) {
       const oldMass = physical.mass;
-      physical.mass = this.#mutateNumericTrait(physical.mass, 'mass', 0.1);
-      mutations.push(this.#createMutationRecord('physical', 'mass', oldMass, physical.mass, rate));
+      physical.mass = this.#mutateNumericTrait(physical.mass, "mass", 0.1);
+      mutations.push(this.#createMutationRecord("physical", "mass", oldMass, physical.mass, rate));
     }
   }
 
@@ -1519,8 +1519,8 @@ export class TraitService implements ITraitService {
 
     if (Math.random() < rate) {
       const oldFitness = evolutionary.fitness;
-      evolutionary.fitness = this.#mutateNumericTrait(evolutionary.fitness, 'fitness', 5.0);
-      mutations.push(this.#createMutationRecord('evolutionary', 'fitness', oldFitness, evolutionary.fitness, rate));
+      evolutionary.fitness = this.#mutateNumericTrait(evolutionary.fitness, "fitness", 5.0);
+      mutations.push(this.#createMutationRecord("evolutionary", "fitness", oldFitness, evolutionary.fitness, rate));
     }
   }
 
@@ -1596,7 +1596,7 @@ export class TraitService implements ITraitService {
 
 // Export singleton instance getter
 export const traitService = TraitService.getInstance();
-"@
+'@
 
     # Append Part 3 to complete the service
     Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent3 -Encoding UTF8
@@ -1604,7 +1604,7 @@ export const traitService = TraitService.getInstance();
 
     # Generate export index file
     Write-InfoLog "Generating Trait domain export index"
-    $indexContent = @"
+    $indexContent = @'
 /**
  * @fileoverview Trait Domain Exports
  * @description Main export file for Trait domain
@@ -1613,7 +1613,7 @@ export const traitService = TraitService.getInstance();
  */
 
 // Service exports
-export { TraitService, traitService } from './services/traitService';
+export { TraitService, traitService } from "./services/traitService";
 
 // Interface exports
 export type {
@@ -1625,7 +1625,7 @@ export type {
   PhysicalTraits,
   EvolutionaryTraits,
   TraitMetrics
-} from './interfaces/ITraitService';
+} from "./interfaces/ITraitService";
 
 // Type exports
 export type {
@@ -1638,8 +1638,8 @@ export type {
   RGBColor,
   TraitRange,
   InheritanceWeights
-} from './types/trait.types';
-"@
+} from "./types/trait.types";
+'@
 
     Set-Content -Path (Join-Path $traitDomainPath "index.ts") -Value $indexContent -Encoding UTF8
     Write-SuccessLog "Trait domain export index generated successfully"

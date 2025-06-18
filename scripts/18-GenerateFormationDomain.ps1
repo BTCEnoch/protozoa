@@ -38,7 +38,7 @@ $dataPath = Join-Path $formationDomainPath "data"
 # Generate IFormationService interface
 Write-StatusMessage "Generating IFormationService interface..." "INFO"
 
-$interfaceContent = @"
+$interfaceContent = @'
 /**
  * @fileoverview IFormationService interface defining formation pattern management contracts
  * @module @/domains/formation/types
@@ -51,7 +51,7 @@ $interfaceContent = @"
  * Reference: .cursorrules Service Architecture Standards
  */
 
-import { IVector3, IParticle, IFormationPattern } from '@/shared/types';
+import { IVector3, IParticle, IFormationPattern } from "@/shared/types";
 
 /**
  * Formation pattern definition containing positioning data and metadata
@@ -71,7 +71,7 @@ export interface IFormationPattern {
   maxParticles: number;
 
   /** Formation type category (geometric, organic, custom) */
-  type: 'geometric' | 'organic' | 'custom';
+  type: "geometric" | "organic" | "custom";
 
   /** Optional metadata for formation behavior */
   metadata?: {
@@ -102,7 +102,7 @@ export interface IFormationConfig {
   transitionDuration?: number;
 
   /** Easing function for smooth transitions */
-  easingFunction?: 'linear' | 'easeIn' | 'easeOut' | 'easeInOut';
+  easingFunction?: "linear" | "easeIn" | "easeOut" | "easeInOut";
 
   /** Whether to maintain particle relative positions */
   preserveRelativePositions?: boolean;
@@ -240,17 +240,17 @@ export interface IFormationService {
  */
 export function isFormationService(obj: any): obj is IFormationService {
   return obj &&
-    typeof obj.getFormationPattern === 'function' &&
-    typeof obj.applyFormation === 'function' &&
-    typeof obj.registerFormationPattern === 'function' &&
-    typeof obj.dispose === 'function';
+    typeof obj.getFormationPattern === "function" &&
+    typeof obj.applyFormation === "function" &&
+    typeof obj.registerFormationPattern === "function" &&
+    typeof obj.dispose === "function";
 }
 
 // Export types for external usage
 export type FormationPattern = IFormationPattern;
 export type FormationConfig = IFormationConfig;
 export type FormationResult = IFormationResult;
-"@
+'@
 
 $interfaceFilePath = Join-Path $typesPath "IFormationService.ts"
 Set-Content -Path $interfaceFilePath -Value $interfaceContent -Encoding UTF8
@@ -259,7 +259,7 @@ Write-StatusMessage "Generated IFormationService interface: $interfaceFilePath" 
 # Generate formation pattern data definitions
 Write-StatusMessage "Generating formation pattern data definitions..." "INFO"
 
-$formationDataContent = @"
+$formationDataContent = @'
 /**
  * @fileoverview Formation pattern data definitions and geometric calculations
  * @module @/domains/formation/data
@@ -272,7 +272,7 @@ $formationDataContent = @"
  * Reference: .cursorrules Domain Data Standards
  */
 
-import { IVector3, IFormationPattern } from '@/shared/types';
+import { IVector3, IFormationPattern } from "@/shared/types";
 
 /**
  * Utility functions for generating geometric formation patterns
@@ -407,7 +407,7 @@ export class FormationGeometry {
     return positions;
   }
 }
-"@
+'@
 
 $formationDataFilePath = Join-Path $dataPath "formationGeometry.ts"
 Set-Content -Path $formationDataFilePath -Value $formationDataContent -Encoding UTF8
@@ -416,7 +416,7 @@ Write-StatusMessage "Generated formation geometry utilities: $formationDataFileP
 # Generate predefined formation patterns
 Write-StatusMessage "Generating predefined formation patterns..." "INFO"
 
-$formationPatternsContent = @"
+$formationPatternsContent = @'
 /**
  * @fileoverview Predefined formation patterns for immediate use
  * @module @/domains/formation/data
@@ -429,8 +429,8 @@ $formationPatternsContent = @"
  * Reference: .cursorrules Domain Data Standards
  */
 
-import { IFormationPattern } from '@/shared/types';
-import { FormationGeometry } from './formationGeometry';
+import { IFormationPattern } from "@/shared/types";
+import { FormationGeometry } from "./formationGeometry";
 
 /**
  * Collection of predefined formation patterns
@@ -445,11 +445,11 @@ export class FormationPatterns {
    */
   static createSpherePattern(maxParticles: number = 100, radius: number = 50): IFormationPattern {
     return {
-      id: 'sphere',
-      name: 'Sphere Formation',
+      id: "sphere",
+      name: "Sphere Formation",
       positions: FormationGeometry.generateSpherePositions(maxParticles, radius),
       maxParticles,
-      type: 'geometric',
+      type: "geometric",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 },
@@ -470,11 +470,11 @@ export class FormationPatterns {
    */
   static createCubePattern(maxParticles: number = 125, size: number = 100): IFormationPattern {
     return {
-      id: 'cube',
-      name: 'Cube Formation',
+      id: "cube",
+      name: "Cube Formation",
       positions: FormationGeometry.generateCubePositions(maxParticles, size),
       maxParticles,
-      type: 'geometric',
+      type: "geometric",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 },
@@ -497,11 +497,11 @@ export class FormationPatterns {
    */
   static createHelixPattern(maxParticles: number = 80, radius: number = 30, height: number = 100, turns: number = 3): IFormationPattern {
     return {
-      id: 'helix',
-      name: 'Helix Formation',
+      id: "helix",
+      name: "Helix Formation",
       positions: FormationGeometry.generateHelixPositions(maxParticles, radius, height, turns),
       maxParticles,
-      type: 'organic',
+      type: "organic",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 },
@@ -523,11 +523,11 @@ export class FormationPatterns {
    */
   static createTorusPattern(maxParticles: number = 120, majorRadius: number = 50, minorRadius: number = 20): IFormationPattern {
     return {
-      id: 'torus',
-      name: 'Torus Formation',
+      id: "torus",
+      name: "Torus Formation",
       positions: FormationGeometry.generateTorusPositions(maxParticles, majorRadius, minorRadius),
       maxParticles,
-      type: 'geometric',
+      type: "geometric",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 },
@@ -560,11 +560,11 @@ export class FormationPatterns {
     }
 
     return {
-      id: 'line',
-      name: 'Line Formation',
+      id: "line",
+      name: "Line Formation",
       positions,
       maxParticles,
-      type: 'geometric',
+      type: "geometric",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 }
@@ -592,11 +592,11 @@ export class FormationPatterns {
     }
 
     return {
-      id: 'circle',
-      name: 'Circle Formation',
+      id: "circle",
+      name: "Circle Formation",
       positions,
       maxParticles,
-      type: 'geometric',
+      type: "geometric",
       metadata: {
         scale: 1.0,
         rotation: { x: 0, y: 0, z: 0 },
@@ -646,7 +646,7 @@ export const {
   getAllDefaultPatterns,
   getPatternById
 } = FormationPatterns;
-"@
+'@
 
 $formationPatternsFilePath = Join-Path $dataPath "formationPatterns.ts"
 Set-Content -Path $formationPatternsFilePath -Value $formationPatternsContent -Encoding UTF8
@@ -655,7 +655,7 @@ Write-StatusMessage "Generated formation patterns: $formationPatternsFilePath" "
 # Generate main FormationService implementation - Part 1 (Class structure and constructor)
 Write-StatusMessage "Generating FormationService implementation (Part 1)..." "INFO"
 
-$formationServicePart1 = @"
+$formationServicePart1 = @'
 /**
  * @fileoverview FormationService - Main formation management service
  * @module @/domains/formation/services
@@ -668,11 +668,11 @@ $formationServicePart1 = @"
  * Reference: .cursorrules Service Architecture Standards
  */
 
-import { IFormationService, IFormationPattern, IFormationConfig, IFormationResult } from '../types/IFormationService';
-import { IVector3 } from '@/shared/types';
-import { FormationPatterns } from '../data/formationPatterns';
-import { formationBlendingService } from './formationBlendingService';
-import { createServiceLogger, createPerformanceLogger, createErrorLogger } from '@/shared/lib/logger';
+import { IFormationService, IFormationPattern, IFormationConfig, IFormationResult } from "../types/IFormationService";
+import { IVector3 } from "@/shared/types";
+import { FormationPatterns } from "../data/formationPatterns";
+import { formationBlendingService } from "./formationBlendingService";
+import { createServiceLogger, createPerformanceLogger, createErrorLogger } from "@/shared/lib/logger";
 
 /**
  * Cache entry for formation calculations
@@ -716,9 +716,9 @@ class FormationService implements IFormationService {
   } = {};
 
   // Logging utilities
-  #log = createServiceLogger('FORMATION_SERVICE');
-  #perfLog = createPerformanceLogger('FORMATION_SERVICE');
-  #errorLog = createErrorLogger('FORMATION_SERVICE');
+  #log = createServiceLogger("FORMATION_SERVICE");
+  #perfLog = createPerformanceLogger("FORMATION_SERVICE");
+  #errorLog = createErrorLogger("FORMATION_SERVICE");
 
   // Performance metrics
   #metrics = {
@@ -733,18 +733,18 @@ class FormationService implements IFormationService {
    * Initializes default patterns and sets up caching
    */
   private constructor() {
-    this.#log.info('FormationService initializing...');
+    this.#log.info("FormationService initializing...");
 
     try {
       // Load default formation patterns
       this.loadDefaultPatterns();
 
-      this.#log.info('FormationService initialized successfully', {
+      this.#log.info("FormationService initialized successfully", {
         defaultPatterns: this.#patterns.size,
         cacheLimit: this.#maxCacheSize
       });
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: 'FormationService initialization' });
+      this.#errorLog.logError(error as Error, { context: "FormationService initialization" });
       throw error;
     }
   }
@@ -776,17 +776,17 @@ class FormationService implements IFormationService {
       }
 
       const loadTime = performance.now() - startTime;
-      this.#perfLog.debug('Default patterns loaded', {
+      this.#perfLog.debug("Default patterns loaded", {
         count: defaultPatterns.length,
         loadTimeMs: loadTime
       });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: 'Loading default patterns' });
+      this.#errorLog.logError(error as Error, { context: "Loading default patterns" });
       throw error;
     }
   }
-"@
+'@
 
 $formationServiceFilePath = Join-Path $servicesPath "formationService.ts"
 Set-Content -Path $formationServiceFilePath -Value $formationServicePart1 -Encoding UTF8
@@ -795,7 +795,7 @@ Write-StatusMessage "Generated FormationService Part 1: Class structure and init
 # Generate FormationService Part 2 (Core interface methods)
 Write-StatusMessage "Generating FormationService implementation (Part 2)..." "INFO"
 
-$formationServicePart2 = @"
+$formationServicePart2 = @'
 
   /**
    * Retrieves a formation pattern by its unique identifier
@@ -814,7 +814,7 @@ $formationServicePart2 = @"
         cached.lastAccessed = Date.now();
         this.#metrics.cacheHits++;
 
-        this.#perfLog.debug('Cache hit for formation pattern', { patternId, accessCount: cached.accessCount });
+        this.#perfLog.debug("Cache hit for formation pattern", { patternId, accessCount: cached.accessCount });
         return cached.pattern;
       }
 
@@ -831,15 +831,15 @@ $formationServicePart2 = @"
         });
 
         this.#metrics.cacheMisses++;
-        this.#log.debug('Formation pattern retrieved', { patternId, cached: false });
+        this.#log.debug("Formation pattern retrieved", { patternId, cached: false });
         return pattern;
       }
 
-      this.#log.warn('Formation pattern not found', { patternId });
+      this.#log.warn("Formation pattern not found", { patternId });
       return undefined;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { patternId, context: 'getFormationPattern' });
+      this.#errorLog.logError(error as Error, { patternId, context: "getFormationPattern" });
       return undefined;
     }
   }
@@ -854,7 +854,7 @@ $formationServicePart2 = @"
       // Validate the pattern first
       const validation = this.validateFormationPattern(pattern);
       if (!validation.valid) {
-        this.#log.warn('Invalid formation pattern rejected', {
+        this.#log.warn("Invalid formation pattern rejected", {
           patternId: pattern.id,
           errors: validation.errors
         });
@@ -863,7 +863,7 @@ $formationServicePart2 = @"
 
       // Check if pattern already exists
       if (this.#patterns.has(pattern.id)) {
-        this.#log.warn('Formation pattern already exists', { patternId: pattern.id });
+        this.#log.warn("Formation pattern already exists", { patternId: pattern.id });
         return false;
       }
 
@@ -875,7 +875,7 @@ $formationServicePart2 = @"
       const cacheKey = `pattern_${pattern.id}`;
       this.#cache.delete(cacheKey);
 
-      this.#log.info('Formation pattern registered successfully', {
+      this.#log.info("Formation pattern registered successfully", {
         patternId: pattern.id,
         type: pattern.type,
         maxParticles: pattern.maxParticles
@@ -886,7 +886,7 @@ $formationServicePart2 = @"
     } catch (error) {
       this.#errorLog.logError(error as Error, {
         patternId: pattern?.id,
-        context: 'registerFormationPattern'
+        context: "registerFormationPattern"
       });
       return false;
     }
@@ -906,15 +906,15 @@ $formationServicePart2 = @"
         const cacheKey = `pattern_${patternId}`;
         this.#cache.delete(cacheKey);
 
-        this.#log.info('Formation pattern unregistered', { patternId });
+        this.#log.info("Formation pattern unregistered", { patternId });
         return true;
       }
 
-      this.#log.warn('Attempted to unregister non-existent pattern', { patternId });
+      this.#log.warn("Attempted to unregister non-existent pattern", { patternId });
       return false;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { patternId, context: 'unregisterFormationPattern' });
+      this.#errorLog.logError(error as Error, { patternId, context: "unregisterFormationPattern" });
       return false;
     }
   }
@@ -926,14 +926,14 @@ $formationServicePart2 = @"
   public listAvailablePatterns(): string[] {
     try {
       const patterns = Array.from(this.#patterns.keys());
-      this.#log.debug('Listed available patterns', { count: patterns.length });
+      this.#log.debug("Listed available patterns", { count: patterns.length });
       return patterns;
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: 'listAvailablePatterns' });
+      this.#errorLog.logError(error as Error, { context: "listAvailablePatterns" });
       return [];
     }
   }
-"@
+'@
 
 # Append Part 2 to the existing file
 Add-Content -Path $formationServiceFilePath -Value $formationServicePart2 -Encoding UTF8
@@ -942,7 +942,7 @@ Write-StatusMessage "Generated FormationService Part 2: Core interface methods" 
 # Generate FormationService Part 3 (Formation application methods)
 Write-StatusMessage "Generating FormationService implementation (Part 3)..." "INFO"
 
-$formationServicePart3 = @"
+$formationServicePart3 = @'
 
   /**
    * Applies a formation pattern to a set of particles
@@ -958,7 +958,7 @@ $formationServicePart3 = @"
       // Get the formation pattern
       const pattern = this.getFormationPattern(patternId);
       if (!pattern) {
-        const error = `Formation pattern '${patternId}' not found`;
+        const error = `Formation pattern "${patternId}" not found`;
         this.#log.error(error, { patternId, particleCount: particleIds.length });
         return {
           success: false,
@@ -971,7 +971,7 @@ $formationServicePart3 = @"
 
       // Validate particle count against pattern limits
       if (particleIds.length > pattern.maxParticles) {
-        const error = `Too many particles (${particleIds.length}) for pattern '${patternId}' (max: ${pattern.maxParticles})`;
+        const error = `Too many particles (${particleIds.length}) for pattern "${patternId}" (max: ${pattern.maxParticles})`;
         this.#log.warn(error, { patternId, requested: particleIds.length, max: pattern.maxParticles });
         return {
           success: false,
@@ -994,7 +994,7 @@ $formationServicePart3 = @"
       this.#metrics.formationsApplied++;
       const executionTime = performance.now() - startTime;
 
-      this.#perfLog.info('Formation applied successfully', {
+      this.#perfLog.info("Formation applied successfully", {
         patternId,
         particleCount: particleIds.length,
         executionTimeMs: executionTime,
@@ -1015,7 +1015,7 @@ $formationServicePart3 = @"
         patternId,
         particleCount: particleIds.length,
         executionTimeMs: executionTime,
-        context: 'applyFormation'
+        context: "applyFormation"
       });
 
       return {
@@ -1044,7 +1044,7 @@ $formationServicePart3 = @"
     transitionConfig?: any
   ): Promise<IFormationResult> {
     try {
-      this.#log.info('Starting formation transition', {
+      this.#log.info("Starting formation transition", {
         from: fromPatternId,
         to: toPatternId,
         particleCount: particleIds.length
@@ -1076,7 +1076,7 @@ $formationServicePart3 = @"
 
       if (blendResult.success) {
         this.#metrics.formationsApplied++;
-        this.#log.info('Formation transition completed successfully', {
+        this.#log.info("Formation transition completed successfully", {
           from: fromPatternId,
           to: toPatternId,
           particleCount: particleIds.length,
@@ -1091,7 +1091,7 @@ $formationServicePart3 = @"
         fromPatternId,
         toPatternId,
         particleCount: particleIds.length,
-        context: 'transitionFormation'
+        context: "transitionFormation"
       });
 
       return {
@@ -1103,7 +1103,7 @@ $formationServicePart3 = @"
       };
     }
   }
-"@
+'@
 
 # Append Part 3 to the existing file
 Add-Content -Path $formationServiceFilePath -Value $formationServicePart3 -Encoding UTF8
@@ -1112,7 +1112,7 @@ Write-StatusMessage "Generated FormationService Part 3: Formation application me
 # Generate FormationService Part 4 (Utility and helper methods)
 Write-StatusMessage "Generating FormationService implementation (Part 4)..." "INFO"
 
-$formationServicePart4 = @"
+$formationServicePart4 = @'
 
   /**
    * Configures external service dependencies for cross-domain operations
@@ -1128,12 +1128,12 @@ $formationServicePart4 = @"
 
       const configuredServices = Object.keys(dependencies).filter(key => dependencies[key as keyof typeof dependencies]);
 
-      this.#log.info('Dependencies configured for FormationService', {
+      this.#log.info("Dependencies configured for FormationService", {
         services: configuredServices
       });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: 'configureDependencies' });
+      this.#errorLog.logError(error as Error, { context: "configureDependencies" });
     }
   }
 
@@ -1157,29 +1157,29 @@ $formationServicePart4 = @"
       const spacing = config?.spacing || pattern.defaultSpacing || 1.0;
 
       switch (pattern.type) {
-        case 'sphere':
+        case "sphere":
           return this.calculateSpherePositions(particleCount, scale * spacing);
 
-        case 'cube':
+        case "cube":
           return this.calculateCubePositions(particleCount, scale * spacing);
 
-        case 'cylinder':
+        case "cylinder":
           return this.calculateCylinderPositions(particleCount, scale * spacing);
 
-        case 'helix':
+        case "helix":
           return this.calculateHelixPositions(particleCount, scale * spacing);
 
-        case 'torus':
+        case "torus":
           return this.calculateTorusPositions(particleCount, scale * spacing);
 
-        case 'custom':
+        case "custom":
           if (pattern.customPositions && pattern.customPositions.length > 0) {
             return this.scalePositions(pattern.customPositions.slice(0, particleCount), scale);
           }
           break;
 
         default:
-          this.#log.warn('Unknown formation pattern type, using default sphere', {
+          this.#log.warn("Unknown formation pattern type, using default sphere", {
             type: pattern.type,
             patternId: pattern.id
           });
@@ -1192,7 +1192,7 @@ $formationServicePart4 = @"
       this.#errorLog.logError(error as Error, {
         patternType: pattern.type,
         particleCount,
-        context: 'calculateFormationPositions'
+        context: "calculateFormationPositions"
       });
       // Fallback to simple sphere formation
       return this.calculateSpherePositions(particleCount, 1.0);
@@ -1211,33 +1211,33 @@ $formationServicePart4 = @"
     try {
       // Check required fields
       if (!pattern.id || pattern.id.trim().length === 0) {
-        errors.push('Pattern ID is required and cannot be empty');
+        errors.push("Pattern ID is required and cannot be empty");
       }
 
       if (!pattern.name || pattern.name.trim().length === 0) {
-        errors.push('Pattern name is required and cannot be empty');
+        errors.push("Pattern name is required and cannot be empty");
       }
 
       if (!pattern.type || pattern.type.trim().length === 0) {
-        errors.push('Pattern type is required and cannot be empty');
+        errors.push("Pattern type is required and cannot be empty");
       }
 
       // Check numeric constraints
-      if (typeof pattern.maxParticles !== 'number' || pattern.maxParticles <= 0) {
-        errors.push('maxParticles must be a positive number');
+      if (typeof pattern.maxParticles !== "number" || pattern.maxParticles <= 0) {
+        errors.push("maxParticles must be a positive number");
       }
 
       if (pattern.defaultSpacing !== undefined &&
-          (typeof pattern.defaultSpacing !== 'number' || pattern.defaultSpacing <= 0)) {
-        errors.push('defaultSpacing must be a positive number if specified');
+          (typeof pattern.defaultSpacing !== "number" || pattern.defaultSpacing <= 0)) {
+        errors.push("defaultSpacing must be a positive number if specified");
       }
 
       // Validate custom positions if provided
-      if (pattern.type === 'custom') {
+      if (pattern.type === "custom") {
         if (!pattern.customPositions || !Array.isArray(pattern.customPositions)) {
-          errors.push('Custom pattern type requires customPositions array');
+          errors.push("Custom pattern type requires customPositions array");
         } else if (pattern.customPositions.length === 0) {
-          errors.push('Custom pattern customPositions array cannot be empty');
+          errors.push("Custom pattern customPositions array cannot be empty");
         }
       }
 
@@ -1246,12 +1246,12 @@ $formationServicePart4 = @"
     } catch (error) {
       this.#errorLog.logError(error as Error, {
         patternId: pattern?.id,
-        context: 'validateFormationPattern'
+        context: "validateFormationPattern"
       });
-      return { valid: false, errors: ['Validation failed due to unexpected error'] };
+      return { valid: false, errors: ["Validation failed due to unexpected error"] };
     }
   }
-"@
+'@
 
 # Append Part 4 to the existing file
 Add-Content -Path $formationServiceFilePath -Value $formationServicePart4 -Encoding UTF8
@@ -1260,7 +1260,7 @@ Write-StatusMessage "Generated FormationService Part 4: Utility and helper metho
 # Generate FormationService Part 5 (Final methods and class completion)
 Write-StatusMessage "Generating FormationService implementation (Part 5 - Final)..." "INFO"
 
-$formationServicePart5 = @"
+$formationServicePart5 = @'
 
   /**
    * Adds an entry to the cache with size limit enforcement
@@ -1276,15 +1276,15 @@ $formationServicePart5 = @"
         const oldestKey = this.#cache.keys().next().value;
         if (oldestKey) {
           this.#cache.delete(oldestKey);
-          this.#perfLog.debug('Cache entry evicted', { evictedKey: oldestKey });
+          this.#perfLog.debug("Cache entry evicted", { evictedKey: oldestKey });
         }
       }
 
       this.#cache.set(key, entry);
-      this.#perfLog.debug('Cache entry added', { key, cacheSize: this.#cache.size });
+      this.#perfLog.debug("Cache entry added", { key, cacheSize: this.#cache.size });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { key, context: 'addToCache' });
+      this.#errorLog.logError(error as Error, { key, context: "addToCache" });
     }
   }
 
@@ -1319,7 +1319,7 @@ $formationServicePart5 = @"
     } catch (error) {
       this.#errorLog.logError(error as Error, {
         positionCount: positions.length,
-        context: 'applyTransformations'
+        context: "applyTransformations"
       });
       return positions; // Return original positions on error
     }
@@ -1415,7 +1415,7 @@ $formationServicePart5 = @"
       // Clear dependencies
       this.#dependencies = {};
 
-      this.#log.info('FormationService disposed successfully', {
+      this.#log.info("FormationService disposed successfully", {
         patternsCleared: true,
         cacheCleared: true,
         metricsReset: true
@@ -1425,7 +1425,7 @@ $formationServicePart5 = @"
       FormationService.#instance = null;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: 'dispose' });
+      this.#errorLog.logError(error as Error, { context: "dispose" });
     }
   }
 }
@@ -1433,7 +1433,7 @@ $formationServicePart5 = @"
 // Export singleton instance
 export const formationService = FormationService.getInstance();
 export { FormationService };
-"@
+'@
 
 # Append Part 5 to complete the FormationService
 Add-Content -Path $formationServiceFilePath -Value $formationServicePart5 -Encoding UTF8

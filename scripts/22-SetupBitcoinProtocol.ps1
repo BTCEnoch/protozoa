@@ -38,7 +38,7 @@ try {
 
     # Generate Bitcoin configuration file
     Write-InfoLog "Generating Bitcoin network configuration"
-    $bitcoinConfig = @"
+    $bitcoinConfig = @'
 /**
  * @fileoverview Bitcoin Protocol Configuration
  * @description Configuration for Bitcoin Ordinals Protocol integration
@@ -46,14 +46,14 @@ try {
  * @version 1.0.0
  */
 
-import { createServiceLogger } from '@/shared/lib/logger';
+import { createServiceLogger } from "@/shared/lib/logger";
 
-const logger = createServiceLogger('BitcoinConfig');
+const logger = createServiceLogger("BitcoinConfig");
 
 /**
  * Bitcoin network types
  */
-export type BitcoinNetwork = 'mainnet' | 'testnet' | 'regtest';
+export type BitcoinNetwork = "mainnet" | "testnet" | "regtest";
 
 /**
  * API endpoint configuration
@@ -114,28 +114,28 @@ export interface BitcoinProtocolConfig {
 /**
  * Get current environment
  */
-function getCurrentEnvironment(): 'development' | 'production' {
-  return process.env.NODE_ENV === 'production' ? 'production' : 'development';
+function getCurrentEnvironment(): "development" | "production" {
+  return process.env.NODE_ENV === "production" ? "production" : "development";
 }
 
 /**
  * Default Bitcoin protocol configuration
  */
 export const bitcoinProtocolConfig: BitcoinProtocolConfig = {
-  network: (process.env.BITCOIN_NETWORK as BitcoinNetwork) || 'mainnet',
+  network: (process.env.BITCOIN_NETWORK as BitcoinNetwork) || "mainnet",
 
   api: {
     development: {
-      baseUrl: 'https://ordinals.com',
-      blockInfo: '/r/blockinfo/{blockNumber}',
-      inscriptionContent: '/content/{inscriptionId}',
+      baseUrl: "https://ordinals.com",
+      blockInfo: "/r/blockinfo/{blockNumber}",
+      inscriptionContent: "/content/{inscriptionId}",
       rateLimit: 100, // requests per minute
       timeout: 30000, // 30 seconds
     },
     production: {
-      baseUrl: '', // Relative URLs in production
-      blockInfo: '/r/blockinfo/{blockNumber}',
-      inscriptionContent: '/content/{inscriptionId}',
+      baseUrl: ''", // Relative URLs in production
+      blockInfo: "/r/blockinfo/{blockNumber}",
+      inscriptionContent: "/content/{inscriptionId}",
       rateLimit: 60, // requests per minute (more conservative)
       timeout: 10000, // 10 seconds
     },
@@ -167,7 +167,7 @@ export function getAPIEndpoints(): APIEndpoints {
   const env = getCurrentEnvironment();
   const endpoints = bitcoinProtocolConfig.api[env];
 
-  logger.info('Using API endpoints for environment', {
+  logger.info("Using API endpoints for environment", {
     environment: env,
     baseUrl: endpoints.baseUrl,
     rateLimit: endpoints.rateLimit,
@@ -183,7 +183,7 @@ export function validateBlockNumber(blockNumber: number): boolean {
   const config = bitcoinProtocolConfig.validation;
 
   if (blockNumber < config.minBlockHeight) {
-    logger.warn('Block number below minimum height', {
+    logger.warn("Block number below minimum height", {
       blockNumber,
       minHeight: config.minBlockHeight,
     });
@@ -200,11 +200,11 @@ export function validateBlockNumber(blockNumber: number): boolean {
  */
 export function validateInscriptionId(inscriptionId: string): boolean {
   // Basic inscription ID format validation
-  // Format: <txid>i<index> (64-character hex + 'i' + number)
+  // Format: <txid>i<index> (64-character hex + "i" + number)
   const inscriptionIdPattern = /^[a-fA-F0-9]{64}i\d+$/;
 
   if (!inscriptionIdPattern.test(inscriptionId)) {
-    logger.warn('Invalid inscription ID format', { inscriptionId });
+    logger.warn("Invalid inscription ID format", { inscriptionId });
     return false;
   }
 
@@ -238,18 +238,18 @@ export function formatAPIUrl(endpoint: string, params: Record<string, string>): 
   return url;
 }
 
-logger.info('Bitcoin protocol configuration loaded', {
+logger.info("Bitcoin protocol configuration loaded'', {
   network: bitcoinProtocolConfig.network,
   environment: getCurrentEnvironment(),
 });
-"@
+'@
 
     Set-Content -Path $bitcoinConfigPath -Value $bitcoinConfig -Encoding UTF8
     Write-SuccessLog "Bitcoin network configuration created"
 
     # Generate environment configuration
     Write-InfoLog "Generating environment configuration files"
-    $envExample = @"
+    $envExample = @'
 # Bitcoin Protocol Configuration
 BITCOIN_NETWORK=mainnet
 NODE_ENV=development
@@ -281,7 +281,7 @@ LOG_FILE_PATH=./logs/bitcoin-service.log
 # Development Configuration
 ENABLE_MOCK_DATA=false
 MOCK_DELAY_MS=500
-"@
+'@
 
     Set-Content -Path $envExamplePath -Value $envExample -Encoding UTF8
     Write-SuccessLog "Environment example file created"
@@ -298,7 +298,7 @@ MOCK_DELAY_MS=500
     # Create rate limiting utility
     Write-InfoLog "Creating rate limiting utility"
     $rateLimitUtilPath = Join-Path $configPath "rate-limiter.ts"
-    $rateLimitUtil = @"
+    $rateLimitUtil = @'
 /**
  * @fileoverview Rate Limiting Utility
  * @description Rate limiting implementation for Bitcoin API calls
@@ -306,9 +306,9 @@ MOCK_DELAY_MS=500
  * @version 1.0.0
  */
 
-import { createServiceLogger } from '@/shared/lib/logger';
+import { createServiceLogger } from "@/shared/lib/logger";
 
-const logger = createServiceLogger('RateLimiter');
+const logger = createServiceLogger("RateLimiter");
 
 /**
  * Rate limiter configuration
@@ -331,7 +331,7 @@ export class RateLimiter {
 
   constructor(config: RateLimiterConfig) {
     this.config = config;
-    logger.info('Rate limiter initialized', {
+    logger.info("Rate limiter initialized", {
       identifier: config.identifier,
       maxRequests: config.maxRequests,
       windowMs: config.windowMs,
@@ -349,10 +349,10 @@ export class RateLimiter {
     // Remove old requests outside the window
     this.requestTimes = this.requestTimes.filter(time => time > windowStart);
 
-    // Check if we're within the limit
+    // Check if we"re within the limit
     if (this.requestTimes.length < this.config.maxRequests) {
       this.requestTimes.push(now);
-      logger.debug('Request allowed', {
+      logger.debug("Request allowed", {
         identifier: this.config.identifier,
         currentRequests: this.requestTimes.length,
         maxRequests: this.config.maxRequests,
@@ -360,7 +360,7 @@ export class RateLimiter {
       return true;
     }
 
-    logger.warn('Request rate limited', {
+    logger.warn("Request rate limited", {
       identifier: this.config.identifier,
       currentRequests: this.requestTimes.length,
       maxRequests: this.config.maxRequests,
@@ -389,7 +389,7 @@ export class RateLimiter {
   async waitForNextRequest(): Promise<void> {
     const waitTime = this.getTimeUntilNextRequest();
     if (waitTime > 0) {
-      logger.info('Waiting for rate limit to reset', {
+      logger.info("Waiting for rate limit to reset", {
         identifier: this.config.identifier,
         waitTimeMs: waitTime,
       });
@@ -402,7 +402,7 @@ export class RateLimiter {
    */
   reset(): void {
     this.requestTimes = [];
-    logger.info('Rate limiter reset', {
+    logger.info("Rate limiter reset", {
       identifier: this.config.identifier,
     });
   }
@@ -415,10 +415,10 @@ export function createBitcoinAPIRateLimiter(maxRequestsPerMinute: number): RateL
   return new RateLimiter({
     maxRequests: maxRequestsPerMinute,
     windowMs: 60000, // 1 minute
-    identifier: 'bitcoin-api',
+    identifier: "bitcoin-api'',
   });
 }
-"@
+'@
 
     Set-Content -Path $rateLimitUtilPath -Value $rateLimitUtil -Encoding UTF8
     Write-SuccessLog "Rate limiting utility created"

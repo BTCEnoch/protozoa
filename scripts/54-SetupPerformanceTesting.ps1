@@ -22,7 +22,7 @@ try{
  if(Test-Path $ci){
   $raw=Get-Content $ci -Raw
   if($raw -notmatch 'perf-test:'){
-   $append= @"
+   $append= @'
   perf-test:
     runs-on: ubuntu-latest
     needs: build-test
@@ -32,7 +32,7 @@ try{
         with: { version: 8 }
       - run: pnpm install --frozen-lockfile
       - run: pnpm vitest run tests/performance --reporter verbose
-"@
+'@
    Add-Content -Path $ci -Value $append
   }
  }

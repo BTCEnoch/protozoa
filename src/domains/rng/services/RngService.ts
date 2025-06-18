@@ -2,7 +2,7 @@
 // RngService implementation - Auto-generated stub
 // Referenced from build_design.md Section 2
 
-import { IRngService } from '../types';
+import { IRNGService } from '../types';
 import { createServiceLogger } from '@/shared/lib/logger';
 
 /**
@@ -10,7 +10,7 @@ import { createServiceLogger } from '@/shared/lib/logger';
  * Auto-generated stub following .cursorrules singleton pattern.
  * TODO: Implement actual logic in Phase 2.
  */
-class RngService implements IRngService {
+class RngService implements IRNGService {
   static #instance: RngService | null = null;
   #log = createServiceLogger('RNG_SERVICE');
 

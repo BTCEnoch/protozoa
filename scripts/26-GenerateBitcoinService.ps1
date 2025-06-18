@@ -43,7 +43,7 @@ try {
 
     # Generate Bitcoin service interface
     Write-InfoLog "Generating IBitcoinService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview Bitcoin Service Interface Definition
  * @description Defines the contract for Bitcoin blockchain data services
@@ -218,14 +218,14 @@ export interface BitcoinMetrics {
   /** Rate limit violations */
   rateLimitViolations: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $interfacesPath "IBitcoinService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IBitcoinService interface generated successfully"
 
     # Generate Bitcoin types
     Write-InfoLog "Generating Bitcoin types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview Bitcoin Types Definition
  * @description Type definitions for Bitcoin blockchain integration domain
@@ -236,12 +236,12 @@ export interface BitcoinMetrics {
 /**
  * API environment types
  */
-export type ApiEnvironment = 'development' | 'production';
+export type ApiEnvironment = "development" | "production";
 
 /**
  * Request method types
  */
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 /**
  * Cache entry for LRU cache
@@ -315,13 +315,13 @@ export interface RequestOptions {
  * API error types
  */
 export type ApiErrorType =
-  | 'NETWORK_ERROR'
-  | 'TIMEOUT_ERROR'
-  | 'RATE_LIMIT_ERROR'
-  | 'NOT_FOUND_ERROR'
-  | 'VALIDATION_ERROR'
-  | 'SERVER_ERROR'
-  | 'UNKNOWN_ERROR';
+  | "NETWORK_ERROR"
+  | "TIMEOUT_ERROR"
+  | "RATE_LIMIT_ERROR"
+  | "NOT_FOUND_ERROR"
+  | "VALIDATION_ERROR"
+  | "SERVER_ERROR"
+  | "UNKNOWN_ERROR";
 
 /**
  * API error details
@@ -340,14 +340,14 @@ export interface ApiError {
   /** Retry attempt number */
   attempt?: number;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $typesPath "bitcoin.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Bitcoin types generated successfully"
 
     # Generate Bitcoin Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating BitcoinService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -363,7 +363,7 @@ import {
   ApiResponse,
   CacheStats,
   BitcoinMetrics
-} from '@/domains/bitcoin/interfaces/IBitcoinService';
+} from "@/domains/bitcoin/interfaces/IBitcoinService";
 import {
   ApiEnvironment,
   CacheEntry,
@@ -372,8 +372,8 @@ import {
   RequestOptions,
   ApiError,
   ApiErrorType
-} from '@/domains/bitcoin/types/bitcoin.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/bitcoin/types/bitcoin.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * Bitcoin Service implementing high-performance blockchain data access
@@ -400,7 +400,7 @@ export class BitcoinService implements IBitcoinService {
   #cacheStats: CacheStats;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('BitcoinService');
+  #logger = createServiceLogger("BitcoinService");
 
   /** Active request abort controllers */
   #activeRequests: Map<string, AbortController>;
@@ -413,11 +413,11 @@ export class BitcoinService implements IBitcoinService {
    * Initializes Bitcoin service with LRU caching
    */
   private constructor() {
-    this.#logger.info('Initializing BitcoinService singleton instance');
+    this.#logger.info("Initializing BitcoinService singleton instance");
 
     // Initialize default configuration
     this.#config = {
-      apiBaseUrl: 'https://ordinals.com',
+      apiBaseUrl: "https://ordinals.com",
       enableCaching: true,
       cacheSize: 1000,
       cacheTTL: 300000, // 5 minutes
@@ -454,7 +454,7 @@ export class BitcoinService implements IBitcoinService {
     // Initialize active requests tracking
     this.#activeRequests = new Map();
 
-    this.#logger.info('BitcoinService initialized successfully', {
+    this.#logger.info("BitcoinService initialized successfully", {
       apiBaseUrl: this.#config.apiBaseUrl,
       cacheEnabled: this.#config.enableCaching,
       cacheSize: this.#config.cacheSize
@@ -473,14 +473,14 @@ export class BitcoinService implements IBitcoinService {
     return BitcoinService.#instance;
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent1 -Encoding UTF8
     Write-SuccessLog "BitcoinService implementation Part 1 generated successfully"
 
     # Generate Bitcoin Service implementation - Part 2 (API methods and completion)
     Write-InfoLog "Generating BitcoinService implementation - Part 2 (API methods and completion)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -496,7 +496,7 @@ import {
   ApiResponse,
   CacheStats,
   BitcoinMetrics
-} from '@/domains/bitcoin/interfaces/IBitcoinService';
+} from "@/domains/bitcoin/interfaces/IBitcoinService";
 import {
   ApiEnvironment,
   CacheEntry,
@@ -505,8 +505,8 @@ import {
   RequestOptions,
   ApiError,
   ApiErrorType
-} from '@/domains/bitcoin/types/bitcoin.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/bitcoin/types/bitcoin.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * Bitcoin Service implementing high-performance blockchain data access
@@ -533,7 +533,7 @@ export class BitcoinService implements IBitcoinService {
   #cacheStats: CacheStats;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('BitcoinService');
+  #logger = createServiceLogger("BitcoinService");
 
   /** Active request abort controllers */
   #activeRequests: Map<string, AbortController>;
@@ -546,11 +546,11 @@ export class BitcoinService implements IBitcoinService {
    * Initializes Bitcoin service with LRU caching
    */
   private constructor() {
-    this.#logger.info('Initializing BitcoinService singleton instance');
+    this.#logger.info("Initializing BitcoinService singleton instance");
 
     // Initialize default configuration
     this.#config = {
-      apiBaseUrl: 'https://ordinals.com',
+      apiBaseUrl: "https://ordinals.com",
       enableCaching: true,
       cacheSize: 1000,
       cacheTTL: 300000, // 5 minutes
@@ -587,7 +587,7 @@ export class BitcoinService implements IBitcoinService {
     // Initialize active requests tracking
     this.#activeRequests = new Map();
 
-    this.#logger.info('BitcoinService initialized successfully', {
+    this.#logger.info("BitcoinService initialized successfully", {
       apiBaseUrl: this.#config.apiBaseUrl,
       cacheEnabled: this.#config.enableCaching,
       cacheSize: this.#config.cacheSize
@@ -611,7 +611,7 @@ export class BitcoinService implements IBitcoinService {
    * @param config - Bitcoin service configuration
    */
   public async initialize(config?: BitcoinConfig): Promise<void> {
-    this.#logger.info('Initializing BitcoinService with configuration', { config });
+    this.#logger.info("Initializing BitcoinService with configuration", { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
@@ -619,11 +619,11 @@ export class BitcoinService implements IBitcoinService {
 
     // Adjust environment-specific API URLs
     const environment = process.env.NODE_ENV as ApiEnvironment;
-    if (environment === 'production') {
-      this.#config.apiBaseUrl = '';  // Use relative paths in production
+    if (environment === "production") {
+      this.#config.apiBaseUrl = ''";  // Use relative paths in production
     }
 
-    this.#logger.info('BitcoinService initialization completed', {
+    this.#logger.info("BitcoinService initialization completed", {
       environment,
       apiBaseUrl: this.#config.apiBaseUrl
     });
@@ -636,7 +636,7 @@ export class BitcoinService implements IBitcoinService {
    */
   public async getBlockInfo(blockHeight: number): Promise<ApiResponse<BlockInfo>> {
     const startTime = performance.now();
-    this.#logger.info('Fetching block info', { blockHeight });
+    this.#logger.info("Fetching block info", { blockHeight });
 
     // Check cache first
     if (this.#config.enableCaching) {
@@ -673,7 +673,7 @@ export class BitcoinService implements IBitcoinService {
       };
     } catch (error) {
       this.#updateMetrics(false, performance.now() - startTime);
-      this.#logger.error('Failed to fetch block info', { blockHeight, error });
+      this.#logger.error("Failed to fetch block info", { blockHeight, error });
       throw error;
     }
   }
@@ -685,7 +685,7 @@ export class BitcoinService implements IBitcoinService {
    */
   public async getInscriptionContent(inscriptionId: string): Promise<ApiResponse<InscriptionContent>> {
     const startTime = performance.now();
-    this.#logger.info('Fetching inscription content', { inscriptionId });
+    this.#logger.info("Fetching inscription content", { inscriptionId });
 
     // Check cache first
     if (this.#config.enableCaching) {
@@ -722,7 +722,7 @@ export class BitcoinService implements IBitcoinService {
       };
     } catch (error) {
       this.#updateMetrics(false, performance.now() - startTime);
-      this.#logger.error('Failed to fetch inscription content', { inscriptionId, error });
+      this.#logger.error("Failed to fetch inscription content", { inscriptionId, error });
       throw error;
     }
   }
@@ -734,7 +734,7 @@ export class BitcoinService implements IBitcoinService {
   public async getCurrentBlockHeight(): Promise<number> {
     // This would typically call a different endpoint
     // For now, return a mock value
-    this.#logger.info('Getting current blockchain height');
+    this.#logger.info("Getting current blockchain height");
     return 800000; // Mock current height
   }
 
@@ -742,7 +742,7 @@ export class BitcoinService implements IBitcoinService {
    * Clear all cached data
    */
   public clearCache(): void {
-    this.#logger.info('Clearing all cached data');
+    this.#logger.info("Clearing all cached data");
 
     // Clear caches using Map clear method
     (this.#blockCache as Map<number, CacheEntry<BlockInfo>>).clear();
@@ -754,7 +754,7 @@ export class BitcoinService implements IBitcoinService {
     this.#cacheStats.size = 0;
     this.#cacheStats.hitRate = 0;
 
-    this.#logger.info('All cached data cleared');
+    this.#logger.info("All cached data cleared");
   }
 
   /**
@@ -777,7 +777,7 @@ export class BitcoinService implements IBitcoinService {
    * Dispose of resources and cleanup
    */
   public dispose(): void {
-    this.#logger.info('Disposing BitcoinService resources');
+    this.#logger.info("Disposing BitcoinService resources");
 
     // Abort any active requests
     this.#activeRequests.forEach(controller => controller.abort());
@@ -789,7 +789,7 @@ export class BitcoinService implements IBitcoinService {
     // Reset singleton instance
     BitcoinService.#instance = null;
 
-    this.#logger.info('BitcoinService disposal completed');
+    this.#logger.info("BitcoinService disposal completed");
   }
 
   // Private helper methods
@@ -811,8 +811,8 @@ export class BitcoinService implements IBitcoinService {
       const response = await fetch(url, {
         signal: controller.signal,
         headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'Protozoa/1.0'
+          "Accept": "application/json",
+          "User-Agent": "Protozoa/1.0''
         }
       });
 
@@ -972,7 +972,7 @@ export class BitcoinService implements IBitcoinService {
 
 // Export singleton instance getter
 export const bitcoinService = BitcoinService.getInstance();
-"@
+'@
 
     # Append Part 2 to complete the service
     Add-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent2 -Encoding UTF8
@@ -980,7 +980,7 @@ export const bitcoinService = BitcoinService.getInstance();
 
     # Generate export index file
     Write-InfoLog "Generating Bitcoin domain export index"
-    $indexContent = @"
+    $indexContent = @'
 /**
  * @fileoverview Bitcoin Domain Exports
  * @description Main export file for Bitcoin domain
@@ -989,7 +989,7 @@ export const bitcoinService = BitcoinService.getInstance();
  */
 
 // Service exports
-export { BitcoinService, bitcoinService } from './services/bitcoinService';
+export { BitcoinService, bitcoinService } from "./services/bitcoinService";
 
 // Interface exports
 export type {
@@ -1000,7 +1000,7 @@ export type {
   ApiResponse,
   CacheStats,
   BitcoinMetrics
-} from './interfaces/IBitcoinService';
+} from "./interfaces/IBitcoinService";
 
 // Type exports
 export type {
@@ -1012,8 +1012,8 @@ export type {
   RequestOptions,
   ApiErrorType,
   ApiError
-} from './types/bitcoin.types';
-"@
+} from "./types/bitcoin.types";
+'@
 
     Set-Content -Path (Join-Path $bitcoinDomainPath "index.ts") -Value $indexContent -Encoding UTF8
     Write-SuccessLog "Bitcoin domain export index generated successfully"

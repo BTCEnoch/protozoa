@@ -96,7 +96,7 @@ try {
             Write-InfoLog "Adding missing functions to utils.psm1..."
 
             # Add any remaining missing functions
-            $additionalFunctions = @"
+            $additionalFunctions = @'
 
 # Additional utility functions discovered during validation
 function Initialize-ProjectDependencies {
@@ -190,7 +190,7 @@ function Repair-UtilityModule {
         return `$false
     }
 }
-"@
+'@
 
             # Append to utils.psm1
             $utilsPath = Join-Path $ScriptsRoot "utils.psm1"

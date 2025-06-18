@@ -1,4 +1,4 @@
-# 48-SetupAdvancedBundleAnalysis.ps1 - Phase 7 Automation
+﻿# 48-SetupAdvancedBundleAnalysis.ps1 - Phase 7 Automation
 # Generates BundleAnalyzerService and workflow for bundle-size monitoring
 # Reference: script_checklist.md lines 1750-1800
 #Requires -Version 5.1
@@ -16,13 +16,13 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
  # Service implementation
- $impl=@"
-import { execSync } from 'child_process'
-import { createServiceLogger } from '@/shared/lib/logger'
+ $impl=@'
+import { execSync } from "child_process"
+import { createServiceLogger } from "@/shared/lib/logger"
 
 export class BundleAnalyzerService {
   static #instance: BundleAnalyzerService | null = null
-  #log = createServiceLogger('BUNDLE_ANALYZER')
+  #log = createServiceLogger("BUNDLE_ANALYZER")
 
   private constructor() {}
 
@@ -31,9 +31,9 @@ export class BundleAnalyzerService {
   }
 
   analyze() {
-    this.#log.info('Running webpack-bundle-analyzer')
-    execSync('npx webpack --profile --json > stats.json', { stdio: 'inherit' })
-    execSync('npx webpack-bundle-analyzer stats.json --mode static --no-open', { stdio: 'inherit' })
+    this.#log.info("Running webpack-bundle-analyzer")
+    execSync("npx webpack --profile --json > stats.json", { stdio: "inherit" })
+    execSync("npx webpack-bundle-analyzer stats.json --mode static --no-open", { stdio: "inherit" })
   }
 
   dispose() {
@@ -42,7 +42,7 @@ export class BundleAnalyzerService {
 }
 
 export const bundleAnalyzerService = BundleAnalyzerService.getInstance()
-"@
+'@
  Set-Content -Path (Join-Path $services 'bundleAnalyzerService.ts') -Value $impl -Encoding UTF8
 
  # GH Actions job append (bundle-analysis)
@@ -50,7 +50,7 @@ export const bundleAnalyzerService = BundleAnalyzerService.getInstance()
  if(Test-Path $wf){
   $content=Get-Content $wf -Raw
   if($content -notmatch 'bundle-analysis:'){ # append only once
-   $append=@"
+   $append=@'
   bundle-analysis:
     runs-on: ubuntu-latest
     needs: build-test
@@ -67,7 +67,7 @@ export const bundleAnalyzerService = BundleAnalyzerService.getInstance()
         with:
           name: bundle-report
           path: dist/report.html
-"@
+'@
    Add-Content -Path $wf -Value $append
   }
  }

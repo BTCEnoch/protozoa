@@ -8,7 +8,7 @@ param(
     [string]$TemplatesRoot = (Join-Path (Split-Path $PSScriptRoot -Parent) 'templates'),
 
     [Parameter(Mandatory = $false)]
-    [switch]$Recurse = $true,
+    [switch]$Recurse,
 
     [Parameter(Mandatory = $false)]
     [switch]$WhatIf
@@ -25,8 +25,13 @@ if (-not (Test-Path $TemplatesRoot)) {
     exit 1
 }
 
-$searchOption = if ($Recurse) { '-Recurse' } else { '' }
-$templates = Get-ChildItem -Path $TemplatesRoot -File @($searchOption)
+# Default to recursive search unless explicitly disabled
+$useRecurse = if ($PSBoundParameters.ContainsKey('Recurse')) { $Recurse } else { $true }
+$templates = if ($useRecurse) { 
+    Get-ChildItem -Path $TemplatesRoot -File -Recurse 
+} else { 
+    Get-ChildItem -Path $TemplatesRoot -File 
+}
 
 $failures = @()
 foreach ($t in $templates) {

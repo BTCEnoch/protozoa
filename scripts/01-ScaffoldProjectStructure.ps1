@@ -7,7 +7,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory = $false)]
-    [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
+    [string]$ProjectRoot = $PWD,
 
     [Parameter(Mandatory = $false)]
     [switch]$Force

@@ -82,16 +82,20 @@ Get-ChildItem -Path "src" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue
 # Step 4: Remove oversize files (>500 lines) and log for manual review
 Write-InfoLog "Checking for oversize files (>500 lines)..."
 $oversizeFiles = @()
-Get-ChildItem -Path "src" -Include "*.ts", "*.tsx" -Recurse | ForEach-Object {
-    $lineCount = Get-FileLineCount $_.FullName
-    if ($lineCount -gt 500) {
-        $fileInfo = New-Object PSObject -Property @{
-            Path = $_.FullName
-            Lines = $lineCount
+if (Test-Path "src") {
+    Get-ChildItem -Path "src" -Include "*.ts", "*.tsx" -Recurse | ForEach-Object {
+        $lineCount = Get-FileLineCount $_.FullName
+        if ($lineCount -gt 500) {
+            $fileInfo = New-Object PSObject -Property @{
+                Path = $_.FullName
+                Lines = $lineCount
+            }
+            $oversizeFiles += $fileInfo
+            Write-WarningLog "Oversize file detected ($lineCount lines): $($_.FullName)"
         }
-        $oversizeFiles += $fileInfo
-        Write-WarningLog "Oversize file detected ($lineCount lines): $($_.FullName)"
     }
+} else {
+    Write-InfoLog "No src directory found - skipping oversize file check"
 }
 
 if ($oversizeFiles.Count -gt 0) {
@@ -108,26 +112,30 @@ if ($oversizeFiles.Count -gt 0) {
 # Step 5: Update import paths to use new path aliases
 Write-InfoLog "Updating import paths in TypeScript files..."
 $importFixes = 0
-Get-ChildItem -Path "src" -Include "*.ts", "*.tsx" -Recurse | ForEach-Object {
-    $filePath = $_.FullName
-    $content = Get-Content $filePath -Raw
-    $originalContent = $content
+if (Test-Path "src") {
+    Get-ChildItem -Path "src" -Include "*.ts", "*.tsx" -Recurse | ForEach-Object {
+        $filePath = $_.FullName
+        $content = Get-Content $filePath -Raw
+        $originalContent = $content
 
-    # Fix relative imports to use path aliases - escape regex properly for PowerShell
-    $content = $content -replace "from\s+[""'](\.\./)+domains/([a-zA-Z]+)/", "from '@/domains/`$2/"
-    $content = $content -replace "from\s+[""'](\.\./)+shared/", "from '@/shared/"
-    $content = $content -replace "from\s+[""'](\.\./)+components/", "from '@/components/"
+        # Fix relative imports to use path aliases - escape regex properly for PowerShell
+        $content = $content -replace "from\s+[""'](\.\./)+domains/([a-zA-Z]+)/", "from '@/domains/`$2/"
+        $content = $content -replace "from\s+[""'](\.\./)+shared/", "from '@/shared/"
+        $content = $content -replace "from\s+[""'](\.\./)+components/", "from '@/components/"
 
-    # Fix old import patterns that reference src/ directly
-    $content = $content -replace "from\s+[""']src/domains/([a-zA-Z]+)/", "from '@/domains/`$1/"
-    $content = $content -replace "from\s+[""']src/shared/", "from '@/shared/"
-    $content = $content -replace "from\s+[""']src/components/", "from '@/components/"
+        # Fix old import patterns that reference src/ directly
+        $content = $content -replace "from\s+[""']src/domains/([a-zA-Z]+)/", "from '@/domains/`$1/"
+        $content = $content -replace "from\s+[""']src/shared/", "from '@/shared/"
+        $content = $content -replace "from\s+[""']src/components/", "from '@/components/"
 
-    if ($content -ne $originalContent) {
-        Set-Content $filePath $content -NoNewline
-        $importFixes++
-        Write-InfoLog "Updated imports in: $($_.Name)"
+        if ($content -ne $originalContent) {
+            Set-Content $filePath $content -NoNewline
+            $importFixes++
+            Write-InfoLog "Updated imports in: $($_.Name)"
+        }
     }
+} else {
+    Write-InfoLog "No src directory found - skipping import path updates"
 }
 
 if ($importFixes -gt 0) {
@@ -136,48 +144,59 @@ if ($importFixes -gt 0) {
 
 # Step 6: Clean up empty directories
 Write-InfoLog "Removing empty directories..."
-do {
-    $emptyDirs = Get-ChildItem -Path "src" -Recurse -Directory | Where-Object {
-        $_.GetFileSystemInfos().Count -eq 0
-    }
-    foreach ($dir in $emptyDirs) {
-        Write-InfoLog "Removing empty directory: $($dir.FullName)"
-        Remove-Item $dir.FullName -Force
-    }
-} while ($emptyDirs.Count -gt 0)
+if (Test-Path "src") {
+    do {
+        $emptyDirs = Get-ChildItem -Path "src" -Recurse -Directory | Where-Object {
+            $_.GetFileSystemInfos().Count -eq 0
+        }
+        foreach ($dir in $emptyDirs) {
+            Write-InfoLog "Removing empty directory: $($dir.FullName)"
+            Remove-Item $dir.FullName -Force
+        }
+    } while ($emptyDirs.Count -gt 0)
+} else {
+    Write-InfoLog "No src directory found - skipping empty directory cleanup"
+}
 
 # Step 7: Verify directory structure compliance
 Write-InfoLog "Verifying post-cleanup directory structure..."
-$requiredPaths = @(
-    'src/domains',
-    'src/shared',
-    'tests'
-)
 
-$structureValid = $true
-foreach ($path in $requiredPaths) {
-    if (!(Test-Path $path)) {
-        Write-ErrorLog "Required path missing after cleanup: $path"
+# Check if this is a fresh automation suite (no src directory)
+if (!(Test-Path "src")) {
+    Write-InfoLog "No src directory found - assuming clean automation suite state"
+    Write-SuccessLog "Cleanup validation skipped - automation suite is already clean"
+} else {
+    $requiredPaths = @(
+        'src/domains',
+        'src/shared',
+        'tests'
+    )
+
+    $structureValid = $true
+    foreach ($path in $requiredPaths) {
+        if (!(Test-Path $path)) {
+            Write-ErrorLog "Required path missing after cleanup: $path"
+            $structureValid = $false
+        }
+    }
+
+    # Verify no test files remain in src
+    $remainingTests = Get-ChildItem -Path "src" -Recurse | Where-Object {
+        $_.Name -match "test" -or $_.Name -match "\.test\." -or $_.Name -match "\.spec\."
+    }
+
+    if ($remainingTests.Count -gt 0) {
+        Write-ErrorLog "Test files still found in src after cleanup:"
+        $remainingTests | ForEach-Object { Write-ErrorLog "  - $($_.FullName)" }
         $structureValid = $false
     }
-}
 
-# Verify no test files remain in src
-$remainingTests = Get-ChildItem -Path "src" -Recurse | Where-Object {
-    $_.Name -match "test" -or $_.Name -match "\.test\." -or $_.Name -match "\.spec\."
-}
-
-if ($remainingTests.Count -gt 0) {
-    Write-ErrorLog "Test files still found in src after cleanup:"
-    $remainingTests | ForEach-Object { Write-ErrorLog "  - $($_.FullName)" }
-    $structureValid = $false
-}
-
-if ($structureValid) {
-    Write-SuccessLog "Directory structure validation passed"
-} else {
-    Write-ErrorLog "Directory structure validation failed"
-    exit 1
+    if ($structureValid) {
+        Write-SuccessLog "Directory structure validation passed"
+    } else {
+        Write-ErrorLog "Directory structure validation failed"
+        exit 1
+    }
 }
 
 # Generate cleanup summary

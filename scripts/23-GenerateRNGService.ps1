@@ -43,7 +43,7 @@ try {
 
     # Generate RNG service interface
     Write-InfoLog "Generating IRNGService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview RNG Service Interface Definition
  * @description Defines the contract for random number generation services
@@ -167,14 +167,14 @@ export interface IRNGService {
    */
   dispose(): void;
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $interfacesPath "IRNGService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IRNGService interface generated successfully"
 
     # Generate RNG types
     Write-InfoLog "Generating RNG types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview RNG Types Definition
  * @description Type definitions for random number generation domain
@@ -185,12 +185,12 @@ export interface IRNGService {
 /**
  * PRNG algorithm types supported
  */
-export type PRNGAlgorithm = 'mulberry32' | 'xorshift' | 'lcg' | 'mt19937';
+export type PRNGAlgorithm = "mulberry32" | "xorshift" | "lcg" | "mt19937";
 
 /**
  * Seeding method types
  */
-export type SeedingMethod = 'manual' | 'bitcoin-block' | 'timestamp' | 'crypto-random';
+export type SeedingMethod = "manual" | "bitcoin-block" | "timestamp" | "crypto-random";
 
 /**
  * RNG performance metrics
@@ -239,14 +239,14 @@ export interface RNGValidation {
   /** Validation errors if any */
   errors: string[];
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $typesPath "rng.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "RNG types generated successfully"
 
     # Generate RNG Service implementation - Part 1 (Class structure and core methods)
     Write-InfoLog "Generating RNGService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description High-performance deterministic random number generation with Bitcoin block seeding
@@ -254,15 +254,15 @@ export interface RNGValidation {
  * @version 1.0.0
  */
 
-import { IRNGService, RNGConfig, RNGState, RNGOptions } from '@/domains/rng/interfaces/IRNGService';
+import { IRNGService, RNGConfig, RNGState, RNGOptions } from "@/domains/rng/interfaces/IRNGService";
 import {
   PRNGAlgorithm,
   SeedingMethod,
   RNGMetrics,
   BitcoinSeedConfig,
   RNGValidation
-} from '@/domains/rng/types/rng.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+} from "@/domains/rng/types/rng.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * RNG Service implementing high-performance deterministic random number generation
@@ -289,7 +289,7 @@ export class RNGService implements IRNGService {
   #metrics: RNGMetrics;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('RNGService');
+  #logger = createServiceLogger("RNGService");
 
   /** Generated value cache for performance */
   #cache: number[] = [];
@@ -305,7 +305,7 @@ export class RNGService implements IRNGService {
    * Initializes RNG service with Mulberry32 algorithm
    */
   private constructor() {
-    this.#logger.info('Initializing RNGService singleton instance');
+    this.#logger.info("Initializing RNGService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -318,8 +318,8 @@ export class RNGService implements IRNGService {
     // Initialize performance metrics
     this.#metrics = {
       totalGenerated: 0,
-      algorithm: 'mulberry32',
-      seedingMethod: 'timestamp',
+      algorithm: "mulberry32",
+      seedingMethod: "timestamp",
       lastSeed: 0,
       generationRate: 0,
       averageGenerationTime: 0
@@ -328,7 +328,7 @@ export class RNGService implements IRNGService {
     // Set initial seed
     this.setSeed(this.#config.defaultSeed!);
 
-    this.#logger.info('RNGService initialized successfully', {
+    this.#logger.info("RNGService initialized successfully", {
       seed: this.#seed,
       algorithm: this.#metrics.algorithm
     });
@@ -346,14 +346,14 @@ export class RNGService implements IRNGService {
     return RNGService.#instance;
   }
 }
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent1 -Encoding UTF8
     Write-SuccessLog "RNGService implementation Part 1 generated successfully"
 
     # Generate RNG Service implementation - Part 2 (Core methods)
     Write-InfoLog "Generating RNGService implementation - Part 2 (Core methods)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description High-performance deterministic random number generation with Bitcoin block seeding
@@ -361,10 +361,10 @@ export class RNGService implements IRNGService {
  * @version 1.0.0
  */
 
-import { IRNGService, RNGConfig } from '@/domains/rng/interfaces/IRNGService';
-import { RNGState, RNGMetrics, BlockHashSeed, RNGAlgorithm, SeedSource } from '@/domains/rng/types/rng.types';
-import { BlockInfo } from '@/domains/bitcoin/types/blockInfo.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+import { IRNGService, RNGConfig } from "@/domains/rng/interfaces/IRNGService";
+import { RNGState, RNGMetrics, BlockHashSeed, RNGAlgorithm, SeedSource } from "@/domains/rng/types/rng.types";
+import { BlockInfo } from "@/domains/bitcoin/types/blockInfo.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * RNG Service implementing Mulberry32 seeded PRNG with Bitcoin block hash seeding
@@ -388,7 +388,7 @@ export class RNGService implements IRNGService {
   #seedCache: Map<string, BlockHashSeed>;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('RNGService');
+  #logger = createServiceLogger("RNGService");
 
   /** Internal random state for Mulberry32 algorithm */
   #internalState: number;
@@ -398,7 +398,7 @@ export class RNGService implements IRNGService {
    * Initializes RNG with default configuration and state
    */
   private constructor() {
-    this.#logger.info('Initializing RNGService singleton instance');
+    this.#logger.info("Initializing RNGService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -410,8 +410,8 @@ export class RNGService implements IRNGService {
     // Initialize state with default values
     this.#state = {
       seed: this.#config.defaultSeed!,
-      algorithm: 'mulberry32',
-      source: 'manual',
+      algorithm: "mulberry32",
+      source: "manual",
       generationCount: 0,
       lastSeeded: Date.now()
     };
@@ -430,7 +430,7 @@ export class RNGService implements IRNGService {
     // Set internal state for Mulberry32
     this.#internalState = this.#state.seed;
 
-    this.#logger.info('RNGService initialized successfully', {
+    this.#logger.info("RNGService initialized successfully", {
       defaultSeed: this.#state.seed,
       algorithm: this.#state.algorithm
     });
@@ -453,7 +453,7 @@ export class RNGService implements IRNGService {
    * @param config - Optional RNG configuration
    */
   public async initialize(config?: RNGConfig): Promise<void> {
-    this.#logger.info('Initializing RNGService with configuration', { config });
+    this.#logger.info("Initializing RNGService with configuration", { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
@@ -465,7 +465,7 @@ export class RNGService implements IRNGService {
       this.#cachePointer = 0;
     }
 
-    this.#logger.info('RNGService initialization completed');
+    this.#logger.info("RNGService initialization completed");
   }
 
   /**
@@ -478,9 +478,9 @@ export class RNGService implements IRNGService {
     this.#counter = 0;
     this.#cachePointer = 0;
     this.#metrics.lastSeed = seed;
-    this.#metrics.seedingMethod = 'manual';
+    this.#metrics.seedingMethod = "manual";
 
-    this.#logger.debug('RNG seed set', { seed, state: this.#state });
+    this.#logger.debug("RNG seed set", { seed, state: this.#state });
   }
 
   /**
@@ -488,7 +488,7 @@ export class RNGService implements IRNGService {
    * @param blockNumber - Bitcoin block number
    */
   public async seedFromBlock(blockNumber: number): Promise<void> {
-    this.#logger.info('Seeding RNG from Bitcoin block', { blockNumber });
+    this.#logger.info("Seeding RNG from Bitcoin block", { blockNumber });
 
     try {
       // This would normally fetch from BitcoinService
@@ -497,14 +497,14 @@ export class RNGService implements IRNGService {
       this.setSeed(blockSeed);
 
       this.#lastBitcoinBlock = blockNumber;
-      this.#metrics.seedingMethod = 'bitcoin-block';
+      this.#metrics.seedingMethod = "bitcoin-block";
 
-      this.#logger.info('RNG seeded from Bitcoin block successfully', {
+      this.#logger.info("RNG seeded from Bitcoin block successfully", {
         blockNumber,
         seed: blockSeed
       });
     } catch (error) {
-      this.#logger.error('Failed to seed from Bitcoin block', { blockNumber, error });
+      this.#logger.error("Failed to seed from Bitcoin block", { blockNumber, error });
       throw error;
     }
   }
@@ -541,7 +541,7 @@ export class RNGService implements IRNGService {
    */
   public randomInt(min: number, max: number): number {
     if (min >= max) {
-      throw new Error('Invalid range: min must be less than max');
+      throw new Error("Invalid range: min must be less than max");
     }
 
     const range = max - min;
@@ -556,7 +556,7 @@ export class RNGService implements IRNGService {
    */
   public randomFloat(min: number, max: number): number {
     if (min >= max) {
-      throw new Error('Invalid range: min must be less than max');
+      throw new Error("Invalid range: min must be less than max");
     }
 
     const range = max - min;
@@ -617,14 +617,14 @@ export class RNGService implements IRNGService {
     this.#metrics.lastSeed = state.seed;
     this.#metrics.totalGenerated = state.counter;
 
-    this.#logger.debug('RNG state restored', { seed: state.seed, counter: state.counter });
+    this.#logger.debug("RNG state restored", { seed: state.seed, counter: state.counter });
   }
 
   /**
    * Reset RNG to initial state
    */
   public reset(): void {
-    this.#logger.info('Resetting RNG service to initial state');
+    this.#logger.info("Resetting RNG service to initial state");
 
     this.setSeed(this.#config.defaultSeed!);
     this.#metrics.totalGenerated = 0;
@@ -632,19 +632,19 @@ export class RNGService implements IRNGService {
     this.#cache.fill(0);
     this.#cachePointer = 0;
 
-    this.#logger.info('RNG service reset successfully');
+    this.#logger.info("RNG service reset successfully");
   }
 
   /**
    * Dispose of resources and cleanup
    */
   public dispose(): void {
-    this.#logger.info('Disposing RNG service resources');
+    this.#logger.info("Disposing RNG service resources");
 
     this.#cache = [];
     RNGService.#instance = null;
 
-    this.#logger.info('RNG service disposed successfully');
+    this.#logger.info("RNG service disposed successfully");
   }
 
   // Private helper methods
@@ -691,14 +691,14 @@ export class RNGService implements IRNGService {
 
 // Export singleton instance getter
 export const rngService = RNGService.getInstance();
-"@
+'@
 
     Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent2 -Encoding UTF8
     Write-SuccessLog "RNGService implementation Part 2 generated successfully"
 
     # Generate RNG Service implementation - Part 3 (State management and helpers)
     Write-InfoLog "Generating RNGService implementation - Part 3 (State management and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description Complete random number generation service with Bitcoin block seeding
@@ -706,10 +706,10 @@ export const rngService = RNGService.getInstance();
  * @version 1.0.0
  */
 
-import { IRNGService, RNGConfig } from '@/domains/rng/interfaces/IRNGService';
-import { RNGState, RNGMetrics, BlockHashSeed, RNGAlgorithm, SeedSource } from '@/domains/rng/types/rng.types';
-import { BlockInfo } from '@/domains/bitcoin/types/blockInfo.types';
-import { createServiceLogger } from '@/shared/lib/logger';
+import { IRNGService, RNGConfig } from "@/domains/rng/interfaces/IRNGService";
+import { RNGState, RNGMetrics, BlockHashSeed, RNGAlgorithm, SeedSource } from "@/domains/rng/types/rng.types";
+import { BlockInfo } from "@/domains/bitcoin/types/blockInfo.types";
+import { createServiceLogger } from "@/shared/lib/logger";
 
 /**
  * RNG Service implementing Mulberry32 seeded PRNG with Bitcoin block hash seeding
@@ -733,7 +733,7 @@ export class RNGService implements IRNGService {
   #seedCache: Map<string, BlockHashSeed>;
 
   /** Winston logger instance */
-  #logger = createServiceLogger('RNGService');
+  #logger = createServiceLogger("RNGService");
 
   /** Internal random state for Mulberry32 algorithm */
   #internalState: number;
@@ -743,7 +743,7 @@ export class RNGService implements IRNGService {
    * Initializes RNG with default configuration and state
    */
   private constructor() {
-    this.#logger.info('Initializing RNGService singleton instance');
+    this.#logger.info("Initializing RNGService singleton instance");
 
     // Initialize default configuration
     this.#config = {
@@ -755,8 +755,8 @@ export class RNGService implements IRNGService {
     // Initialize state with default values
     this.#state = {
       seed: this.#config.defaultSeed!,
-      algorithm: 'mulberry32',
-      source: 'manual',
+      algorithm: "mulberry32",
+      source: "manual",
       generationCount: 0,
       lastSeeded: Date.now()
     };
@@ -775,7 +775,7 @@ export class RNGService implements IRNGService {
     // Set internal state for Mulberry32
     this.#internalState = this.#state.seed;
 
-    this.#logger.info('RNGService initialized successfully', {
+    this.#logger.info("RNGService initialized successfully", {
       defaultSeed: this.#state.seed,
       algorithm: this.#state.algorithm
     });
@@ -798,7 +798,7 @@ export class RNGService implements IRNGService {
    * @param config - Optional configuration settings
    */
   public initialize(config?: RNGConfig): void {
-    this.#logger.info('Initializing RNGService with configuration', { config });
+    this.#logger.info("Initializing RNGService with configuration", { config });
 
     if (config) {
       this.#config = { ...this.#config, ...config };
@@ -807,12 +807,12 @@ export class RNGService implements IRNGService {
     // Update seed cache size if specified
     if (config?.seedCacheSize && config.seedCacheSize !== this.#seedCache.size) {
       this.#seedCache.clear();
-      this.#logger.debug('Seed cache cleared due to size change', {
+      this.#logger.debug("Seed cache cleared due to size change", {
         newSize: config.seedCacheSize
       });
     }
 
-    this.#logger.info('RNGService configuration updated successfully');
+    this.#logger.info("RNGService configuration updated successfully");
   }
 
   /**
@@ -822,18 +822,18 @@ export class RNGService implements IRNGService {
    * @returns Promise resolving to the seed value used
    */
   public async seedFromBlock(blockInfo: BlockInfo): Promise<number> {
-    this.#logger.info('Seeding RNG from Bitcoin block', {
+    this.#logger.info("Seeding RNG from Bitcoin block", {
       blockNumber: blockInfo.height,
-      blockHash: blockInfo.hash?.substring(0, 16) + '...'
+      blockHash: blockInfo.hash?.substring(0, 16) + "..."
     });
 
     // Check cache first
     const cacheKey = `${blockInfo.height}_${blockInfo.hash}`;
     if (this.#seedCache.has(cacheKey)) {
       const cachedSeed = this.#seedCache.get(cacheKey)!;
-      this.#setSeed(cachedSeed.seedValue, 'bitcoin-block');
+      this.#setSeed(cachedSeed.seedValue, "bitcoin-block");
       this.#updateCacheHitRate(true);
-      this.#logger.debug('Used cached seed for block', { blockNumber: blockInfo.height });
+      this.#logger.debug("Used cached seed for block", { blockNumber: blockInfo.height });
       return cachedSeed.seedValue;
     }
 
@@ -849,10 +849,10 @@ export class RNGService implements IRNGService {
     };
 
     this.#cacheSeed(cacheKey, blockHashSeed);
-    this.#setSeed(seed, 'bitcoin-block');
+    this.#setSeed(seed, "bitcoin-block");
     this.#updateCacheHitRate(false);
 
-    this.#logger.info('RNG seeded from Bitcoin block successfully', {
+    this.#logger.info("RNG seeded from Bitcoin block successfully", {
       blockNumber: blockInfo.height,
       seedValue: seed
     });
@@ -966,12 +966,12 @@ export class RNGService implements IRNGService {
    * Clears metrics and resets to default seed
    */
   public reset(): void {
-    this.#logger.info('Resetting RNG service to initial state');
+    this.#logger.info("Resetting RNG service to initial state");
 
     this.#state = {
       seed: this.#config.defaultSeed!,
-      algorithm: 'mulberry32',
-      source: 'manual',
+      algorithm: "mulberry32",
+      source: "manual",
       generationCount: 0,
       lastSeeded: Date.now()
     };
@@ -981,7 +981,7 @@ export class RNGService implements IRNGService {
     this.#metrics.averageGenerationTime = 0;
     this.#metrics.uniqueSeeds = 0;
 
-    this.#logger.info('RNG service reset successfully');
+    this.#logger.info("RNG service reset successfully");
   }
 
   /**
@@ -989,12 +989,12 @@ export class RNGService implements IRNGService {
    * Clears caches and resets singleton instance
    */
   public dispose(): void {
-    this.#logger.info('Disposing RNG service resources');
+    this.#logger.info("Disposing RNG service resources");
 
     this.#seedCache.clear();
     RNGService.#instance = null;
 
-    this.#logger.info('RNG service disposed successfully');
+    this.#logger.info("RNG service disposed successfully");
   }
 
   // Private helper methods
@@ -1064,7 +1064,7 @@ export class RNGService implements IRNGService {
 
 // Export singleton instance getter
 export const rngService = RNGService.getInstance();
-"@
+'@
 
     # Append Part 3 to complete the service
     Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent3 -Encoding UTF8
@@ -1072,7 +1072,7 @@ export const rngService = RNGService.getInstance();
 
     # Generate export index file
     Write-InfoLog "Generating RNG domain export index"
-    $indexContent = @"
+    $indexContent = @'
 /**
  * @fileoverview RNG Domain Exports
  * @description Main export file for RNG domain
@@ -1081,10 +1081,10 @@ export const rngService = RNGService.getInstance();
  */
 
 // Service exports
-export { RNGService, rngService } from './services/rngService';
+export { RNGService, rngService } from "./services/rngService";
 
 // Interface exports
-export type { IRNGService, RNGConfig } from './interfaces/IRNGService';
+export type { IRNGService, RNGConfig } from "./interfaces/IRNGService";
 
 // Type exports
 export type {
@@ -1093,8 +1093,8 @@ export type {
   BlockHashSeed,
   RNGAlgorithm,
   SeedSource
-} from './types/rng.types';
-"@
+} from "./types/rng.types";
+'@
 
     Set-Content -Path (Join-Path $rngDomainPath "index.ts") -Value $indexContent -Encoding UTF8
     Write-SuccessLog "RNG domain export index generated successfully"

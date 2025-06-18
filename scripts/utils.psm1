@@ -929,6 +929,62 @@ function Write-TemplateFile {
     }
 }
 
+# >>> INSERTED: Template validation helper (moved here so export succeeds)
+function Test-TemplateSyntax {
+    <#
+        .SYNOPSIS
+            Validates template file syntax for common error patterns.
+        .DESCRIPTION
+            Performs lightweight checks on template files (e.g. .ts.template, .json.template)
+            to ensure placeholder formatting and – for JSON – basic structural validity.
+        .PARAMETER TemplatePath
+            The absolute or relative path to the template file to validate.
+        .OUTPUTS
+            [bool] – $true when valid, otherwise $false.
+    #>
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TemplatePath
+    )
+
+    try {
+        if (-not (Test-Path $TemplatePath)) {
+            Write-WarningLog "Template file not found: $TemplatePath"
+            return $false
+        }
+
+        $content = Get-Content $TemplatePath -Raw -ErrorAction Stop
+
+        # Validate TypeScript/TSX templates – placeholder pattern only
+        if ($TemplatePath -match '\.tsx?\.template$') {
+            if ($content -notmatch '{{[^}]+}}') {
+                Write-WarningLog "Template appears to have no placeholders: $TemplatePath"
+            }
+        }
+        # Validate JSON templates by temporarily replacing {{TOKEN}} with a string literal
+        elseif ($TemplatePath -match '\.json\.template$') {
+            try {
+                $jsonTest = $content -replace '{{[^}]+}}', '"placeholder"'
+                $null = $jsonTest | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-WarningLog "Invalid JSON template syntax: $TemplatePath"
+                return $false
+            }
+        }
+
+        Write-DebugLog "Template syntax validation passed: $TemplatePath"
+        return $true
+    }
+    catch {
+        Write-ErrorLog "Template syntax validation failed for ${TemplatePath}: $($_.Exception.Message)"
+        return $false
+    }
+}
+# <<< END INSERTED FUNCTION
+
 # Initialize logging on module import
 Initialize-LogFile
 
@@ -946,10 +1002,14 @@ Export-ModuleMember -Function @(
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
-    'Write-TemplateFile'
+    'Write-TemplateFile',
+    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )
+
+# Note: Additional utility functions were previously defined here but
+# have been consolidated above to avoid duplicate definitions
 
 # Additional utility functions discovered during validation
 function Initialize-ProjectDependencies {
@@ -958,14 +1018,14 @@ function Initialize-ProjectDependencies {
         [Parameter(Mandatory = $false)]
         [string]$ProjectRoot = "."
     )
-    
+
     try {
         Push-Location $ProjectRoot
-        
+
         if (Test-Path "package.json") {
             Write-InfoLog "Installing project dependencies with pnpm..."
             $result = pnpm install 2>&1
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-SuccessLog "Dependencies installed successfully"
                 return $true
@@ -994,7 +1054,7 @@ function Test-ScriptDependencies {
         [Parameter(Mandatory = $false)]
         [string]$ScriptsPath = $PSScriptRoot
     )
-    
+
     try {
         # Test that all required modules can be imported
         $utilsPath = Join-Path $ScriptsPath "utils.psm1"
@@ -1002,16 +1062,16 @@ function Test-ScriptDependencies {
             Write-ErrorLog "utils.psm1 not found at: $utilsPath"
             return $false
         }
-        
+
         # Test Node.js and pnpm availability
         if (-not (Test-NodeInstalled)) {
             Write-WarningLog "Node.js not available - some scripts may fail"
         }
-        
+
         if (-not (Test-PnpmInstalled)) {
             Write-WarningLog "pnpm not available - dependency installation will fail"
         }
-        
+
         Write-DebugLog "Script dependencies validation passed"
         return $true
     }
@@ -1027,14 +1087,14 @@ function Repair-UtilityModule {
         [Parameter(Mandatory = $false)]
         [string]$ModulePath = "$PSScriptRoot\utils.psm1"
     )
-    
+
     try {
         Write-InfoLog "Repairing utility module at: $ModulePath"
-        
+
         # Force reimport of the module
         Remove-Module utils -Force -ErrorAction SilentlyContinue
         Import-Module $ModulePath -Force
-        
+
         Write-SuccessLog "Utility module repaired and reloaded"
         return $true
     }
@@ -1043,3 +1103,5 @@ function Repair-UtilityModule {
         return $false
     }
 }
+
+# End of module - duplicate functions removed

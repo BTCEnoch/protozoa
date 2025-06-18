@@ -7,79 +7,87 @@ Import-Module "$PSScriptRoot\utils.psm1" -Force
 Write-StepHeader "NEW-PROTOZOA AUTOMATION PIPELINE"
 Write-InfoLog "Starting complete project setup automation..."
 
-# Define script execution sequence
+# Define script execution sequence following optimal 8-phase architecture
 $scriptSequence = @(
-    # --- Phase 0 : Environment & Tooling ---
-    # @{ Script = "09-DeployTemplates.ps1"; Description = "Deploy templates to src" },  # Skipped due to template parsing issues
-    @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
-    @{ Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
-    @{ Script = "02-GenerateDomainStubs.ps1"; Description = "Service and interface stubs" },
-    @{ Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy code cleanup" },
-    @{ Script = "04-EnforceSingletonPatterns.ps1"; Description = "Singleton pattern enforcement" },
-    @{ Script = "05-VerifyCompliance.ps1"; Description = "Architecture compliance verification" },
-    @{ Script = "06-DomainLint.ps1"; Description = "Domain-specific linting" },
-    @{ Script = "07-BuildAndTest.ps1"; Description = "Build verification and testing" },
-    @{ Script = "20-SetupPreCommitValidation.ps1"; Description = "Pre-commit hooks and validation" },
-    @{ Script = "08-DeployToGitHub.ps1"; Description = "Git initialization and GitHub deployment" },
+    # === PHASE 0: ENVIRONMENT & FOUNDATION (10 Scripts) ===
+    # Critical infrastructure - must execute first
+    @{ Phase = 0; Script = "00-InitEnvironment.ps1"; Description = "Node.js, pnpm, base environment" },
+    @{ Phase = 0; Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
+    @{ Phase = 0; Script = "02-GenerateDomainStubs.ps1"; Description = "Service interfaces and stubs" },
+    @{ Phase = 0; Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy cleanup" },
+    @{ Phase = 0; Script = "04-EnforceSingletonPatterns.ps1"; Description = "Architectural patterns" },
+    @{ Phase = 0; Script = "05-VerifyCompliance.ps1"; Description = "Domain compliance validation" },
+    @{ Phase = 0; Script = "06-DomainLint.ps1"; Description = "Domain-specific linting rules" },
+    @{ Phase = 0; Script = "07-BuildAndTest.ps1"; Description = "Build verification" },
+    @{ Phase = 0; Script = "08-DeployToGitHub.ps1"; Description = "Git setup and GitHub integration" },
+    @{ Phase = 0; Script = "20-SetupPreCommitValidation.ps1"; Description = "Husky hooks and validation" },
 
-    # --- Phase 1 : Shared Infrastructure ---
-    @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Unified shared types generation" },
-    @{ Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment configuration and logging services" },
-    @{ Script = "18a-SetupLoggingService.ps1"; Description = "Central Winston logging setup" },
-    @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Complete Formation Domain implementation" },
-    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility functions validation and fixes" },
+    # === PHASE 1: SHARED INFRASTRUCTURE (5 Scripts) ===
+    # Cross-domain services and configuration
+    @{ Phase = 1; Script = "16-GenerateSharedTypesService.ps1"; Description = "Unified type system" },
+    @{ Phase = 1; Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment detection & config" },
+    @{ Phase = 1; Script = "18a-SetupLoggingService.ps1"; Description = "Winston logging infrastructure" },
+    @{ Phase = 1; Script = "18-GenerateFormationDomain.ps1"; Description = "Formation domain implementation" },
+    @{ Phase = 1; Script = "14-FixUtilityFunctions.ps1"; Description = "Utility function validation" },
 
-    # --- Phase 2 : TypeScript & Dev-Env ---
-    @{ Script = "19-ConfigureAdvancedTypeScript.ps1"; Description = "Advanced TypeScript config" },
-    @{ Script = "21-ConfigureDevEnvironment.ps1"; Description = "Dev environment fine-tuning" },
+    # === PHASE 2: DEVELOPMENT ENVIRONMENT (2 Scripts) ===
+    # TypeScript and development tooling
+    @{ Phase = 2; Script = "19-ConfigureAdvancedTypeScript.ps1"; Description = "Advanced TS config with path mapping" },
+    @{ Phase = 2; Script = "21-ConfigureDevEnvironment.ps1"; Description = "VS Code, Prettier, dev tools" },
 
-    # --- Phase 3 : Core Protocols & Services ---
-    @{ Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin Ordinals protocol setup" },
-    @{ Script = "23-GenerateRNGService.ps1"; Description = "Random number generator service" },
-    @{ Script = "24-GeneratePhysicsService.ps1"; Description = "Physics engine service" },
-    @{ Script = "25-SetupPhysicsWebWorkers.ps1"; Description = "Physics WebWorker scaffolding" },
-    @{ Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin blockchain service" },
-    @{ Script = "27-GenerateTraitService.ps1"; Description = "Trait management service" },
-    @{ Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Blockchain data integration" },
-    @{ Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation layer" },
+    # === PHASE 3: CORE PROTOCOL SERVICES (8 Scripts) ===
+    # Fundamental domain services
+    @{ Phase = 3; Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin Ordinals protocol" },
+    @{ Phase = 3; Script = "23-GenerateRNGService.ps1"; Description = "Random number generation service" },
+    @{ Phase = 3; Script = "24-GeneratePhysicsService.ps1"; Description = "Physics engine service" },
+    @{ Phase = 3; Script = "25-SetupPhysicsWebWorkers.ps1"; Description = "Physics worker threads" },
+    @{ Phase = 3; Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin blockchain service" },
+    @{ Phase = 3; Script = "27-GenerateTraitService.ps1"; Description = "Trait management service" },
+    @{ Phase = 3; Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Real-time blockchain data" },
+    @{ Phase = 3; Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation framework" },
 
-    # --- Phase 4 : Domain Enhancements ---
-    @{ Script = "30-EnhanceTraitSystem.ps1"; Description = "Trait system enhancements" },
-    @{ Script = "31-GenerateParticleService.ps1"; Description = "Particle service generation" },
-    @{ Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle management" },
-    @{ Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm intelligence" },
-    @{ Script = "34-EnhanceFormationSystem.ps1"; Description = "Formation system enhancements" },
-    @{ Script = "35-GenerateRenderingService.ps1"; Description = "Rendering service" },
-    @{ Script = "36-GenerateEffectService.ps1"; Description = "Effect service" },
-    @{ Script = "37-SetupCustomShaderSystem.ps1"; Description = "Custom shader system" },
-    @{ Script = "38-ImplementLODSystem.ps1"; Description = "Level-of-detail system" },
-    @{ Script = "39-SetupAdvancedEffectComposition.ps1"; Description = "Advanced effect composition" },
-    @{ Script = "40-GenerateAnimationService.ps1"; Description = "Animation service" },
-    @{ Script = "41-GenerateGroupService.ps1"; Description = "Group service" },
-    @{ Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-based animation" },
-    @{ Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Advanced timeline" },
-    @{ Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending" },
+    # === PHASE 4: DOMAIN SERVICES (10 Scripts) ===
+    # Core entity and behavior services
+    @{ Phase = 4; Script = "30-EnhanceTraitSystem.ps1"; Description = "Enhanced trait system" },
+    @{ Phase = 4; Script = "31-GenerateParticleService.ps1"; Description = "Particle service (core entity)" },
+    @{ Phase = 4; Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle" },
+    @{ Phase = 4; Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm behavior" },
+    @{ Phase = 4; Script = "34-EnhanceFormationSystem.ps1"; Description = "Formation enhancements" },
+    @{ Phase = 4; Script = "35-GenerateRenderingService.ps1"; Description = "THREE.js rendering service" },
+    @{ Phase = 4; Script = "36-GenerateEffectService.ps1"; Description = "Visual effects service" },
+    @{ Phase = 4; Script = "37-SetupCustomShaderSystem.ps1"; Description = "Custom shader pipeline" },
+    @{ Phase = 4; Script = "38-ImplementLODSystem.ps1"; Description = "Level-of-detail optimization" },
+    @{ Phase = 4; Script = "39-SetupAdvancedEffectComposition.ps1"; Description = "Effect composition" },
+    # === PHASE 5: BEHAVIORAL SERVICES (9 Scripts) ===
+    # Animation and advanced behaviors
+    @{ Phase = 5; Script = "40-GenerateAnimationService.ps1"; Description = "Animation service" },
+    @{ Phase = 5; Script = "41-GenerateGroupService.ps1"; Description = "Group management service" },
+    @{ Phase = 5; Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-driven animation" },
+    @{ Phase = 5; Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Timeline system" },
+    @{ Phase = 5; Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending" },
+    @{ Phase = 5; Script = "18b-SetupTestingFramework.ps1"; Description = "Vitest testing framework" },
 
-    # --- Phase 4.5 : Testing Infrastructure ---
-    @{ Script = "18b-SetupTestingFramework.ps1"; Description = "Vitest testing framework setup" },
+    # === PHASE 6: ADVANCED TOOLING (4 Scripts) ===
+    # Analysis and documentation
+    @{ Phase = 6; Script = "45-SetupCICDPipeline.ps1"; Description = "CI/CD pipeline" },
+    @{ Phase = 6; Script = "46-SetupDockerDeployment.ps1"; Description = "Docker deployment" },
+    @{ Phase = 6; Script = "47-SetupPerformanceRegression.ps1"; Description = "Performance monitoring" },
+    @{ Phase = 6; Script = "48-SetupAdvancedBundleAnalysis.ps1"; Description = "Bundle size analysis" },
+    @{ Phase = 6; Script = "49-SetupAutomatedDocumentation.ps1"; Description = "TypeDoc documentation" },
+    @{ Phase = 6; Script = "50-SetupServiceIntegration.ps1"; Description = "Dependency injection setup" },
 
-    # --- Phase 5 : CI / CD & Tooling ---
-    @{ Script = "45-SetupCICDPipeline.ps1"; Description = "CI/CD pipeline" },
-    @{ Script = "46-SetupDockerDeployment.ps1"; Description = "Docker deployment" },
-    @{ Script = "47-SetupPerformanceRegression.ps1"; Description = "Performance regression testing" },
-    @{ Script = "48-SetupAdvancedBundleAnalysis.ps1"; Description = "Bundle analysis" },
-    @{ Script = "49-SetupAutomatedDocumentation.ps1"; Description = "Automated documentation" },
-    @{ Script = "50-SetupServiceIntegration.ps1"; Description = "Service integration" },
+    # === PHASE 7: FRONTEND INTEGRATION (6 Scripts) ===
+    # React and state management
+    @{ Phase = 7; Script = "51-SetupGlobalStateManagement.ps1"; Description = "Zustand state management" },
+    @{ Phase = 7; Script = "52-SetupReactIntegration.ps1"; Description = "React component integration" },
+    @{ Phase = 7; Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
+    @{ Phase = 7; Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing suite" },
+    @{ Phase = 7; Script = "55-SetupPersistenceLayer.ps1"; Description = "Data persistence" },
+    @{ Phase = 7; Script = "56-SetupEndToEndValidation.ps1"; Description = "E2E testing" },
 
-    # --- Phase 6 : Front-End Integration ---
-    @{ Script = "51-SetupGlobalStateManagement.ps1"; Description = "Global state management" },
-    @{ Script = "52-SetupReactIntegration.ps1"; Description = "React integration" },
-    @{ Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
-    @{ Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing" },
-    @{ Script = "55-SetupPersistenceLayer.ps1"; Description = "Persistence layer" },
-    @{ Script = "56-SetupEndToEndValidation.ps1"; Description = "End-to-end validation" },
-    # --- Final Validation ---
-    @{ Script = "15-ValidateSetupComplete.ps1"; Description = "Final validation and setup completion" }
+    # === PHASE 8: FINAL VALIDATION (1 Script) ===
+    # Complete system validation
+    @{ Phase = 8; Script = "15-ValidateSetupComplete.ps1"; Description = "Comprehensive final validation" }
 )
 
 # Track execution results
@@ -89,16 +97,16 @@ $startTime = Get-Date
 # Execute each script in sequence
 for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
     $step = $scriptSequence[$i]
-    $stepNumber = $i
+    $stepNumber = $i + 1
     $scriptPath = Join-Path $PSScriptRoot $step.Script
 
-    Write-StepHeader "PHASE $stepNumber : $($step.Description)"
-    Write-InfoLog "Executing: $($step.Script)"
+    Write-StepHeader "PHASE $($step.Phase) - STEP $stepNumber : $($step.Description)"
+    Write-InfoLog "Executing: $($step.Script) (Step $stepNumber of $($scriptSequence.Count))"
 
     if (-not (Test-Path $scriptPath)) {
         Write-ErrorLog "Script not found: $scriptPath"
         $results += [PSCustomObject]@{
-            Phase = $stepNumber
+            Phase = $step.Phase
             Script = $step.Script
             Status = "MISSING"
             Duration = 0
@@ -109,28 +117,32 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
 
     $stepStartTime = Get-Date
     try {
+        # Reset exit code before execution
+        $global:LASTEXITCODE = 0
+        
         # Execute the script and capture output
         & $scriptPath 2>&1
         $stepDuration = (Get-Date) - $stepStartTime
+        $scriptExitCode = $LASTEXITCODE
 
-        if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null) {
-            Write-SuccessLog "PHASE $stepNumber completed successfully in $($stepDuration.TotalSeconds) seconds"
-                    $results += [PSCustomObject]@{
-            Phase = $stepNumber
-            Script = $step.Script
-            Status = "SUCCESS"
-            Duration = $stepDuration.TotalSeconds
-            Error = $null
-        }
+        if ($scriptExitCode -eq 0 -or $scriptExitCode -eq $null) {
+            Write-SuccessLog "PHASE $($step.Phase) completed successfully in $($stepDuration.TotalSeconds) seconds"
+            $results += [PSCustomObject]@{
+                Phase = $step.Phase
+                Script = $step.Script
+                Status = "SUCCESS"
+                Duration = $stepDuration.TotalSeconds
+                Error = $null
+            }
         } else {
-            throw "Script exited with code $LASTEXITCODE"
+            throw "Script exited with code $scriptExitCode"
         }
     }
     catch {
         $stepDuration = (Get-Date) - $stepStartTime
-        Write-ErrorLog "PHASE $stepNumber FAILED: $($_.Exception.Message)"
+        Write-ErrorLog "PHASE $($step.Phase) FAILED: $($_.Exception.Message)"
         $results += [PSCustomObject]@{
-            Phase = $stepNumber
+            Phase = $step.Phase
             Script = $step.Script
             Status = "FAILED"
             Duration = $stepDuration.TotalSeconds
@@ -138,7 +150,7 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
         }
 
         # Ask user if they want to continue despite failure
-        $choice = Read-Host "Phase $stepNumber failed. Continue with remaining phases? (y/N)"
+        $choice = Read-Host "Phase $($step.Phase) failed. Continue with remaining phases? (y/N)"
         if ($choice -notmatch '^[Yy]') {
             Write-ErrorLog "Automation pipeline aborted by user"
             break

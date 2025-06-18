@@ -1,3 +1,1 @@
-import { spawnSync } from 'child_process'
-console.log('Generating TypeDoc...')
-spawnSync('npx', ['typedoc'], { stdio: 'inherit' })
+﻿console.log("Generating TypeDoc..."); import("child_process").then(cp => cp.spawnSync("npx", ["typedoc"], { stdio: "inherit" }))

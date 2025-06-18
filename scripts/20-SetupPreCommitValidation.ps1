@@ -89,7 +89,7 @@ try {
 
     # Create pre-commit hook
     Write-InfoLog "Creating pre-commit hook with comprehensive validation"
-    $preCommitContent = @"
+    $preCommitContent = @'
 #!/usr/bin/env sh
 . "`$(dirname -- "`$0")/_/husky.sh"
 
@@ -123,7 +123,7 @@ if [ `$? -ne 0 ]; then
 fi
 
 echo "✅ All pre-commit validations passed!"
-"@
+'@
 
     Set-Content -Path $preCommitHookPath -Value $preCommitContent -Encoding UTF8
 

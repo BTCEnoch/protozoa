@@ -1,4 +1,4 @@
-# 28-SetupBlockchainDataIntegration.ps1 - Phase 3 Enhancement
+﻿# 28-SetupBlockchainDataIntegration.ps1 - Phase 3 Enhancement
 # Sets up real-time blockchain data integration via WebSocket
 # Reference: script_checklist.md | build_design.md lines 2250-2350
 #Requires -Version 5.1
@@ -29,19 +29,19 @@ try {
     # Ensure directory
     New-Item -Path $servicesPath -ItemType Directory -Force | Out-Null
 
-    $wsContent = @"
+    $wsContent = @'
 /**
- * blockStreamService.ts – Connects to a Bitcoin block stream via WebSocket.
- * Emits 'block' events with parsed block info for downstream services.
+ * blockStreamService.ts â€“ Connects to a Bitcoin block stream via WebSocket.
+ * Emits "block" events with parsed block info for downstream services.
  */
 
-import { EventEmitter } from 'events'
-import { createServiceLogger } from '@/shared/lib/logger'
-import type { BlockInfo } from '@/domains/bitcoin/types/blockInfo.types'
+import { EventEmitter } from "events"
+import { createServiceLogger } from "@/shared/lib/logger"
+import type { BlockInfo } from "@/domains/bitcoin/types/blockInfo.types"
 
 export class BlockStreamService extends EventEmitter {
   static #instance: BlockStreamService | null = null
-  #log = createServiceLogger('BLOCK_STREAM')
+  #log = createServiceLogger("BLOCK_STREAM")
   #socket?: WebSocket
 
   private constructor() { super() }
@@ -51,22 +51,22 @@ export class BlockStreamService extends EventEmitter {
     return BlockStreamService.#instance
   }
 
-  public connect(url = 'wss://ordinals.com:443/block-stream'): void {
+  public connect(url = "wss://ordinals.com:443/block-stream"): void {
     if (this.#socket) return
-    this.#log.info('Connecting to block stream', { url })
+    this.#log.info("Connecting to block stream", { url })
     this.#socket = new WebSocket(url)
-    this.#socket.onopen = () => this.#log.info('Block stream connected')
+    this.#socket.onopen = () => this.#log.info("Block stream connected")
     this.#socket.onmessage = (evt) => {
       try {
         const data: BlockInfo = JSON.parse(evt.data as string)
-        this.emit('block', data)
+        this.emit("block", data)
       } catch (err) {
-        this.#log.warn('Invalid message from block stream')
+        this.#log.warn("Invalid message from block stream")
       }
     }
-    this.#socket.onerror = (e) => this.#log.error('Block stream error', e)
+    this.#socket.onerror = (e) => this.#log.error("Block stream error", e)
     this.#socket.onclose = () => {
-      this.#log.warn('Block stream closed; attempting reconnect in 10s')
+      this.#log.warn("Block stream closed; attempting reconnect in 10s")
       this.#socket = undefined
       setTimeout(() => this.connect(url), 10000)
     }
@@ -80,7 +80,7 @@ export class BlockStreamService extends EventEmitter {
 }
 
 export const blockStreamService = BlockStreamService.getInstance()
-"@
+'@
 
     Set-Content -Path (Join-Path $servicesPath "blockStreamService.ts") -Value $wsContent -Encoding UTF8
     Write-SuccessLog "blockStreamService.ts generated"

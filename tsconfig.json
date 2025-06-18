@@ -1,7 +1,9 @@
 ﻿{
+
     "include":  [
                     "src/**/*",
-                    "vite.config.ts"
+                    "vite.config.ts",
+                    "playwright.config.ts"
                 ],
     "exclude":  [
                     "node_modules",
@@ -15,7 +17,7 @@
                 ],
     "compilerOptions":  {
                             "noImplicitAny":  true,
-                            "declarationMap":  false,
+                            "declarationMap":  true,
                             "strict":  true,
                             "lib":  [
                                         "ES2022",
@@ -42,7 +44,7 @@
                             "noFallthroughCasesInSwitch":  true,
                             "skipLibCheck":  false,
                             "strictBindCallApply":  true,
-                            "declaration":  false,
+                            "declaration":  true,
                             "resolveJsonModule":  true,
                             "strictFunctionTypes":  true,
                             "paths":  {

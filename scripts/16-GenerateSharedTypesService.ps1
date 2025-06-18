@@ -51,7 +51,7 @@ foreach ($dir in $directories) {
 }
 
 # Generate Vector and Math Types
-$vectorTypesContent = @"
+$vectorTypesContent = @'
 /**
  * Vector and Mathematical Types
  * Shared vector and mathematical interfaces used across domains
@@ -131,7 +131,7 @@ export type VectorLike = IVector3 | IVector2;
  * Utility type for transformation matrices
  */
 export type Matrix4Like = number[];
-"@
+'@
 
 Write-InfoLog "Writing vector types..."
 if (-not $WhatIf) {
@@ -139,13 +139,13 @@ if (-not $WhatIf) {
 }
 
 # Generate Core Entity Types
-$entityTypesContent = @"
+$entityTypesContent = @'
 /**
  * Core Entity Types
  * Base interfaces and types for all domain entities
  */
 
-import { IVector3, IColor, ITransform } from './vectorTypes';
+import { IVector3, IColor, ITransform } from "./vectorTypes";
 
 /**
  * Base entity interface that all domain entities should implement
@@ -212,7 +212,7 @@ export interface IOrganismTraits {
  */
 export interface IVisualTraits {
   color: string;
-  shape: 'sphere' | 'cube' | 'tetrahedron' | 'octahedron';
+  shape: "sphere" | "cube" | "tetrahedron" | "octahedron";
   size: number;
   luminosity: number;
   pattern?: string;
@@ -274,7 +274,7 @@ export interface IGroupBehavior {
   maxSpeed: number;
   maxForce: number;
 }
-"@
+'@
 
 Write-InfoLog "Writing entity types..."
 if (-not $WhatIf) {
@@ -282,13 +282,13 @@ if (-not $WhatIf) {
 }
 
 # Generate Service Configuration Types
-$configTypesContent = @"
+$configTypesContent = @'
 /**
  * Service Configuration Types
  * Configuration interfaces for all domain services
  */
 
-import { IVector3, IRange } from './vectorTypes';
+import { IVector3, IRange } from "./vectorTypes";
 
 /**
  * Base service configuration interface
@@ -357,7 +357,7 @@ export interface IAnimationConfig extends IServiceConfig {
   /** Default animation duration in milliseconds */
   defaultDuration: number;
   /** Easing function type */
-  easingType: 'linear' | 'ease-in' | 'ease-out' | 'ease-in-out';
+  easingType: "linear" | "ease-in" | "ease-out" | "ease-in-out";
   /** Maximum concurrent animations */
   maxConcurrent: number;
   /** Animation loop enabled */
@@ -383,7 +383,7 @@ export interface IFormationConfig extends IServiceConfig {
  */
 export interface IEnvironmentConfig {
   /** Current environment mode */
-  mode: 'development' | 'production' | 'test';
+  mode: "development" | "production" | "test";
   /** API base URLs by environment */
   apiUrls: Record<string, string>;
   /** Feature flags */
@@ -395,7 +395,7 @@ export interface IEnvironmentConfig {
     performanceLogging: boolean;
   };
 }
-"@
+'@
 
 Write-InfoLog "Writing configuration types..."
 if (-not $WhatIf) {
@@ -403,7 +403,7 @@ if (-not $WhatIf) {
 }
 
 # Generate Logging and Error Types
-$loggingTypesContent = @"
+$loggingTypesContent = @'
 /**
  * Logging and Error Types
  * Standardized logging and error handling interfaces
@@ -413,10 +413,10 @@ $loggingTypesContent = @"
  * Log levels enum
  */
 export enum LogLevel {
-  DEBUG = 'debug',
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error'
+  DEBUG = "debug",
+  INFO = "info",
+  WARN = "warn",
+  ERROR = "error"
 }
 
 /**
@@ -465,10 +465,10 @@ export interface IPerformanceMetrics {
  * Service health status
  */
 export enum ServiceStatus {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown'
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown"
 }
 
 /**
@@ -488,7 +488,7 @@ export interface IHealthCheck {
   /** Additional details */
   details?: Record<string, any>;
 }
-"@
+'@
 
 Write-InfoLog "Writing logging types..."
 if (-not $WhatIf) {
@@ -496,7 +496,7 @@ if (-not $WhatIf) {
 }
 
 # Generate Event Types for Domain Communication
-$eventTypesContent = @"
+$eventTypesContent = @'
 /**
  * Event Types for Domain Communication
  * Standardized event interfaces for inter-domain messaging
@@ -527,22 +527,22 @@ export interface IParticleEvent extends IBaseEvent {
 }
 
 export interface IParticleCreatedEvent extends IParticleEvent {
-  type: 'particle.created';
+  type: "particle.created";
   payload: {
-    particle: import('./entityTypes').IParticle;
+    particle: import("./entityTypes").IParticle;
   };
 }
 
 export interface IParticleUpdatedEvent extends IParticleEvent {
-  type: 'particle.updated';
+  type: "particle.updated";
   payload: {
-    previousState: Partial<import('./entityTypes').IParticle>;
-    currentState: import('./entityTypes').IParticle;
+    previousState: Partial<import("./entityTypes").IParticle>;
+    currentState: import("./entityTypes").IParticle;
   };
 }
 
 export interface IParticleRemovedEvent extends IParticleEvent {
-  type: 'particle.removed';
+  type: "particle.removed";
   payload: {
     reason: string;
   };
@@ -557,15 +557,15 @@ export interface IFormationEvent extends IBaseEvent {
 }
 
 export interface IFormationAppliedEvent extends IFormationEvent {
-  type: 'formation.applied';
+  type: "formation.applied";
   payload: {
     particleIds: string[];
-    pattern: import('./entityTypes').IFormationPattern;
+    pattern: import("./entityTypes").IFormationPattern;
   };
 }
 
 export interface IFormationTransitionEvent extends IFormationEvent {
-  type: 'formation.transition';
+  type: "formation.transition";
   payload: {
     fromFormationId: string;
     toFormationId: string;
@@ -577,7 +577,7 @@ export interface IFormationTransitionEvent extends IFormationEvent {
  * Trait mutation events
  */
 export interface ITraitMutationEvent extends IBaseEvent {
-  type: 'trait.mutated';
+  type: "trait.mutated";
   payload: {
     organismId: string;
     traitType: string;
@@ -596,7 +596,7 @@ export interface IEffectEvent extends IBaseEvent {
 }
 
 export interface IEffectTriggeredEvent extends IEffectEvent {
-  type: 'effect.triggered';
+  type: "effect.triggered";
   payload: {
     targetIds: string[];
     duration: number;
@@ -634,7 +634,7 @@ export interface IEventBus {
   /** Remove all listeners */
   removeAllListeners(): void;
 }
-"@
+'@
 
 Write-InfoLog "Writing event types..."
 if (-not $WhatIf) {
@@ -642,27 +642,27 @@ if (-not $WhatIf) {
 }
 
 # Generate index file for types
-$indexContent = @"
+$indexContent = @'
 /**
  * Shared Types Index
  * Central export point for all shared types and interfaces
  */
 
 // Vector and mathematical types
-export * from './vectorTypes';
+export * from "./vectorTypes";
 
 // Core entity types
-export * from './entityTypes';
+export * from "./entityTypes";
 
 // Service configuration types
-export * from './configTypes';
+export * from "./configTypes";
 
 // Logging and error types
-export * from './loggingTypes';
+export * from "./loggingTypes";
 
 // Event types for domain communication
-export * from './eventTypes';
-"@
+export * from "./eventTypes";
+'@
 
 Write-InfoLog "Writing types index..."
 if (-not $WhatIf) {

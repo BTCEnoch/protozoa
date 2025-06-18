@@ -186,7 +186,7 @@ try {
 
     # Generate EditorConfig for cross-editor consistency
     Write-InfoLog "Generating EditorConfig for cross-editor consistency"
-    $editorConfig = @"
+    $editorConfig = @'
 # EditorConfig is awesome: https://EditorConfig.org
 
 # top-most EditorConfig file
@@ -230,7 +230,7 @@ indent_size = 2
 # CSS files
 [*.{css,scss,sass}]
 indent_size = 2
-"@
+'@
 
     Set-Content -Path $editorConfigPath -Value $editorConfig -Encoding UTF8
     Write-SuccessLog "EditorConfig created for cross-editor consistency"

@@ -1,33 +1,69 @@
 ﻿#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "🔍 Running pre-commit validation..."
-
-# Run lint-staged for incremental validation
-npx lint-staged
-
-# Run TypeScript compilation check
-echo "📝 Checking TypeScript compilation..."
-npx tsc --noEmit
-if [ $? -ne 0 ]; then
-  echo "❌ TypeScript compilation failed"
-  exit 1
+# Windows compatibility check
+if [ "$OS" = "Windows_NT" ]; then
+    # Windows PowerShell execution
+    echo "🔍 Running pre-commit validation on Windows..."
+    
+    # Run lint-staged for incremental validation
+    npx lint-staged
+    
+    # Run TypeScript compilation check
+    echo "📝 Checking TypeScript compilation..."
+    npx tsc --noEmit
+    if [ $? -ne 0 ]; then
+      echo "❌ TypeScript compilation failed"
+      exit 1
+    fi
+    
+    # Run domain boundary validation using PowerShell
+    echo "🏗️ Validating domain boundaries..."
+    powershell -ExecutionPolicy Bypass -File "./scripts/05-VerifyCompliance.ps1"
+    if [ $? -ne 0 ]; then
+      echo "❌ Domain boundary validation failed"
+      exit 1
+    fi
+    
+    # Run bundle size check
+    echo "📦 Checking bundle size..."
+    npm run build > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      echo "❌ Build failed - cannot validate bundle size"
+      exit 1
+    fi
+    
+    echo "✅ All pre-commit validations passed!"
+else
+    # Unix/Linux execution (original)
+    . "$(dirname -- "$0")/_/husky.sh"
+    
+    echo "🔍 Running pre-commit validation..."
+    
+    # Run lint-staged for incremental validation
+    npx lint-staged
+    
+    # Run TypeScript compilation check
+    echo "📝 Checking TypeScript compilation..."
+    npx tsc --noEmit
+    if [ $? -ne 0 ]; then
+      echo "❌ TypeScript compilation failed"
+      exit 1
+    fi
+    
+    # Run domain boundary validation
+    echo "🏗️ Validating domain boundaries..."
+    pwsh -File "./scripts/05-VerifyCompliance.ps1"
+    if [ $? -ne 0 ]; then
+      echo "❌ Domain boundary validation failed"
+      exit 1
+    fi
+    
+    # Run bundle size check
+    echo "📦 Checking bundle size..."
+    npm run build > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      echo "❌ Build failed - cannot validate bundle size"
+      exit 1
+    fi
+    
+    echo "✅ All pre-commit validations passed!"
 fi
-
-# Run domain boundary validation
-echo "🏗️ Validating domain boundaries..."
-pwsh -File "./scripts/05-VerifyCompliance.ps1"
-if [ $? -ne 0 ]; then
-  echo "❌ Domain boundary validation failed"
-  exit 1
-fi
-
-# Run bundle size check
-echo "📦 Checking bundle size..."
-npm run build > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  echo "❌ Build failed - cannot validate bundle size"
-  exit 1
-fi
-
-echo "✅ All pre-commit validations passed!"
