@@ -106,7 +106,7 @@ try {
     $lines += "        const mutationRate = this.calculateMutationRate()"
     $lines += "        "
     $lines += "        if (this.rngService.random() < mutationRate) {"
-    $lines += "            logger.debug(`Applying mutation to trait: $${traitKey}`)"
+    $lines += "            logger.debug(`Applying mutation to trait: ${traitKey}`)"
     $lines += "            return this.traitService.mutateTrait(traitKey, value)"
     $lines += "        }"
     $lines += "        "

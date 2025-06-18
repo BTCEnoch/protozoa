@@ -41,7 +41,12 @@ try {
                       -DestinationPath (Join-Path $interfacesPath 'IEffectService.ts')
 
     Write-TemplateFile -TemplateRelPath 'domains/effect/services/effectService.ts.template' `
-                      -DestinationPath (Join-Path $servicesPath 'effectService.ts')
+                      -DestinationPath (Join-Path $servicesPath 'EffectService.ts')
+
+    # Add compatibility wrapper for lowercase file path to prevent import casing issues
+    $wrapperContent = "export * from './EffectService'"
+    Set-Content -Path (Join-Path $servicesPath 'effectService.ts') -Value $wrapperContent -Encoding UTF8
+    Write-InfoLog "Added wrapper effectService.ts for casing compatibility"
 
     Write-SuccessLog "36-GenerateEffectService.ps1 completed successfully"
     exit 0

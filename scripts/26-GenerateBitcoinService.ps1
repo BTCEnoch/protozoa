@@ -345,6 +345,36 @@ export interface ApiError {
     Set-Content -Path (Join-Path $typesPath "bitcoin.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Bitcoin types generated successfully"
 
+    # Generate BlockInfo specific type for cross-domain imports
+    $blockInfoTypesContent = @'
+/**
+ * @fileoverview Bitcoin BlockInfo Type Definition
+ * @description Standalone BlockInfo interface for external domain consumption
+ */
+export interface BlockInfo {
+  /** Block height/number */
+  height: number;
+  /** Block hash */
+  hash: string;
+  /** Previous block hash */
+  previousblockhash: string;
+  /** Merkle root */
+  merkleroot: string;
+  /** Block timestamp */
+  time: number;
+  /** Block difficulty */
+  difficulty: number;
+  /** Number of transactions */
+  nTx: number;
+  /** Block size in bytes */
+  size: number;
+  /** Block weight */
+  weight: number;
+}
+'@
+    Set-Content -Path (Join-Path $typesPath "blockInfo.types.ts") -Value $blockInfoTypesContent -Encoding UTF8
+    Write-SuccessLog "blockInfo.types.ts generated successfully"
+
     # Remove the broken first service content section - it's duplicated later anyway
     # This section contained duplicate TypeScript code that was causing parser errors
 

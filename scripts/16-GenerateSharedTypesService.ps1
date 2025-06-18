@@ -145,7 +145,7 @@ $entityTypesContent = @'
  * Base interfaces and types for all domain entities
  */
 
-import { IVector3, IColor, ITransform } from "./vectorTypes";
+import { IVector3, IColor, ITransform, IRange } from "./vectorTypes";
 
 /**
  * Base entity interface that all domain entities should implement
