@@ -8,7 +8,9 @@
     "build": "tsc",
     "dev": "vite",
     "test": "vitest",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "fix:here-strings": "node scripts/convert-here-strings.mjs"
   },
   "keywords": [
     "bitcoin",
