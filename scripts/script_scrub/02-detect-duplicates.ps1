@@ -249,8 +249,14 @@ try {
         $analysisResult.Recommendations += "INFO: Found $($similarNames.Count) functions with identical names across files - verify intentional overrides"
     }
     
+    # Resolve output path – honour caller-provided directories / rooted paths
+    if ([System.IO.Path]::IsPathRooted($OutputFile) -or (Split-Path $OutputFile -Parent)) {
+        $outputPath = (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path
+        if (-not $outputPath) { $outputPath = $OutputFile }
+    } else {
+        $outputPath = Join-Path $PSScriptRoot $OutputFile
+    }
     # Export results
-    $outputPath = Join-Path $PSScriptRoot $OutputFile
     $analysisResult | ConvertTo-Json -Depth 10 | Set-Content -Path $outputPath -Encoding UTF8
     
     # Display summary

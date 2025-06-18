@@ -108,8 +108,15 @@ try {
         $analysisResult.Recommendations += "INFO: $($dependencyStats.IsolatedScripts) isolated scripts found - verify if consolidation is possible"
     }
     
+    # Resolve output path – if caller provided a rooted or directory-inclusive path, respect it.
+    if ([System.IO.Path]::IsPathRooted($OutputFile) -or (Split-Path $OutputFile -Parent)) {
+        $outputPath = (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path
+        if (-not $outputPath) { $outputPath = $OutputFile }
+    } else {
+        $outputPath = Join-Path $PSScriptRoot $OutputFile
+    }
+    
     # Export results
-    $outputPath = Join-Path $PSScriptRoot $OutputFile
     $analysisResult | ConvertTo-Json -Depth 10 | Set-Content -Path $outputPath -Encoding UTF8
     
     # Display summary
