@@ -4,8 +4,6 @@
 
 An advanced TypeScript simulation that creates and evolves digital unicellular organisms using Bitcoin Ordinals. Each organism is uniquely seeded from Bitcoin block data, ensuring deterministic but unique traits tied to blockchain history.
 
-**See [`docs/`](docs/README.md) for detailed domain documentation and automation instructions.**
-
 ## 🚀 Quick Start
 
 ```bash
@@ -14,7 +12,8 @@ git clone https://github.com/BTCEnoch/protozoa.git
 cd protozoa
 
 # Run the complete automation setup
-powershell ./scripts/runAll.ps1
+cd scripts
+powershell ./runAll.ps1
 ```
 
 ## 🎯 Features
@@ -75,11 +74,6 @@ Complete PowerShell automation package in `/scripts`:
 - `01-ScaffoldProjectStructure.ps1` - Create domain directories
 - `02-GenerateDomainStubs.ps1` - Generate TypeScript service stubs
 - `03-MoveAndCleanCodebase.ps1` - Legacy cleanup and migration
-- `04-EnforceSingletonPatterns.ps1` - Standardize service patterns
-- `05-VerifyCompliance.ps1` - Validate architectural standards
-- `06-DomainLint.ps1` - Check domain boundary violations
-- `07-BuildAndTest.ps1` - Run build validation and tests
-- `08-DeployToGitHub.ps1` - Deploy automation package
 - `runAll.ps1` - Master orchestrator for complete setup
 
 ## 🧪 Development Workflow
@@ -92,20 +86,17 @@ Complete PowerShell automation package in `/scripts`:
 
 ## 📚 Documentation
 
-- **`build_checklist.md`**: 8-phase implementation roadmap (433 detailed steps)
-- **`build_design.md`**: Complete domain-driven architecture (2,180 lines)
-- **`addin.md`**: Additional implementation guides and missing components
-- **`.cursorrules`**: Comprehensive project standards (390 lines)
-- **`docs/` directory**: Organized reference extracted from `build_design.md`
+- **Build Checklist**: 8-phase implementation roadmap
+- **Architecture Design**: Detailed service specifications
+- **Compliance Rules**: Complete `.cursorrules` standards
 - **API Integration**: Bitcoin Ordinals protocol documentation
 
 ## 🚦 Project Status
 
-- ✅ **Automation Complete**: Full PowerShell automation suite ready
-- ✅ **Architecture Defined**: Complete domain-driven design documented
-- ✅ **Standards Enforced**: All compliance rules and patterns established
-- 🚧 **Implementation Ready**: Service stubs generated, ready for Cursor AI
-- ⏳ **Domain Logic**: Awaiting implementation of business logic per build phases
+- ✅ **Phase 1**: Foundation and infrastructure setup
+- ✅ **Phase 2-3**: Core utility and data integration domains
+- 🚧 **Phase 4-6**: Particle system and visual domains (in progress)
+- ⏳ **Phase 7-8**: Automation and integration testing
 
 ## 🤝 Contributing
 

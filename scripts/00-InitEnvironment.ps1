@@ -165,7 +165,7 @@ try {
             # Initialize package.json if it doesn't exist
             if (-not (Test-Path "package.json")) {
                 Write-InfoLog "Initializing package.json..."
-                $initResult = pnpm init -y 2>&1
+                $initResult = pnpm init 2>&1
                 if ($LASTEXITCODE -eq 0) {
                     Write-SuccessLog "package.json created"
                 } else {

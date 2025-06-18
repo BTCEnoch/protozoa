@@ -1,0 +1,36 @@
+﻿{
+    "ScriptDirectory":  "..",
+    "Timestamp":  "2025-06-17 20:11:31",
+    "OverallResults":  {
+                           "InfoIssues":  0,
+                           "WarningIssues":  0,
+                           "CriticalIssues":  0,
+                           "TotalIssues":  0
+                       },
+    "AnalysisSteps":  [
+                          {
+                              "Step":  "Dependency Analysis",
+                              "Error":  "At D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1:113 char:85\r\n+ ...  (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path\r\n+                                                                    ~~~~~~\nUnexpected token \u0027?.Path\u0027 in expression or statement.",
+                              "Status":  "Failed"
+                          },
+                          {
+                              "Step":  "Duplicate Detection",
+                              "Error":  "At D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1:262 char:85\r\n+ ...  (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path\r\n+                                                                    ~~~~~~\nUnexpected token \u0027?.Path\u0027 in expression or statement.",
+                              "Status":  "Failed"
+                          }
+                      ],
+    "OutputDirectory":  "D:\\Protozoa\\scripts\\script_scrub\\results",
+    "Summary":  [
+                    "=== SCRIPT SCRUB ANALYSIS SUMMARY ===",
+                    "Analysis Date: 2025-06-17 20:11:31",
+                    "Scripts Directory: ..",
+                    "",
+                    "ISSUE SUMMARY:",
+                    "  Total Issues: 0",
+                    "  Critical Issues: 0",
+                    "  Warning Issues: 0",
+                    "  Info Issues: 0",
+                    "",
+                    "ðŸŽ‰ EXCELLENT: No critical issues found! Scripts are ready for execution."
+                ]
+}
