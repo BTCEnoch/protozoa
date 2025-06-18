@@ -50,12 +50,12 @@ export class ParticleService implements IParticleService {
     const id = `ps-${Math.floor(rngService.random() * 1e8).toString(36)}`
     const system: ParticleSystem = {
       id,
-      active: true,
       activeParticles: 0,
       particles: [],
       createdAt: Date.now(),
       ...systemConfig
     }
+    if (system.active === undefined) system.active = true
     this.#systems.set(id, system)
     this.#log.info('Particle system created', { id })
     return system
