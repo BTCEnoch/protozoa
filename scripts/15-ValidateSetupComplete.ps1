@@ -105,7 +105,7 @@ try {
                 if (-not (Test-Path "package.json")) { return $false }
                 try {
                     $pkg = Get-Content "package.json" | ConvertFrom-Json
-                    return ($pkg.name -eq "new-protozoa" -and $pkg.dependencies -and $pkg.devDependencies)
+                    return ($pkg.name -eq "protozoa" -and $pkg.dependencies -and $pkg.devDependencies)
                 } catch { return $false }
             }
         },
@@ -126,7 +126,7 @@ try {
                 if (-not (Test-Path ".eslintrc.json")) { return $false }
                 try {
                     $eslint = Get-Content ".eslintrc.json" | ConvertFrom-Json
-                    return ($eslint.overrides -and $eslint.rules)
+                    return ($eslint.rules -and $eslint.parser -and $eslint.extends)
                 } catch { return $false }
             }
         },

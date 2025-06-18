@@ -12,7 +12,7 @@ param(
     [switch]$WhatIf,
     
     [Parameter(Mandatory = $false)]
-    [switch]$CreateBackup = $true
+    [switch]$CreateBackup
 )
 
 $ErrorActionPreference = 'Stop'

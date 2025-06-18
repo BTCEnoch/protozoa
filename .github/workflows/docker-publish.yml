@@ -1,7 +1,9 @@
-name: Docker Publish
+﻿name: Docker Publish
+
 on:
   push:
     tags: ['v*']
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,11 +14,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: myregistry/protozoa:
-            \
-              \
-              \
-              \
-              \
-              \
-              ${{ github.ref_name }}
+          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}

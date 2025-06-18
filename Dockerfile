@@ -1,4 +1,4 @@
-# Stage 1: build
+﻿# Stage 1: build
 FROM node:20-alpine as builder
 WORKDIR /app
 COPY . .

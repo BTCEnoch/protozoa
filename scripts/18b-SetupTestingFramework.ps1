@@ -33,20 +33,34 @@ try {
 
     # Add devDependencies
     $devDeps = $pkg.devDependencies
-    $addDep = { param($name, $version) if (-not $devDeps.ContainsKey($name)) { $devDeps[$name] = $version } }
+    $addDep = { param($name, $version) 
+        if (-not ($devDeps | Get-Member -Name $name -ErrorAction SilentlyContinue)) { 
+            $devDeps | Add-Member -MemberType NoteProperty -Name $name -Value $version -Force
+        } 
+    }
     & $addDep "vitest" "^1.5.0"
     & $addDep "@vitest/coverage-v8" "^1.5.0"
     & $addDep "@types/node" "^20.5.0"
     & $addDep "ts-node" "^10.9.1"
 
     # Add test scripts
-    if (-not $pkg.scripts.test) { $pkg.scripts.test = "vitest run" }
-    if (-not $pkg.scripts["test:watch"]) { $pkg.scripts["test:watch"] = "vitest" }
-    if (-not $pkg.scripts["coverage"]) { $pkg.scripts.coverage = "vitest run --coverage" }
+    if (-not ($pkg.scripts | Get-Member -Name "test" -ErrorAction SilentlyContinue)) { 
+        $pkg.scripts | Add-Member -MemberType NoteProperty -Name "test" -Value "vitest run" -Force 
+    }
+    if (-not ($pkg.scripts | Get-Member -Name "test:watch" -ErrorAction SilentlyContinue)) { 
+        $pkg.scripts | Add-Member -MemberType NoteProperty -Name "test:watch" -Value "vitest" -Force 
+    }
+    if (-not ($pkg.scripts | Get-Member -Name "coverage" -ErrorAction SilentlyContinue)) { 
+        $pkg.scripts | Add-Member -MemberType NoteProperty -Name "coverage" -Value "vitest run --coverage" -Force 
+    }
 
     # Husky pre-commit hook integration
-    if (-not $pkg.devDependencies.husky) { $pkg.devDependencies.husky = "^8.0.0" }
-    if (-not $pkg.scripts.prepare) { $pkg.scripts.prepare = "husky install" }
+    if (-not ($pkg.devDependencies | Get-Member -Name "husky" -ErrorAction SilentlyContinue)) { 
+        $pkg.devDependencies | Add-Member -MemberType NoteProperty -Name "husky" -Value "^8.0.0" -Force 
+    }
+    if (-not ($pkg.scripts | Get-Member -Name "prepare" -ErrorAction SilentlyContinue)) { 
+        $pkg.scripts | Add-Member -MemberType NoteProperty -Name "prepare" -Value "husky install" -Force 
+    }
 
     # Configure pre-commit hook if .husky folder not present
     $huskyDir = Join-Path $ProjectRoot '.husky'

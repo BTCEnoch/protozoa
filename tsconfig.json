@@ -1,9 +1,15 @@
 ﻿{
-
+    "references":  [
+                       {
+                           "path":  "./tsconfig.app.json"
+                       },
+                       {
+                           "path":  "./tsconfig.node.json"
+                       }
+                   ],
     "include":  [
                     "src/**/*",
-                    "vite.config.ts",
-                    "playwright.config.ts"
+                    "vite.config.ts"
                 ],
     "exclude":  [
                     "node_modules",

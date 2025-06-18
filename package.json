@@ -11,7 +11,10 @@
                     "test:e2e":  "playwright test",
                     "lint":  "eslint src --ext .ts,.tsx",
                     "type-check":  "tsc --noEmit",
-                    "fix:here-strings":  "node scripts/convert-here-strings.mjs"
+                    "fix:here-strings":  "node scripts/convert-here-strings.mjs",
+                    "test:watch":  "vitest",
+                    "coverage":  "vitest run --coverage",
+                    "prepare":  "husky install"
                 },
     "keywords":  [
                      "bitcoin",
@@ -33,7 +36,10 @@
                             "typescript":  "^5.8.3",
                             "vite":  "^5.0.0",
                             "vitest":  "^1.0.0",
-                            "@types/winston":  "^2.4.4"
+                            "@types/winston":  "^2.4.4",
+                            "@vitest/coverage-v8":  "^1.5.0",
+                            "ts-node":  "^10.9.1",
+                            "husky":  "^8.0.0"
                         },
     "dependencies":  {
                          "@types/three":  "^0.177.0",
