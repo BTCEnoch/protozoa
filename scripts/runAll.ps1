@@ -9,6 +9,11 @@ Write-InfoLog "Starting complete project setup automation..."
 
 # Define script execution sequence
 $scriptSequence = @(
+    # --- Preliminary Fixes ---
+    @{ Script = "fix-here-strings.ps1"; Description = "Sanitise HERE-STRINGS to prevent parsing errors" },
+    @{ Script = "validate-templates.ps1"; Description = "Validate template syntax" },
+    @{ Script = "09-DeployTemplates.ps1"; Description = "Deploy templates to src" },
+
     # --- Phase 0 : Environment & Tooling ---
     @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
     @{ Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },

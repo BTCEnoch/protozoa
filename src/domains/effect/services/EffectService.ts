@@ -1,10 +1,11 @@
-﻿/**
+﻿
+/**
  * @fileoverview EffectService Implementation
  * @description Singleton service managing particle visual effects and presets.
  */
 
-import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
-import type { IEffectService, EffectConfig } from '@/domains/effect/interfaces/IEffectService'
+import type { EffectConfig, IEffectService } from '@/domains/effect/interfaces/IEffectService'
+import { createErrorLogger, createServiceLogger } from '@/shared/lib/logger'
 
 class EffectService implements IEffectService {
   /** Singleton instance */

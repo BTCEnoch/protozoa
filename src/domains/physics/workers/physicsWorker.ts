@@ -1,12 +1,12 @@
 ﻿/* eslint-disable no-restricted-globals */
 /**
- * physicsWorker.ts â€“ WebWorker entry for physics calculations
+ * physicsWorker.ts – WebWorker entry for physics calculations
  * The worker listens for messages with { id, task, payload } structure and
  * posts results back using { id, result }.
  * Utilizes minimal imports to keep bundle light.
  */
 
-import { Vector3 } from 'three'
+import { Vector3 } from 'three';
 
 /** Simple message contracts */
 interface WorkerRequest<T = unknown> { id: number; task: string; payload: T }

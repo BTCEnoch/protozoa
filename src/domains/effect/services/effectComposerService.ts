@@ -1,0 +1,22 @@
+import type { EffectLayer, IEffectComposerService } from '@/domains/effect/interfaces/IEffectComposerService'
+import { effectService } from '@/domains/effect/services/effectService'
+import { createServiceLogger } from '@/shared/lib/logger'
+
+class EffectComposerService implements IEffectComposerService{
+ static #instance:EffectComposerService|null=null
+ #log=createServiceLogger('EFFECT_COMPOSER')
+ #layers:EffectLayer[]=[]
+ #running=false
+ private constructor(){}
+ static getInstance(){return this.#instance??(this.#instance=new EffectComposerService())}
+ addLayer(layer:EffectLayer){
+  this.#layers.push(layer)
+  this.#log.info('Layer added',layer)
+ }
+ removeLayer(name:string){ this.#layers = this.#layers.filter(l=>l.name!==name) }
+ play(){ this.#running=true; this.#log.info('Composer play') }
+ stop(){ this.#running=false; this.#log.info('Composer stop') }
+ update(delta:number){ if(!this.#running) return; this.#layers.forEach(l=>{ effectService.triggerEffect(l.name,{...l.params,delta,weight:l.weight}) }) }
+ dispose(){this.#layers=[];EffectComposerService.#instance=null}
+}
+export const effectComposerService=EffectComposerService.getInstance()

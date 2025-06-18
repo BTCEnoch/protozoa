@@ -44,6 +44,18 @@ try {
     if (-not $pkg.scripts["test:watch"]) { $pkg.scripts["test:watch"] = "vitest" }
     if (-not $pkg.scripts["coverage"]) { $pkg.scripts.coverage = "vitest run --coverage" }
 
+    # Husky pre-commit hook integration
+    if (-not $pkg.devDependencies.husky) { $pkg.devDependencies.husky = "^8.0.0" }
+    if (-not $pkg.scripts.prepare) { $pkg.scripts.prepare = "husky install" }
+
+    # Configure pre-commit hook if .husky folder not present
+    $huskyDir = Join-Path $ProjectRoot '.husky'
+    if (-not (Test-Path $huskyDir) -and -not $WhatIf) {
+        npx husky install | Out-Null
+        npx husky add .husky/pre-commit "pnpm test" | Out-Null
+        Write-InfoLog "Husky pre-commit hook added to run tests"
+    }
+
     if (-not $WhatIf) {
         $pkg | ConvertTo-Json -Depth 20 | Set-Content -Path $pkgPath -Encoding UTF8
         Write-SuccessLog "package.json updated with Vitest dev dependencies and scripts"

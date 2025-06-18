@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
  * @fileoverview IAnimationService Interface Definition
  * @description Contract for controlling particle/organism animations.
  */

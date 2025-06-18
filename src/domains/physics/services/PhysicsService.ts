@@ -384,7 +384,7 @@ export class PhysicsService implements IPhysicsService {
           };
           
           worker.onerror = (error) => {
-            this.#logger.error(Physics worker 19 error, { error: error.message });
+            this.#logger.error(`Physics worker ${i} error`, { error: error.message });
             reject(error);
           };
           
@@ -395,7 +395,7 @@ export class PhysicsService implements IPhysicsService {
           worker.postMessage({
             type: 'INIT',
             payload: { config: this.#config },
-            messageId: init_19,
+            messageId: `init_${i}`,
             timestamp: Date.now()
           });
           
@@ -429,7 +429,7 @@ export class PhysicsService implements IPhysicsService {
         break;
       
       case 'WORKER_ERROR':
-        this.#logger.error(Worker  reported error, {
+        this.#logger.error(`Worker ${workerId} reported error`, {
           error: message.payload
         });
         this.#workerAvailable[workerId] = true;
@@ -475,7 +475,7 @@ export class PhysicsService implements IPhysicsService {
         
         const workerPromise = new Promise<void>((resolve) => {
           const worker = this.#workers[workerId];
-          const messageId = physics__;
+          const messageId = `physics_${Date.now()}_${workerId}`;
           
           const onMessage = (e: MessageEvent) => {
             if (e.data.messageId === messageId) {
@@ -541,4 +541,4 @@ export class PhysicsService implements IPhysicsService {
     // Check collisions
     this.#checkCollisions(particles);
   }
-  }
+}

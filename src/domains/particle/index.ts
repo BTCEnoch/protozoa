@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
  * @fileoverview Particle Domain Exports
  * @description Main export file for Particle domain
  * @author Protozoa Development Team
@@ -9,25 +10,14 @@
 export { ParticleService, particleService } from './services/particleService';
 
 // Interface exports
-export type { 
-  IParticleService, 
-  ParticleConfig, 
-  ParticleInstance,
-  ParticleSystem,
-  ParticleMetrics
+export type {
+    IParticleService,
+    ParticleConfig,
+    ParticleInstance, ParticleMetrics, ParticleSystem
 } from './interfaces/IParticleService';
 
 // Type exports
-export type { 
-  ParticleType,
-  RenderingMode,
-  BlendingMode,
-  ParticleSystemConfig,
-  ParticleCreationData,
-  ParticleUpdateData,
-  ParticleGeometry,
-  ParticleMaterial,
-  ParticleBatch,
-  ParticleLOD,
-  ParticleCulling
+export type {
+    BlendingMode, ParticleBatch, ParticleCreationData, ParticleCulling, ParticleGeometry, ParticleLOD, ParticleMaterial, ParticleSystemConfig, ParticleType, ParticleUpdateData, RenderingMode
 } from './types/particle.types';
+

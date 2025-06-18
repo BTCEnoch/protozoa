@@ -1,10 +1,11 @@
-﻿/**
+﻿
+/**
  * @fileoverview AnimationService Implementation
  * @description Singleton managing time-based animations across particle roles.
  */
 
-import { createServiceLogger, createPerformanceLogger } from '@/shared/lib/logger'
-import type { IAnimationService, AnimationConfig, AnimationState } from '@/domains/animation/interfaces/IAnimationService'
+import type { AnimationConfig, AnimationState, IAnimationService } from '@/domains/animation/interfaces/IAnimationService'
+import { createPerformanceLogger, createServiceLogger } from '@/shared/lib/logger'
 
 class AnimationService implements IAnimationService {
   static #instance: AnimationService | null = null

@@ -1,48 +1,19 @@
-// src/shared/types/index.ts
-// Cross-domain shared types and interfaces
-// Referenced from build_checklist.md Phase 1 requirements
+﻿/**
+ * Shared Types Index
+ * Central export point for all shared types and interfaces
+ */
 
-// Vector types for 3D coordinates
-export interface Vector3 {
-  x: number;
-  y: number;
-  z: number;
-}
+// Vector and mathematical types
+export * from './vectorTypes';
 
-// Base particle interface used across domains
-export interface Particle {
-  id: string;
-  position: Vector3;
-  velocity: Vector3;
-  traits: OrganismTraits;
-}
+// Core entity types
+export * from './entityTypes';
 
-// Organism traits structure
-export interface OrganismTraits {
-  visual?: Record<string, any>;
-  behavior?: Record<string, any>;
-  mutation?: Record<string, any>;
-}
+// Service configuration types
+export * from './configTypes';
 
-// Formation pattern data structure
-export interface FormationPattern {
-  id: string;
-  name: string;
-  positions: Vector3[];
-  metadata?: Record<string, any>;
-}
+// Logging and error types
+export * from './loggingTypes';
 
-// Animation configuration
-export interface AnimationConfig {
-  duration: number;
-  type: string;
-  parameters?: Record<string, any>;
-}
-
-// Animation state tracking
-export interface AnimationState {
-  role: string;
-  progress: number;
-  duration: number;
-  type: string;
-}
+// Event types for domain communication
+export * from './eventTypes';

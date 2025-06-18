@@ -1,32 +1,27 @@
-﻿/**
+﻿
+/**
  * @fileoverview Particle Service Implementation
  * @description High-performance particle system with THREE.js integration and GPU optimization
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { Vector3, Scene, Mesh, InstancedMesh, BufferGeometry, Material } from 'three';
-import { 
-  IParticleService, 
-  ParticleConfig, 
-  ParticleInstance,
-  ParticleSystem,
-  ParticleMetrics
+import {
+    IParticleService,
+    ParticleConfig,
+    ParticleInstance,
+    ParticleMetrics,
+    ParticleSystem
 } from '@/domains/particle/interfaces/IParticleService';
-import { 
-  ParticleType,
-  RenderingMode,
-  BlendingMode,
-  ParticleSystemConfig,
-  ParticleCreationData,
-  ParticleUpdateData,
-  ParticleGeometry,
-  ParticleMaterial,
-  ParticleBatch,
-  ParticleLOD,
-  ParticleCulling
+import {
+    ParticleBatch,
+    ParticleCulling,
+    ParticleGeometry,
+    ParticleLOD,
+    ParticleMaterial
 } from '@/domains/particle/types/particle.types';
 import { createServiceLogger } from '@/shared/lib/logger';
+import { BufferGeometry, Material, Scene, Vector3 } from 'three';
 
 /**
  * Particle Service implementing high-performance particle system management
@@ -179,7 +174,7 @@ export class ParticleService implements IParticleService {
     this.#logger.info('Creating particle system', { systemId: systemConfig.id });
     
     if (this.#systems.has(systemConfig.id)) {
-      throw new Error(Particle system with ID '' already exists);
+      throw new Error(`Particle system with ID '${systemConfig.id}' already exists`);
     }
     
     const system: ParticleSystem = {
@@ -214,7 +209,7 @@ export class ParticleService implements IParticleService {
   public addParticles(systemId: string, particleData: ParticleCreationData[]): string[] {
     const system = this.#systems.get(systemId);
     if (!system) {
-      throw new Error(Particle system '' not found);
+      throw new Error(`Particle system '${systemId}' not found`);
     }
     
     const createdIds: string[] = [];
@@ -254,7 +249,7 @@ export class ParticleService implements IParticleService {
   public removeParticles(systemId: string, particleIds: string[]): void {
     const system = this.#systems.get(systemId);
     if (!system) {
-      throw new Error(Particle system '' not found);
+      throw new Error(`Particle system '${systemId}' not found`);
     }
     
     let removedCount = 0;
@@ -521,7 +516,7 @@ export class ParticleService implements IParticleService {
     const particle = this.#particlePool[poolIndex];
     
     // Initialize particle
-    particle.id = particle__;
+    particle.id = `particle_${Date.now()}_${poolIndex}`;
     particle.position.copy(data.position);
     particle.velocity.copy(data.velocity || new Vector3());
     particle.scale.copy(data.scale || new Vector3(1, 1, 1));

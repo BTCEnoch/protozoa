@@ -43,6 +43,10 @@ function Write-Log {
         [switch]$NoConsole
     )
     
+    if ([string]::IsNullOrWhiteSpace($Message)) {
+        $Message = '<empty>'
+    }
+    
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
     
@@ -760,90 +764,87 @@ function Write-SectionHeader {
     Write-Colored "$sep`n" 'DarkCyan'
 }
 
-# Initialize logging on module import
-Initialize-LogFile
-
-# Missing utility functions that were causing script failures
+# === File Utilities ===
 function Get-FileLineCount {
+    <#
+        .SYNOPSIS
+            Returns the total number of lines in a text file.
+        .DESCRIPTION
+            Lightweight helper used by various build-automation scripts for statistics and validation.
+            Reads the file in chunks (via -ReadCount) so it remains memory-efficient even for large files.
+        .PARAMETER Path
+            The path to the file whose lines should be counted.
+        .OUTPUTS
+            [int]  – total line count (0 on error)
+    #>
     [CmdletBinding()]
     [OutputType([int])]
     param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [string]$FilePath
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript({ Test-Path $_ -PathType Leaf })]
+        [string]$Path
     )
-    
+
     try {
-        if (-not (Test-Path $FilePath)) {
-            Write-WarningLog "File not found: $FilePath"
-            return 0
-        }
-        
-        $lines = Get-Content $FilePath -ErrorAction Stop
-        $count = if ($lines) { $lines.Count } else { 0 }
-        Write-DebugLog "File $FilePath has $count lines"
-        return $count
+        Write-DebugLog "Counting lines in file: $Path"
+        $lineCount = 0
+        Get-Content -Path $Path -ReadCount 1000 -ErrorAction Stop | ForEach-Object { $lineCount += $_.Count }
+        return $lineCount
     }
     catch {
-        Write-ErrorLog "Failed to count lines in $FilePath : $($_.Exception.Message)"
+        Write-WarningLog "Get-FileLineCount failed for '$Path': $($_.Exception.Message)"
         return 0
     }
 }
 
+# === Messaging Helpers ===
+function Write-StatusMessage {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$false)][string]$Message = '',
+        [Parameter(Mandatory=$false)][ValidateSet('Info','Success','Warning','Error','Debug')][string]$Level = 'Info'
+    )
+    if ([string]::IsNullOrWhiteSpace($Message)) {
+        $Message = '<empty>'
+    }
+    switch ($Level) {
+        'Success' { Write-SuccessLog $Message }
+        'Warning' { Write-WarningLog $Message }
+        'Error'   { Write-ErrorLog   $Message }
+        'Debug'   { Write-DebugLog   $Message }
+        default   { Write-InfoLog    $Message }
+    }
+}
+
+# === Build Helpers ===
 function Test-TypeScriptCompiles {
     [CmdletBinding()]
     [OutputType([bool])]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ProjectRoot = "."
-    )
-    
+    param([string]$ProjectRoot = '.')
     try {
         Push-Location $ProjectRoot
-        
-        # Check if TypeScript is available
-        $tscCommand = Get-Command tsc -ErrorAction SilentlyContinue
-        if (-not $tscCommand) {
-            # Try npx tsc
-            $tscCommand = Get-Command npx -ErrorAction SilentlyContinue
-            if (-not $tscCommand) {
-                Write-WarningLog "TypeScript compiler not found"
-                return $false
-            }
-            $tscCmd = "npx tsc"
-        } else {
-            $tscCmd = "tsc"
-        }
-        
-        # Check if tsconfig.json exists
-        if (-not (Test-Path "tsconfig.json")) {
-            Write-WarningLog "tsconfig.json not found"
-            return $false
-        }
-        
-        Write-InfoLog "Testing TypeScript compilation..."
-        $result = Invoke-Expression "$tscCmd --noEmit" 2>&1
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-SuccessLog "TypeScript compilation check passed"
-            return $true
-        } else {
-            Write-WarningLog "TypeScript compilation issues detected: $result"
-            return $false
-        }
+        Write-InfoLog 'Running tsc --noEmit for compilation check'
+        $null = & npx tsc --noEmit 2>&1
+        $ok = ($LASTEXITCODE -eq 0)
+        if ($ok) { Write-SuccessLog 'TypeScript compile pass' } else { Write-WarningLog 'TypeScript compile errors' }
+        return $ok
     }
     catch {
-        Write-ErrorLog "TypeScript compilation test failed: $($_.Exception.Message)"
+        Write-ErrorLog "Test-TypeScriptCompiles failed: $($_.Exception.Message)"
         return $false
     }
-    finally {
-        try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-    }
+    finally { Pop-Location }
 }
+
+# Initialize logging on module import
+Initialize-LogFile
 
 # Export functions with approved verbs and aliases
 Export-ModuleMember -Function @(
     'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
     'Write-Colored', 'Write-SectionHeader',
+    'Write-StatusMessage',
     'Select-RegexMatches', 'Test-RegexMatch', 'ConvertFrom-SemVer',
     'Test-NodeInstalled', 'Test-PnpmInstalled', 'Test-GitInstalled',
     'Test-DirectoryStructure', 'Test-ProjectStructure', 'Test-PowerShellVersion', 'Test-ExecutionPolicy',
@@ -851,8 +852,8 @@ Export-ModuleMember -Function @(
     'Backup-File', 'Remove-FilesSafely',
     'Invoke-ScriptWithErrorHandling',
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
-    'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
-    'Get-FileLineCount', 'Test-TypeScriptCompiles',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'Get-FileLineCount', 'Test-TypeScriptCompiles',
+    'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )

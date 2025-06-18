@@ -1,11 +1,12 @@
-﻿/**
+﻿
+/**
  * @fileoverview Particle Types Definition
  * @description Type definitions for particle system management domain
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { Vector3, BufferGeometry, Material } from 'three';
+import { BufferGeometry, Material, Vector3 } from 'three';
 
 /**
  * Particle type identifiers

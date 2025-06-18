@@ -5,26 +5,21 @@
  * @version 1.0.0
  */
 
-import { 
-  ITraitService, 
-  TraitConfig, 
-  OrganismTraits,
-  VisualTraits,
-  BehavioralTraits,
-  PhysicalTraits,
-  EvolutionaryTraits,
-  TraitMetrics
+import {
+    BehavioralTraits,
+    EvolutionaryTraits,
+    ITraitService,
+    OrganismTraits,
+    PhysicalTraits,
+    TraitConfig,
+    TraitMetrics,
+    VisualTraits
 } from '@/domains/trait/interfaces/ITraitService';
-import { 
-  TraitCategory,
-  TraitType,
-  MutationRecord,
-  TraitValidation,
-  TraitGenerationParams,
-  GenerationType,
-  RGBColor,
-  TraitRange,
-  InheritanceWeights
+import {
+    GenerationType,
+    MutationRecord,
+    TraitCategory,
+    TraitRange
 } from '@/domains/trait/types/trait.types';
 import { createServiceLogger } from '@/shared/lib/logger';
 
@@ -111,36 +106,13 @@ export class TraitService implements ITraitService {
     }
     return TraitService.#instance;
   }
-}
-/**
+}/**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { 
-  ITraitService, 
-  TraitConfig, 
-  OrganismTraits,
-  VisualTraits,
-  BehavioralTraits,
-  PhysicalTraits,
-  EvolutionaryTraits,
-  TraitMetrics
-} from '@/domains/trait/interfaces/ITraitService';
-import { 
-  TraitCategory,
-  TraitType,
-  MutationRecord,
-  TraitValidation,
-  TraitGenerationParams,
-  GenerationType,
-  RGBColor,
-  TraitRange,
-  InheritanceWeights
-} from '@/domains/trait/types/trait.types';
-import { createServiceLogger } from '@/shared/lib/logger';
 
 /**
  * Trait Service implementing advanced organism trait generation and evolution
@@ -251,7 +223,7 @@ export class TraitService implements ITraitService {
     this.#logger.info('Generating organism traits', { blockNumber, parentIds });
     
     // Check cache first
-    const cacheKey = ${blockNumber}_;
+    const cacheKey = `${blockNumber}_${parentIds?.join(',') || 'genesis'}`;
     const cached = this.#traitsCache.get(cacheKey);
     if (cached) {
       this.#updateCacheHitRate(true);
@@ -418,7 +390,7 @@ export class TraitService implements ITraitService {
   #generateOrganismId(blockNumber: number): string {
     const timestamp = Date.now();
     const hash = ((blockNumber * 37) + timestamp) % 1000000;
-    return org__;
+    return `org_${blockNumber}_${hash}`;
   }
   
   /**
@@ -504,7 +476,7 @@ export class TraitService implements ITraitService {
     const g = hash[(offset + 1) % hash.length] % 256;
     const b = hash[(offset + 2) % hash.length] % 256;
     
-    return #;
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
   }
   
   /**
@@ -673,36 +645,13 @@ export class TraitService implements ITraitService {
       this.#metrics.cacheHitRate = (this.#metrics.cacheHitRate * (totalOperations - 1)) / totalOperations;
     }
   }
-}
-/**
+}/**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { 
-  ITraitService, 
-  TraitConfig, 
-  OrganismTraits,
-  VisualTraits,
-  BehavioralTraits,
-  PhysicalTraits,
-  EvolutionaryTraits,
-  TraitMetrics
-} from '@/domains/trait/interfaces/ITraitService';
-import { 
-  TraitCategory,
-  TraitType,
-  MutationRecord,
-  TraitValidation,
-  TraitGenerationParams,
-  GenerationType,
-  RGBColor,
-  TraitRange,
-  InheritanceWeights
-} from '@/domains/trait/types/trait.types';
-import { createServiceLogger } from '@/shared/lib/logger';
 
 /**
  * Trait Service implementing advanced organism trait generation and evolution
@@ -813,7 +762,7 @@ export class TraitService implements ITraitService {
     this.#logger.info('Generating organism traits', { blockNumber, parentIds });
     
     // Check cache first
-    const cacheKey = ${blockNumber}_;
+    const cacheKey = `${blockNumber}_${parentIds?.join(',') || 'genesis'}`;
     const cached = this.#traitsCache.get(cacheKey);
     if (cached) {
       this.#updateCacheHitRate(true);
@@ -980,7 +929,7 @@ export class TraitService implements ITraitService {
   #generateOrganismId(blockNumber: number): string {
     const timestamp = Date.now();
     const hash = ((blockNumber * 37) + timestamp) % 1000000;
-    return org__;
+    return `org_${blockNumber}_${hash}`;
   }
   
   /**
@@ -1066,7 +1015,7 @@ export class TraitService implements ITraitService {
     const g = hash[(offset + 1) % hash.length] % 256;
     const b = hash[(offset + 2) % hash.length] % 256;
     
-    return #;
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
   }
   
   /**

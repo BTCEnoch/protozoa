@@ -1,6 +1,7 @@
-﻿import { createServiceLogger } from '@/shared/lib/logger'
+﻿
 import type { IGroupService, ParticleGroup } from '@/domains/group/interfaces/IGroupService'
 import type { IRNGService } from '@/domains/rng/interfaces/IRNGService'
+import { createServiceLogger } from '@/shared/lib/logger'
 
 class GroupService implements IGroupService {
   static #instance: GroupService | null = null

@@ -9,43 +9,13 @@ try{
  Write-StepHeader "React Integration Setup"
  $compDir=Join-Path $ProjectRoot 'src/components'
  New-Item -Path $compDir -ItemType Directory -Force | Out-Null
- # SimulationCanvas
- $canvas=@"
-'use client'
-"@
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense } from 'react'
-import { renderingService } from '@/domains/rendering/services/renderingService'
 
-export function SimulationCanvas(){
- return (
-  <Canvas>
-    <Suspense fallback={null}>
-      <primitive object={renderingService.scene} />
-    </Suspense>
-  </Canvas>
- )
-}
-"@
- Set-Content -Path (Join-Path $compDir 'SimulationCanvas.tsx') -Value $canvas -Encoding UTF8
- # App component
- $app=@"
-'use client'
-"@
-import { SimulationCanvas } from '@/components/SimulationCanvas'
-import { initServices } from '@/compositionRoot'
-import { useEffect } from 'react'
+ Write-TemplateFile -TemplateRelPath 'components/SimulationCanvas.tsx.template' `
+                   -DestinationPath (Join-Path $compDir 'SimulationCanvas.tsx')
 
-export default function App(){
- useEffect(()=>{initServices()},[])
- return (
-  <div className="w-full h-screen">
-    <SimulationCanvas />
-  </div>
- )
-}
-"@
- Set-Content -Path (Join-Path $compDir 'App.tsx') -Value $app -Encoding UTF8
+ Write-TemplateFile -TemplateRelPath 'components/App.tsx.template' `
+                   -DestinationPath (Join-Path $compDir 'App.tsx')
+
  Write-SuccessLog "React components generated"
  exit 0
 }catch{Write-ErrorLog "React integration failed: $($_.Exception.Message)";exit 1}

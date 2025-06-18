@@ -2,9 +2,9 @@
 
 The following files exceed 500 lines and need manual refactoring:
 
-- D:\Protozoa\src\domains\bitcoin\services\BitcoinService.ts (616 lines)
-- D:\Protozoa\src\domains\particle\services\ParticleService.ts (794 lines)
-- D:\Protozoa\src\domains\physics\services\PhysicsService.ts (544 lines)
-- D:\Protozoa\src\domains\rng\services\RngService.ts (801 lines)
-- D:\Protozoa\src\domains\trait\services\TraitService.ts (1241 lines)
+- /workspace/src/domains/bitcoin/services/bitcoinService.ts (615 lines)
+- /workspace/src/domains/particle/services/particleService.ts (795 lines)
+- /workspace/src/domains/physics/services/physicsService.ts (544 lines)
+- /workspace/src/domains/rng/services/rngService.ts (799 lines)
+- /workspace/src/domains/trait/services/traitService.ts (1239 lines)
 

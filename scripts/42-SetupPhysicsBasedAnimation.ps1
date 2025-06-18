@@ -17,56 +17,13 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
- # Interface
- $iface=@"
-export interface IPhysicsAnimationService{
-"@
-  addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:number,damper:number):void
-  update(delta:number):void
-  dispose():void
-}
-"@
- Set-Content -Path (Join-Path $interfaces 'IPhysicsAnimationService.ts') -Value $iface -Encoding UTF8
+ # Generate files from templates
+ Write-TemplateFile -TemplateRelPath 'domains/animation/interfaces/IPhysicsAnimationService.ts.template' `
+                   -DestinationPath (Join-Path $interfaces 'IPhysicsAnimationService.ts')
 
- # Implementation
- $impl=@"
-import { createServiceLogger } from '@/shared/lib/logger'
-"@
-import { particleService } from '@/domains/particle/services/particleService'
-import type { IPhysicsAnimationService } from '@/domains/animation/interfaces/IPhysicsAnimationService'
+ Write-TemplateFile -TemplateRelPath 'domains/animation/services/physicsAnimationService.ts.template' `
+                   -DestinationPath (Join-Path $services 'physicsAnimationService.ts')
 
-interface Spring{ pid:string; anchor:{x:number,y:number,z:number}; k:number; d:number; }
-
-class PhysicsAnimationService implements IPhysicsAnimationService{
- static #instance:PhysicsAnimationService|null=null
- #log=createServiceLogger('PHYS_ANIM')
- #springs:Spring[]=[]
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new PhysicsAnimationService())}
- addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:number,damper:number){
-  this.#springs.push({pid:particleId,anchor,k,d:damper})
- }
- update(delta:number){
-  this.#springs.forEach(s=>{
-   const p=particleService.getParticleById(s.pid)
-   if(!p) return
-   const dx=s.anchor.x-p.position.x
-   const dy=s.anchor.y-p.position.y
-   const dz=s.anchor.z-p.position.z
-   const fx=dx*s.k - p.velocity.x*s.d
-   const fy=dy*s.k - p.velocity.y*s.d
-   const fz=dz*s.k - p.velocity.z*s.d
-   // naive Euler update
-   p.velocity.x+=fx*delta/1000
-   p.velocity.y+=fy*delta/1000
-   p.velocity.z+=fz*delta/1000
-  })
- }
- dispose(){this.#springs=[];PhysicsAnimationService.#instance=null}
-}
-export const physicsAnimationService=PhysicsAnimationService.getInstance()
-"@
- Set-Content -Path (Join-Path $services 'physicsAnimationService.ts') -Value $impl -Encoding UTF8
  Write-SuccessLog "PhysicsAnimationService generated"
  exit 0
 }catch{Write-ErrorLog "Physics-based animation generation failed: $($_.Exception.Message)";exit 1}

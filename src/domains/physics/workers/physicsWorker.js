@@ -21,7 +21,7 @@ self.onmessage = function(e) {
         type: 'WORKER_ERROR',
         messageId,
         timestamp: Date.now(),
-        payload: { error: Unknown message type:  }
+        payload: { error: `Unknown message type: ${type}` }
       });
   }
 };

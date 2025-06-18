@@ -5,23 +5,19 @@
  * @version 1.0.0
  */
 
-import { 
-  IBitcoinService, 
-  BitcoinConfig, 
-  BlockInfo, 
-  InscriptionContent, 
-  ApiResponse,
-  CacheStats,
-  BitcoinMetrics
+import {
+    ApiResponse,
+    BitcoinConfig,
+    BitcoinMetrics,
+    BlockInfo,
+    CacheStats,
+    IBitcoinService,
+    InscriptionContent
 } from '@/domains/bitcoin/interfaces/IBitcoinService';
-import { 
-  ApiEnvironment,
-  CacheEntry,
-  LRUCache,
-  RetryConfig,
-  RequestOptions,
-  ApiError,
-  ApiErrorType
+import {
+    ApiEnvironment,
+    CacheEntry,
+    LRUCache
 } from '@/domains/bitcoin/types/bitcoin.types';
 import { createServiceLogger } from '@/shared/lib/logger';
 
@@ -122,33 +118,13 @@ export class BitcoinService implements IBitcoinService {
     }
     return BitcoinService.#instance;
   }
-}
-/**
+}/**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { 
-  IBitcoinService, 
-  BitcoinConfig, 
-  BlockInfo, 
-  InscriptionContent, 
-  ApiResponse,
-  CacheStats,
-  BitcoinMetrics
-} from '@/domains/bitcoin/interfaces/IBitcoinService';
-import { 
-  ApiEnvironment,
-  CacheEntry,
-  LRUCache,
-  RetryConfig,
-  RequestOptions,
-  ApiError,
-  ApiErrorType
-} from '@/domains/bitcoin/types/bitcoin.types';
-import { createServiceLogger } from '@/shared/lib/logger';
 
 /**
  * Bitcoin Service implementing high-performance blockchain data access
@@ -296,7 +272,7 @@ export class BitcoinService implements IBitcoinService {
     }
     
     try {
-      const url = ${this.#config.apiBaseUrl}/r/blockinfo/;
+      const url = `${this.#config.apiBaseUrl}/r/blockinfo/${blockHeight}`;
       const blockInfo = await this.#makeRequest<BlockInfo>(url);
       
       // Cache the result
@@ -345,7 +321,7 @@ export class BitcoinService implements IBitcoinService {
     }
     
     try {
-      const url = ${this.#config.apiBaseUrl}/content/;
+      const url = `${this.#config.apiBaseUrl}/content/${inscriptionId}`;
       const inscriptionContent = await this.#makeRequest<InscriptionContent>(url);
       
       // Cache the result
@@ -459,7 +435,7 @@ export class BitcoinService implements IBitcoinService {
       });
       
       if (!response.ok) {
-        throw new Error(HTTP : );
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();

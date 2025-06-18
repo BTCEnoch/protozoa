@@ -1,11 +1,12 @@
-﻿/**
+﻿
+/**
  * @fileoverview Particle Service Interface Definition
  * @description Defines the contract for particle system management services
  * @author Protozoa Development Team
  * @version 1.0.0
  */
 
-import { Vector3, Scene, BufferGeometry, Material } from 'three';
+import { Scene, Vector3 } from 'three';
 
 /**
  * Configuration options for Particle service initialization

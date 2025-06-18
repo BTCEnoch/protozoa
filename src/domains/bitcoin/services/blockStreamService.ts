@@ -1,11 +1,11 @@
 ﻿/**
- * blockStreamService.ts â€“ Connects to a Bitcoin block stream via WebSocket.
+ * blockStreamService.ts – Connects to a Bitcoin block stream via WebSocket.
  * Emits 'block' events with parsed block info for downstream services.
  */
 
-import { EventEmitter } from 'events'
-import { createServiceLogger } from '@/shared/lib/logger'
 import type { BlockInfo } from '@/domains/bitcoin/types/blockInfo.types'
+import { createServiceLogger } from '@/shared/lib/logger'
+import { EventEmitter } from 'events'
 
 export class BlockStreamService extends EventEmitter {
   static #instance: BlockStreamService | null = null

@@ -1,65 +1,74 @@
-#!/usr/bin/env pwsh
-<#
-.SYNOPSIS
-    Batch fix HERE-STRING syntax errors across all PowerShell scripts
-.DESCRIPTION
-    Fixes the common pattern where @"content should be @"<newline>content<newline>"@
-#>
+# fix-here-strings.ps1
+# Utility script that converts double-quoted HERE-STRINGS (@"..."@) to single-quoted ones (@'...'@)
+# across all PowerShell automation scripts. This prevents PowerShell from attempting
+# to interpolate variables or parse special characters inside multi-language blocks
+# (TypeScript, YAML, Dockerfiles, etc.) which previously caused syntax errors.
+#
+# Usage:
+#   1. Run manually before executing runAll.ps1:
+#        powershell -File .\scripts\fix-here-strings.ps1
+#   2. Or let runAll.ps1 invoke it as the first step (see injected call).
+#
+# IMPORTANT: The script backs up every modified file ( *.ps1.bak_yyyyMMdd_HHmmss ) so
+# you can safely revert if necessary.
 
+[CmdletBinding(SupportsShouldProcess)]
 param(
-    [switch]$WhatIf = $false
+    [Parameter(Mandatory = $false)]
+    [string]$ScriptsPath = (Join-Path $PSScriptRoot '.'),
+
+    [Parameter(Mandatory = $false)]
+    [switch]$Recurse,
+
+    [Parameter(Mandatory = $false)]
+    [switch]$WhatIf
 )
 
-Write-Host "Batch fixing HERE-STRING syntax errors..." -ForegroundColor Cyan
+Import-Module "$PSScriptRoot\utils.psm1" -Force
 
-$scripts = Get-ChildItem -Path "." -Filter "*.ps1" -Recurse | Where-Object { 
-    $_.Name -ne "fix-here-strings.ps1" -and 
-    $_.Name -ne "runAll.ps1" -and
-    $_.Directory.Name -ne "script_scrub"
+$ErrorActionPreference = 'Stop'
+
+Write-StepHeader "HERE-STRING SANITISATION"
+Write-InfoLog "Scanning *.ps1 files in '$ScriptsPath' for double-quoted HERE-STRINGS..."
+
+# Collect files
+$searchOption = if ($Recurse) { '-Recurse' } else { '' }
+$ps1Files = Get-ChildItem -Path $ScriptsPath -Filter '*.ps1' @($searchOption) | Where-Object {
+    # Skip this script itself to avoid infinite recursion
+    $_.FullName -ne $PSCommandPath
 }
 
-$totalFixed = 0
-$scriptsModified = 0
+$convertedCount = 0
+foreach ($file in $ps1Files) {
+    try {
+        $content = Get-Content -LiteralPath $file.FullName -Raw
 
-foreach ($script in $scripts) {
-    Write-Host "Processing: $($script.Name)" -ForegroundColor Yellow
-    
-    $content = Get-Content $script.FullName -Raw
-    $originalContent = $content
-    
-    # Simple regex replacement approach  
-    # Replace pattern: $var=@"content -> $var=@"<newline>content<newline>"@
-    $pattern = '(\$\w+\s*=\s*)@"([^"@\r\n].+)$'
-    $replacement = '$1@"' + "`r`n" + '$2' + "`r`n" + '"@'
-    
-    # Use regex with multiline flag
-    $regex = [regex]::new($pattern, [System.Text.RegularExpressions.RegexOptions]::Multiline)
-    $matches = $regex.Matches($content)
-    
-    if ($matches.Count -gt 0) {
-        $newContent = $regex.Replace($content, $replacement)
-        $scriptsModified++
-        $totalFixed += $matches.Count
-        
-        if ($WhatIf) {
-            Write-Host "  [WHATIF] Would fix $($matches.Count) HERE-STRING issues" -ForegroundColor Green
-        } else {
-            Set-Content -Path $script.FullName -Value $newContent -NoNewline
-            Write-Host "  Fixed $($matches.Count) HERE-STRING issues" -ForegroundColor Green
+        # Quick heuristic: only proceed if the file contains @" and "@
+        if ($content -notmatch '@"' -or $content -notmatch '"@') { continue }
+
+        # Regex: convert opening = @" or @" at line start to = @' / @'
+        $newContent = $content -replace '(?m)=\s*@"', '= @\''
+        $newContent = $newContent -replace '(?m)^\s*@"', "@'"  # standalone openings
+
+        # Convert closing "@ to '@  (must be at line start/with whitespace only)
+        $newContent = $newContent -replace '(?m)^\s*"@', "'@"
+
+        if ($newContent -ne $content) {
+            # Backup original file
+            $backupPath = "$($file.FullName).bak_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+            if (-not $WhatIf) { Copy-Item -LiteralPath $file.FullName -Destination $backupPath -Force }
+            Write-DebugLog "Backed up '$($file.Name)' -> '$([System.IO.Path]::GetFileName($backupPath))'"
+
+            # Write new content
+            if (-not $WhatIf) { Set-Content -LiteralPath $file.FullName -Value $newContent -Encoding UTF8 }
+            $convertedCount++
+            Write-InfoLog "Converted HERE-STRINGS in: $($file.Name)"
         }
-    } else {
-        Write-Host "  No issues found" -ForegroundColor Gray
+    }
+    catch {
+        Write-WarningLog "Failed to process '$($file.FullName)': $($_.Exception.Message)"
     }
 }
 
-Write-Host "`nBATCH FIX SUMMARY:" -ForegroundColor Cyan
-Write-Host "  Scripts processed: $($scripts.Count)" -ForegroundColor White
-Write-Host "  Scripts modified: $scriptsModified" -ForegroundColor Yellow  
-Write-Host "  Total fixes applied: $totalFixed" -ForegroundColor Green
-
-if ($WhatIf) {
-    Write-Host "`nThis was a dry run. Use without -WhatIf to apply changes." -ForegroundColor Yellow
-} else {
-    Write-Host "`nAll HERE-STRING syntax errors have been fixed!" -ForegroundColor Green
-    Write-Host "Run the pipeline again to test the fixes." -ForegroundColor Cyan
-} 
+Write-SuccessLog "HERE-STRING sanitisation complete. Files modified: $convertedCount"
+exit 0

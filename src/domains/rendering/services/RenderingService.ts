@@ -1,13 +1,14 @@
-﻿/**
+﻿
+/**
  * @fileoverview RenderingService Implementation
  * @description Singleton THREE.js renderer orchestrating scene, camera, and domain integrations.
  */
 
-import { Scene, PerspectiveCamera, WebGLRenderer, Object3D } from 'three'
-import { createServiceLogger, createPerformanceLogger, createErrorLogger } from '@/shared/lib/logger'
-import type { IRenderingService }  from '@/domains/rendering/interfaces/IRenderingService'
-import type { IFormationService }  from '@/domains/formation/interfaces/IFormationService'
-import type { IEffectService }     from '@/domains/effect/interfaces/IEffectService'
+import type { IEffectService } from '@/domains/effect/interfaces/IEffectService'
+import type { IFormationService } from '@/domains/formation/interfaces/IFormationService'
+import type { IRenderingService } from '@/domains/rendering/interfaces/IRenderingService'
+import { createErrorLogger, createPerformanceLogger, createServiceLogger } from '@/shared/lib/logger'
+import { Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 
 class RenderingService implements IRenderingService {
   /** Singleton instance */

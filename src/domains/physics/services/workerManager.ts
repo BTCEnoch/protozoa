@@ -1,8 +1,8 @@
 ﻿/**
- * workerManager.ts â€“ Manages a pool of physics WebWorkers
+ * workerManager.ts – Manages a pool of physics WebWorkers
  */
 
-import { createServiceLogger } from '@/shared/lib/logger'
+import { createServiceLogger } from '@/shared/lib/logger';
 
 interface TaskRequest { task: string; payload: unknown; resolve: (v: any)=>void; reject: (e: any)=>void }
 
