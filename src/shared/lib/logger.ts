@@ -16,7 +16,12 @@ function buildLogger(serviceName = 'protozoa'): ReturnType<typeof createLogger> 
 
   const baseTransports: any[] = [
     new transports.Console({
-      format: combine(colorize(), simple(), splat(), printf(({ level, message }) => ${level}: ))
+      format: combine(
+        colorize(),
+        simple(),
+        splat(),
+        printf(({ level, message }) => `${level}: ${message}`)
+      )
     })
   ]
 
