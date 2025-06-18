@@ -347,7 +347,7 @@ export interface ApiError {
     
     # Generate Bitcoin Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating BitcoinService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -473,14 +473,11 @@ export class BitcoinService implements IBitcoinService {
     return BitcoinService.#instance;
   }
 }
-"@
-    
-    Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "BitcoinService implementation Part 1 generated successfully"
+'@
     
     # Generate Bitcoin Service implementation - Part 2 (API methods and completion)
     Write-InfoLog "Generating BitcoinService implementation - Part 2 (API methods and completion)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
@@ -972,11 +969,12 @@ export class BitcoinService implements IBitcoinService {
 
 // Export singleton instance getter
 export const bitcoinService = BitcoinService.getInstance();
-"@
+'@
     
-    # Append Part 2 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $serviceContent2 -Encoding UTF8
-    Write-SuccessLog "BitcoinService implementation Part 2 generated successfully"
+    # Consolidate and write full service content once
+    $fullServiceContent = $serviceContent1 + $serviceContent2
+    Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $fullServiceContent -Encoding UTF8
+    Write-SuccessLog "BitcoinService implementation consolidated and written successfully"
     
     # Generate export index file
     Write-InfoLog "Generating Bitcoin domain export index"

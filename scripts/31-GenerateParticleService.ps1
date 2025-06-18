@@ -43,7 +43,7 @@ try {
     
     # Generate Particle service interface
     Write-InfoLog "Generating IParticleService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 
 /**
  * @fileoverview Particle Service Interface Definition
@@ -189,14 +189,14 @@ export interface IParticleService {
    */
   dispose(): void;
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $interfacesPath "IParticleService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IParticleService interface generated successfully"
     
     # Generate Particle types
     Write-InfoLog "Generating Particle types definitions"
-    $typesContent = @"
+    $typesContent = @'
 
 /**
  * @fileoverview Particle Types Definition
@@ -389,14 +389,14 @@ export interface ParticleCulling {
   /** Occlusion culling threshold */
   occlusionThreshold: number;
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $typesPath "particle.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Particle types generated successfully"
     
     # Generate Particle Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating ParticleService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 
 /**
  * @fileoverview Particle Service Implementation
@@ -550,14 +550,15 @@ export class ParticleService implements IParticleService {
     return ParticleService.#instance;
   }
 }
-"@
+'@
     
-    Set-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "ParticleService implementation Part 1 generated successfully"
+    # Commented to prevent premature write (consolidation handled later)
+    # Set-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent1 -Encoding UTF8
+    # Write-SuccessLog "ParticleService implementation Part 1 generated successfully"
     
     # Generate Particle Service implementation - Part 2A (Core methods - first batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2A (Core methods - first batch)"
-    $serviceContent2A = @"
+    $serviceContent2A = @'
 
   
   /**
@@ -686,15 +687,15 @@ export class ParticleService implements IParticleService {
       totalActive: system.activeParticles
     });
   }
-"@
+'@
     
     # Append Part 2A to the service file
-    Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2A -Encoding UTF8
-    Write-SuccessLog "ParticleService implementation Part 2A generated successfully"
+    # Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2A -Encoding UTF8
+    # Write-SuccessLog "ParticleService implementation Part 2A generated successfully"
     
     # Generate Particle Service implementation - Part 2B (Core methods - second batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2B (Core methods - second batch)"
-    $serviceContent2B = @"
+    $serviceContent2B = @'
 
   
   /**
@@ -924,15 +925,15 @@ export class ParticleService implements IParticleService {
     
     this.#logger.info('Particle object pool initialized successfully');
   }
-"@
+'@
     
     # Append Part 2B to the service file
-    Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2B -Encoding UTF8
-    Write-SuccessLog "ParticleService implementation Part 2B generated successfully"
+    # Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent2B -Encoding UTF8
+    # Write-SuccessLog "ParticleService implementation Part 2B generated successfully"
     
     # Generate Particle Service implementation - Part 3 (Helper methods and completion)
     Write-InfoLog "Generating ParticleService implementation - Part 3 (Helper methods and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 
   
   /**
@@ -1221,11 +1222,12 @@ export class ParticleService implements IParticleService {
 
 // Export singleton instance getter
 export const particleService = ParticleService.getInstance();
-"@
+'@
     
-    # Append Part 3 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $serviceContent3 -Encoding UTF8
-    Write-SuccessLog "ParticleService implementation Part 3 generated successfully"
+    # Consolidate service content and write once to avoid duplicates
+    $fullServiceContent = $serviceContent1 + $serviceContent2A + $serviceContent2B + $serviceContent3
+    Set-Content -Path (Join-Path $servicesPath "particleService.ts") -Value $fullServiceContent -Encoding UTF8
+    Write-SuccessLog "ParticleService implementation consolidated and written successfully"
     
     # Generate export index file
     Write-InfoLog "Generating Particle domain export index"

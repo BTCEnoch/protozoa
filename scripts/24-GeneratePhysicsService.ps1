@@ -296,7 +296,7 @@ export interface IntegratorState {
     
     # Generate Physics Service implementation - Complete simplified version
     Write-InfoLog "Generating PhysicsService implementation - Simplified kinematic helpers"
-    $serviceContent = @"
+    $serviceContent = @'
 /**
  * @fileoverview Physics Service Implementation (Simplified)
  * @description Kinematic helpers and geometry utilities - formations handle movement
@@ -435,14 +435,14 @@ export class PhysicsService implements IPhysicsService {
     return PhysicsService.#instance;
   }
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceContent -Encoding UTF8
     Write-SuccessLog "PhysicsService implementation generated successfully"
     
     # Generate additional service methods
     Write-InfoLog "Adding simplified physics service methods"
-    $serviceMethods = @"
+    $serviceMethods = @'
 /**
  * Physics Service implementing kinematic helpers and geometry utilities
  * Simplified service - formations now handle all movement calculations
@@ -986,8 +986,8 @@ export class PhysicsService implements IPhysicsService {
     // Check collisions
     this.#checkCollisions(particles);
   }
-  }
-"@
+}
+'@
     
     # Write the complete service methods to file (replacing the initial stub)
     Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceMethods -Encoding UTF8
@@ -1003,7 +1003,7 @@ export class PhysicsService implements IPhysicsService {
     
     # Generate basic physics worker template
     Write-InfoLog "Generating physics worker template"
-    $workerContent = @"
+    $workerContent = @'
 // Physics Worker Thread
 // This worker handles physics calculations off the main thread
 // for improved performance with large particle counts
@@ -1057,7 +1057,7 @@ function handlePhysicsUpdate(data, messageId) {
     payload: { particles }
   });
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $workersPath "physicsWorker.js") -Value $workerContent -Encoding UTF8
     Write-SuccessLog "Physics worker template generated successfully"

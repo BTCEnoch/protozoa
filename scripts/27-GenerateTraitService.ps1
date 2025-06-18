@@ -337,7 +337,7 @@ export interface InheritanceWeights {
     
     # Generate Trait Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating TraitService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -452,14 +452,11 @@ export class TraitService implements ITraitService {
     return TraitService.#instance;
   }
 }
-"@
-    
-    Set-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 1 generated successfully"
+'@
     
     # Generate Trait Service implementation - Part 2 (Core methods)
     Write-InfoLog "Generating TraitService implementation - Part 2 (Core methods)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -1022,15 +1019,11 @@ export class TraitService implements ITraitService {
     }
   }
 }
-"@
-    
-    # Append Part 2 to the service file
-    Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent2 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 2 generated successfully"
+'@
     
     # Generate Trait Service implementation - Part 3 (Helper methods and completion)
     Write-InfoLog "Generating TraitService implementation - Part 3 (Helper methods and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 /**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
@@ -1596,11 +1589,12 @@ export class TraitService implements ITraitService {
 
 // Export singleton instance getter
 export const traitService = TraitService.getInstance();
-"@
+'@
     
-    # Append Part 3 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $serviceContent3 -Encoding UTF8
-    Write-SuccessLog "TraitService implementation Part 3 generated successfully"
+    # Consolidate and write full service content once
+    $fullServiceContent = $serviceContent1 + $serviceContent2 + $serviceContent3
+    Set-Content -Path (Join-Path $servicesPath "traitService.ts") -Value $fullServiceContent -Encoding UTF8
+    Write-SuccessLog "TraitService implementation consolidated and written successfully"
     
     # Generate export index file
     Write-InfoLog "Generating Trait domain export index"

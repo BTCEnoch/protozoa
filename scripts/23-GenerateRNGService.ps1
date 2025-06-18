@@ -43,7 +43,7 @@ try {
     
     # Generate RNG service interface
     Write-InfoLog "Generating IRNGService interface"
-    $interfaceContent = @"
+    $interfaceContent = @'
 /**
  * @fileoverview RNG Service Interface Definition
  * @description Defines the contract for random number generation services
@@ -167,14 +167,14 @@ export interface IRNGService {
    */
   dispose(): void;
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $interfacesPath "IRNGService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "IRNGService interface generated successfully"
     
     # Generate RNG types
     Write-InfoLog "Generating RNG types definitions"
-    $typesContent = @"
+    $typesContent = @'
 /**
  * @fileoverview RNG Types Definition
  * @description Type definitions for random number generation domain
@@ -239,14 +239,14 @@ export interface RNGValidation {
   /** Validation errors if any */
   errors: string[];
 }
-"@
+'@
     
     Set-Content -Path (Join-Path $typesPath "rng.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "RNG types generated successfully"
     
     # Generate RNG Service implementation - Part 1 (Class structure and core methods)
     Write-InfoLog "Generating RNGService implementation - Part 1 (Core structure)"
-    $serviceContent1 = @"
+    $serviceContent1 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description High-performance deterministic random number generation with Bitcoin block seeding
@@ -346,14 +346,14 @@ export class RNGService implements IRNGService {
     return RNGService.#instance;
   }
 }
-"@
+'@
     
-    Set-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent1 -Encoding UTF8
-    Write-SuccessLog "RNGService implementation Part 1 generated successfully"
+    # Set-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent1 -Encoding UTF8
+    # Write-SuccessLog "RNGService implementation Part 1 generated successfully"
     
     # Generate RNG Service implementation - Part 2 (Core methods)
     Write-InfoLog "Generating RNGService implementation - Part 2 (Core methods)"
-    $serviceContent2 = @"
+    $serviceContent2 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description High-performance deterministic random number generation with Bitcoin block seeding
@@ -691,14 +691,14 @@ export class RNGService implements IRNGService {
 
 // Export singleton instance getter
 export const rngService = RNGService.getInstance();
-"@
+'@
     
-    Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent2 -Encoding UTF8
-    Write-SuccessLog "RNGService implementation Part 2 generated successfully"
+    # Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent2 -Encoding UTF8
+    # Write-SuccessLog "RNGService implementation Part 2 generated successfully"
     
     # Generate RNG Service implementation - Part 3 (State management and helpers)
     Write-InfoLog "Generating RNGService implementation - Part 3 (State management and completion)"
-    $serviceContent3 = @"
+    $serviceContent3 = @'
 /**
  * @fileoverview RNG Service Implementation
  * @description Complete random number generation service with Bitcoin block seeding
@@ -1064,11 +1064,16 @@ export class RNGService implements IRNGService {
 
 // Export singleton instance getter
 export const rngService = RNGService.getInstance();
-"@
+'@
     
     # Append Part 3 to complete the service
-    Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent3 -Encoding UTF8
-    Write-SuccessLog "RNGService implementation Part 3 generated successfully"
+    # Add-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $serviceContent3 -Encoding UTF8
+    # Write-SuccessLog "RNGService implementation Part 3 generated successfully"
+    
+    # Consolidate and write full service content once
+    $fullServiceContent = $serviceContent1 + $serviceContent2 + $serviceContent3
+    Set-Content -Path (Join-Path $servicesPath "rngService.ts") -Value $fullServiceContent -Encoding UTF8
+    Write-SuccessLog "RNGService implementation consolidated and written successfully"
     
     # Generate export index file
     Write-InfoLog "Generating RNG domain export index"
