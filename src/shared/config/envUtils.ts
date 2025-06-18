@@ -77,30 +77,24 @@ export function getRetryConfig(operation: 'api' | 'render' | 'physics'): { maxRe
  * Build Bitcoin API URL for specific endpoint
  */
 export function buildBitcoinApiUrl(endpoint: string): string {
-  const baseUrl = environmentService.getBitcoinApiBaseUrl();
-  
-  // Handle relative URLs in production
-  if (!baseUrl) {
-    return endpoint.startsWith('/') ? endpoint : /;
-  }
-  
-  // Handle absolute URLs in development
-  return ${baseUrl};
+  const baseUrl = environmentService.getBitcoinApiBaseUrl()
+
+  // Production builds use relative paths (baseUrl is empty)
+  if (!baseUrl) return endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+
+  // Dev / test have absolute base – ensure exactly one slash separator
+  return `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`
 }
 
 /**
  * Build Ordinals API URL for specific endpoint
  */
 export function buildOrdinalsApiUrl(endpoint: string): string {
-  const baseUrl = environmentService.getOrdinalsApiBaseUrl();
-  
-  // Handle relative URLs in production
-  if (!baseUrl) {
-    return endpoint.startsWith('/') ? endpoint : /;
-  }
-  
-  // Handle absolute URLs in development
-  return ${baseUrl};
+  const baseUrl = environmentService.getOrdinalsApiBaseUrl()
+
+  if (!baseUrl) return endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+
+  return `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`
 }
 
 /**
