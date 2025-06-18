@@ -43,7 +43,7 @@ src
  # GH Actions workflow
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
- $deploy= @"
+ $deploy= @'
 name: Docker Publish
 on:
   push:
@@ -66,7 +66,7 @@ jobs:
               \
               \
               ${{ github.ref_name }}
-"@
+'@
  Set-Content -Path (Join-Path $wfPath 'docker-publish.yml') -Value $deploy -Encoding UTF8
  Write-SuccessLog "Docker deployment artifacts generated"
  exit 0

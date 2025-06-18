@@ -36,7 +36,7 @@ spawnSync('npx', ['typedoc'], { stdio: 'inherit' })
  # GH Actions workflow
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
- $docs= @"
+ $docs= @'
 name: Docs
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
         with:
           github_token: ">${{ secrets.GITHUB_TOKEN }}"
           publish_dir: ./docs/api
-"@
+'@
  Set-Content -Path (Join-Path $wfPath 'docs.yml') -Value $docs -Encoding UTF8
 
  Write-SuccessLog "Automated documentation artifacts generated"
