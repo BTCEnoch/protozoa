@@ -14,9 +14,9 @@ try{
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
 
- $ci=@"
+ $ci=@'
 name: CI
-"@
+'@
 
 on:
   pull_request:
@@ -47,7 +47,7 @@ jobs:
         with:
           name: bundle-stats
           path: stats.json
-"@
+'@
  Set-Content -Path (Join-Path $wfPath 'ci.yml') -Value $ci -Encoding UTF8
  Write-SuccessLog "GitHub Actions workflow created"
  exit 0

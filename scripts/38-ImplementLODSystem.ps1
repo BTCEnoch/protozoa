@@ -18,22 +18,22 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"
+ $iface=@'
 import type { Object3D } from 'three'
-"@
+'@
 export interface LODConfig{ near:number; far:number; minDetail:number; maxDetail:number }
 export interface ILODService{
  register(obj:Object3D,config:LODConfig): void
  update(cameraPosition:{x:number,y:number,z:number}): void
  dispose(): void
 }
-"@
+'@
  Set-Content -Path (Join-Path $interfaces 'ILODService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"
+ $impl=@'
 import { Vector3, Object3D } from 'three'
-"@
+'@
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILODService, LODConfig } from '@/domains/rendering/interfaces/ILODService'
 
@@ -64,7 +64,7 @@ class LODService implements ILODService{
  dispose(){this.#entries=[];LODService.#instance=null}
 }
 export const lodService=LODService.getInstance()
-"@
+'@
  Set-Content -Path (Join-Path $services 'lodService.ts') -Value $impl -Encoding UTF8
  Write-SuccessLog "LODService generated"
  exit 0

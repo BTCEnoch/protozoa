@@ -6813,3 +6813,2829 @@ Not all parse errors were reported.  Correct the reported errors and try again.
 [2025-06-17 21:24:49] [Info] Creating repository README.md...
 [2025-06-17 21:24:49] [Success] Created repository README.md
 [2025-06-17 21:24:49] [Info] Staging files for git commit...
+[2025-06-17 21:24:49] [Success] All files staged successfully
+[2025-06-17 21:24:49] [Info] Creating initial commit...
+[2025-06-17 21:24:49] [Success] Initial commit created successfully
+[2025-06-17 21:24:49] [Info] Configuring remote repository...
+[2025-06-17 21:24:49] [Info] Remote origin already configured: https://github.com/BTCEnoch/protozoa.git
+[2025-06-17 21:24:49] [Info] Pushing to GitHub repository...
+[2025-06-17 21:24:49] [Warning] You may be prompted for GitHub authentication...
+[2025-06-17 21:24:50] [Warning] Push may have failed. Common issues:
+[2025-06-17 21:24:50] [Info] - Authentication required (use GitHub CLI or personal access token)
+[2025-06-17 21:24:50] [Info] - Repository may need to be made public
+[2025-06-17 21:24:50] [Info] - Check GitHub repository settings
+[2025-06-17 21:24:50] [Error] PHASE 9 FAILED: Cannot bind argument to parameter 'Message' because it is an empty string.
+[2025-06-17 21:24:54] [Info] === PHASE 10 : Unified shared types generation ===
+[2025-06-17 21:24:54] [Info] Executing: 16-GenerateSharedTypesService.ps1
+[2025-06-17 21:24:54] [Info] === SHARED TYPES AND INTERFACES GENERATION ===
+[2025-06-17 21:24:54] [Info] Generating cross-domain shared types for type safety and consistency
+[2025-06-17 21:24:54] [Info] Project structure validation passed
+[2025-06-17 21:24:54] [Info] Shared types paths:
+[2025-06-17 21:24:54] [Info]   Types: D:\Protozoa\src\shared\types
+[2025-06-17 21:24:54] [Info]   Lib: D:\Protozoa\src\shared\lib
+[2025-06-17 21:24:54] [Info] Writing vector types...
+[2025-06-17 21:24:54] [Info] Writing entity types...
+[2025-06-17 21:24:54] [Info] Writing configuration types...
+[2025-06-17 21:24:54] [Info] Writing logging types...
+[2025-06-17 21:24:54] [Info] Writing event types...
+[2025-06-17 21:24:54] [Info] Writing types index...
+[2025-06-17 21:24:54] [Success] Shared types generation completed!
+[2025-06-17 21:24:54] [Error] PHASE 10 FAILED: Cannot bind argument to parameter 'Message' because it is an empty string.
+[2025-06-17 21:24:57] [Info] === PHASE 11 : Environment configuration and logging services ===
+[2025-06-17 21:24:57] [Info] Executing: 17-GenerateEnvironmentConfig.ps1
+[2025-06-17 21:24:57] [Error] PHASE 11 FAILED: At D:\Protozoa\scripts\17-GenerateEnvironmentConfig.ps1:724 char:84
++ ... og "3. Use createServiceLogger for consistent logging across domains"
++                                                                         ~
+The string is missing the terminator: ".
+
+At D:\Protozoa\scripts\17-GenerateEnvironmentConfig.ps1:702 char:19
++ if (-not $WhatIf) {
++                   ~
+Missing closing '}' in statement block or type definition.
+[2025-06-17 21:24:58] [Info] === PHASE 12 : Central Winston logging setup ===
+[2025-06-17 21:24:58] [Info] Executing: 18a-SetupLoggingService.ps1
+[2025-06-17 21:24:58] [Error] PHASE 12 FAILED: At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:87 char:6
++     } else {
++      ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:113 char:72
++ ...  Write-ErrorLog "SetupLoggingService failed: $($_.Exception.Message)"
++                                                                         ~
+The string is missing the terminator: ".
+
+At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:106 char:12
++     } else {
++            ~
+Missing closing '}' in statement block or type definition.
+[2025-06-17 21:24:59] [Info] === PHASE 13 : Complete Formation Domain implementation ===
+[2025-06-17 21:24:59] [Info] Executing: 18-GenerateFormationDomain.ps1
+[2025-06-17 21:24:59] [Error] PHASE 13 FAILED: The term 'Write-StatusMessage' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-06-17 21:25:00] [Info] === PHASE 14 : Utility functions validation and fixes ===
+[2025-06-17 21:25:00] [Info] Executing: 14-FixUtilityFunctions.ps1
+[2025-06-17 21:25:00] [Info] === Utility Functions Validation & Fix - Phase 14 ===
+[2025-06-17 21:25:00] [Info] Validating all script dependencies...
+[2025-06-17 21:25:10] [Info] Found utility functions:
+[2025-06-17 21:25:10] [Success]   ✅ Backup-File (in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Configuration (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Configuration (in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Configuration (in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Configuration (in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ COPY (in 46-SetupDockerDeployment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Copy-Item (in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ ForEach (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ ForEach (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ ForEach (in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Get-DomainList (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Get-DomainPhaseNumber (in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Get-ServiceName (in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Invoke-ScriptWithErrorHandling (in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Invoke-ScriptWithErrorHandling (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Measure-Object (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Move (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ New-DirectoryTree (in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Select-String (in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Services (in runAll.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Set (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Setup (in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Setup (in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Setup (in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Setup (in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-DirectoryStructure (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-ProjectStructure (in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-ProjectStructure (in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-ProjectStructure (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-ProjectStructure (in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Test-ProjectStructure (in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in fix-here-strings.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Where (in runAll.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 04-EnforceSingletonPatterns.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 05-VerifyCompliance.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 30-EnhanceTraitSystem.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 32-SetupParticleLifecycleManagement.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 33-ImplementSwarmIntelligence.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 34-EnhanceFormationSystem.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 37-SetupCustomShaderSystem.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 38-ImplementLODSystem.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 39-SetupAdvancedEffectComposition.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 42-SetupPhysicsBasedAnimation.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 43-ImplementAdvancedTimeline.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 45-SetupCICDPipeline.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 46-SetupDockerDeployment.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 47-SetupPerformanceRegression.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 48-SetupAdvancedBundleAnalysis.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 49-SetupAutomatedDocumentation.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 50-SetupServiceIntegration.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 51-SetupGlobalStateManagement.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 52-SetupReactIntegration.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 53-SetupEventBusSystem.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 54-SetupPerformanceTesting.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 55-SetupPersistenceLayer.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in 56-SetupEndToEndValidation.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in fix-here-strings.ps1)
+[2025-06-17 21:25:10] [Success]   ✅ Write (in runAll.ps1)
+[2025-06-17 21:25:10] [Warning] Missing utility functions:
+[2025-06-17 21:25:10] [Warning]   ❌ AbortController (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ AnimationBlendingService (called in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ AnimationService (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Anti (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ App (called in 52-SetupReactIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Architecture (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Array (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Auto (called in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Auto (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Auto (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Auto (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ BitcoinService (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ BlockStreamService (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ BufferGeometry (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ BundleAnalyzerService (called in 48-SetupAdvancedBundleAnalysis.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Chi (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertFrom (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertFrom (called in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertFrom (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertFrom (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertFrom (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ ConvertTo (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Cross (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Cross (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ DataValidationService (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Date (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Dependencies (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Development (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Dev-Env (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 32-SetupParticleLifecycleManagement.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 33-ImplementSwarmIntelligence.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 34-EnhanceFormationSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 37-SetupCustomShaderSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 38-ImplementLODSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 39-SetupAdvancedEffectComposition.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 42-SetupPhysicsBasedAnimation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 43-ImplementAdvancedTimeline.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 45-SetupCICDPipeline.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 46-SetupDockerDeployment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 47-SetupPerformanceRegression.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 48-SetupAdvancedBundleAnalysis.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 49-SetupAutomatedDocumentation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 50-SetupServiceIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 51-SetupGlobalStateManagement.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 52-SetupReactIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 53-SetupEventBusSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 54-SetupPerformanceTesting.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 55-SetupPersistenceLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Directory (called in 56-SetupEndToEndValidation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Documentation (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Domain (called in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Domain (called in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Domain (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ EffectComposerService (called in 39-SetupAdvancedEffectComposition.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ EffectService (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Enforcement (called in 04-EnforceSingletonPatterns.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Enhancements (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Environment (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ EnvironmentService (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Error (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ EventBus (called in 53-SetupEventBusSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Features (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ FormationBlendingService (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ FormationService (called in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Framework (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Front (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Generation (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 04-EnforceSingletonPatterns.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 05-VerifyCompliance.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in fix-here-strings.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Get (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ GroupService (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ HERE (called in fix-here-strings.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ High (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ High (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ High (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ High (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ High (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Human (called in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Implementation (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 02-GenerateDomainStubs.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 04-EnforceSingletonPatterns.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 05-VerifyCompliance.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Import (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Infrastructure (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Initialization (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Integration (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Integration (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Inter (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Invoke (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Invoke (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Join (called in runAll.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ License (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ LifecycleEngine (called in 32-SetupParticleLifecycleManagement.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Linting (called in 06-DomainLint.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ LOD (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ LODService (called in 38-ImplementLODSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 37-SetupCustomShaderSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Map (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Matrix4 (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ New (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ New (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ On (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Opacity (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 18b-SetupTestingFramework.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 18-GenerateFormationDomain.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 19-ConfigureAdvancedTypeScript.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 21-ConfigureDevEnvironment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 29-SetupDataValidationLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 32-SetupParticleLifecycleManagement.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 33-ImplementSwarmIntelligence.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 34-EnhanceFormationSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 36-GenerateEffectService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 37-SetupCustomShaderSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 38-ImplementLODSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 39-SetupAdvancedEffectComposition.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 40-GenerateAnimationService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 41-GenerateGroupService.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 42-SetupPhysicsBasedAnimation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 43-ImplementAdvancedTimeline.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 44-SetupAnimationBlending.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 45-SetupCICDPipeline.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 46-SetupDockerDeployment.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 47-SetupPerformanceRegression.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 48-SetupAdvancedBundleAnalysis.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 49-SetupAutomatedDocumentation.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 50-SetupServiceIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 51-SetupGlobalStateManagement.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 52-SetupReactIntegration.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 53-SetupEventBusSystem.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 54-SetupPerformanceTesting.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 55-SetupPersistenceLayer.ps1)
+[2025-06-17 21:25:10] [Warning]   ❌ Out (called in 56-SetupEndToEndValidation.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ ParticleInitService (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ ParticleService (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PerformanceRegressionService (called in 47-SetupPerformanceRegression.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PersistenceService (called in 55-SetupPersistenceLayer.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PerspectiveCamera (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PhysicsAnimationService (called in 42-SetupPhysicsBasedAnimation.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PhysicsService (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Pop (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Pop (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Pre (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Promise (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Promise (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Promise (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ PSObject (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 04-EnforceSingletonPatterns.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 05-VerifyCompliance.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 06-DomainLint.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Push (called in 20-SetupPreCommitValidation.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Quaternion (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Radius (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ RateLimiter (called in 22-SetupBitcoinProtocol.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Read (called in runAll.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Remove (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Remove (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ RenderingService (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ RNGService (called in 23-GenerateRNGService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Scaffolding (called in 01-ScaffoldProjectStructure.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Scene (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Service (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Service (called in 18a-SetupLoggingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ ShaderService (called in 37-SetupCustomShaderSystem.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Simplified (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ SimulationCanvas (called in 52-SetupReactIntegration.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Split (called in 00-InitEnvironment.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Split (called in 03-MoveAndCleanCodebase.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Status (called in 08-DeployToGitHub.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Sub (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ SwarmService (called in 33-ImplementSwarmIntelligence.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Test (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ TimelineService (called in 43-ImplementAdvancedTimeline.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Tooling (called in runAll.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ TraitService (called in 27-GenerateTraitService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ URL (called in 16-GenerateSharedTypesService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ URL (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ URL (called in 26-GenerateBitcoinService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Validation (called in 07-BuildAndTest.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Validation (called in 15-ValidateSetupComplete.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Validation (called in runAll.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 10-GenerateParticleInitService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 11-GenerateFormationBlendingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 31-GenerateParticleService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Vector3 (called in 38-ImplementLODSystem.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Verification (called in 05-VerifyCompliance.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ WebGLRenderer (called in 35-GenerateRenderingService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ WebSocket (called in 28-SetupBlockchainDataIntegration.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Winston (called in 17-GenerateEnvironmentConfig.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Worker (called in 24-GeneratePhysicsService.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ Worker (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:11] [Warning]   ❌ WorkerManager (called in 25-SetupPhysicsWebWorkers.ps1)
+[2025-06-17 21:25:11] [Info] Adding missing functions to utils.psm1...
+[2025-06-17 21:25:11] [Success] Added missing utility functions to utils.psm1
+[2025-06-17 21:25:11] [Success] Updated module exports
+[2025-06-17 21:25:11] [Info] Re-importing utils.psm1 to verify fixes...
+[2025-06-17 21:25:11] [Success] Utility functions validation and fix completed!
+[2025-06-17 21:25:11] [Error] Utility functions fix failed: Cannot bind argument to parameter 'Message' because it is an empty string.
+[2025-06-17 21:25:11] [Error] PHASE 14 FAILED: Script exited with code 1
+[2025-06-17 21:25:11] [Info] === PHASE 15 : Advanced TypeScript config ===
+[2025-06-17 21:25:11] [Info] Executing: 19-ConfigureAdvancedTypeScript.ps1
+[2025-06-17 21:25:11] [Info] === Advanced TypeScript Configuration - Phase 1 Infrastructure Enhancement ===
+[2025-06-17 21:25:11] [Info] Configuring strict TypeScript settings with domain boundary enforcement
+[2025-06-17 21:25:11] [Success] Advanced TypeScript configuration setup initialized
+[2025-06-17 21:25:11] [Info] Generating main tsconfig.json with strict validation
+[2025-06-17 21:25:11] [Success] Main tsconfig.json generated with strict settings
+[2025-06-17 21:25:11] [Info] Generating tsconfig.app.json for application code
+[2025-06-17 21:25:11] [Success] tsconfig.app.json generated for application code
+[2025-06-17 21:25:11] [Info] Generating tsconfig.node.json for build tools
+[2025-06-17 21:25:11] [Success] tsconfig.node.json generated for build tools
+[2025-06-17 21:25:11] [Info] Creating custom type definitions for Bitcoin Ordinals API
+[2025-06-17 21:25:11] [Success] Bitcoin Ordinals API type definitions created
+[2025-06-17 21:25:11] [Info] Advanced TypeScript configuration setup completed
+[2025-06-17 21:25:11] [Success] PHASE 15 completed successfully in 0.0470003 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 16 : Dev environment fine-tuning ===
+[2025-06-17 21:25:11] [Info] Executing: 21-ConfigureDevEnvironment.ps1
+[2025-06-17 21:25:11] [Info] === Development Environment Configuration - Phase 1 Infrastructure Enhancement ===
+[2025-06-17 21:25:11] [Info] Configuring VS Code workspace and development tooling
+[2025-06-17 21:25:11] [Info] Created .vscode directory
+[2025-06-17 21:25:11] [Info] Generating VS Code workspace settings
+[2025-06-17 21:25:11] [Success] VS Code workspace settings configured
+[2025-06-17 21:25:11] [Info] Generating recommended VS Code extensions
+[2025-06-17 21:25:11] [Success] VS Code extensions recommendations configured
+[2025-06-17 21:25:11] [Info] Generating Prettier configuration
+[2025-06-17 21:25:11] [Success] Prettier configuration created
+[2025-06-17 21:25:11] [Info] Generating EditorConfig for cross-editor consistency
+[2025-06-17 21:25:11] [Success] EditorConfig created for cross-editor consistency
+[2025-06-17 21:25:11] [Info] Generating VS Code tasks configuration
+[2025-06-17 21:25:11] [Success] VS Code tasks configuration created
+[2025-06-17 21:25:11] [Info] Generating VS Code launch configuration for debugging
+[2025-06-17 21:25:11] [Success] VS Code launch configuration created for debugging
+[2025-06-17 21:25:11] [Info] Development environment configuration completed
+[2025-06-17 21:25:11] [Success] PHASE 16 completed successfully in 0.0653213 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 17 : Bitcoin Ordinals protocol setup ===
+[2025-06-17 21:25:11] [Info] Executing: 22-SetupBitcoinProtocol.ps1
+[2025-06-17 21:25:11] [Info] === Bitcoin Protocol Configuration - Phase 1 Infrastructure Enhancement ===
+[2025-06-17 21:25:11] [Info] Configuring Bitcoin Ordinals Protocol integration and API endpoints
+[2025-06-17 21:25:11] [Info] Created config directory
+[2025-06-17 21:25:11] [Info] Generating Bitcoin network configuration
+[2025-06-17 21:25:11] [Success] Bitcoin network configuration created
+[2025-06-17 21:25:11] [Info] Generating environment configuration files
+[2025-06-17 21:25:11] [Success] Environment example file created
+[2025-06-17 21:25:11] [Info] .env file already exists - skipping creation
+[2025-06-17 21:25:11] [Info] Creating rate limiting utility
+[2025-06-17 21:25:11] [Success] Rate limiting utility created
+[2025-06-17 21:25:11] [Info] Bitcoin Protocol configuration completed
+[2025-06-17 21:25:11] [Success] PHASE 17 completed successfully in 0.0459997 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 18 : Random number generator service ===
+[2025-06-17 21:25:11] [Info] Executing: 23-GenerateRNGService.ps1
+[2025-06-17 21:25:11] [Info] === RNG Service Generation - Phase 2 Core Domain Implementation ===
+[2025-06-17 21:25:11] [Info] Generating complete RNGService with Bitcoin block-seeded deterministic PRNG
+[2025-06-17 21:25:11] [Info] Creating RNG domain directory structure
+[2025-06-17 21:25:11] [Success] RNG domain directories created successfully
+[2025-06-17 21:25:11] [Info] Generating IRNGService interface
+[2025-06-17 21:25:11] [Success] IRNGService interface generated successfully
+[2025-06-17 21:25:11] [Info] Generating RNG types definitions
+[2025-06-17 21:25:11] [Success] RNG types generated successfully
+[2025-06-17 21:25:11] [Info] Generating RNGService implementation - Part 1 (Core structure)
+[2025-06-17 21:25:11] [Success] RNGService implementation Part 1 generated successfully
+[2025-06-17 21:25:11] [Info] Generating RNGService implementation - Part 2 (Core methods)
+[2025-06-17 21:25:11] [Success] RNGService implementation Part 2 generated successfully
+[2025-06-17 21:25:11] [Info] Generating RNGService implementation - Part 3 (State management and completion)
+[2025-06-17 21:25:11] [Success] RNGService implementation Part 3 generated successfully
+[2025-06-17 21:25:11] [Info] Generating RNG domain export index
+[2025-06-17 21:25:11] [Success] RNG domain export index generated successfully
+[2025-06-17 21:25:11] [Success] RNG Service generation completed successfully
+[2025-06-17 21:25:11] [Info] Generated files:
+[2025-06-17 21:25:11] [Info]   - src/domains/rng/interfaces/IRNGService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/rng/types/rng.types.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/rng/services/rngService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/rng/index.ts
+[2025-06-17 21:25:11] [Success] PHASE 18 completed successfully in 0.083499 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 19 : Physics engine service ===
+[2025-06-17 21:25:11] [Info] Executing: 24-GeneratePhysicsService.ps1
+[2025-06-17 21:25:11] [Info] === Physics Service Generation - Phase 2 Core Domain Implementation ===
+[2025-06-17 21:25:11] [Info] Generating simplified PhysicsService focused on kinematics (force fields removed)
+[2025-06-17 21:25:11] [Info] Creating Physics domain directory structure
+[2025-06-17 21:25:11] [Success] Physics domain directories created successfully
+[2025-06-17 21:25:11] [Info] Generating IPhysicsService interface
+[2025-06-17 21:25:11] [Success] IPhysicsService interface generated successfully
+[2025-06-17 21:25:11] [Info] Generating Physics types definitions
+[2025-06-17 21:25:11] [Success] Physics types generated successfully
+[2025-06-17 21:25:11] [Info] Generating PhysicsService implementation - Simplified kinematic helpers
+[2025-06-17 21:25:11] [Success] PhysicsService implementation generated successfully
+[2025-06-17 21:25:11] [Info] Adding simplified physics service methods
+[2025-06-17 21:25:11] [Success] PhysicsService implementation with complete methods generated successfully
+[2025-06-17 21:25:11] [Info] Generating physics worker template
+[2025-06-17 21:25:11] [Success] Physics worker template generated successfully
+[2025-06-17 21:25:11] [Info] Generating Physics domain export index
+[2025-06-17 21:25:11] [Success] Physics domain export index generated successfully
+[2025-06-17 21:25:11] [Success] Physics Service generation completed successfully
+[2025-06-17 21:25:11] [Info] Generated files:
+[2025-06-17 21:25:11] [Info]   - src/domains/physics/interfaces/IPhysicsService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/physics/types/physics.types.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/physics/services/physicsService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/physics/workers/physicsWorker.js
+[2025-06-17 21:25:11] [Info]   - src/domains/physics/index.ts
+[2025-06-17 21:25:11] [Success] PHASE 19 completed successfully in 0.0723131 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 20 : Physics WebWorker scaffolding ===
+[2025-06-17 21:25:11] [Info] Executing: 25-SetupPhysicsWebWorkers.ps1
+[2025-06-17 21:25:11] [Info] === Physics WebWorkers Setup - Phase 2 Enhancement ===
+[2025-06-17 21:25:11] [Info] Scaffolding worker pool and base worker for physics domain
+[2025-06-17 21:25:11] [Success] physicsWorker.ts generated
+[2025-06-17 21:25:11] [Success] workerManager.ts generated
+[2025-06-17 21:25:11] [Success] 25-SetupPhysicsWebWorkers.ps1 completed successfully
+[2025-06-17 21:25:11] [Success] PHASE 20 completed successfully in 0.0339998 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 21 : Bitcoin blockchain service ===
+[2025-06-17 21:25:11] [Info] Executing: 26-GenerateBitcoinService.ps1
+[2025-06-17 21:25:11] [Info] === Bitcoin Service Generation - Phase 3 Data & Blockchain Integration ===
+[2025-06-17 21:25:11] [Info] Generating complete BitcoinService with API integration and LRU caching
+[2025-06-17 21:25:11] [Info] Creating Bitcoin domain directory structure
+[2025-06-17 21:25:11] [Success] Bitcoin domain directories created successfully
+[2025-06-17 21:25:11] [Info] Generating IBitcoinService interface
+[2025-06-17 21:25:11] [Success] IBitcoinService interface generated successfully
+[2025-06-17 21:25:11] [Info] Generating Bitcoin types definitions
+[2025-06-17 21:25:11] [Success] Bitcoin types generated successfully
+[2025-06-17 21:25:11] [Info] Generating BitcoinService implementation - Part 1 (Core structure)
+[2025-06-17 21:25:11] [Success] BitcoinService implementation Part 1 generated successfully
+[2025-06-17 21:25:11] [Info] Generating BitcoinService implementation - Part 2 (API methods and completion)
+[2025-06-17 21:25:11] [Success] BitcoinService implementation Part 2 generated successfully
+[2025-06-17 21:25:11] [Info] Generating Bitcoin domain export index
+[2025-06-17 21:25:11] [Success] Bitcoin domain export index generated successfully
+[2025-06-17 21:25:11] [Success] Bitcoin Service generation completed successfully
+[2025-06-17 21:25:11] [Info] Generated files:
+[2025-06-17 21:25:11] [Info]   - src/domains/bitcoin/interfaces/IBitcoinService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/bitcoin/types/bitcoin.types.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/bitcoin/services/bitcoinService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/bitcoin/index.ts
+[2025-06-17 21:25:11] [Success] PHASE 21 completed successfully in 0.0620005 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 22 : Trait management service ===
+[2025-06-17 21:25:11] [Info] Executing: 27-GenerateTraitService.ps1
+[2025-06-17 21:25:11] [Info] === Trait Service Generation - Phase 3 Data & Blockchain Integration ===
+[2025-06-17 21:25:11] [Info] Generating complete TraitService with Bitcoin block-seeded trait generation
+[2025-06-17 21:25:11] [Info] Creating Trait domain directory structure
+[2025-06-17 21:25:11] [Success] Trait domain directories created successfully
+[2025-06-17 21:25:11] [Info] Generating ITraitService interface
+[2025-06-17 21:25:11] [Success] ITraitService interface generated successfully
+[2025-06-17 21:25:11] [Info] Generating Trait types definitions
+[2025-06-17 21:25:11] [Success] Trait types generated successfully
+[2025-06-17 21:25:11] [Info] Generating TraitService implementation - Part 1 (Core structure)
+[2025-06-17 21:25:11] [Success] TraitService implementation Part 1 generated successfully
+[2025-06-17 21:25:11] [Info] Generating TraitService implementation - Part 2 (Core methods)
+[2025-06-17 21:25:11] [Success] TraitService implementation Part 2 generated successfully
+[2025-06-17 21:25:11] [Info] Generating TraitService implementation - Part 3 (Helper methods and completion)
+[2025-06-17 21:25:11] [Success] TraitService implementation Part 3 generated successfully
+[2025-06-17 21:25:11] [Info] Generating Trait domain export index
+[2025-06-17 21:25:11] [Success] Trait domain export index generated successfully
+[2025-06-17 21:25:11] [Success] Trait Service generation completed successfully
+[2025-06-17 21:25:11] [Info] Generated files:
+[2025-06-17 21:25:11] [Info]   - src/domains/trait/interfaces/ITraitService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/trait/types/trait.types.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/trait/services/traitService.ts
+[2025-06-17 21:25:11] [Info]   - src/domains/trait/index.ts
+[2025-06-17 21:25:11] [Success] PHASE 22 completed successfully in 0.0749999 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 23 : Blockchain data integration ===
+[2025-06-17 21:25:11] [Info] Executing: 28-SetupBlockchainDataIntegration.ps1
+[2025-06-17 21:25:11] [Info] === Blockchain Data Integration Setup - Phase 3 Enhancement ===
+[2025-06-17 21:25:11] [Info] Generating WebSocket client for Bitcoin block stream
+[2025-06-17 21:25:11] [Success] blockStreamService.ts generated
+[2025-06-17 21:25:11] [Success] 28-SetupBlockchainDataIntegration.ps1 completed successfully
+[2025-06-17 21:25:11] [Success] PHASE 23 completed successfully in 0.0300005 seconds
+[2025-06-17 21:25:11] [Info] === PHASE 24 : Data validation layer ===
+[2025-06-17 21:25:11] [Info] Executing: 29-SetupDataValidationLayer.ps1
+[2025-06-17 21:25:11] [Error] PHASE 24 FAILED: At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:50 char:23
++   private constructor() {}
++                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:51 char:22
++   static getInstance(){return this.#instance??(this.#instance=new Dat ...
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:51 char:89
++ ... {return this.#instance??(this.#instance=new DataValidationService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:13
++     if(!data||!data.hash||!data.merkle_root){this.#err.logError(new E ...
++             ~~
+The token '||' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:25
++     if(!data||!data.hash||!data.merkle_root){this.#err.logError(new E ...
++                         ~~
+The token '||' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:97
++ ... kle_root){this.#err.logError(new Error('Invalid block'),{data});retur ...
++                                                                  ~
+The Data section is missing its statement block.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:57 char:38
++     const isValid = content.length>0 && content.startsWith('{')
++                                      ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:58 char:16
++     if(!isValid) this.#log.warn('Inscription content failed validatio ...
++                ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:63 char:27
++     return proof.length>0 && txId.length>0
++                           ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:65 char:11
++   dispose(){DataValidationService.#instance=null}
++           ~
+An expression was expected after '('.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:13] [Info] === PHASE 25 : Trait system enhancements ===
+[2025-06-17 21:25:13] [Info] Executing: 30-EnhanceTraitSystem.ps1
+[2025-06-17 21:25:13] [Info] === Trait System Enhancement ===
+[2025-06-17 21:25:13] [Error] Trait enhancement failed: The term '*' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-06-17 21:25:13] [Error] PHASE 25 FAILED: Script exited with code 1
+[2025-06-17 21:25:14] [Info] === PHASE 26 : Particle service generation ===
+[2025-06-17 21:25:14] [Info] Executing: 31-GenerateParticleService.ps1
+[2025-06-17 21:25:14] [Info] === Particle Service Generation - Phase 4 Rendering & Optimization ===
+[2025-06-17 21:25:14] [Info] Generating complete ParticleService with THREE.js integration and GPU optimization
+[2025-06-17 21:25:14] [Info] Creating Particle domain directory structure
+[2025-06-17 21:25:14] [Success] Particle domain directories created successfully
+[2025-06-17 21:25:14] [Info] Generating IParticleService interface
+[2025-06-17 21:25:14] [Success] IParticleService interface generated successfully
+[2025-06-17 21:25:14] [Info] Generating Particle types definitions
+[2025-06-17 21:25:14] [Success] Particle types generated successfully
+[2025-06-17 21:25:14] [Info] Generating ParticleService implementation - Part 1 (Core structure)
+[2025-06-17 21:25:14] [Success] ParticleService implementation Part 1 generated successfully
+[2025-06-17 21:25:14] [Info] Generating ParticleService implementation - Part 2A (Core methods - first batch)
+[2025-06-17 21:25:14] [Success] ParticleService implementation Part 2A generated successfully
+[2025-06-17 21:25:14] [Info] Generating ParticleService implementation - Part 2B (Core methods - second batch)
+[2025-06-17 21:25:14] [Success] ParticleService implementation Part 2B generated successfully
+[2025-06-17 21:25:14] [Info] Generating ParticleService implementation - Part 3 (Helper methods and completion)
+[2025-06-17 21:25:14] [Success] ParticleService implementation Part 3 generated successfully
+[2025-06-17 21:25:14] [Info] Generating Particle domain export index
+[2025-06-17 21:25:14] [Success] Particle domain export index generated successfully
+[2025-06-17 21:25:14] [Success] Particle Service generation completed successfully
+[2025-06-17 21:25:14] [Info] Generated files:
+[2025-06-17 21:25:14] [Info]   - src/domains/particle/interfaces/IParticleService.ts
+[2025-06-17 21:25:14] [Info]   - src/domains/particle/types/particle.types.ts
+[2025-06-17 21:25:14] [Info]   - src/domains/particle/services/particleService.ts
+[2025-06-17 21:25:14] [Info]   - src/domains/particle/index.ts
+[2025-06-17 21:25:14] [Success] PHASE 26 completed successfully in 0.1653158 seconds
+[2025-06-17 21:25:14] [Info] === PHASE 27 : Particle lifecycle management ===
+[2025-06-17 21:25:14] [Info] Executing: 32-SetupParticleLifecycleManagement.ps1
+[2025-06-17 21:25:14] [Error] PHASE 27 FAILED: At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:26 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:27 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:52 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:52 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:56 char:1
++ }catch{Write-ErrorLog "Lifecycle setup failed: $($_.Exception.Message ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:15] [Info] === PHASE 28 : Swarm intelligence ===
+[2025-06-17 21:25:15] [Info] Executing: 33-ImplementSwarmIntelligence.ps1
+[2025-06-17 21:25:15] [Error] PHASE 28 FAILED: At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:26 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:27 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:55 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:55 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:59 char:1
++ }catch{Write-ErrorLog "Swarm generation failed: $($_.Exception.Messag ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:16] [Info] === PHASE 29 : Formation system enhancements ===
+[2025-06-17 21:25:16] [Info] Executing: 34-EnhanceFormationSystem.ps1
+[2025-06-17 21:25:16] [Error] PHASE 29 FAILED: At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:29 char:28
++   generatePattern(id:string,count:number):FormationPattern{
++                            ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:11
++       case 'fibonacci':
++           ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:23
++       case 'fibonacci':
++                       ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:24
++       case 'fibonacci':
++                        ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:12
++         for(let i=0;i<count;i++){
++            ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:20
++         for(let i=0;i<count;i++){
++                    ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:20
++         for(let i=0;i<count;i++){
++                    ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:28
++         for(let i=0;i<count;i++){
++                            ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:32
++         for(let i=0;i<count;i++){
++                                ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:32
++         for(let i=0;i<count;i++){
++                                ~
+Missing condition in switch statement clause.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:16] [Info] === PHASE 30 : Rendering service ===
+[2025-06-17 21:25:16] [Info] Executing: 35-GenerateRenderingService.ps1
+[2025-06-17 21:25:16] [Info] === Rendering Service Generation - Phase 5 Core Domain Implementation ===
+[2025-06-17 21:25:16] [Info] Generating RenderingService and interfaces
+[2025-06-17 21:25:16] [Success] Rendering domain directories ensured
+[2025-06-17 21:25:16] [Success] IRenderingService interface created
+[2025-06-17 21:25:16] [Success] RenderingService implementation created
+[2025-06-17 21:25:16] [Success] 35-GenerateRenderingService.ps1 completed successfully
+[2025-06-17 21:25:16] [Success] PHASE 30 completed successfully in 0.130506 seconds
+[2025-06-17 21:25:16] [Info] === PHASE 31 : Effect service ===
+[2025-06-17 21:25:16] [Info] Executing: 36-GenerateEffectService.ps1
+[2025-06-17 21:25:16] [Info] === Effect Service Generation - Phase 5 Core Domain Implementation ===
+[2025-06-17 21:25:16] [Info] Generating EffectService and interfaces
+[2025-06-17 21:25:16] [Success] Effect domain directories ensured
+[2025-06-17 21:25:16] [Success] IEffectService interface created
+[2025-06-17 21:25:16] [Success] EffectService implementation created
+[2025-06-17 21:25:16] [Success] 36-GenerateEffectService.ps1 completed successfully
+[2025-06-17 21:25:16] [Success] PHASE 31 completed successfully in 0.0389988 seconds
+[2025-06-17 21:25:16] [Info] === PHASE 32 : Custom shader system ===
+[2025-06-17 21:25:16] [Info] Executing: 37-SetupCustomShaderSystem.ps1
+[2025-06-17 21:25:17] [Error] PHASE 32 FAILED: At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:30 char:15
++     void main(){
++               ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~~~
+Unexpected token 'abs' in expression or statement.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:30 char:16
++     void main(){
++                ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:27 char:22
++ export const Shaders={
++                      ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:12 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:60
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                                            ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:60
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                                            ~
+Unexpected token ')' in expression or statement.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:34 char:5
++     }
++     ~
+Unexpected token '}' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:17] [Info] === PHASE 33 : Level-of-detail system ===
+[2025-06-17 21:25:17] [Info] Executing: 38-ImplementLODSystem.ps1
+[2025-06-17 21:25:17] [Error] PHASE 33 FAILED: At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:27 char:23
++  register(obj:Object3D,config:LODConfig): void
++                       ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:28 char:33
++  update(cameraPosition:{x:number,y:number,z:number}): void
++                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:29 char:10
++  dispose(): void
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:36 char:17
++ import { Vector3, Object3D } from 'three'
++                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:69 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:69 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:18] [Info] === PHASE 34 : Advanced effect composition ===
+[2025-06-17 21:25:18] [Info] Executing: 39-SetupAdvancedEffectComposition.ps1
+[2025-06-17 21:25:18] [Error] PHASE 34 FAILED: At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:30 char:8
++   play():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:31 char:8
++   stop():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:33 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:64 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:64 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:19] [Info] === PHASE 35 : Animation service ===
+[2025-06-17 21:25:19] [Info] Executing: 40-GenerateAnimationService.ps1
+[2025-06-17 21:25:19] [Info] === Animation Service Generation - Phase 6 Core Domain Implementation ===
+[2025-06-17 21:25:19] [Info] Generating AnimationService and interfaces
+[2025-06-17 21:25:19] [Success] Animation domain directories ensured
+[2025-06-17 21:25:19] [Success] IAnimationService interface created
+[2025-06-17 21:25:19] [Success] AnimationService implementation created
+[2025-06-17 21:25:19] [Success] 40-GenerateAnimationService.ps1 completed successfully
+[2025-06-17 21:25:19] [Success] PHASE 35 completed successfully in 0.1028604 seconds
+[2025-06-17 21:25:19] [Info] === PHASE 36 : Group service ===
+[2025-06-17 21:25:19] [Info] Executing: 41-GenerateGroupService.ps1
+[2025-06-17 21:25:19] [Info] === Group Service Generation - Phase 6 Core Domain Implementation ===
+[2025-06-17 21:25:19] [Info] Generating GroupService and interfaces
+[2025-06-17 21:25:19] [Success] Group domain directories ensured
+[2025-06-17 21:25:19] [Success] IGroupService interface created
+[2025-06-17 21:25:19] [Success] GroupService implementation created
+[2025-06-17 21:25:19] [Success] 41-GenerateGroupService.ps1 completed successfully
+[2025-06-17 21:25:19] [Success] PHASE 36 completed successfully in 0.0340003 seconds
+[2025-06-17 21:25:19] [Info] === PHASE 37 : Physics-based animation ===
+[2025-06-17 21:25:19] [Info] Executing: 42-SetupPhysicsBasedAnimation.ps1
+[2025-06-17 21:25:19] [Error] PHASE 37 FAILED: At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:25 char:30
++   addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:n ...
++                              ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:25 char:47
++   addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:n ...
++                                               ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:27 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:28 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:70 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:70 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:74 char:1
++ }catch{Write-ErrorLog "Physics-based animation generation failed: $($ ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:20] [Info] === PHASE 38 : Advanced timeline ===
+[2025-06-17 21:25:20] [Info] Executing: 43-ImplementAdvancedTimeline.ps1
+[2025-06-17 21:25:20] [Error] PHASE 38 FAILED: At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:27 char:8
++   play():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:28 char:9
++   pause():void
++         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:31 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:59 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:59 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:20] [Info] === PHASE 39 : Animation blending ===
+[2025-06-17 21:25:20] [Info] Executing: 44-SetupAnimationBlending.ps1
+[2025-06-17 21:25:20] [Error] PHASE 39 FAILED: At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:43 char:40
++ import type { IAnimationBlendingService, BlendNode } from '@/domains/ ...
++                                        ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:48 char:31
++ class AnimationBlendingService implements IAnimationBlendingService {
++                               ~
+Missing 'class' body in 'class' declaration.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:54 char:23
++   private constructor() {}
++                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:55 char:22
++   static getInstance() { return this.#instance ?? (this.#instance = n ...
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:55 char:98
++ ... this.#instance ?? (this.#instance = new AnimationBlendingService()) }
++                                                                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:60 char:39
++     if (toState === this.#currentState) return
++                                       ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:62 char:51
++     this.#log.info('Transition started', { toState, duration })
++                                                   ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:66 char:26
++     if (!this.#transition) return
++                          ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:48 char:69
++ class AnimationBlendingService implements IAnimationBlendingService {
++                                                                     ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:13 char:5
++ try {
++     ~
+Missing closing '}' in statement block or type definition.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:21] [Info] === PHASE 40 : Vitest testing framework setup ===
+[2025-06-17 21:25:21] [Info] Executing: 18b-SetupTestingFramework.ps1
+[2025-06-17 21:25:21] [Error] PHASE 40 FAILED: A parameter with the name 'WhatIf' was defined multiple times for the command.
+[2025-06-17 21:25:25] [Info] === PHASE 41 : CI/CD pipeline ===
+[2025-06-17 21:25:25] [Info] Executing: 45-SetupCICDPipeline.ps1
+[2025-06-17 21:25:25] [Error] PHASE 41 FAILED: At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:31 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:31 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:32 char:8
++       - uses: pnpm/action-setup@v2
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:32 char:9
++       - uses: pnpm/action-setup@v2
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:35 char:8
++       - name: Install deps
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:35 char:9
++       - name: Install deps
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:37 char:8
++       - name: Lint
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:37 char:9
++       - name: Lint
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:39 char:8
++       - name: Type Check
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:39 char:9
++       - name: Type Check
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:26] [Info] === PHASE 42 : Docker deployment ===
+[2025-06-17 21:25:26] [Info] Executing: 46-SetupDockerDeployment.ps1
+[2025-06-17 21:25:26] [Error] PHASE 42 FAILED: At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:19 char:1
++ FROM node:20-alpine as builder
++ ~~~~
+The 'from' keyword is not supported in this version of the language.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:22 char:21
++ RUN corepack enable && pnpm install --frozen-lockfile && pnpm build
++                     ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:22 char:55
++ RUN corepack enable && pnpm install --frozen-lockfile && pnpm build
++                                                       ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:25 char:1
++ FROM node:20-alpine
++ ~~~~
+The 'from' keyword is not supported in this version of the language.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:30 char:21
++ RUN corepack enable && pnpm install --prod --frozen-lockfile
++                     ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:44 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:44 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:61 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:61 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:62 char:8
++       - name: Build and push
++        ~
+Missing expression after unary operator '-'.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:26] [Info] === PHASE 43 : Performance regression testing ===
+[2025-06-17 21:25:26] [Info] Executing: 47-SetupPerformanceRegression.ps1
+[2025-06-17 21:25:27] [Error] PHASE 43 FAILED: At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:33 char:22
++  private constructor(){}
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:34 char:21
++  static getInstance(){return this.#instance??(this.#instance=new Perf ...
++                     ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:34 char:95
++ ...  this.#instance??(this.#instance=new PerformanceRegressionService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:35 char:45
++  start(label:string){return performance.now()}
++                                             ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:18
++  end(label:string,startTime:number){const d=performance.now()-startTi ...
++                  ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:61
++  end(label:string,startTime:number){const d=performance.now()-startTi ...
++                                                             ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:98
++ ... onst d=performance.now()-startTime;this.#samples.push({label,duration ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:37 char:9
++  report(){
++         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:38 char:40
++   this.#log.info('Performance samples',this.#samples)
++                                        ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:38 char:40
++   this.#log.info('Performance samples',this.#samples)
++                                        ~~~~~~~~~~~~~
+Unexpected token 'this.#samples' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:27] [Info] === PHASE 44 : Bundle analysis ===
+[2025-06-17 21:25:27] [Info] Executing: 48-SetupAdvancedBundleAnalysis.ps1
+[2025-06-17 21:25:27] [Error] PHASE 44 FAILED: At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:28 char:22
++  private constructor(){}
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:29 char:21
++  static getInstance(){return this.#instance??(this.#instance=new Bund ...
++                     ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:29 char:88
++ ... {return this.#instance??(this.#instance=new BundleAnalyzerService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:30 char:10
++  analyze(){
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:35 char:10
++  dispose(){BundleAnalyzerService.#instance=null}
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:37 char:70
++ ... xport const bundleAnalyzerService=BundleAnalyzerService.getInstance()
++                                                                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:64 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:64 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:66 char:4
++   }
++    ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:67 char:2
++  }
++  ~
+Unexpected token '}' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:28] [Info] === PHASE 45 : Automated documentation ===
+[2025-06-17 21:25:28] [Info] Executing: 49-SetupAutomatedDocumentation.ps1
+[2025-06-17 21:25:28] [Error] PHASE 45 FAILED: At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:19 char:16
++   "entryPoints": ["src/index.ts"],
++                ~
+Unexpected token ':' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:25 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:36 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:36 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:56 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:56 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:57 char:8
++       - uses: pnpm/action-setup@v2
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:57 char:9
++       - uses: pnpm/action-setup@v2
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:59 char:8
++       - name: Install deps
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:59 char:9
++       - name: Install deps
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:28] [Info] === PHASE 46 : Service integration ===
+[2025-06-17 21:25:28] [Info] Executing: 50-SetupServiceIntegration.ps1
+[2025-06-17 21:25:28] [Error] PHASE 46 FAILED: At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:32 char:30
++ export function initServices(){
++                              ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:34 char:48
++   traitService.configureDependencies(rngService, bitcoinService)
++                                                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:35 char:55
++   particleService.configureDependencies(physicsService, renderingServ ...
++                                                       ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:37 char:113
++ ... d('canvas') as HTMLCanvasElement,{formation:formationService,effect:e ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:42 char:33
++ export function disposeServices(){
++                                 ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:28
++   renderingService.dispose(); physicsService.dispose(); traitService. ...
++                            ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:54
++   renderingService.dispose(); physicsService.dispose(); traitService. ...
++                                                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:78
++ ... gService.dispose(); physicsService.dispose(); traitService.dispose();
++                                                                        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:44 char:25
++   effectService.dispose(); animationService.dispose(); groupService.d ...
++                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:44 char:53
++   effectService.dispose(); animationService.dispose(); groupService.d ...
++                                                     ~
+An expression was expected after '('.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:29] [Info] === PHASE 47 : Global state management ===
+[2025-06-17 21:25:29] [Info] Executing: 51-SetupGlobalStateManagement.ps1
+[2025-06-17 21:25:29] [Error] PHASE 47 FAILED: At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:17 char:78
++ ... imulationStore=create<SimulationState>(set=>({ running:false, formati ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:26 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:26 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:29] [Info] === PHASE 48 : React integration ===
+[2025-06-17 21:25:29] [Info] Executing: 52-SetupReactIntegration.ps1
+[2025-06-17 21:25:29] [Error] PHASE 48 FAILED: At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:17 char:16
++ import { Canvas, useFrame } from '@react-three/fiber'
++                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:21 char:34
++ export function SimulationCanvas(){
++                                  ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:23 char:11
++   <Canvas>
++           ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:5
++     <Suspense fallback={null}>
++     ~
+The '<' operator is reserved for future use.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:15
++     <Suspense fallback={null}>
++               ~~~~~~~~~
+Unexpected token 'fallback=' in expression or statement.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:31
++     <Suspense fallback={null}>
++                               ~
+Missing file specification after redirection operator.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:21 char:35
++ export function SimulationCanvas(){
++                                   ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:8 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:27 char:12
++   </Canvas>
++            ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:28 char:2
++  )
++  ~
+Unexpected token ')' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:30] [Info] === PHASE 49 : Event bus system ===
+[2025-06-17 21:25:30] [Info] Executing: 53-SetupEventBusSystem.ps1
+[2025-06-17 21:25:30] [Error] PHASE 49 FAILED: At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:26 char:25
++   emitEvent(event:string,payload?:unknown):void
++                         ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:47 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:47 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:31] [Info] === PHASE 50 : Performance testing ===
+[2025-06-17 21:25:31] [Info] Executing: 54-SetupPerformanceTesting.ps1
+[2025-06-17 21:25:31] [Error] PHASE 50 FAILED: At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:24 char:41
++ describe('Particle update performance',()=>{
++                                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:25 char:47
++  it('should update 10k particles under 16ms',()=>{
++                                               ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:26 char:27
++   for(let i=0;i<10000;i++) particleService.createParticle()
++                           ~
+Missing statement body in for loop.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:26 char:59
++   for(let i=0;i<10000;i++) particleService.createParticle()
++                                                           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Unexpected token 't' in expression or statement.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:25 char:50
++  it('should update 10k particles under 16ms',()=>{
++                                                  ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:30 char:30
++   const duration=perf.report().find(s=>s.label==='update')!.duration
++                              ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:30 char:37
++   const duration=perf.report().find(s=>s.label==='update')!.duration
++                                     ~
+Missing ')' in method call.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:31] [Info] === PHASE 51 : Persistence layer ===
+[2025-06-17 21:25:31] [Info] Executing: 55-SetupPersistenceLayer.ps1
+[2025-06-17 21:25:31] [Error] PHASE 51 FAILED: At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:25 char:18
++   save(key:string,value:unknown):Promise<void>
++                  ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:27 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:28 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:34 char:16
++ import { openDB, DBSchema } from 'idb'
++                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:53 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:53 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:57 char:1
++ }catch{Write-ErrorLog "Persistence setup failed: $($_.Exception.Messa ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:32] [Info] === PHASE 52 : End-to-end validation ===
+[2025-06-17 21:25:32] [Info] Executing: 56-SetupEndToEndValidation.ps1
+[2025-06-17 21:25:32] [Error] PHASE 52 FAILED: At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~~~~~
+Unexpected token 'async' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:10 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:24 char:2
++ })
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:24 char:2
++ })
++  ~
+Unexpected token ')' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:33 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:33 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:48 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:48 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:32] [Info] === PHASE 53 : Final validation and setup completion ===
+[2025-06-17 21:25:32] [Info] Executing: 15-ValidateSetupComplete.ps1
+[2025-06-17 21:25:32] [Info] === Setup Validation - Concerns #3 & #4 Resolution ===
+[2025-06-17 21:25:32] [Info] Validating setup in project root: D:\Protozoa
+[2025-06-17 21:25:32] [Error] Validation failed with exception: A positional parameter cannot be found that accepts argument '�'.
+[2025-06-17 21:25:32] [Error] PHASE 53 FAILED: Script exited with code 1
+[2025-06-17 21:25:33] [Info] === AUTOMATION PIPELINE SUMMARY ===
+[2025-06-17 21:25:33] [Info] Total execution time: 2.01 minutes
+[2025-06-17 21:25:33] [Info] Results: 19 succeeded, 35 failed, 0 missing
+[2025-06-17 21:25:33] [Info]   Phase 0: ✅ 00-InitEnvironment.ps1 (5.0s)
+[2025-06-17 21:25:33] [Info]   Phase 1: ✅ 01-ScaffoldProjectStructure.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 2: ❌ 02-GenerateDomainStubs.ps1 (0.8s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 3: ❌ 03-MoveAndCleanCodebase.ps1 (1.6s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 4: ✅ 04-EnforceSingletonPatterns.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 5: ✅ 05-VerifyCompliance.ps1 (0.4s)
+[2025-06-17 21:25:33] [Info]   Phase 6: ❌ 06-DomainLint.ps1 (0.1s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 7: ✅ 07-BuildAndTest.ps1 (1.3s)
+[2025-06-17 21:25:33] [Info]   Phase 8: ❌ 20-SetupPreCommitValidation.ps1 (46.3s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 9: ❌ 08-DeployToGitHub.ps1 (1.2s)
+[2025-06-17 21:25:33] [Warning]     Error: Cannot bind argument to parameter 'Message' because it is an empty string.
+[2025-06-17 21:25:33] [Info]   Phase 10: ❌ 16-GenerateSharedTypesService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Warning]     Error: Cannot bind argument to parameter 'Message' because it is an empty string.
+[2025-06-17 21:25:33] [Info]   Phase 11: ❌ 17-GenerateEnvironmentConfig.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\17-GenerateEnvironmentConfig.ps1:724 char:84
++ ... og "3. Use createServiceLogger for consistent logging across domains"
++                                                                         ~
+The string is missing the terminator: ".
+
+At D:\Protozoa\scripts\17-GenerateEnvironmentConfig.ps1:702 char:19
++ if (-not $WhatIf) {
++                   ~
+Missing closing '}' in statement block or type definition.
+[2025-06-17 21:25:33] [Info]   Phase 12: ❌ 18a-SetupLoggingService.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:87 char:6
++     } else {
++      ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:113 char:72
++ ...  Write-ErrorLog "SetupLoggingService failed: $($_.Exception.Message)"
++                                                                         ~
+The string is missing the terminator: ".
+
+At D:\Protozoa\scripts\18a-SetupLoggingService.ps1:106 char:12
++     } else {
++            ~
+Missing closing '}' in statement block or type definition.
+[2025-06-17 21:25:33] [Info]   Phase 13: ❌ 18-GenerateFormationDomain.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: The term 'Write-StatusMessage' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-06-17 21:25:33] [Info]   Phase 14: ❌ 14-FixUtilityFunctions.ps1 (11.1s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 15: ✅ 19-ConfigureAdvancedTypeScript.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 16: ✅ 21-ConfigureDevEnvironment.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 17: ✅ 22-SetupBitcoinProtocol.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 18: ✅ 23-GenerateRNGService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 19: ✅ 24-GeneratePhysicsService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 20: ✅ 25-SetupPhysicsWebWorkers.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 21: ✅ 26-GenerateBitcoinService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 22: ✅ 27-GenerateTraitService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 23: ✅ 28-SetupBlockchainDataIntegration.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 24: ❌ 29-SetupDataValidationLayer.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:50 char:23
++   private constructor() {}
++                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:51 char:22
++   static getInstance(){return this.#instance??(this.#instance=new Dat ...
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:51 char:89
++ ... {return this.#instance??(this.#instance=new DataValidationService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:13
++     if(!data||!data.hash||!data.merkle_root){this.#err.logError(new E ...
++             ~~
+The token '||' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:25
++     if(!data||!data.hash||!data.merkle_root){this.#err.logError(new E ...
++                         ~~
+The token '||' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:53 char:97
++ ... kle_root){this.#err.logError(new Error('Invalid block'),{data});retur ...
++                                                                  ~
+The Data section is missing its statement block.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:57 char:38
++     const isValid = content.length>0 && content.startsWith('{')
++                                      ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:58 char:16
++     if(!isValid) this.#log.warn('Inscription content failed validatio ...
++                ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:63 char:27
++     return proof.length>0 && txId.length>0
++                           ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\29-SetupDataValidationLayer.ps1:65 char:11
++   dispose(){DataValidationService.#instance=null}
++           ~
+An expression was expected after '('.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 25: ❌ 30-EnhanceTraitSystem.ps1 (0.1s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Info]   Phase 26: ✅ 31-GenerateParticleService.ps1 (0.2s)
+[2025-06-17 21:25:33] [Info]   Phase 27: ❌ 32-SetupParticleLifecycleManagement.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:26 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:27 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:52 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:52 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\32-SetupParticleLifecycleManagement.ps1:56 char:1
++ }catch{Write-ErrorLog "Lifecycle setup failed: $($_.Exception.Message ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 28: ❌ 33-ImplementSwarmIntelligence.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:26 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:27 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:55 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:55 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\33-ImplementSwarmIntelligence.ps1:59 char:1
++ }catch{Write-ErrorLog "Swarm generation failed: $($_.Exception.Messag ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 29: ❌ 34-EnhanceFormationSystem.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:29 char:28
++   generatePattern(id:string,count:number):FormationPattern{
++                            ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:11
++       case 'fibonacci':
++           ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:23
++       case 'fibonacci':
++                       ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:32 char:24
++       case 'fibonacci':
++                        ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:12
++         for(let i=0;i<count;i++){
++            ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:20
++         for(let i=0;i<count;i++){
++                    ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:20
++         for(let i=0;i<count;i++){
++                    ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:28
++         for(let i=0;i<count;i++){
++                            ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:32
++         for(let i=0;i<count;i++){
++                                ~
+Missing statement block in switch statement clause.
+
+At D:\Protozoa\scripts\34-EnhanceFormationSystem.ps1:33 char:32
++         for(let i=0;i<count;i++){
++                                ~
+Missing condition in switch statement clause.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 30: ✅ 35-GenerateRenderingService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 31: ✅ 36-GenerateEffectService.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 32: ❌ 37-SetupCustomShaderSystem.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:30 char:15
++     void main(){
++               ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~~~
+Unexpected token 'abs' in expression or statement.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:41
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                         ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:30 char:16
++     void main(){
++                ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:27 char:22
++ export const Shaders={
++                      ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:12 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:60
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                                            ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:32 char:60
++       float stripe=smoothstep(0.45,0.55,abs(sin(uv.y*20.0)));
++                                                            ~
+Unexpected token ')' in expression or statement.
+
+At D:\Protozoa\scripts\37-SetupCustomShaderSystem.ps1:34 char:5
++     }
++     ~
+Unexpected token '}' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 33: ❌ 38-ImplementLODSystem.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:27 char:23
++  register(obj:Object3D,config:LODConfig): void
++                       ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:28 char:33
++  update(cameraPosition:{x:number,y:number,z:number}): void
++                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:29 char:10
++  dispose(): void
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:36 char:17
++ import { Vector3, Object3D } from 'three'
++                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:69 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\38-ImplementLODSystem.ps1:69 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 34: ❌ 39-SetupAdvancedEffectComposition.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:30 char:8
++   play():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:31 char:8
++   stop():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:33 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:64 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\39-SetupAdvancedEffectComposition.ps1:64 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 35: ✅ 40-GenerateAnimationService.ps1 (0.1s)
+[2025-06-17 21:25:33] [Info]   Phase 36: ✅ 41-GenerateGroupService.ps1 (0.0s)
+[2025-06-17 21:25:33] [Info]   Phase 37: ❌ 42-SetupPhysicsBasedAnimation.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:25 char:30
++   addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:n ...
++                              ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:25 char:47
++   addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:n ...
++                                               ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:27 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:28 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:70 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:70 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\42-SetupPhysicsBasedAnimation.ps1:74 char:1
++ }catch{Write-ErrorLog "Physics-based animation generation failed: $($ ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 38: ❌ 43-ImplementAdvancedTimeline.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:27 char:8
++   play():void
++        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:28 char:9
++   pause():void
++         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:31 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:59 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\43-ImplementAdvancedTimeline.ps1:59 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 39: ❌ 44-SetupAnimationBlending.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:43 char:40
++ import type { IAnimationBlendingService, BlendNode } from '@/domains/ ...
++                                        ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:48 char:31
++ class AnimationBlendingService implements IAnimationBlendingService {
++                               ~
+Missing 'class' body in 'class' declaration.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:54 char:23
++   private constructor() {}
++                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:55 char:22
++   static getInstance() { return this.#instance ?? (this.#instance = n ...
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:55 char:98
++ ... this.#instance ?? (this.#instance = new AnimationBlendingService()) }
++                                                                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:60 char:39
++     if (toState === this.#currentState) return
++                                       ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:62 char:51
++     this.#log.info('Transition started', { toState, duration })
++                                                   ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:66 char:26
++     if (!this.#transition) return
++                          ~
+Missing statement block after if ( condition ).
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:48 char:69
++ class AnimationBlendingService implements IAnimationBlendingService {
++                                                                     ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\44-SetupAnimationBlending.ps1:13 char:5
++ try {
++     ~
+Missing closing '}' in statement block or type definition.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 40: ❌ 18b-SetupTestingFramework.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: A parameter with the name 'WhatIf' was defined multiple times for the command.
+[2025-06-17 21:25:33] [Info]   Phase 41: ❌ 45-SetupCICDPipeline.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:31 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:31 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:32 char:8
++       - uses: pnpm/action-setup@v2
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:32 char:9
++       - uses: pnpm/action-setup@v2
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:35 char:8
++       - name: Install deps
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:35 char:9
++       - name: Install deps
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:37 char:8
++       - name: Lint
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:37 char:9
++       - name: Lint
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:39 char:8
++       - name: Type Check
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\45-SetupCICDPipeline.ps1:39 char:9
++       - name: Type Check
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 42: ❌ 46-SetupDockerDeployment.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:19 char:1
++ FROM node:20-alpine as builder
++ ~~~~
+The 'from' keyword is not supported in this version of the language.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:22 char:21
++ RUN corepack enable && pnpm install --frozen-lockfile && pnpm build
++                     ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:22 char:55
++ RUN corepack enable && pnpm install --frozen-lockfile && pnpm build
++                                                       ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:25 char:1
++ FROM node:20-alpine
++ ~~~~
+The 'from' keyword is not supported in this version of the language.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:30 char:21
++ RUN corepack enable && pnpm install --prod --frozen-lockfile
++                     ~~
+The token '&&' is not a valid statement separator in this version.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:44 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:44 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:61 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:61 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\46-SetupDockerDeployment.ps1:62 char:8
++       - name: Build and push
++        ~
+Missing expression after unary operator '-'.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 43: ❌ 47-SetupPerformanceRegression.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:33 char:22
++  private constructor(){}
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:34 char:21
++  static getInstance(){return this.#instance??(this.#instance=new Perf ...
++                     ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:34 char:95
++ ...  this.#instance??(this.#instance=new PerformanceRegressionService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:35 char:45
++  start(label:string){return performance.now()}
++                                             ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:18
++  end(label:string,startTime:number){const d=performance.now()-startTi ...
++                  ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:61
++  end(label:string,startTime:number){const d=performance.now()-startTi ...
++                                                             ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:36 char:98
++ ... onst d=performance.now()-startTime;this.#samples.push({label,duration ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:37 char:9
++  report(){
++         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:38 char:40
++   this.#log.info('Performance samples',this.#samples)
++                                        ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\47-SetupPerformanceRegression.ps1:38 char:40
++   this.#log.info('Performance samples',this.#samples)
++                                        ~~~~~~~~~~~~~
+Unexpected token 'this.#samples' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 44: ❌ 48-SetupAdvancedBundleAnalysis.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:28 char:22
++  private constructor(){}
++                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:29 char:21
++  static getInstance(){return this.#instance??(this.#instance=new Bund ...
++                     ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:29 char:88
++ ... {return this.#instance??(this.#instance=new BundleAnalyzerService())}
++                                                                       ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:30 char:10
++  analyze(){
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:35 char:10
++  dispose(){BundleAnalyzerService.#instance=null}
++          ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:37 char:70
++ ... xport const bundleAnalyzerService=BundleAnalyzerService.getInstance()
++                                                                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:64 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:64 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:66 char:4
++   }
++    ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\48-SetupAdvancedBundleAnalysis.ps1:67 char:2
++  }
++  ~
+Unexpected token '}' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 45: ❌ 49-SetupAutomatedDocumentation.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:19 char:16
++   "entryPoints": ["src/index.ts"],
++                ~
+Unexpected token ':' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:25 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:36 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:36 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:56 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:56 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:57 char:8
++       - uses: pnpm/action-setup@v2
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:57 char:9
++       - uses: pnpm/action-setup@v2
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:59 char:8
++       - name: Install deps
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\49-SetupAutomatedDocumentation.ps1:59 char:9
++       - name: Install deps
++         ~~~~~
+Unexpected token 'name:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 46: ❌ 50-SetupServiceIntegration.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:32 char:30
++ export function initServices(){
++                              ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:34 char:48
++   traitService.configureDependencies(rngService, bitcoinService)
++                                                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:35 char:55
++   particleService.configureDependencies(physicsService, renderingServ ...
++                                                       ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:37 char:113
++ ... d('canvas') as HTMLCanvasElement,{formation:formationService,effect:e ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:42 char:33
++ export function disposeServices(){
++                                 ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:28
++   renderingService.dispose(); physicsService.dispose(); traitService. ...
++                            ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:54
++   renderingService.dispose(); physicsService.dispose(); traitService. ...
++                                                      ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:43 char:78
++ ... gService.dispose(); physicsService.dispose(); traitService.dispose();
++                                                                        ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:44 char:25
++   effectService.dispose(); animationService.dispose(); groupService.d ...
++                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\50-SetupServiceIntegration.ps1:44 char:53
++   effectService.dispose(); animationService.dispose(); groupService.d ...
++                                                     ~
+An expression was expected after '('.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 47: ❌ 51-SetupGlobalStateManagement.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:17 char:78
++ ... imulationStore=create<SimulationState>(set=>({ running:false, formati ...
++                                                                 ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:26 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\51-SetupGlobalStateManagement.ps1:26 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 48: ❌ 52-SetupReactIntegration.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:17 char:16
++ import { Canvas, useFrame } from '@react-three/fiber'
++                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:21 char:34
++ export function SimulationCanvas(){
++                                  ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:23 char:11
++   <Canvas>
++           ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:5
++     <Suspense fallback={null}>
++     ~
+The '<' operator is reserved for future use.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:15
++     <Suspense fallback={null}>
++               ~~~~~~~~~
+Unexpected token 'fallback=' in expression or statement.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:24 char:31
++     <Suspense fallback={null}>
++                               ~
+Missing file specification after redirection operator.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:21 char:35
++ export function SimulationCanvas(){
++                                   ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:8 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:27 char:12
++   </Canvas>
++            ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\52-SetupReactIntegration.ps1:28 char:2
++  )
++  ~
+Unexpected token ')' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 49: ❌ 53-SetupEventBusSystem.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:26 char:25
++   emitEvent(event:string,payload?:unknown):void
++                         ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:47 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\53-SetupEventBusSystem.ps1:47 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 50: ❌ 54-SetupPerformanceTesting.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:24 char:41
++ describe('Particle update performance',()=>{
++                                         ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:25 char:47
++  it('should update 10k particles under 16ms',()=>{
++                                               ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:26 char:27
++   for(let i=0;i<10000;i++) particleService.createParticle()
++                           ~
+Missing statement body in for loop.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:26 char:59
++   for(let i=0;i<10000;i++) particleService.createParticle()
++                                                           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Unexpected token 't' in expression or statement.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:29 char:21
++   perf.end('update',t)
++                     ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:25 char:50
++  it('should update 10k particles under 16ms',()=>{
++                                                  ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:30 char:30
++   const duration=perf.report().find(s=>s.label==='update')!.duration
++                              ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\54-SetupPerformanceTesting.ps1:30 char:37
++   const duration=perf.report().find(s=>s.label==='update')!.duration
++                                     ~
+Missing ')' in method call.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 51: ❌ 55-SetupPersistenceLayer.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:25 char:18
++   save(key:string,value:unknown):Promise<void>
++                  ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:27 char:11
++   dispose():void
++           ~
+An expression was expected after '('.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:28 char:2
++ }
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:34 char:16
++ import { openDB, DBSchema } from 'idb'
++                ~
+Missing argument in parameter list.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:53 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:53 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\55-SetupPersistenceLayer.ps1:57 char:1
++ }catch{Write-ErrorLog "Persistence setup failed: $($_.Exception.Messa ...
++ ~
+Unexpected token '}' in expression or statement.
+[2025-06-17 21:25:33] [Info]   Phase 52: ❌ 56-SetupEndToEndValidation.ps1 (0.0s)
+[2025-06-17 21:25:33] [Warning]     Error: At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~
+Missing expression after ','.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~~~~~
+Unexpected token 'async' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:20 char:31
++ test('organism creation flow',async({ page })=>{
++                               ~
+Missing closing ')' in expression.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:10 char:4
++ try{
++    ~
+Missing closing '}' in statement block or type definition.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:24 char:2
++ })
++  ~
+The Try statement is missing its Catch or Finally block.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:24 char:2
++ })
++  ~
+Unexpected token ')' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:33 char:2
++ "@
++  ~
+Unrecognized token in source text.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:33 char:2
++ "@
++  ~
+Unexpected token '@' in expression or statement.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:48 char:8
++       - uses: actions/checkout@v3
++        ~
+Missing expression after unary operator '-'.
+
+At D:\Protozoa\scripts\56-SetupEndToEndValidation.ps1:48 char:9
++       - uses: actions/checkout@v3
++         ~~~~~
+Unexpected token 'uses:' in expression or statement.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+[2025-06-17 21:25:33] [Info]   Phase 53: ❌ 15-ValidateSetupComplete.ps1 (0.1s)
+[2025-06-17 21:25:33] [Warning]     Error: Script exited with code 1
+[2025-06-17 21:25:33] [Warning] ⚠️ AUTOMATION PARTIALLY COMPLETED
+[2025-06-17 21:25:33] [Info] Some phases succeeded, but manual intervention may be required.
+[2025-06-17 21:25:33] [Info] Check the error messages above and resolve issues before proceeding.
+[2025-06-17 21:34:41] [Info] === NEW-PROTOZOA AUTOMATION PIPELINE ===
+[2025-06-17 21:34:41] [Info] Starting complete project setup automation...
+[2025-06-17 21:34:41] [Info] === PHASE 0 : Environment setup and dependencies ===
+[2025-06-17 21:34:41] [Info] Executing: 00-InitEnvironment.ps1
+[2025-06-17 21:34:41] [Info] === Environment Initialization - Phase 0 ===
+[2025-06-17 21:34:41] [Success] PowerShell environment validated: 5.1.26100.4202
+[2025-06-17 21:34:41] [Warning] Not running as administrator. Some global installs may require elevation.
+[2025-06-17 21:34:41] [Info] Consider running PowerShell as Administrator for best results.
+[2025-06-17 21:34:41] [Info] Checking Node.js installation (target: LTS)...
+[2025-06-17 21:34:41] [Success] Node.js already installed: v20.11.1
+[2025-06-17 21:34:41] [Info] Use -Force to reinstall Node.js
+[2025-06-17 21:34:41] [Info] Checking pnpm installation...
+[2025-06-17 21:34:42] [Success] pnpm already installed: v10.12.1
+[2025-06-17 21:34:42] [Info] Setting up project workspace...
+[2025-06-17 21:34:42] [Info] package.json already exists
+[2025-06-17 21:34:42] [Info] Installing development dependencies...
+[2025-06-17 21:34:44] [Success] Development dependencies installed: 6 packages
+[2025-06-17 21:34:44] [Info] Installing production dependencies...
+[2025-06-17 21:34:46] [Success] Production dependencies installed: 5 packages
+[2025-06-17 21:34:46] [Success] All critical packages verified in package.json
+[2025-06-17 21:34:46] [Info] === Environment Setup Summary ===
+[2025-06-17 21:34:46] [Info] Environment Configuration:
+[2025-06-17 21:34:46] [Info]   Timestamp : 2025-06-17 21:34:46
+[2025-06-17 21:34:46] [Info]   NodeJS : v20.11.1
+[2025-06-17 21:34:46] [Info]   ExecutionPolicy : RemoteSigned
+[2025-06-17 21:34:46] [Info]   pnpm : v10.12.1
+[2025-06-17 21:34:46] [Info]   ProjectRoot : D:\Protozoa
+[2025-06-17 21:34:46] [Info]   PowerShell : 5.1.26100.4202
+[2025-06-17 21:34:46] [Info]   Administrator : False
+[2025-06-17 21:34:46] [Success] Environment setup marker created: .env-setup-complete
+[2025-06-17 21:34:46] [Success] 🎉 Environment initialization completed successfully!
+[2025-06-17 21:34:46] [Info] Ready for Phase 1: Project Structure Scaffolding
+[2025-06-17 21:34:46] [Success] PHASE 0 completed successfully in 5.3093903 seconds
+[2025-06-17 21:34:46] [Info] === PHASE 1 : Domain-driven directory structure ===
+[2025-06-17 21:34:46] [Info] Executing: 01-ScaffoldProjectStructure.ps1
+[2025-06-17 21:34:46] [Info] === Project Structure Scaffolding - Phase 1 ===
+[2025-06-17 21:34:46] [Info] Working in project root: D:\Protozoa
+[2025-06-17 21:34:46] [Info] Scaffolding domains: rendering, animation, effect, trait, physics, particle, formation, group, rng, bitcoin
+[2025-06-17 21:34:46] [Info] Creating base directory structure...
+[2025-06-17 21:34:46] [Info] Creating domain-specific directories...
+[2025-06-17 21:34:46] [Success] Domain scaffolded: rendering
+[2025-06-17 21:34:46] [Success] Domain scaffolded: animation
+[2025-06-17 21:34:46] [Success] Domain scaffolded: effect
+[2025-06-17 21:34:46] [Success] Domain scaffolded: trait
+[2025-06-17 21:34:46] [Success] Domain scaffolded: physics
+[2025-06-17 21:34:46] [Success] Domain scaffolded: particle
+[2025-06-17 21:34:46] [Success] Domain scaffolded: formation
+[2025-06-17 21:34:46] [Success] Domain scaffolded: group
+[2025-06-17 21:34:46] [Success] Domain scaffolded: rng
+[2025-06-17 21:34:46] [Success] Domain scaffolded: bitcoin
+[2025-06-17 21:34:46] [Info] Creating shared infrastructure stubs...
+[2025-06-17 21:34:46] [Success] Created shared logger utility
+[2025-06-17 21:34:46] [Success] Created shared types definitions
+[2025-06-17 21:34:46] [Success] Created environment configuration
+[2025-06-17 21:34:46] [Info] Creating ESLint configuration...
+[2025-06-17 21:34:46] [Success] Created ESLint configuration
+[2025-06-17 21:34:46] [Info] Verifying directory structure...
+[2025-06-17 21:34:46] [Success] Directory structure verification passed
+[2025-06-17 21:34:46] [Info] Structure Summary:
+[2025-06-17 21:34:46] [Info]   - 10 domains scaffolded
+[2025-06-17 21:34:46] [Info]   - Shared infrastructure created
+[2025-06-17 21:34:46] [Info]   - Test directories mirrored
+[2025-06-17 21:34:46] [Info]   - TypeScript path aliases configured
+[2025-06-17 21:34:46] [Success] Project structure scaffolding complete!
+[2025-06-17 21:34:46] [Info] Next: Run 02-GenerateDomainStubs.ps1 to create service skeletons
+[2025-06-17 21:34:46] [Success] PHASE 1 completed successfully in 0.0976224 seconds
+[2025-06-17 21:34:46] [Info] === PHASE 2 : Service and interface stubs ===
+[2025-06-17 21:34:46] [Info] Executing: 02-GenerateDomainStubs.ps1
+[2025-06-17 21:34:46] [Info] === Domain Service Stub Generation ===
+[2025-06-17 21:34:46] [Info] Generating service stubs for: rendering, animation, effect, trait, physics, particle, formation, group, rng, bitcoin
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/rendering/services/RenderingService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/animation/services/AnimationService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/effect/services/EffectService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/trait/services/TraitService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/physics/services/PhysicsService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/particle/services/ParticleService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/formation/services/FormationService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/group/services/GroupService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/rng/services/RngService.ts
+[2025-06-17 21:34:46] [Warning] Service already exists, skipping: src/domains/bitcoin/services/BitcoinService.ts
+[2025-06-17 21:34:46] [Info] Creating domain service index...
+[2025-06-17 21:34:46] [Success] Created domain service index
+[2025-06-17 21:34:46] [Info] Verifying TypeScript compilation...
+[2025-06-17 21:34:46] [Info] Testing TypeScript compilation...
+[2025-06-17 21:34:47] [Warning] TypeScript compilation issues detected: error TS6305: Output file 'D:/Protozoa/src/config/bitcoin.config.d.ts' has not been built from source file 'D:/Protozoa/src/config/bitcoin.config.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/config/rate-limiter.d.ts' has not been built from source file 'D:/Protozoa/src/config/rate-limiter.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/animation/interfaces/IAnimationService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/animation/interfaces/IAnimationService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/animation/services/AnimationService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/animation/services/AnimationService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/animation/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/animation/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/interfaces/IBitcoinService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/interfaces/IBitcoinService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/services/BitcoinService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/services/BitcoinService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/services/blockStreamService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/services/blockStreamService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/types/bitcoin.types.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/types/bitcoin.types.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/bitcoin/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/bitcoin/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/effect/interfaces/IEffectService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/effect/interfaces/IEffectService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/effect/services/EffectService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/effect/services/EffectService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/effect/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/effect/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/formation/services/FormationService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/formation/services/FormationService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/formation/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/formation/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/group/interfaces/IGroupService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/group/interfaces/IGroupService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/group/services/GroupService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/group/services/GroupService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/group/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/group/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/particle/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/particle/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/particle/interfaces/IParticleService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/particle/interfaces/IParticleService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/particle/services/ParticleService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/particle/services/ParticleService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/particle/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/particle/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/particle/types/particle.types.d.ts' has not been built from source file 'D:/Protozoa/src/domains/particle/types/particle.types.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/interfaces/IPhysicsService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/interfaces/IPhysicsService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/services/PhysicsService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/services/PhysicsService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/services/workerManager.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/services/workerManager.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/types/physics.types.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/types/physics.types.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/physics/workers/physicsWorker.d.ts' has not been built from source file 'D:/Protozoa/src/domains/physics/workers/physicsWorker.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rendering/interfaces/IRenderingService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rendering/interfaces/IRenderingService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rendering/services/RenderingService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rendering/services/RenderingService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rendering/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rendering/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rng/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rng/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rng/interfaces/IRNGService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rng/interfaces/IRNGService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rng/services/RngService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rng/services/RngService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rng/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rng/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/rng/types/rng.types.d.ts' has not been built from source file 'D:/Protozoa/src/domains/rng/types/rng.types.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/trait/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/trait/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/trait/interfaces/ITraitService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/trait/interfaces/ITraitService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/trait/services/TraitService.d.ts' has not been built from source file 'D:/Protozoa/src/domains/trait/services/TraitService.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/trait/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/domains/trait/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/domains/trait/types/trait.types.d.ts' has not been built from source file 'D:/Protozoa/src/domains/trait/types/trait.types.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/config/environment.d.ts' has not been built from source file 'D:/Protozoa/src/shared/config/environment.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/lib/logger.d.ts' has not been built from source file 'D:/Protozoa/src/shared/lib/logger.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/configTypes.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/configTypes.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/entityTypes.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/entityTypes.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/eventTypes.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/eventTypes.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/index.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/index.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/loggingTypes.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/loggingTypes.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' error TS6305: Output file 'D:/Protozoa/src/shared/types/vectorTypes.d.ts' has not been built from source file 'D:/Protozoa/src/shared/types/vectorTypes.ts'.   The file is in the program because:     Matched by include pattern 'src/**/*' in 'D:/Protozoa/tsconfig.json' tsconfig.json(3,24): error TS6310: Referenced project 'D:/Protozoa/tsconfig.app.json' may not disable emit. tsconfig.json(6,24): error TS6310: Referenced project 'D:/Protozoa/tsconfig.node.json' may not disable emit.
+[2025-06-17 21:34:47] [Warning] TypeScript compilation has warnings - check output above
+[2025-06-17 21:34:47] [Info] Generation Summary:
+[2025-06-17 21:34:47] [Info]   - 10 service stubs created
+[2025-06-17 21:34:47] [Info]   - All interfaces defined with proper contracts
+[2025-06-17 21:34:47] [Info]   - Singleton patterns implemented
+[2025-06-17 21:34:47] [Info]   - Winston logging configured
+[2025-06-17 21:34:47] [Info]   - Proper dispose() methods added
+[2025-06-17 21:34:47] [Success] Domain service stub generation complete!
+[2025-06-17 21:34:47] [Info] Next: Run 03-MoveAndCleanCodebase.ps1 to clean legacy files
+[2025-06-17 21:34:47] [Error] PHASE 2 FAILED: Script exited with code 2
+[2025-06-17 21:34:52] [Info] === PHASE 3 : Legacy code cleanup ===
+[2025-06-17 21:34:52] [Info] Executing: 03-MoveAndCleanCodebase.ps1
+[2025-06-17 21:34:52] [Info] === Codebase Migration and Cleanup ===
+[2025-06-17 21:34:52] [Info] Removing backup and legacy files...
+[2025-06-17 21:34:53] [Info] Moving test files out of src directory...
+[2025-06-17 21:34:53] [Info] Removing duplicate and obsolete files...
+[2025-06-17 21:34:53] [Info] Checking for oversize files (>500 lines)...
+[2025-06-17 21:34:53] [Warning] Oversize file detected (616 lines): D:\Protozoa\src\domains\bitcoin\services\BitcoinService.ts
+[2025-06-17 21:34:53] [Warning] Oversize file detected (794 lines): D:\Protozoa\src\domains\particle\services\ParticleService.ts
+[2025-06-17 21:34:53] [Warning] Oversize file detected (544 lines): D:\Protozoa\src\domains\physics\services\PhysicsService.ts
+[2025-06-17 21:34:53] [Warning] Oversize file detected (801 lines): D:\Protozoa\src\domains\rng\services\RngService.ts
+[2025-06-17 21:34:53] [Warning] Oversize file detected (1241 lines): D:\Protozoa\src\domains\trait\services\TraitService.ts
+[2025-06-17 21:34:53] [Warning] Found 5 oversize files - manual review required
+[2025-06-17 21:34:53] [Info] Created OVERSIZE_FILES_REPORT.md for manual review
+[2025-06-17 21:34:53] [Info] Updating import paths in TypeScript files...
+[2025-06-17 21:34:53] [Info] Removing empty directories...
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\components
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\animation\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\bitcoin\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\bitcoin\utils
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\effect\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\formation\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\group\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\particle\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\particle\utils
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\physics\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\rendering\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\rng\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\rng\utils
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\trait\data
+[2025-06-17 21:34:53] [Info] Removing empty directory: D:\Protozoa\src\domains\trait\utils
+[2025-06-17 21:34:53] [Info] Verifying post-cleanup directory structure...
+[2025-06-17 21:34:53] [Success] Directory structure validation passed
+[2025-06-17 21:34:53] [Info] Cleanup Summary:
+[2025-06-17 21:34:54] [Info]   - Backup files removed: 0
+[2025-06-17 21:34:54] [Info]   - Test files moved to tests/: 0
+[2025-06-17 21:34:54] [Info]   - Import paths updated: 0 files
+[2025-06-17 21:34:54] [Info]   - Oversize files found: 5
+[2025-06-17 21:34:54] [Success] Codebase migration and cleanup complete!
+[2025-06-17 21:34:54] [Info] Next: Run 04-EnforceSingletonPatterns.ps1 to standardize service patterns
+[2025-06-17 21:34:54] [Error] PHASE 3 FAILED: Script exited with code 2
+[2025-06-17 21:34:55] [Info] === PHASE 4 : Singleton pattern enforcement ===
+[2025-06-17 21:34:55] [Info] Executing: 04-EnforceSingletonPatterns.ps1
+[2025-06-17 21:34:55] [Info] === Singleton Pattern Enforcement - Phase 4 ===
+[2025-06-17 21:34:55] [Info] Validating singleton patterns in project: D:\Protozoa
+[2025-06-17 21:34:55] [Warning] Found 1 singleton pattern violations:
+[2025-06-17 21:34:55] [Warning]   - Missing dispose method: D:\Protozoa\src\domains\physics\services\workerManager.ts
+[2025-06-17 21:34:55] [Success] Singleton pattern enforcement completed
+[2025-06-17 21:34:55] [Success] PHASE 4 completed successfully in 0.0290003 seconds
+[2025-06-17 21:34:55] [Info] === PHASE 5 : Architecture compliance verification ===
+[2025-06-17 21:34:55] [Info] Executing: 05-VerifyCompliance.ps1
+[2025-06-17 21:34:55] [Info] === Architecture Compliance Verification - Phase 5 ===
+[2025-06-17 21:34:55] [Info] Verifying compliance in project: D:\Protozoa
+[2025-06-17 21:34:56] [Warning] Found 5 compliance violations:
+[2025-06-17 21:34:56] [Warning]   - File exceeds 500 lines (616): D:\Protozoa\src\domains\bitcoin\services\BitcoinService.ts
+[2025-06-17 21:34:56] [Warning]   - File exceeds 500 lines (794): D:\Protozoa\src\domains\particle\services\ParticleService.ts
+[2025-06-17 21:34:56] [Warning]   - File exceeds 500 lines (544): D:\Protozoa\src\domains\physics\services\PhysicsService.ts
+[2025-06-17 21:34:56] [Warning]   - File exceeds 500 lines (801): D:\Protozoa\src\domains\rng\services\RngService.ts
+[2025-06-17 21:34:56] [Warning]   - File exceeds 500 lines (1241): D:\Protozoa\src\domains\trait\services\TraitService.ts
+[2025-06-17 21:34:56] [Success] Compliance verification completed
+[2025-06-17 21:34:56] [Success] PHASE 5 completed successfully in 0.3907833 seconds
+[2025-06-17 21:34:56] [Info] === PHASE 6 : Domain-specific linting ===
+[2025-06-17 21:34:56] [Info] Executing: 06-DomainLint.ps1
+[2025-06-17 21:34:56] [Info] === Domain-Specific Linting - Phase 6 ===
+[2025-06-17 21:34:56] [Info] Running domain linting in project: D:\Protozoa
+[2025-06-17 21:34:56] [Error] Domain linting failed: A parameter cannot be found that matches parameter name 'and'.
+[2025-06-17 21:34:56] [Error] PHASE 6 FAILED: Script exited with code 1
+[2025-06-17 21:34:57] [Info] === PHASE 7 : Build verification and testing ===
+[2025-06-17 21:34:57] [Info] Executing: 07-BuildAndTest.ps1
+[2025-06-17 21:34:57] [Info] === Build and Test Validation - Phase 7 ===
+[2025-06-17 21:34:57] [Info] Running build validation in project: D:\Protozoa
+[2025-06-17 21:34:57] [Info] Checking TypeScript compilation...
+[2025-06-17 21:34:58] [Warning] TypeScript compilation issues found:
+[2025-06-17 21:34:58] [Warning] TypeScript compilation check failed: Cannot process argument transformation on parameter 'Message'. Cannot convert value to type System.String.
+[2025-06-17 21:34:58] [Info] Checking for test scripts...
+[2025-06-17 21:34:58] [Info] Running tests...
+[2025-06-17 21:34:58] [Warning] Test execution failed: 'vitest' is not recognized as an internal or external command,
+[2025-06-17 21:34:58] [Success] Build and test validation completed
+[2025-06-17 21:34:58] [Success] PHASE 7 completed successfully in 1.3857773 seconds
+[2025-06-17 21:34:58] [Info] === PHASE 8 : Pre-commit hooks and validation ===
+[2025-06-17 21:34:58] [Info] Executing: 20-SetupPreCommitValidation.ps1
+[2025-06-17 21:34:58] [Info] === Pre-commit Validation Setup - Phase 1 Infrastructure Enhancement ===
+[2025-06-17 21:34:58] [Info] Installing Husky and configuring Git hooks for automated validation
+[2025-06-17 21:34:58] [Info] Installing Husky and lint-staged packages
+[2025-06-17 21:35:44] [Error] Pre-commit validation setup failed: npm ERR! Cannot read properties of null (reading 'matches')
+[2025-06-17 21:35:44] [Error] PHASE 8 FAILED: Script exited with code 1
+[2025-06-17 21:35:47] [Info] === PHASE 9 : Git initialization and GitHub deployment ===
+[2025-06-17 21:35:47] [Info] Executing: 08-DeployToGitHub.ps1
+[2025-06-17 21:35:47] [Info] === GitHub Deployment Setup ===
+[2025-06-17 21:35:47] [Info] Preparing to deploy new-protozoa automation package to BTCEnoch/protozoa
+[2025-06-17 21:35:47] [Info] Checking git installation...
+[2025-06-17 21:35:47] [Success] Git installed: git version 2.49.0.windows.1
+[2025-06-17 21:35:47] [Info] Git repository already exists
+[2025-06-17 21:35:47] [Info] Creating .gitignore file...
+[2025-06-17 21:35:47] [Success] Created .gitignore file
+[2025-06-17 21:35:47] [Info] Creating repository README.md...
+[2025-06-17 21:35:47] [Success] Created repository README.md
+[2025-06-17 21:35:47] [Info] Staging files for git commit...

@@ -12,9 +12,9 @@ $ErrorActionPreference='Stop'
 try{
  Write-StepHeader "Docker Deployment Setup"
  # Dockerfile
- $docker=@"
+ $docker=@'
 # Stage 1: build
-"@
+'@
 FROM node:20-alpine as builder
 WORKDIR /app
 COPY . .
@@ -28,26 +28,26 @@ COPY --from=builder /app/dist ./dist
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && pnpm install --prod --frozen-lockfile
 CMD ["node","dist/index.js"]
-"@
+'@
  Set-Content -Path (Join-Path $ProjectRoot 'Dockerfile') -Value $docker -Encoding UTF8
  # dockerignore
- $ignore=@"
+ $ignore=@'
 node_modules
-"@
+'@
 .git
 .github
 scripts
 src
 *.md
-"@
+'@
  Set-Content -Path (Join-Path $ProjectRoot '.dockerignore') -Value $ignore -Encoding UTF8
 
  # GH Actions workflow
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
- $deploy=@"
+ $deploy=@'
 name: Docker Publish
-"@
+'@
 on:
   push:
     tags: ['v*']
@@ -69,7 +69,7 @@ jobs:
               \
               \
               ${{ github.ref_name }}
-"@
+'@
  Set-Content -Path (Join-Path $wfPath 'docker-publish.yml') -Value $deploy -Encoding UTF8
  Write-SuccessLog "Docker deployment artifacts generated"
  exit 0

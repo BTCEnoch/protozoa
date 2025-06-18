@@ -16,21 +16,21 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
  # interface
- $iface=@"
+ $iface=@'
 export interface ILifecycleEngine{
-"@
+'@
   birth(count:number): void
   update(delta:number): void
   kill(id:string): void
   dispose():void
 }
-"@
+'@
  Set-Content -Path (Join-Path $particlePath 'interfaces\ILifecycleEngine.ts') -Value $iface -Encoding UTF8
 
  # implementation
- $impl=@"
+ $impl=@'
 import { particleService } from '@/domains/particle/services/particleService'
-"@
+'@
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILifecycleEngine } from '@/domains/particle/interfaces/ILifecycleEngine'
 export class LifecycleEngine implements ILifecycleEngine{
@@ -47,7 +47,7 @@ export class LifecycleEngine implements ILifecycleEngine{
  dispose(){LifecycleEngine.#instance=null}
 }
 export const lifecycleEngine=LifecycleEngine.getInstance()
-"@
+'@
  Set-Content -Path (Join-Path $services 'lifecycleEngine.ts') -Value $impl -Encoding UTF8
  Write-SuccessLog "LifecycleEngine generated"
  exit 0

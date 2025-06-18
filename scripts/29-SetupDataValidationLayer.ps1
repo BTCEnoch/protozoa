@@ -21,9 +21,9 @@ try {
   New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
   
   # Interface
-  $iface = @"
+  $iface = @'
 /**
-"@
+'@
 * IDataValidationService – validates block info, inscriptions and merkle proofs.
 */
 export interface IDataValidationService {
@@ -32,13 +32,13 @@ export interface IDataValidationService {
   verifyMerkleProof(txId: string, proof: string[]): boolean
   dispose(): void
 }
-"@
+'@
   Set-Content -Path (Join-Path $interfaces "IDataValidationService.ts") -Value $iface -Encoding UTF8
 
   # Implementation
-  $impl = @"
+  $impl = @'
 import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
-"@
+'@
 import type { IDataValidationService } from '@/domains/bitcoin/interfaces/IDataValidationService'
 
 export class DataValidationService implements IDataValidationService {
@@ -63,7 +63,7 @@ export class DataValidationService implements IDataValidationService {
   dispose(){DataValidationService.#instance=null}
 }
 export const dataValidationService = DataValidationService.getInstance()
-"@
+'@
   Set-Content -Path (Join-Path $services "dataValidationService.ts") -Value $impl -Encoding UTF8
   Write-SuccessLog "DataValidationService generated"
   exit 0

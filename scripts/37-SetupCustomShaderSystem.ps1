@@ -20,9 +20,9 @@ try{
  New-Item -Path $data -ItemType Directory -Force | Out-Null
 
  # Shader library
- $lib=@"
+ $lib=@'
 // shaderLibrary.ts – collection of GLSL snippets
-"@
+'@
 export const Shaders={
   dnaVis:`
     varying vec2 vUv;
@@ -40,25 +40,25 @@ export const Shaders={
     }
   `
 }
-"@
+'@
  Set-Content -Path (Join-Path $data 'shaderLibrary.ts') -Value $lib -Encoding UTF8
 
  # Interface
- $iface=@"
+ $iface=@'
 export interface IShaderService{
-"@
+'@
   compile(name:string,vertexSrc:string,fragmentSrc:string):THREE.ShaderMaterial
   get(name:string):THREE.ShaderMaterial|undefined
   hotReload(name:string,newFrag:string):void
   dispose():void
 }
-"@
+'@
  Set-Content -Path (Join-Path $interfaces 'IShaderService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"
+ $impl=@'
 import * as THREE from 'three'
-"@
+'@
 import { createServiceLogger } from '@/shared/lib/logger'
 import { Shaders } from '@/domains/rendering/data/shaderLibrary'
 import type { IShaderService } from '@/domains/rendering/interfaces/IShaderService'
@@ -89,7 +89,7 @@ class ShaderService implements IShaderService{
  dispose(){this.#materials.forEach(m=>m.dispose());this.#materials.clear();ShaderService.#instance=null}
 }
 export const shaderService=ShaderService.getInstance()
-"@
+'@
  Set-Content -Path (Join-Path $services 'shaderService.ts') -Value $impl -Encoding UTF8
 
  Write-SuccessLog "Shader system generated"

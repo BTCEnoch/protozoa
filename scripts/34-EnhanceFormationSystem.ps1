@@ -15,9 +15,9 @@ try{
  $services=Join-Path $formationPath 'services'
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
- $enhance=@"
+ $enhance=@'
 import { createServiceLogger } from '@/shared/lib/logger'
-"@
+'@
 import { rngService } from '@/domains/rng/services/rngService'
 import type { Vector3 } from 'three'
 
@@ -43,7 +43,7 @@ export class DynamicFormationGenerator{
     return {id,positions}
   }
 }
-"@
+'@
  Set-Content -Path (Join-Path $services 'dynamicFormationGenerator.ts') -Value $enhance -Encoding UTF8
  Write-SuccessLog "DynamicFormationGenerator generated"
  exit 0

@@ -18,19 +18,19 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # interface
- $iface=@"
+ $iface=@'
 export interface ISwarmService{
-"@
+'@
   update(delta:number):void
   dispose():void
 }
-"@
+'@
  Set-Content -Path (Join-Path $interfaces 'ISwarmService.ts') -Value $iface -Encoding UTF8
 
  # implementation
- $impl=@"
+ $impl=@'
 import { createServiceLogger } from '@/shared/lib/logger'
-"@
+'@
 import { groupService } from '@/domains/group/services/groupService'
 import { physicsService } from '@/domains/physics/services/physicsService'
 import type { ISwarmService } from '@/domains/group/interfaces/ISwarmService'
@@ -50,7 +50,7 @@ export class SwarmService implements ISwarmService{
  dispose(){SwarmService.#instance=null}
 }
 export const swarmService=SwarmService.getInstance()
-"@
+'@
  Set-Content -Path (Join-Path $services 'swarmService.ts') -Value $impl -Encoding UTF8
  Write-SuccessLog "SwarmService generated"
  exit 0

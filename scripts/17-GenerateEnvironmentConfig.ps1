@@ -51,7 +51,7 @@ foreach ($dir in $directories) {
 }
 
 # Generate Environment Configuration Service
-$environmentServiceContent = @"
+$environmentServiceContent = @'
 /**
  * Environment Configuration Service
  * Centralized environment and API endpoint management
@@ -338,7 +338,7 @@ class EnvironmentService {
 // Export singleton instance
 export const environmentService = EnvironmentService.getInstance();
 export { EnvironmentService };
-"@
+'@
 
 Write-InfoLog "Writing environment service..."
 if (-not $WhatIf) {
@@ -346,7 +346,7 @@ if (-not $WhatIf) {
 }
 
 # Generate Logging Service Implementation
-$loggingServiceContent = @"
+$loggingServiceContent = @'
 /**
  * Logging Service Implementation
  * Winston-based logging with standardized levels and formatting
@@ -521,7 +521,7 @@ export function createErrorLogger(serviceName: string): {
     }
   };
 }
-"@
+'@
 
 Write-InfoLog "Writing logging service..."
 if (-not $WhatIf) {
@@ -529,7 +529,7 @@ if (-not $WhatIf) {
 }
 
 # Generate Environment Utilities
-$envUtilsContent = @"
+$envUtilsContent = @'
 /**
  * Environment Utilities
  * Helper functions for environment detection and configuration
@@ -654,7 +654,7 @@ export function getPerformanceSettings(): {
     frameRateTracking: true
   };
 }
-"@
+'@
 
 Write-InfoLog "Writing environment utilities..."
 if (-not $WhatIf) {
@@ -662,7 +662,7 @@ if (-not $WhatIf) {
 }
 
 # Generate Configuration Index
-$configIndexContent = @"
+$configIndexContent = @'
 /**
  * Configuration Module Index
  * Central export point for all configuration services and utilities
@@ -673,7 +673,7 @@ export * from './environmentService';
 
 // Environment utilities
 export * from './envUtils';
-"@
+'@
 
 Write-InfoLog "Writing configuration index..."
 if (-not $WhatIf) {
@@ -681,16 +681,16 @@ if (-not $WhatIf) {
 }
 
 # Generate package.json updates for Winston
-$packageUpdates = @"
+$packageUpdates = @'
 {
   "dependencies": {
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@types/winston": "^2.4.4"
+    ''@types/winston": "^2.4.4"
   }
 }
-"@
+'@
 
 Write-InfoLog "Writing package dependency updates..."
 if (-not $WhatIf) {
@@ -723,3 +723,5 @@ if (-not $WhatIf) {
     Write-InfoLog "2. Import environmentService in your domain services"
     Write-InfoLog "3. Use createServiceLogger for consistent logging across domains"
 } 
+
+}
