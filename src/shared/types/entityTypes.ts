@@ -3,7 +3,7 @@
  * Base interfaces and types for all domain entities
  */
 
-import { IVector3, IColor, ITransform } from "./vectorTypes";
+import { IColor, IVector3 } from "./vectorTypes";
 
 /**
  * Base entity interface that all domain entities should implement
