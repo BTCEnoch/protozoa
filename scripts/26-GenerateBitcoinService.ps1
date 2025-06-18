@@ -8,7 +8,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory = $false)]
-    [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent)
+    [string]$ProjectRoot = $PWD
 )
 
 try {
@@ -345,133 +345,8 @@ export interface ApiError {
     Set-Content -Path (Join-Path $typesPath "bitcoin.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Bitcoin types generated successfully"
 
-    # REMOVED: Old two-part service generation (serviceContent1) - now using consolidated approach
-/**
- * @fileoverview Bitcoin Service Implementation
- * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
- * @author Protozoa Development Team
- * @version 1.0.0
- */
-
-import {
-  IBitcoinService,
-  BitcoinConfig,
-  BlockInfo,
-  InscriptionContent,
-  ApiResponse,
-  CacheStats,
-  BitcoinMetrics
-} from "@/domains/bitcoin/interfaces/IBitcoinService";
-import {
-  ApiEnvironment,
-  CacheEntry,
-  LRUCache,
-  RetryConfig,
-  RequestOptions,
-  ApiError,
-  ApiErrorType
-} from "@/domains/bitcoin/types/bitcoin.types";
-import { createServiceLogger } from "@/shared/lib/logger";
-
-/**
- * Bitcoin Service implementing high-performance blockchain data access
- * Uses LRU caching and exponential backoff retry logic for optimal performance
- * Follows singleton pattern for application-wide consistency
- */
-export class BitcoinService implements IBitcoinService {
-  /** Singleton instance */
-  static #instance: BitcoinService | null = null;
-
-  /** Service configuration */
-  #config: BitcoinConfig;
-
-  /** LRU cache for block info */
-  #blockCache: LRUCache<number, CacheEntry<BlockInfo>>;
-
-  /** LRU cache for inscription content */
-  #inscriptionCache: LRUCache<string, CacheEntry<InscriptionContent>>;
-
-  /** Performance metrics */
-  #metrics: BitcoinMetrics;
-
-  /** Cache statistics */
-  #cacheStats: CacheStats;
-
-  /** Winston logger instance */
-  #logger = createServiceLogger("BitcoinService");
-
-  /** Active request abort controllers */
-  #activeRequests: Map<string, AbortController>;
-
-  /** Rate limiting timestamp */
-  #lastRequestTime: number = 0;
-
-  /**
-   * Private constructor enforcing singleton pattern
-   * Initializes Bitcoin service with LRU caching
-   */
-  private constructor() {
-    this.#logger.info("Initializing BitcoinService singleton instance");
-
-    // Initialize default configuration
-    this.#config = {
-      apiBaseUrl: "https://ordinals.com",
-      enableCaching: true,
-      cacheSize: 1000,
-      cacheTTL: 300000, // 5 minutes
-      requestTimeout: 10000, // 10 seconds
-      maxRetries: 3,
-      rateLimitDelay: 100 // 100ms between requests
-    };
-
-    // Initialize caches
-    this.#blockCache = new Map() as LRUCache<number, CacheEntry<BlockInfo>>;
-    this.#inscriptionCache = new Map() as LRUCache<string, CacheEntry<InscriptionContent>>;
-
-    // Initialize metrics
-    this.#metrics = {
-      totalRequests: 0,
-      successfulRequests: 0,
-      failedRequests: 0,
-      averageResponseTime: 0,
-      cacheHitRate: 0,
-      totalRetries: 0,
-      rateLimitViolations: 0
-    };
-
-    // Initialize cache stats
-    this.#cacheStats = {
-      hits: 0,
-      misses: 0,
-      hitRate: 0,
-      size: 0,
-      maxSize: this.#config.cacheSize!,
-      evictions: 0
-    };
-
-    // Initialize active requests tracking
-    this.#activeRequests = new Map();
-
-    this.#logger.info("BitcoinService initialized successfully", {
-      apiBaseUrl: this.#config.apiBaseUrl,
-      cacheEnabled: this.#config.enableCaching,
-      cacheSize: this.#config.cacheSize
-    });
-  }
-
-  /**
-   * Get singleton instance of BitcoinService
-   * Creates new instance if none exists
-   * @returns BitcoinService singleton instance
-   */
-  public static getInstance(): BitcoinService {
-    if (!BitcoinService.#instance) {
-      BitcoinService.#instance = new BitcoinService();
-    }
-    return BitcoinService.#instance;
-  }
-}
-'@
+    # Remove the broken first service content section - it's duplicated later anyway
+    # This section contained duplicate TypeScript code that was causing parser errors
 
     # CONSOLIDATED: Generate complete BitcoinService in single operation (Fix for duplicate class definitions)
     Write-InfoLog "Generating complete BitcoinService implementation (consolidated to prevent duplicates)"
@@ -615,7 +490,7 @@ export class BitcoinService implements IBitcoinService {
     // Adjust environment-specific API URLs
     const environment = process.env.NODE_ENV as ApiEnvironment;
     if (environment === "production") {
-      this.#config.apiBaseUrl = ''";  // Use relative paths in production
+      this.#config.apiBaseUrl = "";  // Use relative paths in production
     }
 
     this.#logger.info("BitcoinService initialization completed", {
@@ -807,7 +682,7 @@ export class BitcoinService implements IBitcoinService {
         signal: controller.signal,
         headers: {
           "Accept": "application/json",
-          "User-Agent": "Protozoa/1.0''
+          "User-Agent": "Protozoa/1.0"
         }
       });
 
