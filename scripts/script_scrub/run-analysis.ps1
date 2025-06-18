@@ -13,7 +13,10 @@ param(
     [string]$OutputDirectory = "$PSScriptRoot\results",
     
     [Parameter(Mandatory = $false)]
-    [switch]$GenerateReport
+    [switch]$GenerateReport,
+
+    [Parameter(Mandatory=$false)]
+    [int]$MaxBodyLengthKB = 5
 )
 
 $ErrorActionPreference = "Stop"
@@ -84,7 +87,7 @@ try {
     Write-Host "`n--- STEP 2: DUPLICATE DETECTION ---" -ForegroundColor Magenta
     try {
         $dupOutputFile = Join-Path $OutputDirectory "duplicate-analysis.json"
-        & "$PSScriptRoot\02-detect-duplicates.ps1" -ScriptDirectory $ScriptDirectory -OutputFile $dupOutputFile
+        & "$PSScriptRoot\02-detect-duplicates.ps1" -ScriptDirectory $ScriptDirectory -OutputFile $dupOutputFile -MaxBodyLengthKB $MaxBodyLengthKB
         
         if (Test-Path $dupOutputFile) {
             $dupResults = Get-Content $dupOutputFile | ConvertFrom-Json

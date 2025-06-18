@@ -29,6 +29,7 @@ function New-DependencyGraph {
     foreach ($script in $scripts) {
         $scriptName = $script.BaseName
         $dependencies = Get-ScriptDependencies -ScriptPath $script.FullName
+        if (-not $dependencies) { $dependencies = @() }
         
         $dependencyGraph[$scriptName] = @{
             FilePath = $script.FullName
@@ -151,6 +152,7 @@ function Test-CircularDependencies {
     }
     
     foreach ($script in $DependencyGraph.Keys) {
+        if ($DependencyGraph[$script].Dependencies.Count -eq 0) { continue }
         if (-not $visited[$script]) {
             Find-Cycle -node $script -path @()
         }
