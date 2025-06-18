@@ -1,0 +1,49 @@
+{
+  "ScriptDirectory": "./scripts",
+  "OutputDirectory": "./results",
+  "AnalysisSteps": [
+    {
+      "Status": "Success",
+      "Issues": {
+        "CircularDependencies": 1,
+        "IsolatedScripts": 63
+      },
+      "Recommendations": [
+        "CRITICAL: Found 1 circular dependencies that must be resolved",
+        "INFO: 63 isolated scripts found - verify if consolidation is possible"
+      ],
+      "Step": "Dependency Analysis",
+      "OutputFile": "./results/dependency-analysis.json"
+    },
+    {
+      "Status": "Success",
+      "Issues": {
+        "SimilarNames": 0,
+        "ExactDuplicates": 0
+      },
+      "Recommendations": [],
+      "Step": "Duplicate Detection",
+      "OutputFile": "./results/duplicate-analysis.json"
+    }
+  ],
+  "Summary": [
+    "=== SCRIPT SCRUB ANALYSIS SUMMARY ===",
+    "Analysis Date: 2025-06-18 03:52:28",
+    "Scripts Directory: ./scripts",
+    "",
+    "ISSUE SUMMARY:",
+    "  Total Issues: 2",
+    "  Critical Issues: 1",
+    "  Warning Issues: 0",
+    "  Info Issues: 1",
+    "",
+    "🚨 CRITICAL: Found 1 critical issues that must be resolved before script execution."
+  ],
+  "Timestamp": "2025-06-18 03:52:28",
+  "OverallResults": {
+    "TotalIssues": 2,
+    "InfoIssues": 1,
+    "CriticalIssues": 1,
+    "WarningIssues": 0
+  }
+}

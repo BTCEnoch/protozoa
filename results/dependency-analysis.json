@@ -1,39 +1,1180 @@
 {
-  "UtilsUsage": {
+  "ImportAnalysis": {
+    "51-SetupGlobalStateManagement": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
+        "Type": "Import-Module",
+        "StartLine": 6,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "runAll": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/runAll.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/runAll.ps1",
+        "Type": "Import-Module",
+        "StartLine": 5,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
+      }
+    },
+    "31-GenerateParticleService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "05-performance-analysis": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
+        "Type": "Import-Module",
+        "StartLine": 31,
+        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
+      }
+    },
+    "30-EnhanceTraitSystem": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
+        "Type": "Import-Module",
+        "StartLine": 8,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "01-ScaffoldProjectStructure": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
+        "Type": "Import-Module",
+        "StartLine": 18,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "54-SetupPerformanceTesting": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "17-GenerateEnvironmentConfig": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
+        "Type": "Import-Module",
+        "StartLine": 16,
+        "ModulePath": "$PSScriptRoot/utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "18-GenerateFormationDomain": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
+        "Type": "Import-Module",
+        "StartLine": 20,
+        "ModulePath": "(Join-Path $PSScriptRoot utils.psm1)",
+        "FullText": "Import-Module (Join-Path $PSScriptRoot \"utils.psm1\") -Force"
+      }
+    },
+    "02-GenerateDomainStubs": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
+        "Type": "Import-Module",
+        "StartLine": 5,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
+      }
+    },
+    "18b-SetupTestingFramework": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "22-SetupBitcoinProtocol": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "56-SetupEndToEndValidation": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
+        "Type": "Import-Module",
+        "StartLine": 7,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "53-SetupEventBusSystem": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "49-SetupAutomatedDocumentation": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "21-ConfigureDevEnvironment": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "14-FixUtilityFunctions": {
+      "UsesUtils": true,
+      "ImportCount": 2,
+      "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
+      "Imports": [
+        {
+          "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
+          "Type": "Import-Module",
+          "StartLine": 21,
+          "ModulePath": "$ScriptsRoot\\utils.psm1",
+          "FullText": "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force -ErrorAction Stop"
+        },
+        {
+          "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
+          "Type": "Import-Module",
+          "StartLine": 230,
+          "ModulePath": "$ScriptsRoot\\utils.psm1",
+          "FullText": "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force"
+        }
+      ]
+    },
+    "48-SetupAdvancedBundleAnalysis": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "36-GenerateEffectService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
     "26-GenerateBitcoinService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "04-EnforceSingletonPatterns": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
+        "Type": "Import-Module",
+        "StartLine": 14,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "23-GenerateRNGService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "29-SetupDataValidationLayer": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
+        "Type": "Import-Module",
+        "StartLine": 12,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "15-ValidateSetupComplete": {
+      "UsesUtils": true,
+      "ImportCount": 2,
+      "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
+      "Imports": [
+        {
+          "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
+          "Type": "Import-Module",
+          "StartLine": 18,
+          "ModulePath": "$PSScriptRoot\\utils.psm1",
+          "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+        },
+        {
+          "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
+          "Type": "Import-Module",
+          "StartLine": 45,
+          "ModulePath": "$PSScriptRoot\\utils.psm1",
+          "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
+        }
+      ]
+    },
+    "50-SetupServiceIntegration": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "37-SetupCustomShaderSystem": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "19-ConfigureAdvancedTypeScript": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "01-analyze-dependencies": {
+      "UsesUtils": true,
+      "ImportCount": 2,
+      "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
+      "Imports": [
+        {
+          "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
+          "Type": "Import-Module",
+          "StartLine": 18,
+          "ModulePath": "$PSScriptRoot\\utils\\dependency-graph.psm1",
+          "FullText": "Import-Module \"$PSScriptRoot\\utils\\dependency-graph.psm1\" -Force -ErrorAction Stop"
+        },
+        {
+          "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
+          "Type": "Import-Module",
+          "StartLine": 19,
+          "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
+          "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop"
+        }
+      ]
+    },
+    "18a-SetupLoggingService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 16,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "44-SetupAnimationBlending": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "24-GeneratePhysicsService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "run-analysis": {
+      "UsesUtils": false,
+      "ImportCount": 0,
+      "FilePath": "/workspace/scripts/script_scrub/run-analysis.ps1",
+      "Imports": null
+    },
+    "08-DeployToGitHub": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
+        "Type": "Import-Module",
+        "StartLine": 5,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
+      }
+    },
+    "27-GenerateTraitService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "40-GenerateAnimationService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "fix-here-strings": {
+      "UsesUtils": false,
+      "ImportCount": 0,
+      "FilePath": "/workspace/scripts/script_scrub/utils/fix-here-strings.ps1",
+      "Imports": null
+    },
+    "34-EnhanceFormationSystem": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "11-GenerateFormationBlendingService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 16,
+        "ModulePath": "$PSScriptRoot/utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "04-code-quality-analysis": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
+        "Type": "Import-Module",
+        "StartLine": 26,
+        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
+      }
+    },
+    "10-GenerateParticleInitService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 16,
+        "ModulePath": "$PSScriptRoot/utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "03-analyze-resource-usage": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
+        "Type": "Import-Module",
+        "StartLine": 25,
+        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
+      }
+    },
+    "38-ImplementLODSystem": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "32-SetupParticleLifecycleManagement": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "42-SetupPhysicsBasedAnimation": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "07-BuildAndTest": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
+        "Type": "Import-Module",
+        "StartLine": 14,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "06-DomainLint": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/06-DomainLint.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/06-DomainLint.ps1",
+        "Type": "Import-Module",
+        "StartLine": 14,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "39-SetupAdvancedEffectComposition": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "33-ImplementSwarmIntelligence": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "20-SetupPreCommitValidation": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
+        "Type": "Import-Module",
+        "StartLine": 15,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "02-detect-duplicates": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
+        "Type": "Import-Module",
+        "StartLine": 21,
+        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "52-SetupReactIntegration": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
+        "Type": "Import-Module",
+        "StartLine": 6,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "00-InitEnvironment": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
+        "Type": "Import-Module",
+        "StartLine": 28,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "16-GenerateSharedTypesService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 16,
+        "ModulePath": "$PSScriptRoot/utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "35-GenerateRenderingService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "03-MoveAndCleanCodebase": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
+        "Type": "Import-Module",
+        "StartLine": 5,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
+      }
+    },
+    "45-SetupCICDPipeline": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "28-SetupBlockchainDataIntegration": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "41-GenerateGroupService": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "25-SetupPhysicsWebWorkers": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
+        "Type": "Import-Module",
+        "StartLine": 13,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "43-ImplementAdvancedTimeline": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "55-SetupPersistenceLayer": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "46-SetupDockerDeployment": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "05-VerifyCompliance": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
+        "Type": "Import-Module",
+        "StartLine": 14,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    },
+    "47-SetupPerformanceRegression": {
+      "UsesUtils": true,
+      "ImportCount": 5,
+      "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
+      "Imports": {
+        "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
+        "Type": "Import-Module",
+        "StartLine": 9,
+        "ModulePath": "$PSScriptRoot\\utils.psm1",
+        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
+      }
+    }
+  },
+  "DependencyGraph": {
+    "24-GeneratePhysicsService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
+      "Dependencies": null
+    },
+    "20-SetupPreCommitValidation": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
+      "Dependencies": null
+    },
+    "31-GenerateParticleService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
+      "Dependencies": null
+    },
+    "05-performance-analysis": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
+      "Dependencies": null
+    },
+    "run-analysis": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/run-analysis.ps1",
+      "Dependencies": [
+        "$PSScriptRoot\\01-analyze-dependencies",
+        "$PSScriptRoot\\02-detect-duplicates"
+      ]
+    },
+    "30-EnhanceTraitSystem": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
+      "Dependencies": null
+    },
+    "27-GenerateTraitService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
+      "Dependencies": null
+    },
+    "51-SetupGlobalStateManagement": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
+      "Dependencies": null
+    },
+    "17-GenerateEnvironmentConfig": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
+      "Dependencies": null
+    },
+    "18-GenerateFormationDomain": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
+      "Dependencies": null
+    },
+    "02-GenerateDomainStubs": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
+      "Dependencies": null
+    },
+    "18b-SetupTestingFramework": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
+      "Dependencies": null
+    },
+    "41-GenerateGroupService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
+      "Dependencies": null
+    },
+    "56-SetupEndToEndValidation": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
+      "Dependencies": null
+    },
+    "19-ConfigureAdvancedTypeScript": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
+      "Dependencies": null
+    },
+    "49-SetupAutomatedDocumentation": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
+      "Dependencies": null
+    },
+    "21-ConfigureDevEnvironment": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
+      "Dependencies": null
+    },
+    "42-SetupPhysicsBasedAnimation": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
+      "Dependencies": null
+    },
+    "14-FixUtilityFunctions": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
+      "Dependencies": null
+    },
+    "48-SetupAdvancedBundleAnalysis": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
+      "Dependencies": null
+    },
+    "runAll": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/runAll.ps1",
+      "Dependencies": null
+    },
+    "26-GenerateBitcoinService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
+      "Dependencies": null
+    },
+    "04-EnforceSingletonPatterns": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
+      "Dependencies": null
+    },
+    "23-GenerateRNGService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
+      "Dependencies": null
+    },
+    "29-SetupDataValidationLayer": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
+      "Dependencies": null
+    },
+    "50-SetupServiceIntegration": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
+      "Dependencies": null
+    },
+    "00-InitEnvironment": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
+      "Dependencies": null
+    },
+    "15-ValidateSetupComplete": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
+      "Dependencies": null
+    },
+    "01-analyze-dependencies": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
+      "Dependencies": null
+    },
+    "03-analyze-resource-usage": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
+      "Dependencies": null
+    },
+    "38-ImplementLODSystem": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
+      "Dependencies": null
+    },
+    "54-SetupPerformanceTesting": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
+      "Dependencies": null
+    },
+    "34-EnhanceFormationSystem": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
+      "Dependencies": null
+    },
+    "18a-SetupLoggingService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
+      "Dependencies": null
+    },
+    "44-SetupAnimationBlending": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
+      "Dependencies": null
+    },
+    "55-SetupPersistenceLayer": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
+      "Dependencies": null
+    },
+    "08-DeployToGitHub": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
+      "Dependencies": null
+    },
+    "03-MoveAndCleanCodebase": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
+      "Dependencies": null
+    },
+    "40-GenerateAnimationService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
+      "Dependencies": null
+    },
+    "fix-here-strings": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/utils/fix-here-strings.ps1",
+      "Dependencies": null
+    },
+    "07-BuildAndTest": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
+      "Dependencies": null
+    },
+    "11-GenerateFormationBlendingService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
+      "Dependencies": null
+    },
+    "04-code-quality-analysis": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
+      "Dependencies": null
+    },
+    "43-ImplementAdvancedTimeline": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
+      "Dependencies": null
+    },
+    "01-ScaffoldProjectStructure": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
+      "Dependencies": null
+    },
+    "32-SetupParticleLifecycleManagement": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
+      "Dependencies": null
+    },
+    "36-GenerateEffectService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
+      "Dependencies": null
+    },
+    "37-SetupCustomShaderSystem": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
+      "Dependencies": null
+    },
+    "06-DomainLint": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/06-DomainLint.ps1",
+      "Dependencies": null
+    },
+    "39-SetupAdvancedEffectComposition": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
+      "Dependencies": null
+    },
+    "33-ImplementSwarmIntelligence": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
+      "Dependencies": null
+    },
+    "22-SetupBitcoinProtocol": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
+      "Dependencies": null
+    },
+    "02-detect-duplicates": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
+      "Dependencies": null
+    },
+    "52-SetupReactIntegration": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
+      "Dependencies": null
+    },
+    "16-GenerateSharedTypesService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
+      "Dependencies": null
+    },
+    "35-GenerateRenderingService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
+      "Dependencies": null
+    },
+    "45-SetupCICDPipeline": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
+      "Dependencies": null
+    },
+    "28-SetupBlockchainDataIntegration": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
+      "Dependencies": null
+    },
+    "10-GenerateParticleInitService": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
+      "Dependencies": null
+    },
+    "25-SetupPhysicsWebWorkers": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
+      "Dependencies": null
+    },
+    "53-SetupEventBusSystem": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
+      "Dependencies": null
+    },
+    "05-VerifyCompliance": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
+      "Dependencies": null
+    },
+    "46-SetupDockerDeployment": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
+      "Dependencies": null
+    },
+    "47-SetupPerformanceRegression": {
+      "Dependents": [],
+      "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
+      "Dependencies": null
+    }
+  },
+  "ScriptDirectory": "./scripts",
+  "Timestamp": "2025-06-18 03:52:28",
+  "CircularDependencies": false,
+  "Recommendations": [
+    "CRITICAL: Found 1 circular dependencies that must be resolved",
+    "INFO: 63 isolated scripts found - verify if consolidation is possible"
+  ],
+  "UtilsUsage": {
+    "51-SetupGlobalStateManagement": {
+      "ImportLine": 6,
+      "ImportType": "Import-Module"
+    },
+    "runAll": {
+      "ImportLine": 5,
+      "ImportType": "Import-Module"
+    },
+    "31-GenerateParticleService": {
       "ImportLine": 15,
       "ImportType": "Import-Module"
     },
-    "46-SetupDockerDeployment": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "48-SetupAdvancedBundleAnalysis": {
-      "ImportLine": 9,
+    "30-EnhanceTraitSystem": {
+      "ImportLine": 8,
       "ImportType": "Import-Module"
     },
     "01-ScaffoldProjectStructure": {
       "ImportLine": 18,
       "ImportType": "Import-Module"
     },
+    "54-SetupPerformanceTesting": {
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
+    },
+    "17-GenerateEnvironmentConfig": {
+      "ImportLine": 16,
+      "ImportType": "Import-Module"
+    },
+    "45-SetupCICDPipeline": {
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
+    },
+    "02-GenerateDomainStubs": {
+      "ImportLine": 5,
+      "ImportType": "Import-Module"
+    },
+    "18b-SetupTestingFramework": {
+      "ImportLine": 15,
+      "ImportType": "Import-Module"
+    },
     "22-SetupBitcoinProtocol": {
       "ImportLine": 15,
       "ImportType": "Import-Module"
     },
-    "07-BuildAndTest": {
-      "ImportLine": 14,
+    "56-SetupEndToEndValidation": {
+      "ImportLine": 7,
       "ImportType": "Import-Module"
     },
-    "06-DomainLint": {
-      "ImportLine": 14,
+    "19-ConfigureAdvancedTypeScript": {
+      "ImportLine": 15,
       "ImportType": "Import-Module"
     },
-    "37-SetupCustomShaderSystem": {
+    "49-SetupAutomatedDocumentation": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "25-SetupPhysicsWebWorkers": {
-      "ImportLine": 13,
+    "21-ConfigureDevEnvironment": {
+      "ImportLine": 15,
       "ImportType": "Import-Module"
     },
     "14-FixUtilityFunctions": {
@@ -46,68 +1187,36 @@
         "Import-Module"
       ]
     },
-    "11-GenerateFormationBlendingService": {
-      "ImportLine": 16,
+    "48-SetupAdvancedBundleAnalysis": {
+      "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "29-SetupDataValidationLayer": {
-      "ImportLine": 12,
-      "ImportType": "Import-Module"
-    },
-    "35-GenerateRenderingService": {
+    "36-GenerateEffectService": {
       "ImportLine": 13,
       "ImportType": "Import-Module"
     },
-    "08-DeployToGitHub": {
-      "ImportLine": 5,
+    "26-GenerateBitcoinService": {
+      "ImportLine": 15,
       "ImportType": "Import-Module"
     },
-    "54-SetupPerformanceTesting": {
-      "ImportLine": 9,
+    "04-EnforceSingletonPatterns": {
+      "ImportLine": 14,
       "ImportType": "Import-Module"
     },
     "23-GenerateRNGService": {
       "ImportLine": 15,
       "ImportType": "Import-Module"
     },
-    "30-EnhanceTraitSystem": {
-      "ImportLine": 8,
+    "29-SetupDataValidationLayer": {
+      "ImportLine": 12,
       "ImportType": "Import-Module"
     },
-    "38-ImplementLODSystem": {
+    "50-SetupServiceIntegration": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "18a-SetupLoggingService": {
-      "ImportLine": 16,
-      "ImportType": "Import-Module"
-    },
-    "19-ConfigureAdvancedTypeScript": {
-      "ImportLine": 15,
-      "ImportType": "Import-Module"
-    },
-    "03-MoveAndCleanCodebase": {
-      "ImportLine": 5,
-      "ImportType": "Import-Module"
-    },
-    "02-GenerateDomainStubs": {
-      "ImportLine": 5,
-      "ImportType": "Import-Module"
-    },
-    "45-SetupCICDPipeline": {
+    "37-SetupCustomShaderSystem": {
       "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "31-GenerateParticleService": {
-      "ImportLine": 15,
-      "ImportType": "Import-Module"
-    },
-    "43-ImplementAdvancedTimeline": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "05-VerifyCompliance": {
-      "ImportLine": 14,
       "ImportType": "Import-Module"
     },
     "15-ValidateSetupComplete": {
@@ -120,31 +1229,47 @@
         "Import-Module"
       ]
     },
-    "34-EnhanceFormationSystem": {
+    "18a-SetupLoggingService": {
+      "ImportLine": 16,
+      "ImportType": "Import-Module"
+    },
+    "44-SetupAnimationBlending": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "20-SetupPreCommitValidation": {
+    "24-GeneratePhysicsService": {
       "ImportLine": 15,
+      "ImportType": "Import-Module"
+    },
+    "08-DeployToGitHub": {
+      "ImportLine": 5,
       "ImportType": "Import-Module"
     },
     "27-GenerateTraitService": {
       "ImportLine": 15,
       "ImportType": "Import-Module"
     },
+    "40-GenerateAnimationService": {
+      "ImportLine": 13,
+      "ImportType": "Import-Module"
+    },
+    "34-EnhanceFormationSystem": {
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
+    },
+    "11-GenerateFormationBlendingService": {
+      "ImportLine": 16,
+      "ImportType": "Import-Module"
+    },
     "10-GenerateParticleInitService": {
       "ImportLine": 16,
       "ImportType": "Import-Module"
     },
-    "41-GenerateGroupService": {
-      "ImportLine": 13,
-      "ImportType": "Import-Module"
-    },
-    "42-SetupPhysicsBasedAnimation": {
+    "43-ImplementAdvancedTimeline": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "50-SetupServiceIntegration": {
+    "38-ImplementLODSystem": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
@@ -152,1214 +1277,89 @@
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "18b-SetupTestingFramework": {
-      "ImportLine": 15,
-      "ImportType": "Import-Module"
-    },
-    "49-SetupAutomatedDocumentation": {
+    "42-SetupPhysicsBasedAnimation": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "17-GenerateEnvironmentConfig": {
-      "ImportLine": 16,
+    "07-BuildAndTest": {
+      "ImportLine": 14,
+      "ImportType": "Import-Module"
+    },
+    "06-DomainLint": {
+      "ImportLine": 14,
+      "ImportType": "Import-Module"
+    },
+    "39-SetupAdvancedEffectComposition": {
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
+    },
+    "33-ImplementSwarmIntelligence": {
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
+    },
+    "20-SetupPreCommitValidation": {
+      "ImportLine": 15,
+      "ImportType": "Import-Module"
+    },
+    "52-SetupReactIntegration": {
+      "ImportLine": 6,
       "ImportType": "Import-Module"
     },
     "00-InitEnvironment": {
       "ImportLine": 28,
       "ImportType": "Import-Module"
     },
-    "47-SetupPerformanceRegression": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "53-SetupEventBusSystem": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "39-SetupAdvancedEffectComposition": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "51-SetupGlobalStateManagement": {
-      "ImportLine": 6,
-      "ImportType": "Import-Module"
-    },
-    "36-GenerateEffectService": {
-      "ImportLine": 13,
-      "ImportType": "Import-Module"
-    },
-    "56-SetupEndToEndValidation": {
-      "ImportLine": 7,
-      "ImportType": "Import-Module"
-    },
-    "33-ImplementSwarmIntelligence": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "40-GenerateAnimationService": {
-      "ImportLine": 13,
-      "ImportType": "Import-Module"
-    },
-    "28-SetupBlockchainDataIntegration": {
-      "ImportLine": 13,
-      "ImportType": "Import-Module"
-    },
-    "21-ConfigureDevEnvironment": {
-      "ImportLine": 15,
-      "ImportType": "Import-Module"
-    },
-    "44-SetupAnimationBlending": {
-      "ImportLine": 9,
-      "ImportType": "Import-Module"
-    },
-    "24-GeneratePhysicsService": {
-      "ImportLine": 15,
-      "ImportType": "Import-Module"
-    },
     "16-GenerateSharedTypesService": {
       "ImportLine": 16,
       "ImportType": "Import-Module"
     },
-    "runAll": {
+    "35-GenerateRenderingService": {
+      "ImportLine": 13,
+      "ImportType": "Import-Module"
+    },
+    "03-MoveAndCleanCodebase": {
       "ImportLine": 5,
       "ImportType": "Import-Module"
     },
-    "52-SetupReactIntegration": {
-      "ImportLine": 6,
+    "47-SetupPerformanceRegression": {
+      "ImportLine": 9,
       "ImportType": "Import-Module"
     },
-    "04-EnforceSingletonPatterns": {
-      "ImportLine": 14,
+    "28-SetupBlockchainDataIntegration": {
+      "ImportLine": 13,
+      "ImportType": "Import-Module"
+    },
+    "41-GenerateGroupService": {
+      "ImportLine": 13,
+      "ImportType": "Import-Module"
+    },
+    "25-SetupPhysicsWebWorkers": {
+      "ImportLine": 13,
+      "ImportType": "Import-Module"
+    },
+    "53-SetupEventBusSystem": {
+      "ImportLine": 9,
       "ImportType": "Import-Module"
     },
     "55-SetupPersistenceLayer": {
       "ImportLine": 9,
       "ImportType": "Import-Module"
-    }
-  },
-  "ImportAnalysis": {
-    "26-GenerateBitcoinService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
     },
     "46-SetupDockerDeployment": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "48-SetupAdvancedBundleAnalysis": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "01-ScaffoldProjectStructure": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 18,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "22-SetupBitcoinProtocol": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "07-BuildAndTest": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 14,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "06-DomainLint": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/06-DomainLint.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/06-DomainLint.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 14,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "37-SetupCustomShaderSystem": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "25-SetupPhysicsWebWorkers": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "14-FixUtilityFunctions": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
-      "ImportCount": 2,
-      "Imports": [
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
-          "ModulePath": "$ScriptsRoot\\utils.psm1",
-          "StartLine": 21,
-          "FullText": "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force -ErrorAction Stop"
-        },
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
-          "ModulePath": "$ScriptsRoot\\utils.psm1",
-          "StartLine": 230,
-          "FullText": "Import-Module \"$ScriptsRoot\\utils.psm1\" -Force"
-        }
-      ]
-    },
-    "11-GenerateFormationBlendingService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
-        "ModulePath": "$PSScriptRoot/utils.psm1",
-        "StartLine": 16,
-        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "29-SetupDataValidationLayer": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 12,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "35-GenerateRenderingService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "08-DeployToGitHub": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 5,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
-      }
-    },
-    "run-analysis": {
-      "UsesUtils": false,
-      "FilePath": "/workspace/scripts/script_scrub/run-analysis.ps1",
-      "ImportCount": 0,
-      "Imports": null
-    },
-    "54-SetupPerformanceTesting": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "51-SetupGlobalStateManagement": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 6,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "02-detect-duplicates": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
-        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
-        "StartLine": 21,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "23-GenerateRNGService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "30-EnhanceTraitSystem": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 8,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "38-ImplementLODSystem": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "18a-SetupLoggingService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 16,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "19-ConfigureAdvancedTypeScript": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "03-MoveAndCleanCodebase": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 5,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
-      }
-    },
-    "02-GenerateDomainStubs": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 5,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
-      }
-    },
-    "45-SetupCICDPipeline": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "31-GenerateParticleService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "43-ImplementAdvancedTimeline": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
+      "ImportLine": 9,
+      "ImportType": "Import-Module"
     },
     "05-VerifyCompliance": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 14,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "fix-here-strings": {
-      "UsesUtils": false,
-      "FilePath": "/workspace/scripts/script_scrub/utils/fix-here-strings.ps1",
-      "ImportCount": 0,
-      "Imports": null
-    },
-    "01-analyze-dependencies": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
-      "ImportCount": 2,
-      "Imports": [
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
-          "ModulePath": "$PSScriptRoot\\utils\\dependency-graph.psm1",
-          "StartLine": 18,
-          "FullText": "Import-Module \"$PSScriptRoot\\utils\\dependency-graph.psm1\" -Force -ErrorAction Stop"
-        },
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
-          "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
-          "StartLine": 19,
-          "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force -ErrorAction Stop"
-        }
-      ]
-    },
-    "15-ValidateSetupComplete": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
-      "ImportCount": 2,
-      "Imports": [
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
-          "ModulePath": "$PSScriptRoot\\utils.psm1",
-          "StartLine": 18,
-          "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-        },
-        {
-          "Type": "Import-Module",
-          "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
-          "ModulePath": "$PSScriptRoot\\utils.psm1",
-          "StartLine": 45,
-          "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
-        }
-      ]
-    },
-    "05-performance-analysis": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
-        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
-        "StartLine": 31,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
-      }
-    },
-    "34-EnhanceFormationSystem": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "20-SetupPreCommitValidation": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "27-GenerateTraitService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "10-GenerateParticleInitService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
-        "ModulePath": "$PSScriptRoot/utils.psm1",
-        "StartLine": 16,
-        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "41-GenerateGroupService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "42-SetupPhysicsBasedAnimation": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "50-SetupServiceIntegration": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "32-SetupParticleLifecycleManagement": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "18b-SetupTestingFramework": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "49-SetupAutomatedDocumentation": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "17-GenerateEnvironmentConfig": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
-        "ModulePath": "$PSScriptRoot/utils.psm1",
-        "StartLine": 16,
-        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "00-InitEnvironment": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 28,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "47-SetupPerformanceRegression": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "53-SetupEventBusSystem": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "39-SetupAdvancedEffectComposition": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "03-analyze-resource-usage": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
-        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
-        "StartLine": 25,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
-      }
-    },
-    "36-GenerateEffectService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "56-SetupEndToEndValidation": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 7,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "33-ImplementSwarmIntelligence": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "40-GenerateAnimationService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "28-SetupBlockchainDataIntegration": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 13,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "21-ConfigureDevEnvironment": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "44-SetupAnimationBlending": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "24-GeneratePhysicsService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 15,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "04-code-quality-analysis": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
-        "ModulePath": "$PSScriptRoot\\utils\\ast-parser.psm1",
-        "StartLine": 26,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils\\ast-parser.psm1\" -Force"
-      }
-    },
-    "16-GenerateSharedTypesService": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
-        "ModulePath": "$PSScriptRoot/utils.psm1",
-        "StartLine": 16,
-        "FullText": "Import-Module \"$PSScriptRoot/utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "runAll": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/runAll.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/runAll.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 5,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force"
-      }
-    },
-    "52-SetupReactIntegration": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 6,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "18-GenerateFormationDomain": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
-        "ModulePath": "(Join-Path $PSScriptRoot utils.psm1)",
-        "StartLine": 20,
-        "FullText": "Import-Module (Join-Path $PSScriptRoot \"utils.psm1\") -Force"
-      }
-    },
-    "04-EnforceSingletonPatterns": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 14,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
-    },
-    "55-SetupPersistenceLayer": {
-      "UsesUtils": true,
-      "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
-      "ImportCount": 5,
-      "Imports": {
-        "Type": "Import-Module",
-        "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
-        "ModulePath": "$PSScriptRoot\\utils.psm1",
-        "StartLine": 9,
-        "FullText": "Import-Module \"$PSScriptRoot\\utils.psm1\" -Force -ErrorAction Stop"
-      }
+      "ImportLine": 14,
+      "ImportType": "Import-Module"
     }
   },
-  "Recommendations": [
-    "CRITICAL: Found 1 circular dependencies that must be resolved",
-    "INFO: 63 isolated scripts found - verify if consolidation is possible"
-  ],
-  "DependencyGraph": {
-    "00-InitEnvironment": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/00-InitEnvironment.ps1",
-      "Dependents": []
-    },
-    "06-DomainLint": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/06-DomainLint.ps1",
-      "Dependents": []
-    },
-    "48-SetupAdvancedBundleAnalysis": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/48-SetupAdvancedBundleAnalysis.ps1",
-      "Dependents": []
-    },
-    "01-ScaffoldProjectStructure": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/01-ScaffoldProjectStructure.ps1",
-      "Dependents": []
-    },
-    "22-SetupBitcoinProtocol": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/22-SetupBitcoinProtocol.ps1",
-      "Dependents": []
-    },
-    "07-BuildAndTest": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/07-BuildAndTest.ps1",
-      "Dependents": []
-    },
-    "54-SetupPerformanceTesting": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/54-SetupPerformanceTesting.ps1",
-      "Dependents": []
-    },
-    "37-SetupCustomShaderSystem": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/37-SetupCustomShaderSystem.ps1",
-      "Dependents": []
-    },
-    "25-SetupPhysicsWebWorkers": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/25-SetupPhysicsWebWorkers.ps1",
-      "Dependents": []
-    },
-    "14-FixUtilityFunctions": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/14-FixUtilityFunctions.ps1",
-      "Dependents": []
-    },
-    "11-GenerateFormationBlendingService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/11-GenerateFormationBlendingService.ps1",
-      "Dependents": []
-    },
-    "29-SetupDataValidationLayer": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/29-SetupDataValidationLayer.ps1",
-      "Dependents": []
-    },
-    "35-GenerateRenderingService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/35-GenerateRenderingService.ps1",
-      "Dependents": []
-    },
-    "46-SetupDockerDeployment": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/46-SetupDockerDeployment.ps1",
-      "Dependents": []
-    },
-    "run-analysis": {
-      "Dependencies": [
-        "$PSScriptRoot\\01-analyze-dependencies",
-        "$PSScriptRoot\\02-detect-duplicates"
-      ],
-      "FilePath": "/workspace/scripts/script_scrub/run-analysis.ps1",
-      "Dependents": []
-    },
-    "08-DeployToGitHub": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/08-DeployToGitHub.ps1",
-      "Dependents": []
-    },
-    "41-GenerateGroupService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/41-GenerateGroupService.ps1",
-      "Dependents": []
-    },
-    "27-GenerateTraitService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/27-GenerateTraitService.ps1",
-      "Dependents": []
-    },
-    "53-SetupEventBusSystem": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/53-SetupEventBusSystem.ps1",
-      "Dependents": []
-    },
-    "45-SetupCICDPipeline": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/45-SetupCICDPipeline.ps1",
-      "Dependents": []
-    },
-    "23-GenerateRNGService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/23-GenerateRNGService.ps1",
-      "Dependents": []
-    },
-    "18a-SetupLoggingService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/18a-SetupLoggingService.ps1",
-      "Dependents": []
-    },
-    "02-detect-duplicates": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/02-detect-duplicates.ps1",
-      "Dependents": []
-    },
-    "03-MoveAndCleanCodebase": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/03-MoveAndCleanCodebase.ps1",
-      "Dependents": []
-    },
-    "05-performance-analysis": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/05-performance-analysis.ps1",
-      "Dependents": []
-    },
-    "02-GenerateDomainStubs": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/02-GenerateDomainStubs.ps1",
-      "Dependents": []
-    },
-    "36-GenerateEffectService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/36-GenerateEffectService.ps1",
-      "Dependents": []
-    },
-    "31-GenerateParticleService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/31-GenerateParticleService.ps1",
-      "Dependents": []
-    },
-    "43-ImplementAdvancedTimeline": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/43-ImplementAdvancedTimeline.ps1",
-      "Dependents": []
-    },
-    "44-SetupAnimationBlending": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/44-SetupAnimationBlending.ps1",
-      "Dependents": []
-    },
-    "05-VerifyCompliance": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/05-VerifyCompliance.ps1",
-      "Dependents": []
-    },
-    "50-SetupServiceIntegration": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/50-SetupServiceIntegration.ps1",
-      "Dependents": []
-    },
-    "01-analyze-dependencies": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/01-analyze-dependencies.ps1",
-      "Dependents": []
-    },
-    "15-ValidateSetupComplete": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/15-ValidateSetupComplete.ps1",
-      "Dependents": []
-    },
-    "18-GenerateFormationDomain": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/18-GenerateFormationDomain.ps1",
-      "Dependents": []
-    },
-    "34-EnhanceFormationSystem": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/34-EnhanceFormationSystem.ps1",
-      "Dependents": []
-    },
-    "20-SetupPreCommitValidation": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/20-SetupPreCommitValidation.ps1",
-      "Dependents": []
-    },
-    "04-EnforceSingletonPatterns": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/04-EnforceSingletonPatterns.ps1",
-      "Dependents": []
-    },
-    "10-GenerateParticleInitService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/10-GenerateParticleInitService.ps1",
-      "Dependents": []
-    },
-    "33-ImplementSwarmIntelligence": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/33-ImplementSwarmIntelligence.ps1",
-      "Dependents": []
-    },
-    "42-SetupPhysicsBasedAnimation": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/42-SetupPhysicsBasedAnimation.ps1",
-      "Dependents": []
-    },
-    "26-GenerateBitcoinService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/26-GenerateBitcoinService.ps1",
-      "Dependents": []
-    },
-    "03-analyze-resource-usage": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/03-analyze-resource-usage.ps1",
-      "Dependents": []
-    },
-    "32-SetupParticleLifecycleManagement": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/32-SetupParticleLifecycleManagement.ps1",
-      "Dependents": []
-    },
-    "18b-SetupTestingFramework": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/18b-SetupTestingFramework.ps1",
-      "Dependents": []
-    },
-    "49-SetupAutomatedDocumentation": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/49-SetupAutomatedDocumentation.ps1",
-      "Dependents": []
-    },
-    "17-GenerateEnvironmentConfig": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/17-GenerateEnvironmentConfig.ps1",
-      "Dependents": []
-    },
-    "16-GenerateSharedTypesService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/16-GenerateSharedTypesService.ps1",
-      "Dependents": []
-    },
-    "47-SetupPerformanceRegression": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/47-SetupPerformanceRegression.ps1",
-      "Dependents": []
-    },
-    "19-ConfigureAdvancedTypeScript": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/19-ConfigureAdvancedTypeScript.ps1",
-      "Dependents": []
-    },
-    "51-SetupGlobalStateManagement": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/51-SetupGlobalStateManagement.ps1",
-      "Dependents": []
-    },
-    "24-GeneratePhysicsService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/24-GeneratePhysicsService.ps1",
-      "Dependents": []
-    },
-    "runAll": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/runAll.ps1",
-      "Dependents": []
-    },
-    "56-SetupEndToEndValidation": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/56-SetupEndToEndValidation.ps1",
-      "Dependents": []
-    },
-    "40-GenerateAnimationService": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/40-GenerateAnimationService.ps1",
-      "Dependents": []
-    },
-    "28-SetupBlockchainDataIntegration": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/28-SetupBlockchainDataIntegration.ps1",
-      "Dependents": []
-    },
-    "21-ConfigureDevEnvironment": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/21-ConfigureDevEnvironment.ps1",
-      "Dependents": []
-    },
-    "39-SetupAdvancedEffectComposition": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/39-SetupAdvancedEffectComposition.ps1",
-      "Dependents": []
-    },
-    "fix-here-strings": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/utils/fix-here-strings.ps1",
-      "Dependents": []
-    },
-    "04-code-quality-analysis": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/script_scrub/04-code-quality-analysis.ps1",
-      "Dependents": []
-    },
-    "30-EnhanceTraitSystem": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/30-EnhanceTraitSystem.ps1",
-      "Dependents": []
-    },
-    "52-SetupReactIntegration": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/52-SetupReactIntegration.ps1",
-      "Dependents": []
-    },
-    "38-ImplementLODSystem": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/38-ImplementLODSystem.ps1",
-      "Dependents": []
-    },
-    "55-SetupPersistenceLayer": {
-      "Dependencies": null,
-      "FilePath": "/workspace/scripts/55-SetupPersistenceLayer.ps1",
-      "Dependents": []
-    }
-  },
-  "CircularDependencies": false,
   "Statistics": {
-    "CircularDependencyCount": 1,
     "IsolatedScripts": 63,
-    "ScriptsWithDependencies": 3,
     "UtilsUsageCount": 56,
+    "CircularDependencyCount": 1,
+    "TotalScripts": 64,
     "ScriptsWithDependents": 0,
-    "TotalScripts": 64
-  },
-  "ScriptDirectory": "./scripts",
-  "Timestamp": "2025-06-18 03:00:19"
+    "ScriptsWithDependencies": 3
+  }
 }
