@@ -38,6 +38,7 @@ try {
 
     # Interface definition
     $interfaceContent = @"
+
 /**
  * @fileoverview IEffectService Interface Definition
  * @description Contract for managing visual particle effects.
@@ -67,6 +68,7 @@ export interface IEffectService {
 
     # Implementation
     $serviceContent = @"
+
 /**
  * @fileoverview EffectService Implementation
  * @description Singleton service managing particle visual effects and presets.

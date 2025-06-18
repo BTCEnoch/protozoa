@@ -18,7 +18,8 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # interface
- $iface=@"export interface ISwarmService{
+ $iface= @"
+export interface ISwarmService{
   update(delta:number):void
   dispose():void
 }
@@ -26,7 +27,8 @@ try{
  Set-Content -Path (Join-Path $interfaces 'ISwarmService.ts') -Value $iface -Encoding UTF8
 
  # implementation
- $impl=@"import { createServiceLogger } from '@/shared/lib/logger'
+ $impl= @"
+import { createServiceLogger } from '@/shared/lib/logger'
 import { groupService } from '@/domains/group/services/groupService'
 import { physicsService } from '@/domains/physics/services/physicsService'
 import type { ISwarmService } from '@/domains/group/interfaces/ISwarmService'

@@ -35,6 +35,7 @@ try {
 
     # Interface
     $interfaceContent = @"
+
 /**
  * @fileoverview IAnimationService Interface Definition
  * @description Contract for controlling particle/organism animations.
@@ -67,6 +68,7 @@ export interface IAnimationService {
 
     # Implementation
     $serviceContent = @"
+
 /**
  * @fileoverview AnimationService Implementation
  * @description Singleton managing time-based animations across particle roles.

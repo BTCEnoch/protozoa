@@ -44,6 +44,7 @@ try {
     # Generate Particle service interface
     Write-InfoLog "Generating IParticleService interface"
     $interfaceContent = @"
+
 /**
  * @fileoverview Particle Service Interface Definition
  * @description Defines the contract for particle system management services
@@ -196,6 +197,7 @@ export interface IParticleService {
     # Generate Particle types
     Write-InfoLog "Generating Particle types definitions"
     $typesContent = @"
+
 /**
  * @fileoverview Particle Types Definition
  * @description Type definitions for particle system management domain
@@ -395,6 +397,7 @@ export interface ParticleCulling {
     # Generate Particle Service implementation - Part 1 (Class structure)
     Write-InfoLog "Generating ParticleService implementation - Part 1 (Core structure)"
     $serviceContent1 = @"
+
 /**
  * @fileoverview Particle Service Implementation
  * @description High-performance particle system with THREE.js integration and GPU optimization
@@ -555,6 +558,7 @@ export class ParticleService implements IParticleService {
     # Generate Particle Service implementation - Part 2A (Core methods - first batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2A (Core methods - first batch)"
     $serviceContent2A = @"
+
   
   /**
    * Initialize the Particle service with configuration
@@ -691,6 +695,7 @@ export class ParticleService implements IParticleService {
     # Generate Particle Service implementation - Part 2B (Core methods - second batch)
     Write-InfoLog "Generating ParticleService implementation - Part 2B (Core methods - second batch)"
     $serviceContent2B = @"
+
   
   /**
    * Update all particle systems
@@ -928,6 +933,7 @@ export class ParticleService implements IParticleService {
     # Generate Particle Service implementation - Part 3 (Helper methods and completion)
     Write-InfoLog "Generating ParticleService implementation - Part 3 (Helper methods and completion)"
     $serviceContent3 = @"
+
   
   /**
    * Create particle from creation data
@@ -1224,6 +1230,7 @@ export const particleService = ParticleService.getInstance();
     # Generate export index file
     Write-InfoLog "Generating Particle domain export index"
     $indexContent = @"
+
 /**
  * @fileoverview Particle Domain Exports
  * @description Main export file for Particle domain

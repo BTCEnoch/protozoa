@@ -18,7 +18,8 @@ try{
  New-Item -Path $benchDir -ItemType Directory -Force | Out-Null
 
  # Service
- $impl=@"import { performance } from 'perf_hooks'
+ $impl= @"
+import { performance } from 'perf_hooks'
 import { createServiceLogger } from '@/shared/lib/logger'
 
 export interface PerfSample{ label:string; duration:number }
@@ -42,7 +43,8 @@ export const perfRegressionService=PerformanceRegressionService.getInstance()
  Set-Content -Path (Join-Path $services 'performanceRegressionService.ts') -Value $impl -Encoding UTF8
 
  # Benchmark script
- $bench=@"import { perfRegressionService as perf } from '@/shared/services/performanceRegressionService'
+ $bench= @"
+import { perfRegressionService as perf } from '@/shared/services/performanceRegressionService'
 
 async function heavyOperation(){
  let sum=0

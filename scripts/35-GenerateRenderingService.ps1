@@ -36,6 +36,7 @@ try {
 
     # Create IRenderingService interface
     $interfaceContent = @"
+
 /**
  * @fileoverview IRenderingService Interface Definition
  * @description Contract for THREE.js rendering operations used across the application.
@@ -72,6 +73,7 @@ export interface IRenderingService {
 
     # Create RenderingService implementation
     $serviceContent = @"
+
 /**
  * @fileoverview RenderingService Implementation
  * @description Singleton THREE.js renderer orchestrating scene, camera, and domain integrations.

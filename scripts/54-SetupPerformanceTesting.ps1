@@ -14,7 +14,8 @@ try{
  $testDir=Join-Path $ProjectRoot 'tests/performance'
  New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
- $perfTest=@"import { describe, it, expect } from 'vitest'
+ $perfTest= @"
+import { describe, it, expect } from 'vitest'
 import { perfRegressionService as perf } from '@/shared/services/performanceRegressionService'
 import { particleService } from '@/domains/particle/services/particleService'
 
@@ -36,7 +37,8 @@ describe('Particle update performance',()=>{
  if(Test-Path $ci){
   $raw=Get-Content $ci -Raw
   if($raw -notmatch 'perf-test:'){
-   $append=@"  perf-test:
+   $append= @"
+  perf-test:
     runs-on: ubuntu-latest
     needs: build-test
     steps:

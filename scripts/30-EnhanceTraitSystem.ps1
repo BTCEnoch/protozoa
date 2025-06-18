@@ -13,7 +13,8 @@ try{
  $services=Join-Path $traitDomain 'services'
  $enhanceFile=Join-Path $services 'traitEnhancements.ts'
 
- $content=@"/**
+ $content= @"
+/**
  * traitEnhancements.ts – Adds genetic inheritance & dynamic mutation logic to TraitService
  */
 import { traitService } from '@/domains/trait/services/traitService'
