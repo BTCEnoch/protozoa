@@ -19,46 +19,12 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
  New-Item -Path $data -ItemType Directory -Force | Out-Null
 
- # Interface
- $iface= @"
-export interface EffectLayer{ name:string; weight:number; params?:Record<string,unknown> }
-export interface IEffectComposerService{
-  addLayer(layer:EffectLayer):void
-  removeLayer(name:string):void
-  play():void
-  stop():void
-  update(delta:number):void
-  dispose():void
-}
-"@
- Set-Content -Path (Join-Path $interfaces 'IEffectComposerService.ts') -Value $iface -Encoding UTF8
+ # Generate templates
+ Write-TemplateFile -TemplateRelPath 'domains/effect/interfaces/IEffectComposerService.ts.template' `
+                   -DestinationPath (Join-Path $interfaces 'IEffectComposerService.ts')
 
- # Implementation
- $impl= @"
-import { createServiceLogger } from '@/shared/lib/logger'
-import { effectService } from '@/domains/effect/services/effectService'
-import type { EffectLayer, IEffectComposerService } from '@/domains/effect/interfaces/IEffectComposerService'
-
-class EffectComposerService implements IEffectComposerService{
- static #instance:EffectComposerService|null=null
- #log=createServiceLogger('EFFECT_COMPOSER')
- #layers:EffectLayer[]=[]
- #running=false
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new EffectComposerService())}
- addLayer(layer:EffectLayer){
-  this.#layers.push(layer)
-  this.#log.info('Layer added',layer)
- }
- removeLayer(name:string){ this.#layers = this.#layers.filter(l=>l.name!==name) }
- play(){ this.#running=true; this.#log.info('Composer play') }
- stop(){ this.#running=false; this.#log.info('Composer stop') }
- update(delta:number){ if(!this.#running) return; this.#layers.forEach(l=>{ effectService.triggerEffect(l.name,{...l.params,delta,weight:l.weight}) }) }
- dispose(){this.#layers=[];EffectComposerService.#instance=null}
-}
-export const effectComposerService=EffectComposerService.getInstance()
-"@
- Set-Content -Path (Join-Path $services 'effectComposerService.ts') -Value $impl -Encoding UTF8
+ Write-TemplateFile -TemplateRelPath 'domains/effect/services/effectComposerService.ts.template' `
+                   -DestinationPath (Join-Path $services 'effectComposerService.ts')
 
  Write-SuccessLog "EffectComposerService generated"
  exit 0

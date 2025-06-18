@@ -33,103 +33,12 @@ try {
 
     Write-SuccessLog "Animation domain directories ensured"
 
-    # Interface
-    $interfaceContent = @"
+    # Generate templates
+    Write-TemplateFile -TemplateRelPath 'domains/animation/interfaces/IAnimationService.ts.template' `
+                      -DestinationPath (Join-Path $interfacesPath 'IAnimationService.ts')
 
-/**
- * @fileoverview IAnimationService Interface Definition
- * @description Contract for controlling particle/organism animations.
- */
-
-export interface AnimationConfig {
-  duration: number
-  easing?: 'linear' | 'ease-in' | 'ease-out' | 'ease-in-out'
-  type: 'move' | 'scale' | 'rotation' | 'custom'
-  [key: string]: unknown
-}
-
-export interface AnimationState {
-  role: string
-  progress: number
-  duration: number
-  type: string
-}
-
-export interface IAnimationService {
-  startAnimation(role: string, config: AnimationConfig): void
-  updateAnimations(delta: number): void
-  stopAll(): void
-  dispose(): void
-}
-"@
-
-    Set-Content -Path (Join-Path $interfacesPath "IAnimationService.ts") -Value $interfaceContent -Encoding UTF8
-    Write-SuccessLog "IAnimationService interface created"
-
-    # Implementation
-    $serviceContent = @"
-
-/**
- * @fileoverview AnimationService Implementation
- * @description Singleton managing time-based animations across particle roles.
- */
-
-import { createServiceLogger, createPerformanceLogger } from '@/shared/lib/logger'
-import type { IAnimationService, AnimationConfig, AnimationState } from '@/domains/animation/interfaces/IAnimationService'
-
-class AnimationService implements IAnimationService {
-  static #instance: AnimationService | null = null
-
-  #animations: Map<string, AnimationState> = new Map()
-  #log  = createServiceLogger('ANIMATION_SERVICE')
-  #perf = createPerformanceLogger('ANIMATION_SERVICE')
-
-  private constructor() {
-    this.#log.info('AnimationService singleton created')
-  }
-
-  public static getInstance(): AnimationService {
-    if (!AnimationService.#instance) AnimationService.#instance = new AnimationService()
-    return AnimationService.#instance
-  }
-
-  public startAnimation(role: string, config: AnimationConfig): void {
-    const state: AnimationState = { role, progress: 0, duration: config.duration, type: config.type }
-    this.#animations.set(role, state)
-    this.#log.info('Animation started', { role, config })
-  }
-
-  public updateAnimations(delta: number): void {
-    const start = performance.now()
-    this.#animations.forEach((state, role) => {
-      state.progress += delta
-      if (state.progress >= state.duration) {
-        this.#animations.delete(role)
-        this.#log.debug('Animation completed', { role })
-      }
-    })
-    const elapsed = performance.now() - start
-    if (this.#animations.size) this.#perf.debug('Animations updated', { count: this.#animations.size, elapsed })
-  }
-
-  public stopAll(): void {
-    const count = this.#animations.size
-    this.#animations.clear()
-    this.#log.warn('All animations stopped', { count })
-  }
-
-  public dispose(): void {
-    this.stopAll()
-    this.#log.info('AnimationService disposed')
-    AnimationService.#instance = null
-  }
-}
-
-export const animationService = AnimationService.getInstance()
-"@
-
-    Set-Content -Path (Join-Path $servicesPath "animationService.ts") -Value $serviceContent -Encoding UTF8
-    Write-SuccessLog "AnimationService implementation created"
+    Write-TemplateFile -TemplateRelPath 'domains/animation/services/animationService.ts.template' `
+                      -DestinationPath (Join-Path $servicesPath 'animationService.ts')
 
     Write-SuccessLog "40-GenerateAnimationService.ps1 completed successfully"
     exit 0
