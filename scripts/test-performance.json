@@ -1,0 +1,279 @@
+﻿{
+    "TimeoutSeconds":  10,
+    "TopSlowScripts":  [
+
+                       ],
+    "ScriptDirectory":  "script_scrub",
+    "TopMemoryScripts":  [
+
+                         ],
+    "PerformanceData":  [
+                            {
+                                "MemoryPeak":  274768,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  5830,
+                                "ExecutionTimes":  [
+                                                       1023
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                "AverageExecutionTime":  1023,
+                                "ScriptName":  "01-analyze-dependencies",
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "MemoryUsage":  [
+                                                    274768
+                                                ],
+                                "MinExecutionTime":  1023,
+                                "MaxExecutionTime":  1023
+                            },
+                            {
+                                "MemoryPeak":  0,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  10139,
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1",
+                                "AverageExecutionTime":  0,
+                                "ScriptName":  "02-detect-duplicates",
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "MinExecutionTime":  0,
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "MemoryPeak":  0,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  16770,
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\03-analyze-resource-usage.ps1",
+                                "AverageExecutionTime":  0,
+                                "ScriptName":  "03-analyze-resource-usage",
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Cmdlet calls in tight loops",
+                                                            "Pattern":  "foreach.*Get-",
+                                                            "Suggestion":  "Consider batching operations or using pipeline",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Dynamic code execution overhead",
+                                                            "Pattern":  "Invoke-Expression",
+                                                            "Suggestion":  "Use direct cmdlet calls instead",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "WMI queries can be slow",
+                                                            "Pattern":  "Get-WmiObject",
+                                                            "Suggestion":  "Consider using Get-CimInstance or caching results",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "MinExecutionTime":  0,
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "MemoryPeak":  0,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  14818,
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\04-code-quality-analysis.ps1",
+                                "AverageExecutionTime":  0,
+                                "ScriptName":  "04-code-quality-analysis",
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Inefficient pipeline ordering",
+                                                            "Pattern":  "\\|\\s*Sort-Object.*\\|\\s*Select-Object",
+                                                            "Suggestion":  "Use Select-Object before Sort-Object when possible",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "MinExecutionTime":  0,
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "MemoryPeak":  0,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  16750,
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\05-performance-analysis.ps1",
+                                "AverageExecutionTime":  0,
+                                "ScriptName":  "05-performance-analysis",
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Cmdlet calls in tight loops",
+                                                            "Pattern":  "foreach.*Get-",
+                                                            "Suggestion":  "Consider batching operations or using pipeline",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Dynamic code execution overhead",
+                                                            "Pattern":  "Invoke-Expression",
+                                                            "Suggestion":  "Use direct cmdlet calls instead",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "WMI queries can be slow",
+                                                            "Pattern":  "Get-WmiObject",
+                                                            "Suggestion":  "Consider using Get-CimInstance or caching results",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Excessive console output in loops",
+                                                            "Pattern":  "Write-Host.*foreach",
+                                                            "Suggestion":  "Reduce output frequency or use Write-Progress",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "MinExecutionTime":  0,
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "MemoryPeak":  0,
+                                "PerformanceRating":  "Good",
+                                "Bottlenecks":  [
+
+                                                ],
+                                "FileSize":  7313,
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\run-analysis.ps1",
+                                "AverageExecutionTime":  0,
+                                "ScriptName":  "run-analysis",
+                                "Recommendations":  [
+
+                                                    ],
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "MinExecutionTime":  0,
+                                "MaxExecutionTime":  0
+                            }
+                        ],
+    "SampleRuns":  1,
+    "Timestamp":  "2025-06-17 17:18:02",
+    "Summary":  [
+                    "PERFORMANCE ANALYSIS COMPLETE: 6/6 scripts analyzed",
+                    "AVERAGE EXECUTION TIME: 170.5ms across all scripts"
+                ],
+    "Recommendations":  [
+
+                        ],
+    "Statistics":  {
+                       "GoodPerformanceScripts":  6,
+                       "TotalScripts":  6,
+                       "FailedAnalysis":  0,
+                       "PoorPerformanceScripts":  0,
+                       "AverageExecutionTime":  170.5,
+                       "FairPerformanceScripts":  0,
+                       "TotalExecutionTime":  1023,
+                       "SuccessfullyAnalyzed":  6,
+                       "HighMemoryScripts":  0,
+                       "TotalRecommendations":  17
+                   }
+}

@@ -1,214 +1,256 @@
-Let me create the optimal execution order document that addresses the dependency chain and ensures error-free execution:
-Based on my analysis of the current `runAll.ps1` script and the dependency relationships between all 58 scripts, here's the **optimal execution order** to ensure error-free execution:
+# 🎯 PROTOZOA AUTOMATION SUITE EXECUTION ORDER
 
-## **🎯 OPTIMAL SCRIPT EXECUTION ORDER (58 Scripts)**
+**Current Status**: 65 Total Scripts (57 Core + 8 Analysis Suite)  
+**Last Updated**: Post Script Scrub Suite Completion  
+**Architecture**: Domain-Driven with Quality Assurance Integration
 
-### **TIER 1: FOUNDATION SETUP (Scripts 00-22)**
-*Must execute first - creates base infrastructure and configuration*
+## **📊 CURRENT SCRIPT INVENTORY**
 
-```powershell
-# Core Infrastructure - CRITICAL DEPENDENCIES
-00-InitEnvironment.ps1                    # Node.js, pnpm, base packages
-01-ScaffoldProjectStructure.ps1           # Directory structure + base files  
-12-GenerateSharedTypes.ps1                # Cross-domain types (dependencies for all services)
-16-GenerateSharedTypesService.ps1         # Enhanced shared interfaces
-13-GenerateTypeScriptConfig.ps1           # TypeScript config (needed for compilation)
+### **Core Automation Scripts**: 57 Scripts
+- **Phase 0-1 (Foundation)**: 15 scripts (00-08, 14-22)
+- **Phase 2-3 (Core Services)**: 18 scripts (23-40) 
+- **Phase 4 (Enhancements)**: 9 scripts (41-49)
+- **Phase 5-6 (Integration)**: 15 scripts (50-56, 18a, 18b)
 
-# Environment & Configuration - REQUIRED BEFORE DOMAIN LOGIC
-09-GenerateEnvironmentConfig.ps1          # Environment detection service
-17-GenerateEnvironmentConfig.ps1          # Enhanced environment + logging
-19-ConfigureAdvancedTypeScript.ps1        # Strict TS settings + path mapping
-21-ConfigureDevEnvironment.ps1            # VS Code, Prettier, EditorConfig
-20-SetupPreCommitValidation.ps1           # Husky, lint-staged, validation hooks
+### **Script Scrub Analysis Suite**: 8 Scripts
+- **Dependency Analysis**: `script_scrub/01-analyze-dependencies.ps1`
+- **Duplicate Detection**: `script_scrub/02-detect-duplicates.ps1`
+- **Resource Usage Analysis**: `script_scrub/03-analyze-resource-usage.ps1`
+- **Code Quality Analysis**: `script_scrub/04-code-quality-analysis.ps1`
+- **Performance Analysis**: `script_scrub/05-performance-analysis.ps1`
+- **Orchestration**: `script_scrub/run-analysis.ps1`
+- **Utilities**: `script_scrub/utils/ast-parser.psm1`, `script_scrub/utils/dependency-graph.psm1`
 
-# Domain Foundation - BEFORE SERVICE IMPLEMENTATIONS  
-02-GenerateDomainStubs.ps1                # Basic interfaces + service shells
-22-SetupBitcoinProtocol.ps1               # Bitcoin network config + validation
-```
+---
 
-### **TIER 2: CORE DOMAIN SERVICES (Scripts 23-41)**
-*Domain logic implementation - depends on foundation*
+## **🚀 OPTIMAL EXECUTION ORDER (57 Core Scripts)**
 
-```powershell
-# Utility Services - DEPENDENCIES FOR OTHER DOMAINS
-23-GenerateRNGService.ps1                 # RNG service (used by trait, particle, etc.)
-24-GeneratePhysicsService.ps1             # Physics service (used by particle, animation)
-
-# Data Services - BLOCKCHAIN INTEGRATION
-26-GenerateBitcoinService.ps1             # Bitcoin API service
-27-GenerateTraitService.ps1               # Trait service (depends on RNG + Bitcoin)
-
-# Core Entity Services - DEPEND ON UTILITY/DATA SERVICES
-31-GenerateParticleService.ps1            # Particle service (depends on RNG, Physics, Trait)
-10-GenerateParticleInitService.ps1        # Particle initialization (already exists)
-
-# Formation Services - DEPEND ON PARTICLE SERVICE
-18-GenerateFormationDomain.ps1            # Formation service (already exists) 
-11-GenerateFormationBlendingService.ps1   # Formation blending (already exists)
-
-# Visual Services - DEPEND ON PARTICLE + FORMATION
-35-GenerateRenderingService.ps1           # Rendering service (depends on particles, formations)
-36-GenerateEffectService.ps1              # Effect service
-
-# Behavioral Services - DEPEND ON ALL ABOVE
-40-GenerateAnimationService.ps1           # Animation service (depends on rendering, physics)
-41-GenerateGroupService.ps1               # Group service (depends on particles, RNG)
-```
-
-### **TIER 3: ENHANCED DOMAIN FEATURES (Scripts 25, 28-34, 37-44)**
-*Advanced features - depends on core services*
+### **PHASE 0: ENVIRONMENT & FOUNDATION (10 Scripts)**
+*Critical infrastructure - must execute first*
 
 ```powershell
-# Physics Enhancements
-25-SetupPhysicsWebWorkers.ps1             # Worker threads (depends on physics service)
+# Core Infrastructure Setup
+00-InitEnvironment.ps1                    # Node.js, pnpm, base environment
+01-ScaffoldProjectStructure.ps1           # Domain-driven directory structure
+02-GenerateDomainStubs.ps1                # Service interfaces and stubs
 
-# Data Integration Enhancements  
-28-SetupBlockchainDataIntegration.ps1     # Real-time blockchain (depends on bitcoin service)
-29-SetupDataValidationLayer.ps1          # Data validation (depends on bitcoin service)
-30-EnhanceTraitSystem.ps1                # Advanced traits (depends on trait service)
+# Code Quality & Compliance
+03-MoveAndCleanCodebase.ps1               # Legacy cleanup
+04-EnforceSingletonPatterns.ps1           # Architectural patterns
+05-VerifyCompliance.ps1                   # Domain compliance validation
+06-DomainLint.ps1                         # Domain-specific linting rules
 
-# Particle System Enhancements
-32-SetupParticleLifecycleManagement.ps1  # Lifecycle (depends on particle service)
-33-ImplementSwarmIntelligence.ps1        # Swarm behavior (depends on particle + group)
-34-EnhanceFormationSystem.ps1            # Advanced formations (depends on formation service)
-
-# Visual System Enhancements
-37-SetupCustomShaderSystem.ps1           # Shaders (depends on rendering service)
-38-ImplementLODSystem.ps1                # LOD (depends on rendering service)
-39-SetupAdvancedEffectComposition.ps1    # Advanced effects (depends on effect service)
-
-# Animation Enhancements
-42-SetupPhysicsBasedAnimation.ps1        # Physics animation (depends on animation + physics)
-43-ImplementAdvancedTimeline.ps1         # Timeline system (depends on animation service)
-44-SetupAnimationBlending.ps1            # Animation blending (depends on animation service)
+# Build & Deployment Foundation
+07-BuildAndTest.ps1                       # Build verification
+08-DeployToGitHub.ps1                     # Git setup and GitHub integration
+20-SetupPreCommitValidation.ps1           # Husky hooks and validation
 ```
 
-### **TIER 4: INTEGRATION & TESTING (Scripts 50-56)**
-*System integration - depends on all services*
+### **PHASE 1: SHARED INFRASTRUCTURE (5 Scripts)**
+*Cross-domain services and configuration*
 
 ```powershell
-# Service Integration - REQUIRES ALL DOMAIN SERVICES
-50-SetupServiceIntegration.ps1           # DI container + service composition
-53-SetupEventBusSystem.ps1               # Event system (cross-service communication)
-
-# UI Integration - REQUIRES SERVICES + INTEGRATION
-51-SetupGlobalStateManagement.ps1        # Zustand stores
-52-SetupReactIntegration.ps1             # React components + Three.js
-
-# Data Persistence - REQUIRES SERVICES
-55-SetupPersistenceLayer.ps1             # Data storage + lineage tracking
-
-# Testing Infrastructure - REQUIRES COMPLETE SYSTEM
-54-SetupPerformanceTesting.ps1           # Performance testing suite
-56-SetupEndToEndValidation.ps1           # E2E testing + validation
+# Shared Services & Types
+16-GenerateSharedTypesService.ps1         # Unified type system
+17-GenerateEnvironmentConfig.ps1          # Environment detection & config
+18a-SetupLoggingService.ps1               # Winston logging infrastructure
+18-GenerateFormationDomain.ps1            # Formation domain implementation
+14-FixUtilityFunctions.ps1                # Utility function validation
 ```
 
-### **TIER 5: AUTOMATION & COMPLIANCE (Scripts 03-08, 14-15, 45-49)**
-*Cleanup, validation, and CI/CD - final tier*
+### **PHASE 2: DEVELOPMENT ENVIRONMENT (2 Scripts)**
+*TypeScript and development tooling*
 
 ```powershell
-# Code Cleanup & Compliance - AFTER ALL IMPLEMENTATION
-03-MoveAndCleanCodebase.ps1              # Legacy cleanup
-14-FixUtilityFunctions.ps1               # Utility validation
-04-EnforceSingletonPatterns.ps1          # Pattern enforcement
-05-VerifyCompliance.ps1                  # Architecture compliance
-06-DomainLint.ps1                        # Domain boundary validation
-
-# CI/CD Pipeline Setup - FINAL AUTOMATION
-45-SetupCICDPipeline.ps1                 # GitHub Actions + validation
-46-SetupDockerDeployment.ps1             # Docker + security scanning
-47-SetupPerformanceRegression.ps1        # Performance monitoring
-48-SetupAdvancedBundleAnalysis.ps1       # Bundle analysis
-49-SetupAutomatedDocumentation.ps1       # Documentation generation
-
-# Build & Deployment - FINAL STEPS
-07-BuildAndTest.ps1                      # Build verification
-08-DeployToGitHub.ps1                    # Git setup + deployment
-15-ValidateSetupComplete.ps1             # Final validation
+# Development Configuration
+19-ConfigureAdvancedTypeScript.ps1        # Advanced TS config with path mapping
+21-ConfigureDevEnvironment.ps1            # VS Code, Prettier, dev tools
 ```
 
-## **🔧 UPDATED runAll.ps1 CONFIGURATION**
-
-The current `runAll.ps1` needs to be updated with this complete sequence. Here's the key change needed:
+### **PHASE 3: CORE PROTOCOL SERVICES (8 Scripts)**
+*Fundamental domain services*
 
 ```powershell
-# REPLACE the current $scriptSequence array with this complete order:
-$scriptSequence = @(
-    # TIER 1: Foundation (14 scripts)
-    @{ Script = "00-InitEnvironment.ps1"; Description = "Environment setup and dependencies" },
-    @{ Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
-    @{ Script = "12-GenerateSharedTypes.ps1"; Description = "Cross-domain shared types" },
-    @{ Script = "16-GenerateSharedTypesService.ps1"; Description = "Enhanced shared interfaces" },
-    @{ Script = "13-GenerateTypeScriptConfig.ps1"; Description = "TypeScript configuration" },
-    @{ Script = "09-GenerateEnvironmentConfig.ps1"; Description = "Environment detection service" },
-    @{ Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Enhanced environment + logging" },
-    @{ Script = "19-ConfigureAdvancedTypeScript.ps1"; Description = "Advanced TypeScript configuration" },
-    @{ Script = "21-ConfigureDevEnvironment.ps1"; Description = "Development environment setup" },
-    @{ Script = "20-SetupPreCommitValidation.ps1"; Description = "Pre-commit validation hooks" },
-    @{ Script = "02-GenerateDomainStubs.ps1"; Description = "Domain service stubs" },
-    @{ Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin protocol configuration" },
-    
-    # TIER 2: Core Services (10 scripts)
-    @{ Script = "23-GenerateRNGService.ps1"; Description = "RNG service implementation" },
-    @{ Script = "24-GeneratePhysicsService.ps1"; Description = "Physics service implementation" },
-    @{ Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin service implementation" },
-    @{ Script = "27-GenerateTraitService.ps1"; Description = "Trait service implementation" },
-    @{ Script = "31-GenerateParticleService.ps1"; Description = "Particle service implementation" },
-    @{ Script = "10-GenerateParticleInitService.ps1"; Description = "Particle initialization service" },
-    @{ Script = "18-GenerateFormationDomain.ps1"; Description = "Formation domain implementation" },
-    @{ Script = "11-GenerateFormationBlendingService.ps1"; Description = "Formation blending service" },
-    @{ Script = "35-GenerateRenderingService.ps1"; Description = "Rendering service implementation" },
-    @{ Script = "36-GenerateEffectService.ps1"; Description = "Effect service implementation" },
-    @{ Script = "40-GenerateAnimationService.ps1"; Description = "Animation service implementation" },
-    @{ Script = "41-GenerateGroupService.ps1"; Description = "Group service implementation" },
-    
-    # TIER 3: Enhanced Features (12 scripts)
-    @{ Script = "25-SetupPhysicsWebWorkers.ps1"; Description = "Physics web worker setup" },
-    @{ Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Real-time blockchain integration" },
-    @{ Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation layer" },
-    @{ Script = "30-EnhanceTraitSystem.ps1"; Description = "Enhanced trait system" },
-    @{ Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle management" },
-    @{ Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm intelligence implementation" },
-    @{ Script = "34-EnhanceFormationSystem.ps1"; Description = "Enhanced formation system" },
-    @{ Script = "37-SetupCustomShaderSystem.ps1"; Description = "Custom shader system" },
-    @{ Script = "38-ImplementLODSystem.ps1"; Description = "Level of detail system" },
-    @{ Script = "39-SetupAdvancedEffectComposition.ps1"; Description = "Advanced effect composition" },
-    @{ Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-based animation" },
-    @{ Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Advanced timeline system" },
-    @{ Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending system" },
-    
-    # TIER 4: Integration (7 scripts)
-    @{ Script = "50-SetupServiceIntegration.ps1"; Description = "Service integration setup" },
-    @{ Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
-    @{ Script = "51-SetupGlobalStateManagement.ps1"; Description = "Global state management" },
-    @{ Script = "52-SetupReactIntegration.ps1"; Description = "React integration" },
-    @{ Script = "55-SetupPersistenceLayer.ps1"; Description = "Persistence layer" },
-    @{ Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing" },
-    @{ Script = "56-SetupEndToEndValidation.ps1"; Description = "End-to-end validation" },
-    
-    # TIER 5: Automation & Final Steps (15 scripts)
-    @{ Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy code cleanup" },
-    @{ Script = "14-FixUtilityFunctions.ps1"; Description = "Utility function fixes" },
-    @{ Script = "04-EnforceSingletonPatterns.ps1"; Description = "Singleton pattern enforcement" },
-    @{ Script = "05-VerifyCompliance.ps1"; Description = "Architecture compliance" },
-    @{ Script = "06-DomainLint.ps1"; Description = "Domain-specific linting" },
-    @{ Script = "45-SetupCICDPipeline.ps1"; Description = "CI/CD pipeline setup" },
-    @{ Script = "46-SetupDockerDeployment.ps1"; Description = "Docker deployment setup" },
-    @{ Script = "47-SetupPerformanceRegression.ps1"; Description = "Performance regression testing" },
-    @{ Script = "48-SetupAdvancedBundleAnalysis.ps1"; Description = "Advanced bundle analysis" },
-    @{ Script = "49-SetupAutomatedDocumentation.ps1"; Description = "Automated documentation" },
-    @{ Script = "07-BuildAndTest.ps1"; Description = "Build verification and testing" },
-    @{ Script = "08-DeployToGitHub.ps1"; Description = "GitHub deployment" },
-    @{ Script = "15-ValidateSetupComplete.ps1"; Description = "Final validation" }
-)
+# Protocol & Core Services
+22-SetupBitcoinProtocol.ps1               # Bitcoin Ordinals protocol
+23-GenerateRNGService.ps1                 # Random number generation service
+24-GeneratePhysicsService.ps1             # Physics engine service
+25-SetupPhysicsWebWorkers.ps1             # Physics worker threads
+
+# Blockchain Integration
+26-GenerateBitcoinService.ps1             # Bitcoin blockchain service
+27-GenerateTraitService.ps1               # Trait management service
+28-SetupBlockchainDataIntegration.ps1     # Real-time blockchain data
+29-SetupDataValidationLayer.ps1           # Data validation framework
 ```
 
-## **🚨 CRITICAL EXECUTION PRINCIPLES**
+### **PHASE 4: DOMAIN SERVICES (10 Scripts)**
+*Core entity and behavior services*
 
-1. **Never Skip Tiers**: Each tier must complete successfully before the next begins
-2. **Handle Missing Scripts**: The current runAll.ps1 already handles missing scripts gracefully
-3. **Validation Points**: Scripts 05, 06, 15, 56 are validation checkpoints
-4. **Rollback Strategy**: If any Tier 1 script fails, stop completely
-5. **Service Dependencies**: Core services (Tier 2) must all succeed before enhancements (Tier 3)
+```powershell
+# Entity Services
+30-EnhanceTraitSystem.ps1                 # Enhanced trait system
+31-GenerateParticleService.ps1            # Particle service (core entity)
+32-SetupParticleLifecycleManagement.ps1   # Particle lifecycle
+33-ImplementSwarmIntelligence.ps1         # Swarm behavior
+34-EnhanceFormationSystem.ps1             # Formation enhancements
 
-This execution order ensures that dependencies are resolved in the correct sequence and minimizes the risk of execution errors.
+# Visual Services
+35-GenerateRenderingService.ps1           # THREE.js rendering service
+36-GenerateEffectService.ps1              # Visual effects service
+37-SetupCustomShaderSystem.ps1            # Custom shader pipeline
+38-ImplementLODSystem.ps1                 # Level-of-detail optimization
+39-SetupAdvancedEffectComposition.ps1     # Effect composition
+```
+
+### **PHASE 5: BEHAVIORAL SERVICES (9 Scripts)**
+*Animation and advanced behaviors*
+
+```powershell
+# Animation & Group Behavior
+40-GenerateAnimationService.ps1           # Animation service
+41-GenerateGroupService.ps1               # Group management service
+42-SetupPhysicsBasedAnimation.ps1         # Physics-driven animation
+43-ImplementAdvancedTimeline.ps1          # Timeline system
+44-SetupAnimationBlending.ps1             # Animation blending
+
+# Testing Infrastructure
+18b-SetupTestingFramework.ps1             # Vitest testing framework
+
+# CI/CD Pipeline
+45-SetupCICDPipeline.ps1                  # GitHub Actions pipeline
+46-SetupDockerDeployment.ps1              # Docker containerization
+47-SetupPerformanceRegression.ps1         # Performance monitoring
+```
+
+### **PHASE 6: ADVANCED TOOLING (4 Scripts)**
+*Analysis and documentation*
+
+```powershell
+# Advanced Analysis
+48-SetupAdvancedBundleAnalysis.ps1        # Bundle size analysis
+49-SetupAutomatedDocumentation.ps1        # TypeDoc documentation
+50-SetupServiceIntegration.ps1            # Dependency injection setup
+```
+
+### **PHASE 7: FRONTEND INTEGRATION (6 Scripts)**
+*React and state management*
+
+```powershell
+# Frontend Integration
+51-SetupGlobalStateManagement.ps1         # Zustand state management
+52-SetupReactIntegration.ps1              # React component integration
+53-SetupEventBusSystem.ps1                # Event bus system
+54-SetupPerformanceTesting.ps1            # Performance testing suite
+55-SetupPersistenceLayer.ps1              # Data persistence
+56-SetupEndToEndValidation.ps1            # E2E testing
+```
+
+### **PHASE 8: FINAL VALIDATION (1 Script)**
+*Complete system validation*
+
+```powershell
+# Final Validation
+15-ValidateSetupComplete.ps1              # Comprehensive final validation
+```
+
+---
+
+## **🔍 SCRIPT SCRUB ANALYSIS SUITE INTEGRATION**
+
+### **Quality Assurance Workflow**
+The analysis suite can be run at any point but is most effective:
+
+```powershell
+# Pre-execution Analysis (Recommended)
+.\script_scrub\run-analysis.ps1 -TargetDirectory "." -FullAnalysis
+
+# Individual Analysis Tools
+.\script_scrub\01-analyze-dependencies.ps1    # Dependency mapping
+.\script_scrub\02-detect-duplicates.ps1       # Code duplication detection
+.\script_scrub\03-analyze-resource-usage.ps1  # Resource pattern analysis
+.\script_scrub\04-code-quality-analysis.ps1   # PSScriptAnalyzer-style checks
+.\script_scrub\05-performance-analysis.ps1    # Performance benchmarking
+```
+
+### **Analysis Integration Points**
+
+1. **Pre-Execution**: Run full analysis to identify issues before automation
+2. **Mid-Pipeline**: After Phase 3 (core services) to validate service quality
+3. **Post-Execution**: Final quality assessment and performance validation
+4. **Continuous**: Integrate into CI/CD for ongoing quality monitoring
+
+---
+
+## **📋 EXECUTION PRINCIPLES & DEPENDENCIES**
+
+### **Critical Dependencies**
+1. **00-02**: Foundation must complete before any other scripts
+2. **16-17**: Shared types/config required for all domain services
+3. **22-23**: Protocol setup required before blockchain services
+4. **24-25**: Physics service required before particle/animation services
+5. **31**: Particle service required for formation/rendering services
+6. **35-36**: Rendering services required for advanced visual features
+
+### **Phase Completion Requirements**
+- **Phase 0**: All scripts must succeed (critical infrastructure)
+- **Phase 1**: Shared services must succeed for domain services
+- **Phase 2**: Can partially fail (dev environment non-critical)
+- **Phase 3**: Core services must succeed for dependent phases
+- **Phase 4-7**: Can have partial failures with graceful degradation
+- **Phase 8**: Final validation reports overall system health
+
+### **Missing Scripts (Previously Referenced)**
+The following scripts from the old execution order are **no longer present**:
+- `09-GenerateEnvironmentConfig.ps1` (merged into 17)
+- `10-GenerateParticleInitService.ps1` (present but different role)
+- `11-GenerateFormationBlendingService.ps1` (present but different role)
+- `12-GenerateSharedTypes.ps1` (merged into 16)
+- `13-GenerateTypeScriptConfig.ps1` (merged into 19)
+
+---
+
+## **🎯 RUNALL.PS1 CURRENT STATUS**
+
+The current `runAll.ps1` implements this execution order correctly with:
+- ✅ **57 scripts** in proper dependency sequence
+- ✅ **Phase-based organization** (8 phases)
+- ✅ **Error handling** with continuation prompts
+- ✅ **Execution tracking** with detailed reporting
+- ✅ **Missing script handling** (graceful degradation)
+
+### **Analysis Suite Integration**
+To integrate quality analysis into the main pipeline:
+
+```powershell
+# Add to runAll.ps1 before Phase 0
+Write-InfoLog "Running pre-execution quality analysis..."
+& "$PSScriptRoot\script_scrub\run-analysis.ps1" -TargetDirectory $PSScriptRoot -Quick
+
+# Add after Phase 3 (mid-pipeline check)
+Write-InfoLog "Running mid-pipeline quality validation..."
+& "$PSScriptRoot\script_scrub\04-code-quality-analysis.ps1" -ScriptDirectory $PSScriptRoot
+
+# Add after Phase 8 (final quality report)
+Write-InfoLog "Generating final quality and performance report..."
+& "$PSScriptRoot\script_scrub\run-analysis.ps1" -TargetDirectory $PSScriptRoot -FullAnalysis
+```
+
+---
+
+## **📈 EXECUTION METRICS**
+
+### **Current Performance Targets**
+- **Total Scripts**: 57 core + 8 analysis = 65 scripts
+- **Estimated Runtime**: 15-25 minutes (depending on system)
+- **Success Rate Target**: >95% for core scripts
+- **Analysis Coverage**: 100% with script scrub suite
+
+### **Quality Assurance Metrics**
+- **Code Quality**: PSScriptAnalyzer compliance
+- **Performance**: <30s average execution per script
+- **Dependencies**: Zero circular dependencies
+- **Duplication**: <5% code similarity threshold
+- **Resource Usage**: Monitored and optimized
+
+This execution order ensures optimal dependency resolution, maintains architectural integrity, and provides comprehensive quality assurance through the integrated script scrub analysis suite.

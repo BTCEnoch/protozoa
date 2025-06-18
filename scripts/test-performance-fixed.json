@@ -1,0 +1,405 @@
+﻿{
+    "TimeoutSeconds":  5,
+    "TopSlowScripts":  [
+
+                       ],
+    "ScriptDirectory":  "script_scrub",
+    "TopMemoryScripts":  [
+
+                         ],
+    "PerformanceData":  [
+                            {
+                                "FileSize":  5830,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\01-analyze-dependencies.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  {
+
+                                                                        },
+                                                             "ErrorCount":  0,
+                                                             "HasErrors":  false,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       1033
+                                                   ],
+                                "MinExecutionTime":  1033,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  1033,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "01-analyze-dependencies",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  0,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  0,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  4
+                                                     },
+                                "MaxExecutionTime":  1033
+                            },
+                            {
+                                "FileSize":  10139,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "High error rate: 500% of runs produced errors/warnings",
+                                                            "Suggestion":  "Review script logic and error handling to reduce failure rate",
+                                                            "Priority":  "High",
+                                                            "Type":  "Execution Quality"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\02-detect-duplicates.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  null,
+                                                             "ErrorCount":  1,
+                                                             "FailureReason":  "Script execution timed out after 5 seconds",
+                                                             "HasErrors":  true,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "MinExecutionTime":  0,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  0,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "02-detect-duplicates",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  500,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  5,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  0
+                                                     },
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "FileSize":  16770,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Cmdlet calls in tight loops",
+                                                            "Pattern":  "foreach.*Get-",
+                                                            "Suggestion":  "Consider batching operations or using pipeline",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Dynamic code execution overhead",
+                                                            "Pattern":  "Invoke-Expression",
+                                                            "Suggestion":  "Use direct cmdlet calls instead",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "WMI queries can be slow",
+                                                            "Pattern":  "Get-WmiObject",
+                                                            "Suggestion":  "Consider using Get-CimInstance or caching results",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "High error rate: 500% of runs produced errors/warnings",
+                                                            "Suggestion":  "Review script logic and error handling to reduce failure rate",
+                                                            "Priority":  "High",
+                                                            "Type":  "Execution Quality"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\03-analyze-resource-usage.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  null,
+                                                             "ErrorCount":  1,
+                                                             "FailureReason":  "A parameter cannot be found that matches parameter name \u0027WhatIf\u0027.",
+                                                             "HasErrors":  true,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "MinExecutionTime":  0,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  0,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "03-analyze-resource-usage",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  500,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  5,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  0
+                                                     },
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "FileSize":  14818,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Inefficient pipeline ordering",
+                                                            "Pattern":  "\\|\\s*Sort-Object.*\\|\\s*Select-Object",
+                                                            "Suggestion":  "Use Select-Object before Sort-Object when possible",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "High error rate: 500% of runs produced errors/warnings",
+                                                            "Suggestion":  "Review script logic and error handling to reduce failure rate",
+                                                            "Priority":  "High",
+                                                            "Type":  "Execution Quality"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\04-code-quality-analysis.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  null,
+                                                             "ErrorCount":  1,
+                                                             "FailureReason":  "A parameter cannot be found that matches parameter name \u0027WhatIf\u0027.",
+                                                             "HasErrors":  true,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "MinExecutionTime":  0,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  0,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "04-code-quality-analysis",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  500,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  5,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  0
+                                                     },
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "FileSize":  22040,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "Recursive file operations can be slow",
+                                                            "Pattern":  "Get-ChildItem.*-Recurse",
+                                                            "Suggestion":  "Consider limiting depth or using more specific filters",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Cmdlet calls in tight loops",
+                                                            "Pattern":  "foreach.*Get-",
+                                                            "Suggestion":  "Consider batching operations or using pipeline",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Dynamic code execution overhead",
+                                                            "Pattern":  "Invoke-Expression",
+                                                            "Suggestion":  "Use direct cmdlet calls instead",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "WMI queries can be slow",
+                                                            "Pattern":  "Get-WmiObject",
+                                                            "Suggestion":  "Consider using Get-CimInstance or caching results",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Forced module reloading",
+                                                            "Pattern":  "Import-Module.*-Force",
+                                                            "Suggestion":  "Check if module is already loaded first",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "Excessive console output in loops",
+                                                            "Pattern":  "Write-Host.*foreach",
+                                                            "Suggestion":  "Reduce output frequency or use Write-Progress",
+                                                            "Priority":  "Low",
+                                                            "Type":  "Performance Anti-Pattern"
+                                                        },
+                                                        {
+                                                            "Issue":  "High error rate: 500% of runs produced errors/warnings",
+                                                            "Suggestion":  "Review script logic and error handling to reduce failure rate",
+                                                            "Priority":  "High",
+                                                            "Type":  "Execution Quality"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\05-performance-analysis.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  null,
+                                                             "ErrorCount":  1,
+                                                             "FailureReason":  "A parameter cannot be found that matches parameter name \u0027WhatIf\u0027.",
+                                                             "HasErrors":  true,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "MinExecutionTime":  0,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  0,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "05-performance-analysis",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  500,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  5,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  0
+                                                     },
+                                "MaxExecutionTime":  0
+                            },
+                            {
+                                "FileSize":  7313,
+                                "Recommendations":  [
+                                                        {
+                                                            "Issue":  "High error rate: 500% of runs produced errors/warnings",
+                                                            "Suggestion":  "Review script logic and error handling to reduce failure rate",
+                                                            "Priority":  "High",
+                                                            "Type":  "Execution Quality"
+                                                        }
+                                                    ],
+                                "FilePath":  "D:\\Protozoa\\scripts\\script_scrub\\run-analysis.ps1",
+                                "MemoryPeak":  0,
+                                "ExecutionResults":  [
+                                                         {
+                                                             "Output":  null,
+                                                             "ErrorCount":  1,
+                                                             "FailureReason":  "Script execution timed out after 5 seconds",
+                                                             "HasErrors":  true,
+                                                             "OutputLines":  0
+                                                         }
+                                                     ],
+                                "ExecutionTimes":  [
+                                                       -1
+                                                   ],
+                                "MinExecutionTime":  0,
+                                "PerformanceRating":  "Good",
+                                "AverageExecutionTime":  0,
+                                "MemoryUsage":  [
+                                                    0
+                                                ],
+                                "Bottlenecks":  [
+
+                                                ],
+                                "ScriptName":  "run-analysis",
+                                "ExecutionMetrics":  {
+                                                         "ErrorRate":  500,
+                                                         "TotalOutputLines":  0,
+                                                         "FailedRuns":  5,
+                                                         "AverageOutputLines":  0,
+                                                         "SuccessfulRuns":  0
+                                                     },
+                                "MaxExecutionTime":  0
+                            }
+                        ],
+    "SampleRuns":  1,
+    "Timestamp":  "2025-06-17 17:23:15",
+    "Summary":  [
+                    "PERFORMANCE ANALYSIS COMPLETE: 6/6 scripts analyzed",
+                    "AVERAGE EXECUTION TIME: 172.17ms across all scripts"
+                ],
+    "Recommendations":  [
+
+                        ],
+    "Statistics":  {
+                       "GoodPerformanceScripts":  6,
+                       "TotalScripts":  6,
+                       "FailedAnalysis":  0,
+                       "PoorPerformanceScripts":  0,
+                       "AverageExecutionTime":  172.16666666666666,
+                       "FairPerformanceScripts":  0,
+                       "TotalExecutionTime":  1033,
+                       "SuccessfullyAnalyzed":  6,
+                       "HighMemoryScripts":  0,
+                       "TotalRecommendations":  22
+                   }
+}

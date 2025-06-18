@@ -1,0 +1,128 @@
+﻿{
+    "Issues":  [
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "01-analyze-dependencies",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "02-detect-duplicates",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   },
+                   {
+                       "Fixable":  false,
+                       "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                       "LineNumber":  1,
+                       "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                       "ScriptName":  "run-analysis",
+                       "Severity":  "Warning",
+                       "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                       "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                   }
+               ],
+    "IssuesByRule":  {
+                         "PSUseShouldProcessForStateChangingFunctions":  [
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "01-analyze-dependencies",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "02-detect-duplicates",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             },
+                                                                             {
+                                                                                 "Fixable":  false,
+                                                                                 "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                                                 "LineNumber":  1,
+                                                                                 "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                                                 "ScriptName":  "run-analysis",
+                                                                                 "Severity":  "Warning",
+                                                                                 "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                                                 "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                                             }
+                                                                         ]
+                     },
+    "ScriptDirectory":  "script_scrub",
+    "Timestamp":  "2025-06-17 17:08:13",
+    "Statistics":  {
+                       "TotalScripts":  5,
+                       "InformationIssues":  0,
+                       "ErrorIssues":  0,
+                       "WarningIssues":  3,
+                       "FixableIssues":  0,
+                       "TotalIssues":  3
+                   },
+    "Summary":  [
+                    "WARNING: Found 3 warning-level code quality issues that should be addressed",
+                    "TOP ISSUES:",
+                    "  - PSUseShouldProcessForStateChangingFunctions: 3 occurrences"
+                ],
+    "SeverityFilter":  "All",
+    "IssuesByScript":  {
+                           "03-analyze-resource-usage":  [
+
+                                                         ],
+                           "01-analyze-dependencies":  [
+                                                           {
+                                                               "Fixable":  false,
+                                                               "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                               "LineNumber":  1,
+                                                               "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                               "ScriptName":  "01-analyze-dependencies",
+                                                               "Severity":  "Warning",
+                                                               "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                               "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                           }
+                                                       ],
+                           "run-analysis":  [
+                                                {
+                                                    "Fixable":  false,
+                                                    "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                    "LineNumber":  1,
+                                                    "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                    "ScriptName":  "run-analysis",
+                                                    "Severity":  "Warning",
+                                                    "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                    "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                }
+                                            ],
+                           "04-code-quality-analysis":  [
+
+                                                        ],
+                           "02-detect-duplicates":  [
+                                                        {
+                                                            "Fixable":  false,
+                                                            "RuleName":  "PSUseShouldProcessForStateChangingFunctions",
+                                                            "LineNumber":  1,
+                                                            "Context":  "SupportsShouldProcess declared without ShouldProcess calls",
+                                                            "ScriptName":  "02-detect-duplicates",
+                                                            "Severity":  "Warning",
+                                                            "Message":  "Function declares SupportsShouldProcess but never calls ShouldProcess.",
+                                                            "Suggestion":  "Add $PSCmdlet.ShouldProcess() calls before making changes"
+                                                        }
+                                                    ]
+                       }
+}

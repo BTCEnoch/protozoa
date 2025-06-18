@@ -655,16 +655,123 @@ function New-PackageJson {
     return ($packageConfig | ConvertTo-Json -Depth 10)
 }
 
+# Add consolidated regex helpers and console styling utilities
+
+# ============================================================================
+# REGEX HELPER FUNCTIONS (Consolidated)
+# ============================================================================
+
+function Select-RegexMatches {
+    <#
+        .SYNOPSIS
+            Returns all matches for a pattern in the provided input string.
+        .DESCRIPTION
+            Wrapper around [regex]::Matches for simpler consumption in scripts.
+        .PARAMETER Input
+            The input string to search.
+        .PARAMETER Pattern
+            The regex pattern.
+        .PARAMETER Options
+            Optional RegexOptions flags (defaults to None).
+        .OUTPUTS
+            System.Text.RegularExpressions.Match[]
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][string]$Input,
+        [Parameter(Mandatory = $true)][string]$Pattern,
+        [Parameter(Mandatory = $false)][System.Text.RegularExpressions.RegexOptions]$Options = [System.Text.RegularExpressions.RegexOptions]::None
+    )
+
+    return [regex]::Matches($Input, $Pattern, $Options)
+}
+
+function Test-RegexMatch {
+    <#
+        .SYNOPSIS
+            Tests whether the pattern exists in the input string.
+        .OUTPUTS
+            [bool]
+    #>
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory = $true)][string]$Input,
+        [Parameter(Mandatory = $true)][string]$Pattern,
+        [Parameter(Mandatory = $false)][System.Text.RegularExpressions.RegexOptions]$Options = [System.Text.RegularExpressions.RegexOptions]::None
+    )
+    return [regex]::IsMatch($Input, $Pattern, $Options)
+}
+
+function ConvertFrom-SemVer {
+    <#
+        .SYNOPSIS
+            Parses a semantic version string into its components.
+        .OUTPUTS
+            [pscustomobject] with Major, Minor, Patch, PreRelease, Build
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][string]$Version
+    )
+    $pattern = '^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<pre>[0-9A-Za-z.-]+))?(?:\+(?<build>[0-9A-Za-z.-]+))?$'
+    $m = [regex]::Match($Version, $pattern)
+    if (-not $m.Success) { throw "Invalid semantic version: $Version" }
+    return [pscustomobject]@{
+        Major = [int]$m.Groups['major'].Value
+        Minor = [int]$m.Groups['minor'].Value
+        Patch = [int]$m.Groups['patch'].Value
+        PreRelease = $m.Groups['pre'].Value
+        Build = $m.Groups['build'].Value
+    }
+}
+
+# ============================================================================
+# CONSOLE STYLING HELPERS (Consolidated)
+# ============================================================================
+
+function Write-Colored {
+    <#
+        .SYNOPSIS
+            Writes a colored message to the host.
+        .PARAMETER Message
+            The message to display.
+        .PARAMETER Color
+            Console foreground color (Default: White).
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][string]$Message,
+        [Parameter(Mandatory = $false)][System.ConsoleColor]$Color = [System.ConsoleColor]::White
+    )
+    Write-Host $Message -ForegroundColor $Color
+}
+
+function Write-SectionHeader {
+    <#
+        .SYNOPSIS
+            Writes a prominent section header to the console using a uniform style.
+    #>
+    [CmdletBinding()]
+    param([Parameter(Mandatory = $true)][string]$Title)
+    $sep = '=' * 60
+    Write-Colored "`n$sep" 'DarkCyan'
+    Write-Colored "  $Title" 'Cyan'
+    Write-Colored "$sep`n" 'DarkCyan'
+}
+
 # Initialize logging on module import
 Initialize-LogFile
 
 # Export functions with approved verbs and aliases
 Export-ModuleMember -Function @(
     'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
+    'Write-Colored', 'Write-SectionHeader',
+    'Select-RegexMatches', 'Test-RegexMatch', 'ConvertFrom-SemVer',
     'Test-NodeInstalled', 'Test-PnpmInstalled', 'Test-GitInstalled',
+    'Test-DirectoryStructure', 'Test-ProjectStructure', 'Test-PowerShellVersion', 'Test-ExecutionPolicy',
     'New-DirectoryTree', 'Get-DomainList', 'Get-ServiceName', 'Get-DomainPhaseNumber',
     'Backup-File', 'Remove-FilesSafely',
-    'Test-PowerShellVersion', 'Test-ExecutionPolicy',
     'Invoke-ScriptWithErrorHandling',
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson'
 ) -Alias @(
