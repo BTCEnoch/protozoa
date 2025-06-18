@@ -1003,7 +1003,7 @@ Export-ModuleMember -Function @(
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
     'Write-TemplateFile',
-    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )
@@ -3319,4 +3319,7 @@ function Repair-UtilityModule {
         return $false
     }
 }
+
+
+
 
