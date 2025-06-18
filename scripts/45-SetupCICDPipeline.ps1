@@ -14,40 +14,16 @@ try{
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
 
- $ci= @"
-name: CI
+ # Generate workflows from templates
+ Write-TemplateFile -TemplateRelPath '.github/workflows/ci.yml.template' `
+                   -DestinationPath (Join-Path $wfPath 'ci.yml')
 
-on:
-  pull_request:
-  push:
-    branches: [main]
+ Write-TemplateFile -TemplateRelPath '.github/workflows/deploy.yml.template' `
+                   -DestinationPath (Join-Path $wfPath 'deploy.yml')
 
-jobs:
-  build-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: Install deps
-        run: pnpm install --frozen-lockfile
-      - name: Lint
-        run: pnpm eslint . --max-warnings=0
-      - name: Type Check
-        run: pnpm tsc --noEmit
-      - name: Unit Tests
-        run: pnpm vitest run --coverage
-      - name: Validate Scripts
-        run: pwsh ./scripts/VerifyCompliance.ps1
-      - name: Bundle Size
-        run: pnpm webpack --profile --json > stats.json
-      - uses: actions/upload-artifact@v3
-        with:
-          name: bundle-stats
-          path: stats.json
-"@
- Set-Content -Path (Join-Path $wfPath 'ci.yml') -Value $ci -Encoding UTF8
- Write-SuccessLog "GitHub Actions workflow created"
+ Write-TemplateFile -TemplateRelPath '.github/workflows/release.yml.template' `
+                   -DestinationPath (Join-Path $wfPath 'release.yml')
+
+ Write-SuccessLog "GitHub Actions workflows created"
  exit 0
 }catch{Write-ErrorLog "CI/CD setup failed: $($_.Exception.Message)";exit 1}
