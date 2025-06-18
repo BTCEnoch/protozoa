@@ -21,7 +21,7 @@ try {
   # Interface definition
   $iface = @'
 /**
- * IAnimationBlendingService – provides blend-tree creation and state transitions.
+ * IAnimationBlendingService - provides blend-tree creation and state transitions.
  */
 export interface BlendNode { id: string; weight: number; children?: BlendNode[] }
 export interface IAnimationBlendingService {
@@ -62,7 +62,7 @@ class AnimationBlendingService implements IAnimationBlendingService {
     if (!this.#transition) return
     this.#transition.time += delta
     const t = Math.min(this.#transition.time / this.#transition.duration, 1)
-    // linear interpolation of weights – simple implementation
+    // linear interpolation of weights - simple implementation
     // Update animationService easing based on blend factor t
     animationService.updateAnimations(0) // ensure internal animations tick
     if (t >= 1) {

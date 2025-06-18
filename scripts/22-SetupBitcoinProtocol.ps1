@@ -133,7 +133,7 @@ export const bitcoinProtocolConfig: BitcoinProtocolConfig = {
       timeout: 30000, // 30 seconds
     },
     production: {
-      baseUrl: ''", // Relative URLs in production
+      baseUrl: '', // Relative URLs in production
       blockInfo: "/r/blockinfo/{blockNumber}",
       inscriptionContent: "/content/{inscriptionId}",
       rateLimit: 60, // requests per minute (more conservative)
@@ -238,7 +238,7 @@ export function formatAPIUrl(endpoint: string, params: Record<string, string>): 
   return url;
 }
 
-logger.info("Bitcoin protocol configuration loaded'', {
+logger.info("Bitcoin protocol configuration loaded", {
   network: bitcoinProtocolConfig.network,
   environment: getCurrentEnvironment(),
 });
@@ -349,7 +349,7 @@ export class RateLimiter {
     // Remove old requests outside the window
     this.requestTimes = this.requestTimes.filter(time => time > windowStart);
 
-    // Check if we"re within the limit
+    // Check if we're within the limit
     if (this.requestTimes.length < this.config.maxRequests) {
       this.requestTimes.push(now);
       logger.debug("Request allowed", {
@@ -415,7 +415,7 @@ export function createBitcoinAPIRateLimiter(maxRequestsPerMinute: number): RateL
   return new RateLimiter({
     maxRequests: maxRequestsPerMinute,
     windowMs: 60000, // 1 minute
-    identifier: "bitcoin-api'',
+    identifier: "bitcoin-api",
   });
 }
 '@
