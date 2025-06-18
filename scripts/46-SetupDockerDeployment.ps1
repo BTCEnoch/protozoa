@@ -12,7 +12,9 @@ $ErrorActionPreference='Stop'
 try{
  Write-StepHeader "Docker Deployment Setup"
  # Dockerfile
- $docker=@"# Stage 1: build
+ $docker=@"
+# Stage 1: build
+"@
 FROM node:20-alpine as builder
 WORKDIR /app
 COPY . .
@@ -29,7 +31,9 @@ CMD ["node","dist/index.js"]
 "@
  Set-Content -Path (Join-Path $ProjectRoot 'Dockerfile') -Value $docker -Encoding UTF8
  # dockerignore
- $ignore=@"node_modules
+ $ignore=@"
+node_modules
+"@
 .git
 .github
 scripts
@@ -41,7 +45,9 @@ src
  # GH Actions workflow
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
- $deploy=@"name: Docker Publish
+ $deploy=@"
+name: Docker Publish
+"@
 on:
   push:
     tags: ['v*']

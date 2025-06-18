@@ -15,7 +15,9 @@ try{
  $services=Join-Path $formationPath 'services'
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
- $enhance=@"import { createServiceLogger } from '@/shared/lib/logger'
+ $enhance=@"
+import { createServiceLogger } from '@/shared/lib/logger'
+"@
 import { rngService } from '@/domains/rng/services/rngService'
 import type { Vector3 } from 'three'
 

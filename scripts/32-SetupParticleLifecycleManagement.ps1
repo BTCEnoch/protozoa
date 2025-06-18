@@ -16,7 +16,9 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
  # interface
- $iface=@"export interface ILifecycleEngine{
+ $iface=@"
+export interface ILifecycleEngine{
+"@
   birth(count:number): void
   update(delta:number): void
   kill(id:string): void
@@ -26,7 +28,9 @@ try{
  Set-Content -Path (Join-Path $particlePath 'interfaces\ILifecycleEngine.ts') -Value $iface -Encoding UTF8
 
  # implementation
- $impl=@"import { particleService } from '@/domains/particle/services/particleService'
+ $impl=@"
+import { particleService } from '@/domains/particle/services/particleService'
+"@
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILifecycleEngine } from '@/domains/particle/interfaces/ILifecycleEngine'
 export class LifecycleEngine implements ILifecycleEngine{

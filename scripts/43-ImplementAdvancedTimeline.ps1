@@ -18,7 +18,9 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"export interface Keyframe{ time:number; action:()=>void }
+ $iface=@"
+export interface Keyframe{ time:number; action:()=>void }
+"@
 export interface ITimelineService{
   addKeyframe(frame:Keyframe):void
   play():void
@@ -31,7 +33,9 @@ export interface ITimelineService{
  Set-Content -Path (Join-Path $interfaces 'ITimelineService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { createServiceLogger } from '@/shared/lib/logger'
+ $impl=@"
+import { createServiceLogger } from '@/shared/lib/logger'
+"@
 import type { ITimelineService, Keyframe } from '@/domains/animation/interfaces/ITimelineService'
 
 class TimelineService implements ITimelineService{

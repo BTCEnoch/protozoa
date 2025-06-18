@@ -1,46 +1,56 @@
-// src/domains/effect/services/EffectService.ts
-// EffectService implementation - Auto-generated stub
-// Referenced from build_design.md Section 5
-
-import { IEffectService } from '../types';
-import { createServiceLogger } from '@/shared/lib/logger';
-
-/**
- * EffectService – manages effect domain operations.
- * Auto-generated stub following .cursorrules singleton pattern.
- * TODO: Implement actual logic in Phase 5.
+﻿/**
+ * @fileoverview EffectService Implementation
+ * @description Singleton service managing particle visual effects and presets.
  */
+
+import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
+import type { IEffectService, EffectConfig } from '@/domains/effect/interfaces/IEffectService'
+
 class EffectService implements IEffectService {
-  static #instance: EffectService | null = null;
-  #log = createServiceLogger('EFFECT_SERVICE');
-  
-  /**
-   * Private constructor enforces singleton pattern.
-   */
+  /** Singleton instance */
+  static #instance: EffectService | null = null
+
+  /** Preset registry */
+  #presets: Map<string, EffectConfig> = new Map()
+
+  /** Loggers */
+  #log = createServiceLogger('EFFECT_SERVICE')
+  #err = createErrorLogger('EFFECT_SERVICE')
+
   private constructor() {
-    this.#log.info('EffectService initialized');
+    this.#log.info('EffectService singleton created')
+    // Default presets
+    this.registerEffectPreset('nebula', { duration: 5000, intensity: 0.8 })
+    this.registerEffectPreset('explosion', { duration: 1000, intensity: 1.0 })
   }
-  
-  /**
-   * Singleton accessor - returns existing instance or creates new one.
-   */
+
+  /** Get singleton instance */
   public static getInstance(): EffectService {
-    if (!EffectService.#instance) {
-      EffectService.#instance = new EffectService();
-    }
-    return EffectService.#instance;
+    if (!EffectService.#instance) EffectService.#instance = new EffectService()
+    return EffectService.#instance
   }
-  
-  // TODO: Implement interface methods here
-  
-  /**
-   * Disposes of service resources and resets singleton instance.
-   */
+
+  public registerEffectPreset(name: string, config: EffectConfig): void {
+    this.#presets.set(name, config)
+    this.#log.debug('Preset registered', { name, config })
+  }
+
+  public triggerEffect(name: string, options: unknown = {}): void {
+    const preset = this.#presets.get(name)
+    if (!preset) {
+      this.#err.logError(new Error('Preset not found'), { name })
+      return
+    }
+    const merged = { ...preset, ...(options as object) }
+    this.#log.info('Effect triggered', { name, merged })
+    // Placeholder: actual Three.js particle / shader spawning occurs here.
+  }
+
   public dispose(): void {
-    this.#log.info('EffectService disposed');
-    EffectService.#instance = null;
+    this.#presets.clear()
+    this.#log.info('EffectService disposed')
+    EffectService.#instance = null
   }
 }
 
-// Singleton export as required by .cursorrules
-export const effectService = EffectService.getInstance();
+export const effectService = EffectService.getInstance()

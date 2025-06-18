@@ -18,7 +18,9 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"import type { Object3D } from 'three'
+ $iface=@"
+import type { Object3D } from 'three'
+"@
 export interface LODConfig{ near:number; far:number; minDetail:number; maxDetail:number }
 export interface ILODService{
  register(obj:Object3D,config:LODConfig): void
@@ -29,7 +31,9 @@ export interface ILODService{
  Set-Content -Path (Join-Path $interfaces 'ILODService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { Vector3, Object3D } from 'three'
+ $impl=@"
+import { Vector3, Object3D } from 'three'
+"@
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILODService, LODConfig } from '@/domains/rendering/interfaces/ILODService'
 

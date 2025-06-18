@@ -19,7 +19,9 @@ try {
   New-Item -Path $interfacesPath -ItemType Directory -Force | Out-Null
 
   # Interface definition
-  $iface = @"/**
+  $iface = @"
+/**
+"@
 * IAnimationBlendingService – provides blend-tree creation and state transitions.
 */
 export interface BlendNode { id: string; weight: number; children?: BlendNode[] }
@@ -33,7 +35,9 @@ export interface IAnimationBlendingService {
   Set-Content -Path (Join-Path $interfacesPath 'IAnimationBlendingService.ts') -Value $iface -Encoding UTF8
 
   # Implementation
-  $impl = @"import { createServiceLogger } from '@/shared/lib/logger'
+  $impl = @"
+import { createServiceLogger } from '@/shared/lib/logger'
+"@
 import type { IAnimationBlendingService, BlendNode } from '@/domains/animation/interfaces/IAnimationBlendingService'
 import { animationService } from '@/domains/animation/services/animationService'
 

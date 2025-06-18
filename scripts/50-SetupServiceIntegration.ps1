@@ -13,7 +13,9 @@ try{
  Write-StepHeader "Service Integration Setup"
  $rootDir=Join-Path $ProjectRoot 'src'
  New-Item -Path $rootDir -ItemType Directory -Force | Out-Null
- $comp=@"// compositionRoot.ts – initializes all domain singletons and wires dependencies
+ $comp=@"
+// compositionRoot.ts – initializes all domain singletons and wires dependencies
+"@
 import { rngService } from '@/domains/rng/services/rngService'
 import { bitcoinService } from '@/domains/bitcoin/services/bitcoinService'
 import { traitService } from '@/domains/trait/services/traitService'

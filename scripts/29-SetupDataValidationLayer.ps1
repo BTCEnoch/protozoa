@@ -21,7 +21,9 @@ try {
   New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
   
   # Interface
-  $iface = @"/**
+  $iface = @"
+/**
+"@
 * IDataValidationService – validates block info, inscriptions and merkle proofs.
 */
 export interface IDataValidationService {
@@ -34,7 +36,9 @@ export interface IDataValidationService {
   Set-Content -Path (Join-Path $interfaces "IDataValidationService.ts") -Value $iface -Encoding UTF8
 
   # Implementation
-  $impl = @"import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
+  $impl = @"
+import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
+"@
 import type { IDataValidationService } from '@/domains/bitcoin/interfaces/IDataValidationService'
 
 export class DataValidationService implements IDataValidationService {

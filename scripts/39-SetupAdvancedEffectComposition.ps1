@@ -20,7 +20,9 @@ try{
  New-Item -Path $data -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"export interface EffectLayer{ name:string; weight:number; params?:Record<string,unknown> }
+ $iface=@"
+export interface EffectLayer{ name:string; weight:number; params?:Record<string,unknown> }
+"@
 export interface IEffectComposerService{
   addLayer(layer:EffectLayer):void
   removeLayer(name:string):void
@@ -33,7 +35,9 @@ export interface IEffectComposerService{
  Set-Content -Path (Join-Path $interfaces 'IEffectComposerService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { createServiceLogger } from '@/shared/lib/logger'
+ $impl=@"
+import { createServiceLogger } from '@/shared/lib/logger'
+"@
 import { effectService } from '@/domains/effect/services/effectService'
 import type { EffectLayer, IEffectComposerService } from '@/domains/effect/interfaces/IEffectComposerService'
 

@@ -1,0 +1,78 @@
+﻿{
+    "references":  [
+                       {
+                           "path":  "./tsconfig.app.json"
+                       },
+                       {
+                           "path":  "./tsconfig.node.json"
+                       }
+                   ],
+    "include":  [
+                    "src/**/*",
+                    "vite.config.ts"
+                ],
+    "exclude":  [
+                    "node_modules",
+                    "dist",
+                    "build",
+                    "scripts",
+                    "**/*.test.ts",
+                    "**/*.test.tsx",
+                    "**/*.spec.ts",
+                    "**/*.spec.tsx"
+                ],
+    "compilerOptions":  {
+                            "noImplicitAny":  true,
+                            "declarationMap":  true,
+                            "strict":  true,
+                            "lib":  [
+                                        "ES2022",
+                                        "DOM",
+                                        "DOM.Iterable"
+                                    ],
+                            "forceConsistentCasingInFileNames":  true,
+                            "noImplicitReturns":  true,
+                            "target":  "ES2022",
+                            "esModuleInterop":  true,
+                            "strictPropertyInitialization":  true,
+                            "moduleResolution":  "bundler",
+                            "allowSyntheticDefaultImports":  true,
+                            "strictNullChecks":  true,
+                            "composite":  false,
+                            "isolatedModules":  true,
+                            "sourceMap":  true,
+                            "allowJs":  false,
+                            "incremental":  true,
+                            "noEmit":  true,
+                            "jsx":  "react-jsx",
+                            "baseUrl":  ".",
+                            "noUncheckedIndexedAccess":  true,
+                            "noFallthroughCasesInSwitch":  true,
+                            "skipLibCheck":  false,
+                            "strictBindCallApply":  true,
+                            "declaration":  true,
+                            "resolveJsonModule":  true,
+                            "strictFunctionTypes":  true,
+                            "paths":  {
+                                          "@/lib/*":  [
+                                                          "./src/lib/*"
+                                                      ],
+                                          "@/shared/*":  [
+                                                             "./src/shared/*"
+                                                         ],
+                                          "@/components/*":  [
+                                                                 "./src/components/*"
+                                                             ],
+                                          "@/domains/*":  [
+                                                              "./src/domains/*"
+                                                          ],
+                                          "@/types/*":  [
+                                                            "./src/types/*"
+                                                        ],
+                                          "@/*":  [
+                                                      "./src/*"
+                                                  ]
+                                      },
+                            "module":  "ESNext"
+                        }
+}

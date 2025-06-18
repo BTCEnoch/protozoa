@@ -12,7 +12,9 @@ $ErrorActionPreference='Stop'
 try{
  Write-StepHeader "Automated Documentation Setup"
  # typedoc.json
- $typedoc=@"{
+ $typedoc=@"
+{
+"@
   "entryPoints": ["src/index.ts"],
   "out": "docs/api",
   "excludePrivate": true,
@@ -24,7 +26,9 @@ try{
  Set-Content -Path (Join-Path $ProjectRoot 'typedoc.json') -Value $typedoc -Encoding UTF8
 
  # doc generation script
- $gen=@"import { spawnSync } from 'child_process'
+ $gen=@"
+import { spawnSync } from 'child_process'
+"@
 console.log('Generating TypeDoc...')
 spawnSync('npx', ['typedoc'], { stdio: 'inherit' })
 "@
@@ -34,7 +38,9 @@ spawnSync('npx', ['typedoc'], { stdio: 'inherit' })
  # GH Actions workflow
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
- $docs=@"name: Docs
+ $docs=@"
+name: Docs
+"@
 on:
   push:
     branches: [main]

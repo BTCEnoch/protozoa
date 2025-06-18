@@ -12,7 +12,9 @@ try{
  $e2eDir=Join-Path $ProjectRoot 'tests/e2e'
  New-Item -Path $e2eDir -ItemType Directory -Force | Out-Null
  # sample test
- $test=@"import { test, expect } from '@playwright/test'
+ $test=@"
+import { test, expect } from '@playwright/test'
+"@
 
 test('organism creation flow',async({ page })=>{
   await page.goto('http://localhost:3000')
@@ -22,7 +24,9 @@ test('organism creation flow',async({ page })=>{
 "@
  Set-Content -Path (Join-Path $e2eDir 'organism.spec.ts') -Value $test -Encoding UTF8
  # playwright config
- $cfg=@"import { defineConfig } from '@playwright/test'
+ $cfg=@"
+import { defineConfig } from '@playwright/test'
+"@
 export default defineConfig({ use:{ headless:true, baseURL:'http://localhost:3000' } })
 "@
  Set-Content -Path (Join-Path $ProjectRoot 'playwright.config.ts') -Value $cfg -Encoding UTF8
@@ -32,7 +36,9 @@ export default defineConfig({ use:{ headless:true, baseURL:'http://localhost:300
  if(Test-Path $ci){
   $raw=Get-Content $ci -Raw
   if($raw -notmatch 'e2e-test:'){
-   $append=@"  e2e-test:
+   $append=@"
+  e2e-test:
+"@
     runs-on: ubuntu-latest
     needs: build-test
     steps:

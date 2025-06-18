@@ -18,7 +18,9 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"import { EventEmitter } from 'events'
+ $iface=@"
+import { EventEmitter } from 'events'
+"@
 export interface IEventBus extends EventEmitter {
   emitEvent(event:string,payload?:unknown):void
 }
@@ -26,7 +28,9 @@ export interface IEventBus extends EventEmitter {
  Set-Content -Path (Join-Path $interfaces 'IEventBus.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { EventEmitter } from 'events'
+ $impl=@"
+import { EventEmitter } from 'events'
+"@
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { IEventBus } from '@/shared/interfaces/IEventBus'
 
