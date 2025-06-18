@@ -39,7 +39,7 @@ try {
                       -DestinationPath (Join-Path $interfacesPath 'IRenderingService.ts')
 
     Write-TemplateFile -TemplateRelPath 'domains/rendering/services/renderingService.ts.template' `
-                      -DestinationPath (Join-Path $servicesPath 'renderingService.ts')
+                      -DestinationPath (Join-Path $servicesPath 'RenderingService.ts')
 
     Write-SuccessLog "35-GenerateRenderingService.ps1 completed successfully"
     exit 0

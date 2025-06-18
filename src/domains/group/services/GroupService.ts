@@ -1,35 +1,46 @@
-ï»¿import { createServiceLogger } from '@/shared/lib/logger'
-import type { IGroupService, ParticleGroup } from '@/domains/group/interfaces/IGroupService'
-import type { IRNGService } from '@/domains/rng/interfaces/IRNGService'
+// src/domains/group/services/GroupService.ts
+// GroupService implementation - Auto-generated stub
+// Referenced from build_design.md Section 6
 
+import { IGroupService } from '../types';
+import { createServiceLogger } from '@/shared/lib/logger';
+
+/**
+ * GroupService – manages group domain operations.
+ * Auto-generated stub following .cursorrules singleton pattern.
+ * TODO: Implement actual logic in Phase 6.
+ */
 class GroupService implements IGroupService {
-  static #instance: GroupService | null = null
-  #groups: Map<string, ParticleGroup> = new Map()
-  #rng?: IRNGService
-  #log = createServiceLogger('GROUP_SERVICE')
-  private constructor () {}
-  static getInstance () {
-    return this.#instance ?? (this.#instance = new GroupService())
+  static #instance: GroupService | null = null;
+  #log = createServiceLogger('GROUP_SERVICE');
+
+  /**
+   * Private constructor enforces singleton pattern.
+   */
+  private constructor() {
+    this.#log.info('GroupService initialized');
   }
-  configure (rng: IRNGService) {
-    this.#rng = rng
+
+  /**
+   * Singleton accessor - returns existing instance or creates new one.
+   */
+  public static getInstance(): GroupService {
+    if (!GroupService.#instance) {
+      GroupService.#instance = new GroupService();
+    }
+    return GroupService.#instance;
   }
-  formGroup (particleIds: string[]): ParticleGroup {
-    const gid = this.#rng ? `group-${this.#rng.randomInt(1000, 9999)}` : `group-${this.#groups.size + 1}`
-    const group: ParticleGroup = { id: gid, members: [...particleIds] }
-    this.#groups.set(gid, group)
-    this.#log.info('Group formed', { gid, size: particleIds.length })
-    return group
-  }
-  getGroup (id: string) {
-    return this.#groups.get(id)
-  }
-  dissolveGroup (id: string) {
-    if (this.#groups.delete(id)) this.#log.info('Group dissolved', { id })
-  }
-  dispose (): void {
-    this.#groups.clear()
-    GroupService.#instance = null
+
+  // TODO: Implement interface methods here
+
+  /**
+   * Disposes of service resources and resets singleton instance.
+   */
+  public dispose(): void {
+    this.#log.info('GroupService disposed');
+    GroupService.#instance = null;
   }
 }
-export const groupService = GroupService.getInstance()
+
+// Singleton export as required by .cursorrules
+export const groupService = GroupService.getInstance();

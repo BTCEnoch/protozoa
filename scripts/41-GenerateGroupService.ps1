@@ -38,7 +38,12 @@ try {
                       -DestinationPath (Join-Path $interfacesPath 'IGroupService.ts')
 
     Write-TemplateFile -TemplateRelPath 'domains/group/services/groupService.ts.template' `
-                      -DestinationPath (Join-Path $servicesPath 'groupService.ts')
+                      -DestinationPath (Join-Path $servicesPath 'GroupService.ts')
+
+    # compatibility wrapper
+    $wrapperContent = "export * from './GroupService'"
+    Set-Content -Path (Join-Path $servicesPath 'groupService.ts') -Value $wrapperContent -Encoding UTF8
+    Write-InfoLog "Added wrapper groupService.ts for casing compatibility"
 
     Write-SuccessLog "41-GenerateGroupService.ps1 completed successfully"
     exit 0

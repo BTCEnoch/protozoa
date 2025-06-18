@@ -37,13 +37,21 @@ $formationDomainPath = Join-Path $ProjectRoot "src/domains/formation"
 $servicesPath = Join-Path $formationDomainPath "services"
 $typesPath = Join-Path $formationDomainPath "types"
 $dataPath = Join-Path $formationDomainPath "data"
+$interfacesPath = Join-Path $formationDomainPath "interfaces"
 
 # Create directory structure
-@($formationDomainPath, $servicesPath, $typesPath, $dataPath) | ForEach-Object {
+@($formationDomainPath, $servicesPath, $typesPath, $dataPath, $interfacesPath) | ForEach-Object {
     if (-not (Test-Path $_)) {
         New-Item -Path $_ -ItemType Directory -Force | Out-Null
         Write-StatusMessage "Created directory: $_" "DEBUG"
     }
+}
+
+# Create interface wrapper for compatibility with legacy import paths
+$interfaceWrapperPath = Join-Path $interfacesPath "IFormationService.ts"
+if (-not (Test-Path $interfaceWrapperPath)) {
+    "export * from '../types/IFormationService'" | Set-Content -Path $interfaceWrapperPath -Encoding UTF8
+    Write-StatusMessage "Generated IFormationService wrapper interface: $interfaceWrapperPath" "SUCCESS"
 }
 
 # Generate IFormationService interface

@@ -55,7 +55,12 @@ function buildLogger(serviceName = 'protozoa'): ReturnType<typeof createLogger> 
 
   const baseTransports: any[] = [
     new transports.Console({
-      format: combine(colorize(), simple(), splat(), printf(({ level, message }) => `$${level}: $${message}`))
+      format: combine(
+        colorize(),
+        simple(),
+        splat(),
+        printf(({ level, message, ...meta }) => `${'$'}{level}: ${'$'}{message} ${'$'}{Object.keys(meta).length ? JSON.stringify(meta) : ''}`)
+      )
     })
   ]
 
@@ -75,8 +80,17 @@ function buildLogger(serviceName = 'protozoa'): ReturnType<typeof createLogger> 
 }
 
 export const logger = buildLogger()
+
 export function createServiceLogger(service: string) {
   return logger.child({ service })
+}
+
+export function createErrorLogger(service = 'error-handler') {
+  return logger.child({ service, level: 'error' })
+}
+
+export function createPerformanceLogger(service = 'performance') {
+  return logger.child({ service, level: 'debug' })
 }
 "@
 

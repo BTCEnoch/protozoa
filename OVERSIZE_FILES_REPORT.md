@@ -1,7 +1,0 @@
-# Oversize Files Report
-
-The following files exceed 500 lines and need manual refactoring:
-
-- D:\Protozoa\src\domains\formation\services\FormationService.ts (737 lines)
-- D:\Protozoa\src\domains\physics\services\PhysicsService.ts (544 lines)
-
