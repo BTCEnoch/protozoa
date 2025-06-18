@@ -10,7 +10,8 @@ try{
  $compDir=Join-Path $ProjectRoot 'src/components'
  New-Item -Path $compDir -ItemType Directory -Force | Out-Null
  # SimulationCanvas
- $canvas=@"'use client'
+ $canvas= @"
+'use client'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Suspense } from 'react'
 import { renderingService } from '@/domains/rendering/services/renderingService'
@@ -27,7 +28,8 @@ export function SimulationCanvas(){
 "@
  Set-Content -Path (Join-Path $compDir 'SimulationCanvas.tsx') -Value $canvas -Encoding UTF8
  # App component
- $app=@"'use client'
+ $app= @"
+'use client'
 import { SimulationCanvas } from '@/components/SimulationCanvas'
 import { initServices } from '@/compositionRoot'
 import { useEffect } from 'react'

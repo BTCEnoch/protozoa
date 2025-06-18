@@ -1,3 +1,12 @@
+### ✅ 2025-06-18 – Script-Scrub suite clean
+* Here-string sanitation complete
+* Dependency graph stable – 1 remaining non-critical circular dependency 
+* utils.psm1 import coverage 87.5% (56/64 scripts)
+* Duplicate detector (≤ 5 KB bodies) clean – 0 duplicates
+
+# UPDATED NOTICE (June 2025)
+> **This checklist is now superseded by `script_checklist.md`, which reflects the current automation status (~98% complete). The remaining tasks in this file are being reviewed and updated. Refer to `script_checklist.md` for the authoritative progress tracker while this document is under revision.**
+
 # **New-Protozoa Full Rebuild Checklist**
 
 *Referenced from build_design.md - A comprehensive implementation guide with phase-by-phase breakdown*

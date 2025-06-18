@@ -14,7 +14,8 @@ try{
  $wfPath=Join-Path $ProjectRoot '.github/workflows'
  New-Item -Path $wfPath -ItemType Directory -Force | Out-Null
 
- $ci=@"name: CI
+ $ci= @"
+name: CI
 
 on:
   pull_request:

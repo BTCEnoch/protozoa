@@ -18,7 +18,8 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"export interface IPersistenceService{
+ $iface= @"
+export interface IPersistenceService{
   save(key:string,value:unknown):Promise<void>
   load<T=unknown>(key:string):Promise<T|null>
   dispose():void
@@ -27,7 +28,8 @@ try{
  Set-Content -Path (Join-Path $interfaces 'IPersistenceService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { openDB, DBSchema } from 'idb'
+ $impl= @"
+import { openDB, DBSchema } from 'idb'
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { IPersistenceService } from '@/shared/interfaces/IPersistenceService'
 

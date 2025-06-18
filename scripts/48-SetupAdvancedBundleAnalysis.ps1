@@ -16,7 +16,8 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
  # Service implementation
- $impl=@"import { execSync } from 'child_process'
+ $impl= @"
+import { execSync } from 'child_process'
 import { createServiceLogger } from '@/shared/lib/logger'
 
 export class BundleAnalyzerService{
@@ -40,7 +41,8 @@ export const bundleAnalyzerService=BundleAnalyzerService.getInstance()
  if(Test-Path $wf){
   $content=Get-Content $wf -Raw
   if($content -notmatch 'bundle-analysis:'){ # append only once
-   $append=@"  bundle-analysis:
+   $append= @"
+  bundle-analysis:
     runs-on: ubuntu-latest
     needs: build-test
     steps:

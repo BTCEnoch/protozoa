@@ -35,6 +35,7 @@ try {
 
     # Interface
     $interfaceContent = @"
+
 /**
  * @fileoverview IGroupService Interface Definition
  * @description Contract for grouping particles and managing group lifecycle.
@@ -58,6 +59,7 @@ export interface IGroupService {
 
     # Implementation
     $serviceContent = @"
+
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { IGroupService, ParticleGroup } from '@/domains/group/interfaces/IGroupService'
 import type { IRNGService } from '@/domains/rng/interfaces/IRNGService'

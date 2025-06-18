@@ -29,10 +29,12 @@ function New-DependencyGraph {
     foreach ($script in $scripts) {
         $scriptName = $script.BaseName
         $dependencies = Get-ScriptDependencies -ScriptPath $script.FullName
+        if (-not $dependencies) { $dependencies = @() }
         
+        $cleanDeps = $dependencies | Where-Object { $_ -and $_ -ne 'False' }
         $dependencyGraph[$scriptName] = @{
             FilePath = $script.FullName
-            Dependencies = $dependencies
+            Dependencies = $cleanDeps
             Dependents = @()  # Will be populated in second pass
         }
     }
@@ -99,6 +101,8 @@ function Get-ScriptDependencies {
         }
     }
     
+    # Remove spurious literal "false" matches
+    $dependencies = $dependencies | Where-Object { $_ -and $_ -ne 'False' -and $_ -notmatch '^false$' }
     return $dependencies
 }
 
@@ -128,7 +132,10 @@ function Test-CircularDependencies {
             # Found a cycle - extract the circular part
             $cycleStart = $path.IndexOf($node)
             $cycle = $path[$cycleStart..($path.Count - 1)] + $node
-            $circularChains += , $cycle
+            $unique = $cycle | Select-Object -Unique
+            if ($unique.Count -gt 1) {
+                $circularChains += , $cycle
+            }
             return $true
         }
         
@@ -151,6 +158,7 @@ function Test-CircularDependencies {
     }
     
     foreach ($script in $DependencyGraph.Keys) {
+        if ($DependencyGraph[$script].Dependencies.Count -eq 0) { continue }
         if (-not $visited[$script]) {
             Find-Cycle -node $script -path @()
         }

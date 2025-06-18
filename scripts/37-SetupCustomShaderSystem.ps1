@@ -20,7 +20,8 @@ try{
  New-Item -Path $data -ItemType Directory -Force | Out-Null
 
  # Shader library
- $lib=@"// shaderLibrary.ts – collection of GLSL snippets
+ $lib= @"
+// shaderLibrary.ts – collection of GLSL snippets
 export const Shaders={
   dnaVis:`
     varying vec2 vUv;
@@ -42,7 +43,8 @@ export const Shaders={
  Set-Content -Path (Join-Path $data 'shaderLibrary.ts') -Value $lib -Encoding UTF8
 
  # Interface
- $iface=@"export interface IShaderService{
+ $iface= @"
+export interface IShaderService{
   compile(name:string,vertexSrc:string,fragmentSrc:string):THREE.ShaderMaterial
   get(name:string):THREE.ShaderMaterial|undefined
   hotReload(name:string,newFrag:string):void
@@ -52,7 +54,8 @@ export const Shaders={
  Set-Content -Path (Join-Path $interfaces 'IShaderService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import * as THREE from 'three'
+ $impl= @"
+import * as THREE from 'three'
 import { createServiceLogger } from '@/shared/lib/logger'
 import { Shaders } from '@/domains/rendering/data/shaderLibrary'
 import type { IShaderService } from '@/domains/rendering/interfaces/IShaderService'

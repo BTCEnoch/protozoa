@@ -18,7 +18,8 @@ try{
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
  # Interface
- $iface=@"export interface IPhysicsAnimationService{
+ $iface= @"
+export interface IPhysicsAnimationService{
   addSpring(particleId:string,anchor:{x:number,y:number,z:number},k:number,damper:number):void
   update(delta:number):void
   dispose():void
@@ -27,7 +28,8 @@ try{
  Set-Content -Path (Join-Path $interfaces 'IPhysicsAnimationService.ts') -Value $iface -Encoding UTF8
 
  # Implementation
- $impl=@"import { createServiceLogger } from '@/shared/lib/logger'
+ $impl= @"
+import { createServiceLogger } from '@/shared/lib/logger'
 import { particleService } from '@/domains/particle/services/particleService'
 import type { IPhysicsAnimationService } from '@/domains/animation/interfaces/IPhysicsAnimationService'
 

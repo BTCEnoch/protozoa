@@ -10,7 +10,10 @@ param(
     [string]$ScriptDirectory = (Split-Path $PSScriptRoot -Parent),
     
     [Parameter(Mandatory = $false)]
-    [string]$OutputFile = "duplicate-analysis.json"
+    [string]$OutputFile = "duplicate-analysis.json",
+
+    [Parameter(Mandatory=$false)]
+    [int]$MaxBodyLengthKB = 5  # bodies larger than this (in KB) are skipped from similarity check
 )
 
 try {
@@ -113,11 +116,13 @@ try {
             $functions = Get-FunctionDefinitions -ParsedScript $parsedScript
             
             foreach ($function in $functions) {
+                $bodyText = $function.Body
+                $bodyLen = $bodyText.Length
                 $allFunctions += [PSCustomObject]@{
                     Name = $function.Name
                     Parameters = ($function.Parameters -join ', ')
-                    Body = $function.Body
-                    BodyLength = $function.Body.Length
+                    Body = $bodyText
+                    BodyLength = $bodyLen
                     FilePath = $script.FullName
                     FileName = $script.BaseName
                     StartLine = $function.StartLine
@@ -192,8 +197,11 @@ try {
                 continue
             }
             
-            # Only compare functions with substantial bodies (>50 characters)
+            # Skip small bodies (<50 chars) and bodies over MaxBodyLengthKB*1024
             if ($func1.BodyLength -lt 50 -or $func2.BodyLength -lt 50) {
+                continue
+            }
+            if (($func1.BodyLength -gt ($MaxBodyLengthKB*1024)) -or ($func2.BodyLength -gt ($MaxBodyLengthKB*1024))) {
                 continue
             }
             
@@ -249,8 +257,14 @@ try {
         $analysisResult.Recommendations += "INFO: Found $($similarNames.Count) functions with identical names across files - verify intentional overrides"
     }
     
+    # Resolve output path – honour caller-provided directories / rooted paths
+    if ([System.IO.Path]::IsPathRooted($OutputFile) -or (Split-Path $OutputFile -Parent)) {
+        $outputPath = (Resolve-Path -Path $OutputFile -ErrorAction SilentlyContinue)?.Path
+        if (-not $outputPath) { $outputPath = $OutputFile }
+    } else {
+        $outputPath = Join-Path $PSScriptRoot $OutputFile
+    }
     # Export results
-    $outputPath = Join-Path $PSScriptRoot $OutputFile
     $analysisResult | ConvertTo-Json -Depth 10 | Set-Content -Path $outputPath -Encoding UTF8
     
     # Display summary
