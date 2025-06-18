@@ -4,6 +4,27 @@
 
 Import-Module "$PSScriptRoot\utils.psm1" -Force
 
+# Helper function for domain phase mapping - must be defined before use
+function Get-DomainPhaseNumber($domain) {
+    $phaseMap = @{
+        'rng' = 2
+        'physics' = 2
+        'bitcoin' = 3
+        'trait' = 3
+        'particle' = 4
+        'formation' = 4
+        'rendering' = 5
+        'effect' = 5
+        'animation' = 6
+        'group' = 6
+    }
+    if ($phaseMap.ContainsKey($domain)) {
+        return $phaseMap[$domain]
+    } else {
+        return 8
+    }
+}
+
 Write-StepHeader "Domain Service Stub Generation"
 
 # Get domain list and generate stubs for each
@@ -232,25 +253,6 @@ export const ${domain}Service = $serviceName.getInstance();
 }
 
 # Generate domain-specific stub implementations based on documented requirements
-function Get-DomainPhaseNumber($domain) {
-    $phaseMap = @{
-        'rng' = 2
-        'physics' = 2
-        'bitcoin' = 3
-        'trait' = 3
-        'particle' = 4
-        'formation' = 4
-        'rendering' = 5
-        'effect' = 5
-        'animation' = 6
-        'group' = 6
-    }
-    if ($phaseMap.ContainsKey($domain)) {
-        return $phaseMap[$domain]
-    } else {
-        return 8
-    }
-}
 
 # Create master index file for easy imports
 Write-InfoLog "Creating domain service index..."
