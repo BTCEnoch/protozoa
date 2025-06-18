@@ -777,4 +777,156 @@ Export-ModuleMember -Function @(
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
-) 
+)
+
+# ============================
+# Template Handling Utilities
+# ============================
+
+# Root directory that stores template files (relative to scripts directory)
+$script:TemplatesRoot = Join-Path (Split-Path $PSScriptRoot -Parent) "templates"
+
+function Get-TemplatePath {
+    <#
+        .SYNOPSIS
+            Returns the absolute path to a template file.
+        .PARAMETER RelativePath
+            Relative path under the templates root (e.g. "domains/particle/interfaces/ILifecycleEngine.ts.template").
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)][string]$RelativePath
+    )
+    return Join-Path $script:TemplatesRoot $RelativePath
+}
+
+function Write-TemplateFile {
+    <#
+        .SYNOPSIS
+            Copies a template file into the destination path performing basic token replacement.
+        .DESCRIPTION
+            Tokens wrapped with double underscores (e.g. __TOKEN__) will be replaced using -TokenMap hashtable.
+        .PARAMETER TemplateRelPath
+            Relative template path under templates root.
+        .PARAMETER DestinationPath
+            Absolute destination file path to write.
+        .PARAMETER TokenMap
+            Hashtable of replacements { TOKEN = 'value' }
+    #>
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory=$true)][string]$TemplateRelPath,
+        [Parameter(Mandatory=$true)][string]$DestinationPath,
+        [Parameter(Mandatory=$false)][hashtable]$TokenMap = @{}
+    )
+
+    $templateAbs = Get-TemplatePath -RelativePath $TemplateRelPath
+    if (-not (Test-Path $templateAbs)) {
+        throw "Template not found: $templateAbs"
+    }
+
+    $content = Get-Content -LiteralPath $templateAbs -Raw
+
+    foreach ($key in $TokenMap.Keys) {
+        $placeholder = "__${key}__"
+        $content = $content -replace [regex]::Escape($placeholder), [string]$TokenMap[$key]
+    }
+
+    $destDir = Split-Path $DestinationPath -Parent
+    if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+
+    if ($PSCmdlet.ShouldProcess($DestinationPath, "Write template file")) {
+        Set-Content -LiteralPath $DestinationPath -Value $content -Encoding UTF8
+        Write-DebugLog "Template '$TemplateRelPath' written to '$DestinationPath'"
+    }
+}
+
+# ============================
+# Template Syntax Validation
+# ============================
+
+function Test-TemplateSyntax {
+    <#
+        .SYNOPSIS
+            Validates template file syntax for supported languages: TypeScript (.ts, .tsx), YAML (.yml, .yaml), Dockerfile (.dockerfile)
+        .DESCRIPTION
+            For TS/TSX: Uses tsc --noEmit for quick type checking if TypeScript compiler is available.
+            For YAML: Uses simple load via ConvertFrom-Yaml if module present; otherwise basic indentation check.
+            For Dockerfile: Performs rudimentary check for FROM instruction.
+        .PARAMETER TemplatePath
+            Absolute path to template file.
+    #>
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory=$true)][string]$TemplatePath
+    )
+
+    $ext = [System.IO.Path]::GetExtension($TemplatePath).ToLower()
+    switch ($ext) {
+        '.ts' { return Test-TypeScriptTemplate -Path $TemplatePath }
+        '.tsx' { return Test-TypeScriptTemplate -Path $TemplatePath }
+        '.yaml' { return Test-YamlTemplate -Path $TemplatePath }
+        '.yml' { return Test-YamlTemplate -Path $TemplatePath }
+        default {
+            if ([System.IO.Path]::GetFileName($TemplatePath) -like '*dockerfile*') {
+                return Test-DockerfileTemplate -Path $TemplatePath
+            }
+            return $true # Unsupported types are assumed valid
+        }
+    }
+}
+
+function Test-TypeScriptTemplate {
+    [CmdletBinding()]
+    param([Parameter(Mandatory=$true)][string]$Path)
+
+    if (-not (Get-Command tsc -ErrorAction SilentlyContinue)) { return $true }
+    # TypeScript compiler available – run noEmit quick check
+    $tempDir = New-Item -ItemType Directory -Path ([System.IO.Path]::GetTempPath()) -Name (New-Guid).Guid
+    $tempFile = Join-Path $tempDir 'temp.ts'
+    Copy-Item -LiteralPath $Path -Destination $tempFile -Force
+    $tscResult = tsc --noEmit $tempFile 2>&1
+    Remove-Item -Recurse -Force $tempDir
+    if ($LASTEXITCODE -eq 0) { return $true }
+    Write-WarningLog "TypeScript syntax error in template '$Path': $tscResult"
+    return $false
+}
+
+function Test-YamlTemplate {
+    [CmdletBinding()]
+    param([Parameter(Mandatory=$true)][string]$Path)
+
+    try {
+        if (Get-Command ConvertFrom-Yaml -ErrorAction SilentlyContinue) {
+            $content = Get-Content -LiteralPath $Path -Raw
+            $null = $content | ConvertFrom-Yaml
+        } else {
+            # Basic check: ensure consistent indentation (2 spaces multiples)
+            $lines = Get-Content -LiteralPath $Path
+            foreach ($l in $lines) {
+                if ($l -match '^(\s+)') {
+                    $indent = $Matches[1].Length
+                    if ($indent % 2 -ne 0) { throw "Inconsistent YAML indentation" }
+                }
+            }
+        }
+        return $true
+    }
+    catch {
+        Write-WarningLog "YAML syntax error in template '$Path': $($_.Exception.Message)"
+        return $false
+    }
+}
+
+function Test-DockerfileTemplate {
+    [CmdletBinding()]
+    param([Parameter(Mandatory=$true)][string]$Path)
+
+    $content = Get-Content -LiteralPath $Path -Raw
+    if ($content -notmatch '(?mi)^FROM ') {
+        Write-WarningLog "Dockerfile template '$Path' missing FROM instruction"
+        return $false
+    }
+    return $true
+} 

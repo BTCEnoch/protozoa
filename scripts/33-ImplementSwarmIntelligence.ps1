@@ -17,39 +17,13 @@ try{
  New-Item -Path $services -ItemType Directory -Force | Out-Null
  New-Item -Path $interfaces -ItemType Directory -Force | Out-Null
 
- # interface
- $iface= @"
-export interface ISwarmService{
-  update(delta:number):void
-  dispose():void
-}
-"@
- Set-Content -Path (Join-Path $interfaces 'ISwarmService.ts') -Value $iface -Encoding UTF8
+ # Generate files from templates
+ Write-TemplateFile -TemplateRelPath 'domains/group/interfaces/ISwarmService.ts.template' `
+                   -DestinationPath (Join-Path $interfaces 'ISwarmService.ts')
 
- # implementation
- $impl= @"
-import { createServiceLogger } from '@/shared/lib/logger'
-import { groupService } from '@/domains/group/services/groupService'
-import { physicsService } from '@/domains/physics/services/physicsService'
-import type { ISwarmService } from '@/domains/group/interfaces/ISwarmService'
+ Write-TemplateFile -TemplateRelPath 'domains/group/services/swarmService.ts.template' `
+                   -DestinationPath (Join-Path $services 'swarmService.ts')
 
-export class SwarmService implements ISwarmService{
- static #instance:SwarmService|null=null
- #log=createServiceLogger('SWARM')
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new SwarmService())}
- update(delta:number){
-  // simple flocking placeholder: iterate groups
-  groupService['#groups']?.forEach((g:any)=>{
-   // pretend to adjust positions
-  })
-  this.#log.debug('Swarm update', {delta})
- }
- dispose(){SwarmService.#instance=null}
-}
-export const swarmService=SwarmService.getInstance()
-"@
- Set-Content -Path (Join-Path $services 'swarmService.ts') -Value $impl -Encoding UTF8
  Write-SuccessLog "SwarmService generated"
  exit 0
 }catch{Write-ErrorLog "Swarm generation failed: $($_.Exception.Message)";exit 1}

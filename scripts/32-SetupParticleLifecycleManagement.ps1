@@ -15,38 +15,13 @@ try{
  $services=Join-Path $particlePath 'services'
  New-Item -Path $services -ItemType Directory -Force | Out-Null
 
- # interface
- $iface= @"
-export interface ILifecycleEngine{
-  birth(count:number): void
-  update(delta:number): void
-  kill(id:string): void
-  dispose():void
-}
-"@
- Set-Content -Path (Join-Path $particlePath 'interfaces\ILifecycleEngine.ts') -Value $iface -Encoding UTF8
+ # Generate files from templates
+ Write-TemplateFile -TemplateRelPath 'domains/particle/interfaces/ILifecycleEngine.ts.template' `
+                   -DestinationPath (Join-Path $particlePath 'interfaces\ILifecycleEngine.ts')
 
- # implementation
- $impl= @"
-import { particleService } from '@/domains/particle/services/particleService'
-import { createServiceLogger } from '@/shared/lib/logger'
-import type { ILifecycleEngine } from '@/domains/particle/interfaces/ILifecycleEngine'
-export class LifecycleEngine implements ILifecycleEngine{
- static #instance:LifecycleEngine|null=null
- #log=createServiceLogger('LIFECYCLE')
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new LifecycleEngine())}
- birth(count:number){
-  for(let i=0;i<count;i++) particleService.createParticle()
-  this.#log.info('Particles birthed',{count})
- }
- update(delta:number){particleService.updateParticles(delta)}
- kill(id:string){/* remove from service */}
- dispose(){LifecycleEngine.#instance=null}
-}
-export const lifecycleEngine=LifecycleEngine.getInstance()
-"@
- Set-Content -Path (Join-Path $services 'lifecycleEngine.ts') -Value $impl -Encoding UTF8
+ Write-TemplateFile -TemplateRelPath 'domains/particle/services/lifecycleEngine.ts.template' `
+                   -DestinationPath (Join-Path $services 'lifecycleEngine.ts')
+
  Write-SuccessLog "LifecycleEngine generated"
  exit 0
 }catch{Write-ErrorLog "Lifecycle setup failed: $($_.Exception.Message)";exit 1}
