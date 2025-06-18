@@ -1,4 +1,4 @@
-﻿# 10-GenerateParticleInitService.ps1
+﻿THIS SHOULD BE A LINTER ERROR# 10-GenerateParticleInitService.ps1
 # Generates ParticleInitService to extract initialization logic from ParticleService
 # Addresses critical gap: ParticleInitService extraction per audit requirements
 
