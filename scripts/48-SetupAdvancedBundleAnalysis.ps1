@@ -17,23 +17,31 @@ try{
 
  # Service implementation
  $impl=@"
-import { execSync } from 'child_process'
-"@
+import { execSync } from 'child_process'
 import { createServiceLogger } from '@/shared/lib/logger'
 
-export class BundleAnalyzerService{
- static #instance:BundleAnalyzerService|null=null
- #log=createServiceLogger('BUNDLE_ANALYZER')
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new BundleAnalyzerService())}
- analyze(){
-  this.#log.info('Running webpack-bundle-analyzer')
-  execSync('npx webpack --profile --json > stats.json',{stdio:'inherit'})
-  execSync('npx webpack-bundle-analyzer stats.json --mode static --no-open',{stdio:'inherit'})
- }
- dispose(){BundleAnalyzerService.#instance=null}
+export class BundleAnalyzerService {
+  static #instance: BundleAnalyzerService | null = null
+  #log = createServiceLogger('BUNDLE_ANALYZER')
+
+  private constructor() {}
+
+  static getInstance() {
+    return this.#instance ?? (this.#instance = new BundleAnalyzerService())
+  }
+
+  analyze() {
+    this.#log.info('Running webpack-bundle-analyzer')
+    execSync('npx webpack --profile --json > stats.json', { stdio: 'inherit' })
+    execSync('npx webpack-bundle-analyzer stats.json --mode static --no-open', { stdio: 'inherit' })
+  }
+
+  dispose() {
+    BundleAnalyzerService.#instance = null
+  }
 }
-export const bundleAnalyzerService=BundleAnalyzerService.getInstance()
+
+export const bundleAnalyzerService = BundleAnalyzerService.getInstance()
 "@
  Set-Content -Path (Join-Path $services 'bundleAnalyzerService.ts') -Value $impl -Encoding UTF8
 
@@ -43,14 +51,14 @@ export const bundleAnalyzerService=BundleAnalyzerService.getInstance()
   $content=Get-Content $wf -Raw
   if($content -notmatch 'bundle-analysis:'){ # append only once
    $append=@"
-  bundle-analysis:
-"@
+  bundle-analysis:
     runs-on: ubuntu-latest
     needs: build-test
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
-        with: { version: 8 }
+        with:
+          version: 8
       - name: Install deps
         run: pnpm install --frozen-lockfile
       - name: Run bundle analyzer

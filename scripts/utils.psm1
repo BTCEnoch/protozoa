@@ -837,6 +837,98 @@ function Test-TypeScriptCompiles {
     finally { Pop-Location }
 }
 
+# === TEMPLATE PROCESSING ===
+function Write-TemplateFile {
+    <#
+        .SYNOPSIS
+            Writes a file based on a template and optional token replacement.
+        .DESCRIPTION
+            Reads a template (usually located under the /templates directory) and writes
+            it to the desired destination. Optionally performs token substitution using
+            the provided -TokenMap hashtable. By default, any token in the template of
+            the form {{TOKEN_NAME}} will be replaced with the corresponding value in
+            the TokenMap (case-insensitive key match). The destination path is inferred
+            by stripping the ".template" extension from the template relative path if
+            -DestinationPath is not supplied.
+        .PARAMETER TemplateRelPath
+            Path of the template file relative to the /templates directory.
+        .PARAMETER DestinationPath
+            Absolute or relative destination path for the generated file. When omitted,
+            the path will be <ProjectRoot>/<TemplateRelPath> with the trailing
+            ".template" segment removed.
+        .PARAMETER TokenMap
+            Hashtable containing token/value pairs for placeholder replacement.
+        .PARAMETER ProjectRoot
+            Root of the repository – defaults to the parent directory of the current
+            script (works for both scripts/ and scripts/script_scrub/ callers).
+        .PARAMETER Force
+            Overwrite existing destination file without prompting. When not specified
+            the file will be backed up (Backup-File) and then overwritten.
+        .EXAMPLE
+            Write-TemplateFile -TemplateRelPath 'components/App.tsx.template'
+        .NOTES
+            This util centralises template handling for 35+ scripts that generate code
+            from the /templates directory, eliminating previous missing-function errors.
+    #>
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TemplateRelPath,
+
+        [Parameter(Mandatory = $false)]
+        [string]$DestinationPath,
+
+        [Parameter(Mandatory = $false)]
+        [hashtable]$TokenMap = @{},
+
+        [Parameter(Mandatory = $false)]
+        [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
+
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
+    )
+
+    try {
+        # Resolve paths
+        $templatePath = Join-Path (Join-Path $ProjectRoot 'templates') $TemplateRelPath
+        if (-not (Test-Path $templatePath)) {
+            throw "Template not found: $templatePath"
+        }
+        if (-not $DestinationPath) {
+            # Strip trailing .template and place relative to ProjectRoot
+            $relativeOut = $TemplateRelPath -replace '\.template$',''
+            $DestinationPath = Join-Path $ProjectRoot $relativeOut
+        }
+        $destDir = Split-Path $DestinationPath -Parent
+        if (-not (Test-Path $destDir)) {
+            New-Item -ItemType Directory -Path $destDir -Force | Out-Null
+        }
+
+        # Read template content
+        $content = Get-Content -Path $templatePath -Raw
+
+        # Token replacement – {{TOKEN}}
+        foreach ($key in $TokenMap.Keys) {
+            $pattern = "{{${key}}}"
+            $content = $content -replace [regex]::Escape($pattern), [string]$TokenMap[$key]
+        }
+
+        # Backup existing file when not -Force
+        if (Test-Path $DestinationPath -and -not $Force) {
+            Backup-File -FilePath $DestinationPath | Out-Null
+        }
+
+        if ($PSCmdlet.ShouldProcess($DestinationPath, 'Write Template File')) {
+            Set-Content -Path $DestinationPath -Value $content -Encoding UTF8
+            Write-SuccessLog "Template '$TemplateRelPath' written to '$DestinationPath'"
+        }
+    }
+    catch {
+        Write-ErrorLog "Write-TemplateFile failed: $($_.Exception.Message)"
+        throw
+    }
+}
+
 # Initialize logging on module import
 Initialize-LogFile
 
@@ -853,7 +945,8 @@ Export-ModuleMember -Function @(
     'Invoke-ScriptWithErrorHandling',
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
-    'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
+    'Write-TemplateFile'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )
