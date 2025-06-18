@@ -214,12 +214,12 @@ try {
 
         exit 0
     } else {
-        Write-ErrorLog ""
+        Write-ErrorLog "Error condition occurred"
         Write-ErrorLog "❌ VALIDATION FAILED"
         Write-ErrorLog "Some tests did not pass. Please review the errors above."
 
         if ($Detailed) {
-            Write-InfoLog ""
+            Write-InfoLog "Processing step completed"
             Write-InfoLog "Detailed test results:"
             $testResults | ForEach-Object {
                 $status = switch ($_.Status) {

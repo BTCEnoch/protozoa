@@ -1,44 +1,45 @@
-{
-  "name": "protozoa",
-  "version": "1.0.0",
-  "description": "Bitcoin Ordinals Digital Organism Ecosystem",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "dev": "vite",
-    "test": "vitest",
-    "test:e2e": "playwright test",
-    "lint": "eslint src --ext .ts,.tsx",
-    "type-check": "tsc --noEmit",
-    "fix:here-strings": "node scripts/convert-here-strings.mjs"
-  },
-  "keywords": [
-    "bitcoin",
-    "ordinals",
-    "blockchain",
-    "three.js",
-    "typescript",
-    "digital-organisms"
-  ],
-  "author": "Protozoa Team",
-  "license": "MIT",
-  "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "@types/node": "^24.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
-    "eslint": "^9.29.0",
-    "typedoc": "^0.28.5",
-    "typescript": "^5.8.3",
-    "vite": "^5.0.0",
-    "vitest": "^1.0.0"
-  },
-  "dependencies": {
-    "@types/three": "^0.177.0",
-    "cross-fetch": "^4.1.0",
-    "three": "^0.177.0",
-    "winston": "^3.17.0",
-    "zustand": "^5.0.5"
-  }
+﻿{
+    "name":  "protozoa",
+    "version":  "1.0.0",
+    "description":  "Bitcoin Ordinals Digital Organism Ecosystem",
+    "main":  "index.js",
+    "type":  "module",
+    "scripts":  {
+                    "build":  "tsc",
+                    "dev":  "vite",
+                    "test":  "vitest",
+                    "test:e2e":  "playwright test",
+                    "lint":  "eslint src --ext .ts,.tsx",
+                    "type-check":  "tsc --noEmit",
+                    "fix:here-strings":  "node scripts/convert-here-strings.mjs"
+                },
+    "keywords":  [
+                     "bitcoin",
+                     "ordinals",
+                     "blockchain",
+                     "three.js",
+                     "typescript",
+                     "digital-organisms"
+                 ],
+    "author":  "Protozoa Team",
+    "license":  "MIT",
+    "devDependencies":  {
+                            "@playwright/test":  "^1.40.0",
+                            "@types/node":  "^24.0.3",
+                            "@typescript-eslint/eslint-plugin":  "^8.34.1",
+                            "@typescript-eslint/parser":  "^8.34.1",
+                            "eslint":  "^9.29.0",
+                            "typedoc":  "^0.28.5",
+                            "typescript":  "^5.8.3",
+                            "vite":  "^5.0.0",
+                            "vitest":  "^1.0.0",
+                            "@types/winston":  "^2.4.4"
+                        },
+    "dependencies":  {
+                         "@types/three":  "^0.177.0",
+                         "cross-fetch":  "^4.1.0",
+                         "three":  "^0.177.0",
+                         "winston":  "^3.17.0",
+                         "zustand":  "^5.0.5"
+                     }
 }

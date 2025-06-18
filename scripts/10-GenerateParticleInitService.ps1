@@ -342,11 +342,12 @@ if (-not $WhatIf) {
 }
 
 # Summary and completion
-Write-InfoLog ""
+Write-InfoLog "Processing step completed"
 Write-InfoLog "Particle Initialization Service Generation Summary:"
 Write-InfoLog "  Types: $particleInitTypesFile"
 Write-InfoLog "  Service: $particleInitServiceFile"
-Write-InfoLog ""
+Write-InfoLog "Processing step completed"
 
 Write-SuccessLog "Particle Initialization Service generation completed!"
 Write-InfoLog "Gap 2 resolved: ParticleInitService extracted from ParticleService per audit"
+
