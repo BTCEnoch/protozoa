@@ -760,6 +760,40 @@ function Write-SectionHeader {
     Write-Colored "$sep`n" 'DarkCyan'
 }
 
+# === File Utilities ===
+function Get-FileLineCount {
+    <#
+        .SYNOPSIS
+            Returns the total number of lines in a text file.
+        .DESCRIPTION
+            Lightweight helper used by various build-automation scripts for statistics and validation.
+            Reads the file in chunks (via -ReadCount) so it remains memory-efficient even for large files.
+        .PARAMETER Path
+            The path to the file whose lines should be counted.
+        .OUTPUTS
+            [int]  – total line count (0 on error)
+    #>
+    [CmdletBinding()]
+    [OutputType([int])]
+    param(
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript({ Test-Path $_ -PathType Leaf })]
+        [string]$Path
+    )
+
+    try {
+        Write-DebugLog "Counting lines in file: $Path"
+        $lineCount = 0
+        Get-Content -Path $Path -ReadCount 1000 -ErrorAction Stop | ForEach-Object { $lineCount += $_.Count }
+        return $lineCount
+    }
+    catch {
+        Write-WarningLog "Get-FileLineCount failed for '$Path': $($_.Exception.Message)"
+        return 0
+    }
+}
+
 # Initialize logging on module import
 Initialize-LogFile
 
@@ -773,7 +807,8 @@ Export-ModuleMember -Function @(
     'New-DirectoryTree', 'Get-DomainList', 'Get-ServiceName', 'Get-DomainPhaseNumber',
     'Backup-File', 'Remove-FilesSafely',
     'Invoke-ScriptWithErrorHandling',
-    'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson'
+    'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
+    'Get-FileLineCount'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 ) 

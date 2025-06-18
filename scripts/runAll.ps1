@@ -136,7 +136,13 @@ for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
             Error = $_.Exception.Message
         }
         
-        # Ask user if they want to continue despite failure
+        # CI/non-interactive mode – continue automatically when environment variable CI=1
+        if ($env:CI -eq '1') {
+            Write-WarningLog "CI mode detected – continuing pipeline despite failure in phase $stepNumber"
+            continue
+        }
+
+        # Ask user interactively otherwise
         $choice = Read-Host "Phase $stepNumber failed. Continue with remaining phases? (y/N)"
         if ($choice -notmatch '^[Yy]') {
             Write-ErrorLog "Automation pipeline aborted by user"
