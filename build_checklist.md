@@ -1,3 +1,6 @@
+# UPDATED NOTICE (June 2025)
+> **This checklist is now superseded by `script_checklist.md`, which reflects the current automation status (~98% complete). The remaining tasks in this file are being reviewed and updated. Refer to `script_checklist.md` for the authoritative progress tracker while this document is under revision.**
+
 # **New-Protozoa Full Rebuild Checklist**
 
 *Referenced from build_design.md - A comprehensive implementation guide with phase-by-phase breakdown*
