@@ -13,36 +13,35 @@ try{
  $services=Join-Path $traitDomain 'services'
  $enhanceFile=Join-Path $services 'traitEnhancements.ts'
 
- $content=@"
-/**
-"@
+ $content=@'
+/**
  * traitEnhancements.ts – Adds genetic inheritance & dynamic mutation logic to TraitService
  */
 import { traitService } from '@/domains/trait/services/traitService'
 import { rngService } from '@/domains/rng/services/rngService'
 
 export function inheritTraits(parentA:any,parentB:any){
- const child:any={}
+ const child:any = {}
  for(const cat in parentA){
-  child[cat]={}
+  child[cat] = {}
   for(const key in parentA[cat]){
    // 50/50 inherit then possible mutation
-   child[cat][key]= rngService.random()<0.5? parentA[cat][key]:parentB[cat][key]
-   child[cat][key]= maybeMutate(key,child[cat][key])
+   child[cat][key] = rngService.random() < 0.5 ? parentA[cat][key] : parentB[cat][key]
+   child[cat][key] = maybeMutate(key, child[cat][key])
   }
  }
  return child
 }
 
-function maybeMutate(trait:string,value:any){
- const difficultyInfluence=1//placeholder for block difficulty influence
- const rate=0.01*difficultyInfluence
- if(rngService.random()<rate){
-   return traitService.mutateTrait(trait,value)
+function maybeMutate(trait:string, value:any){
+ const difficultyInfluence = 1 // placeholder for block difficulty influence
+ const rate = 0.01 * difficultyInfluence
+ if(rngService.random() < rate){
+   return traitService.mutateTrait(trait, value)
  }
  return value
 }
-"@
+'@
  Set-Content -Path $enhanceFile -Value $content -Encoding UTF8
  Write-SuccessLog "Trait enhancements added"
  exit 0

@@ -929,6 +929,62 @@ function Write-TemplateFile {
     }
 }
 
+# >>> INSERTED: Template validation helper (moved here so export succeeds)
+function Test-TemplateSyntax {
+    <#
+        .SYNOPSIS
+            Validates template file syntax for common error patterns.
+        .DESCRIPTION
+            Performs lightweight checks on template files (e.g. .ts.template, .json.template)
+            to ensure placeholder formatting and – for JSON – basic structural validity.
+        .PARAMETER TemplatePath
+            The absolute or relative path to the template file to validate.
+        .OUTPUTS
+            [bool] – $true when valid, otherwise $false.
+    #>
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TemplatePath
+    )
+
+    try {
+        if (-not (Test-Path $TemplatePath)) {
+            Write-WarningLog "Template file not found: $TemplatePath"
+            return $false
+        }
+
+        $content = Get-Content $TemplatePath -Raw -ErrorAction Stop
+
+        # Validate TypeScript/TSX templates – placeholder pattern only
+        if ($TemplatePath -match '\.tsx?\.template$') {
+            if ($content -notmatch '{{[^}]+}}') {
+                Write-WarningLog "Template appears to have no placeholders: $TemplatePath"
+            }
+        }
+        # Validate JSON templates by temporarily replacing {{TOKEN}} with a string literal
+        elseif ($TemplatePath -match '\.json\.template$') {
+            try {
+                $jsonTest = $content -replace '{{[^}]+}}', '"placeholder"'
+                $null = $jsonTest | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-WarningLog "Invalid JSON template syntax: $TemplatePath"
+                return $false
+            }
+        }
+
+        Write-DebugLog "Template syntax validation passed: $TemplatePath"
+        return $true
+    }
+    catch {
+        Write-ErrorLog "Template syntax validation failed for $TemplatePath: $($_.Exception.Message)"
+        return $false
+    }
+}
+# <<< END INSERTED FUNCTION
+
 # Initialize logging on module import
 Initialize-LogFile
 
@@ -946,7 +1002,8 @@ Export-ModuleMember -Function @(
     'New-TypeScriptConfig', 'New-ESLintConfig', 'New-PackageJson',
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
-    'Write-TemplateFile'
+    'Write-TemplateFile',
+    'Test-TemplateSyntax'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )

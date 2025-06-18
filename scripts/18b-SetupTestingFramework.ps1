@@ -8,7 +8,7 @@ param(
     [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
 
     [Parameter(Mandatory = $false)]
-    [switch]$WhatIf
+    [switch]$DryRun
 )
 
 try {
@@ -50,13 +50,13 @@ try {
 
     # Configure pre-commit hook if .husky folder not present
     $huskyDir = Join-Path $ProjectRoot '.husky'
-    if (-not (Test-Path $huskyDir) -and -not $WhatIf) {
+    if (-not (Test-Path $huskyDir) -and -not $DryRun) {
         npx husky install | Out-Null
         npx husky add .husky/pre-commit "pnpm test" | Out-Null
         Write-InfoLog "Husky pre-commit hook added to run tests"
     }
 
-    if (-not $WhatIf) {
+    if (-not $DryRun) {
         $pkg | ConvertTo-Json -Depth 20 | Set-Content -Path $pkgPath -Encoding UTF8
         Write-SuccessLog "package.json updated with Vitest dev dependencies and scripts"
     }
@@ -76,7 +76,7 @@ export default defineConfig({
 })
 "@
     if (-not (Test-Path $vitestConfigPath)) {
-        if (-not $WhatIf) { Set-Content -Path $vitestConfigPath -Value $vitestConfig -Encoding UTF8 }
+        if (-not $DryRun) { Set-Content -Path $vitestConfigPath -Value $vitestConfig -Encoding UTF8 }
         Write-InfoLog "vitest.config.ts created"
     }
 
@@ -91,7 +91,7 @@ test('sample addition', () => {
   expect(1 + 1).toBe(2)
 })
 "@
-        if (-not $WhatIf) {
+        if (-not $DryRun) {
             if (-not (Test-Path $testsDir)) { New-Item -ItemType Directory -Path $testsDir -Force | Out-Null }
             Set-Content -Path $sampleTest -Value $sampleContent -Encoding UTF8
             Write-InfoLog "Sample test created: $sampleTest"
