@@ -44,3 +44,24 @@ export const logger = buildLogger()
 export function createServiceLogger(service: string) {
   return logger.child({ service })
 }
+
+/**
+ * Create a performance logger (DEBUG level recommended)
+ */
+export function createPerformanceLogger(service: string) {
+  return logger.child({ service, scope: 'performance' })
+}
+
+/**
+ * Create an error-first logger helper
+ * Provides `.logError(err, meta?)` shorthand on top of Winston child logger
+ */
+export function createErrorLogger(service: string) {
+  const child = logger.child({ service, scope: 'error' })
+  return {
+    ...child,
+    logError: (error: Error, meta: Record<string, unknown> = {}) => {
+      child.error(error.message, { ...meta, stack: error.stack })
+    }
+  }
+}
