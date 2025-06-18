@@ -178,7 +178,7 @@ foreach ($result in $results) {
 if ($failedCount -eq 0 -and $missingCount -eq 0) {
     Write-SuccessLog "🎉 ALL AUTOMATION PHASES COMPLETED SUCCESSFULLY!"
     Write-InfoLog "Your new-protozoa project is ready for Cursor AI implementation."
-    Write-InfoLog ""
+    Write-InfoLog " "
     Write-InfoLog "Next steps:"
     Write-InfoLog "1. Open the project in Cursor"
     Write-InfoLog "2. Paste the XML instructions from the documentation"
