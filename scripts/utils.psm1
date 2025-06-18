@@ -33,6 +33,7 @@ function Write-Log {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string]$Message,
         
         [Parameter(Mandatory = $false)]
@@ -71,31 +72,31 @@ function Write-Log {
 # Wrapper functions with approved PowerShell verbs
 function Write-InfoLog {
     [CmdletBinding()]
-    param([Parameter(Mandatory = $true)][string]$Message)
+    param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Message)
     Write-Log -Message $Message -Level "Info"
 }
 
 function Write-SuccessLog {
     [CmdletBinding()]
-    param([Parameter(Mandatory = $true)][string]$Message)
+    param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Message)
     Write-Log -Message $Message -Level "Success"
 }
 
 function Write-WarningLog {
     [CmdletBinding()]
-    param([Parameter(Mandatory = $true)][string]$Message)
+    param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Message)
     Write-Log -Message $Message -Level "Warning"
 }
 
 function Write-ErrorLog {
     [CmdletBinding()]
-    param([Parameter(Mandatory = $true)][string]$Message)
+    param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Message)
     Write-Log -Message $Message -Level "Error"
 }
 
 function Write-DebugLog {
     [CmdletBinding()]
-    param([Parameter(Mandatory = $true)][string]$Message)
+    param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Message)
     if ($VerbosePreference -ne 'SilentlyContinue') {
         Write-Log -Message $Message -Level "Debug"
     }
