@@ -1003,7 +1003,7 @@ Export-ModuleMember -Function @(
     'Get-FileLineCount', 'Test-TypeScriptCompiles',
     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',
     'Write-TemplateFile',
-    'Test-TemplateSyntax',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule',     'Initialize-ProjectDependencies', 'Test-ScriptDependencies', 'Repair-UtilityModule'
+    'Test-TemplateSyntax'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 )
@@ -1011,97 +1011,4 @@ Export-ModuleMember -Function @(
 # Note: Additional utility functions were previously defined here but
 # have been consolidated above to avoid duplicate definitions
 
-# Additional utility functions discovered during validation
-function Initialize-ProjectDependencies {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ProjectRoot = "."
-    )
-
-    try {
-        Push-Location $ProjectRoot
-
-        if (Test-Path "package.json") {
-            Write-InfoLog "Installing project dependencies with pnpm..."
-            $result = pnpm install 2>&1
-
-            if ($LASTEXITCODE -eq 0) {
-                Write-SuccessLog "Dependencies installed successfully"
-                return $true
-            } else {
-                Write-ErrorLog "pnpm install failed: $result"
-                return $false
-            }
-        } else {
-            Write-WarningLog "No package.json found, skipping dependency installation"
-            return $true
-        }
-    }
-    catch {
-        Write-ErrorLog "Dependency installation failed: $($_.Exception.Message)"
-        return $false
-    }
-    finally {
-        try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-    }
-}
-
-function Test-ScriptDependencies {
-    [CmdletBinding()]
-    [OutputType([bool])]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ScriptsPath = $PSScriptRoot
-    )
-
-    try {
-        # Test that all required modules can be imported
-        $utilsPath = Join-Path $ScriptsPath "utils.psm1"
-        if (-not (Test-Path $utilsPath)) {
-            Write-ErrorLog "utils.psm1 not found at: $utilsPath"
-            return $false
-        }
-
-        # Test Node.js and pnpm availability
-        if (-not (Test-NodeInstalled)) {
-            Write-WarningLog "Node.js not available - some scripts may fail"
-        }
-
-        if (-not (Test-PnpmInstalled)) {
-            Write-WarningLog "pnpm not available - dependency installation will fail"
-        }
-
-        Write-DebugLog "Script dependencies validation passed"
-        return $true
-    }
-    catch {
-        Write-ErrorLog "Script dependencies validation failed: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-function Repair-UtilityModule {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false)]
-        [string]$ModulePath = "$PSScriptRoot\utils.psm1"
-    )
-
-    try {
-        Write-InfoLog "Repairing utility module at: $ModulePath"
-
-        # Force reimport of the module
-        Remove-Module utils -Force -ErrorAction SilentlyContinue
-        Import-Module $ModulePath -Force
-
-        Write-SuccessLog "Utility module repaired and reloaded"
-        return $true
-    }
-    catch {
-        Write-ErrorLog "Failed to repair utility module: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-# End of module - duplicate functions removed
+# End of module - all utility functions consolidated above
