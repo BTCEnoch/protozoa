@@ -468,11 +468,11 @@ if (-not $WhatIf) {
 }
 
 # Summary and completion
-Write-InfoLog ""
+Write-InfoLog " "
 Write-InfoLog "Formation Blending & Caching Service Generation Summary:"
 Write-InfoLog "  Types: $formationBlendingTypesFile"
 Write-InfoLog "  Service: $formationBlendingServiceFile"
-Write-InfoLog ""
+Write-InfoLog " "
 
 Write-SuccessLog "Formation Blending & Caching Service generation completed!"
 Write-InfoLog "Gap 3 resolved: FormationBlendingService with intelligent caching per audit"
