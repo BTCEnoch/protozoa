@@ -294,11 +294,11 @@ git branch -M main
 git push -u origin main
 if ($LASTEXITCODE -eq 0) {
     Write-SuccessLog "Successfully pushed to GitHub!"
-    Write-InfoLog ""
+    Write-Host ""
     Write-InfoLog "🎉 Deployment Complete!"
     Write-InfoLog "Repository URL: https://github.com/BTCEnoch/protozoa"
     Write-InfoLog "Your new-protozoa automation package is now live on GitHub."
-    Write-InfoLog ""
+    Write-Host ""
     Write-InfoLog "Next steps:"
     Write-InfoLog "1. Clone the repository on any machine"
     Write-InfoLog "2. Run 'powershell ./scripts/runAll.ps1' for instant setup"
@@ -309,7 +309,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-InfoLog "- Authentication required (use GitHub CLI or personal access token)"
     Write-InfoLog "- Repository may need to be made public"
     Write-InfoLog "- Check GitHub repository settings"
-    Write-InfoLog ""
+    Write-Host ""
     Write-InfoLog "Manual push command:"
     Write-InfoLog "git push -u origin main"
 }
