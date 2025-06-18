@@ -14,23 +14,8 @@ try{
  $testDir=Join-Path $ProjectRoot 'tests/performance'
  New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
- $perfTest= @"
-import { describe, it, expect } from 'vitest'
-import { perfRegressionService as perf } from '@/shared/services/performanceRegressionService'
-import { particleService } from '@/domains/particle/services/particleService'
-
-describe('Particle update performance',()=>{
- it('should update 10k particles under 16ms',()=>{
-  for(let i=0;i<10000;i++) particleService.createParticle()
-  const t=perf.start('update')
-  particleService.updateParticles(16)
-  perf.end('update',t)
-  const duration=perf.report().find(s=>s.label==='update')!.duration
-  expect(duration).toBeLessThan(16)
- })
-})
-"@
- Set-Content -Path (Join-Path $testDir 'particle.perf.test.ts') -Value $perfTest -Encoding UTF8
+ Write-TemplateFile -TemplateRelPath 'tests/performance/particle.perf.test.ts.template' `
+                   -DestinationPath (Join-Path $testDir 'particle.perf.test.ts')
 
  # Append CI job
  $ci=Join-Path $ProjectRoot '.github/workflows/ci.yml'

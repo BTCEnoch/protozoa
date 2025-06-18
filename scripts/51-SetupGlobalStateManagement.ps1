@@ -9,18 +9,12 @@ try{
  Write-StepHeader "Global State Management Setup"
  $storeDir=Join-Path $ProjectRoot 'src/shared/state'
  New-Item -Path $storeDir -ItemType Directory -Force | Out-Null
- $sim= @"
-import create from 'zustand'
-interface SimulationState{ running:boolean; formation:string|null; setRunning:(v:boolean)=>void; setFormation:(f:string|null)=>void }
-export const useSimulationStore=create<SimulationState>(set=>({ running:false, formation:null, setRunning:v=>set({running:v}), setFormation:f=>set({formation:f}) }))
-"@
- Set-Content -Path (Join-Path $storeDir 'useSimulationStore.ts') -Value $sim -Encoding UTF8
- $part= @"
-import create from 'zustand'
-interface ParticleUIState{ selected:string|null; select:(id:string|null)=>void }
-export const useParticleStore=create<ParticleUIState>(set=>({selected:null,select:id=>set({selected:id})}))
-"@
- Set-Content -Path (Join-Path $storeDir 'useParticleStore.ts') -Value $part -Encoding UTF8
+ Write-TemplateFile -TemplateRelPath 'shared/state/useSimulationStore.ts.template' `
+                   -DestinationPath (Join-Path $storeDir 'useSimulationStore.ts')
+
+ Write-TemplateFile -TemplateRelPath 'shared/state/useParticleStore.ts.template' `
+                   -DestinationPath (Join-Path $storeDir 'useParticleStore.ts')
+
  Write-SuccessLog "Zustand stores generated"
  exit 0
 }catch{Write-ErrorLog "State setup failed: $($_.Exception.Message)";exit 1}
