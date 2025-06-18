@@ -99,28 +99,59 @@ export function createServiceLogger(service: string) {
 
     # Ensure package.json has winston dependencies
     $pkgJsonPath = Join-Path $ProjectRoot "package.json"
+    
+    Write-InfoLog "Checking package.json at: $pkgJsonPath"
+    
     if (Test-Path $pkgJsonPath) {
-        $pkgJson = Get-Content $pkgJsonPath -Raw | ConvertFrom-Json
+        Write-InfoLog "Loading existing package.json"
+        try {
+            $pkgJson = Get-Content $pkgJsonPath -Raw | ConvertFrom-Json
+            Write-InfoLog "Successfully loaded package.json"
+        } catch {
+            Write-ErrorLog "Failed to parse package.json: $($_.Exception.Message)"
+            throw
+        }
     } else {
-        $pkgJson = @{ 
+        Write-InfoLog "Creating new package.json structure"
+        $pkgJson = [PSCustomObject]@{ 
             name = "protozoa"
             version = "0.0.1"
-            scripts = @{}
-            dependencies = @{}
-            devDependencies = @{}
+            scripts = [PSCustomObject]@{}
+            dependencies = [PSCustomObject]@{}
+            devDependencies = [PSCustomObject]@{}
         }
     }
 
-    if (-not $pkgJson.dependencies.winston) { 
-        $pkgJson.dependencies.winston = "^3.11.0" 
+    # Ensure dependencies object exists
+    if (-not $pkgJson.dependencies) {
+        $pkgJson | Add-Member -MemberType NoteProperty -Name "dependencies" -Value ([PSCustomObject]@{}) -Force
     }
-    if (-not $pkgJson.devDependencies."@types/winston") { 
-        $pkgJson.devDependencies."@types/winston" = "^2.4.4" 
+    if (-not $pkgJson.devDependencies) {
+        $pkgJson | Add-Member -MemberType NoteProperty -Name "devDependencies" -Value ([PSCustomObject]@{}) -Force
+    }
+
+    # Add winston dependency
+    if (-not ($pkgJson.dependencies | Get-Member -Name "winston" -ErrorAction SilentlyContinue)) { 
+        $pkgJson.dependencies | Add-Member -MemberType NoteProperty -Name "winston" -Value "^3.11.0" -Force
+        Write-InfoLog "Added winston dependency"
+    }
+    
+    # Add @types/winston dependency
+    $typesWinstonName = "@types/winston"
+    if (-not ($pkgJson.devDependencies | Get-Member -Name $typesWinstonName -ErrorAction SilentlyContinue)) { 
+        $pkgJson.devDependencies | Add-Member -MemberType NoteProperty -Name $typesWinstonName -Value "^2.4.4" -Force
+        Write-InfoLog "Added @types/winston devDependency"
     }
 
     if (-not $DryRun) {
-        $pkgJson | ConvertTo-Json -Depth 20 | Set-Content -Path $pkgJsonPath -Encoding UTF8
-        Write-SuccessLog "package.json updated with Winston dependencies"
+        try {
+            $jsonOutput = $pkgJson | ConvertTo-Json -Depth 20
+            Set-Content -Path $pkgJsonPath -Value $jsonOutput -Encoding UTF8
+            Write-SuccessLog "package.json updated with Winston dependencies"
+        } catch {
+            Write-ErrorLog "Failed to write package.json: $($_.Exception.Message)"
+            throw
+        }
     } else {
         Write-InfoLog "DryRun mode - package.json not modified"
     }
