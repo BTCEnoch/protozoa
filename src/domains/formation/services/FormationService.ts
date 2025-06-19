@@ -100,7 +100,8 @@ class FormationService implements IFormationService {
     const cacheKey = patterns
       .map((p, idx) => {
         const keyPart = this.#extractPatternKey(p) ?? `pattern${idx}`
-        return `${keyPart}:${weights[idx].toFixed(3)}`
+        const safeWeight = weights[idx] ?? 0
+        return `${keyPart}:${safeWeight.toFixed(3)}`
       })
       .join('|')
 
