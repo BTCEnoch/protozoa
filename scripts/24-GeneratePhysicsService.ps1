@@ -1,4 +1,4 @@
-﻿# 24-GeneratePhysicsService.ps1 - Phase 2 Core Domain Implementation
+# 24-GeneratePhysicsService.ps1 - Phase 2 Core Domain Implementation
 # Generates simplified PhysicsService focused on kinematics and geometry helpers
 # ARCHITECTURE CHANGE: Removed force fields - formations now handle all physics
 # Reference: script_checklist.md lines 24-GeneratePhysicsService.ps1
@@ -59,18 +59,10 @@ import { Vector3 } from "three";
 export interface PhysicsConfig {
   /** Target frame rate for physics calculations */
   targetFPS?: number;
-  /** Enable worker thread calculations */
-  useWorkerThreads?: boolean;
-  /** Number of worker threads to use */
-  workerThreadCount?: number;
   /** Gravity strength */
   gravity?: number;
   /** Air resistance factor */
   damping?: number;
-  /** Enable spatial partitioning for collision detection */
-  useSpatialPartitioning?: boolean;
-  /** Grid size for spatial partitioning */
-  spatialGridSize?: number;
 }
 
 /**
@@ -89,8 +81,6 @@ export interface ParticlePhysics {
   radius: number;
   /** Whether particle is affected by gravity */
   useGravity: boolean;
-  /** Whether particle can collide with others */
-  enableCollisions: boolean;
 }
 
 /**
@@ -230,18 +220,6 @@ export interface PhysicsState {
 }
 
 /**
- * Spatial partitioning grid cell
- */
-export interface SpatialCell {
-  /** Cell position */
-  position: Vector3;
-  /** Particles in this cell */
-  particles: string[];
-  /** Neighboring cells */
-  neighbors: string[];
-}
-
-/**
  * Geometry distribution patterns
  */
 export type DistributionPattern =
@@ -275,26 +253,12 @@ export interface GeometryBounds {
   /** Radius (for spherical bounds) */
   radius?: number;
 }
-
-/**
- * Physics integration methods
- */
-export interface IntegratorState {
-  /** Position integration method */
-  positionMethod: "euler" | "verlet" | "rk4";
-  /** Velocity integration method */
-  velocityMethod: "euler" | "verlet" | "rk4";
-  /** Integration step size */
-  stepSize: number;
-  /** Sub-steps per frame */
-  subSteps: number;
-}
 '@
 
     Set-Content -Path (Join-Path $typesPath "physics.types.ts") -Value $typesContent -Encoding UTF8
     Write-SuccessLog "Physics types generated successfully"
 
-    # Generate Physics Service implementation - Complete simplified version
+    # Generate Physics Service implementation
     Write-InfoLog "Generating PhysicsService implementation - Simplified kinematic helpers"
     $serviceContent = @'
 /**
@@ -316,133 +280,6 @@ import {
 } from "@/domains/physics/types/physics.types";
 import { createServiceLogger } from "@/shared/lib/logger";
 
-/**
- * Physics Service implementing high-performance particle physics simulation
- * Supports worker thread offloading for heavy calculations and 60fps optimization
- * Follows singleton pattern for application-wide physics consistency
- */
-export class PhysicsService implements IPhysicsService {
-  /** Singleton instance */
-  static #instance: PhysicsService | null = null;
-
-  /** Physics simulation state */
-  #state: PhysicsState;
-
-  /** Service configuration */
-  #config: PhysicsConfig;
-
-  /** Performance metrics */
-  #metrics: PhysicsMetrics;
-
-  /** Active force fields */
-  #forceFields: Map<string, ForceField>;
-
-  /** Spatial partitioning grid */
-  #spatialGrid: Map<string, SpatialCell>;
-
-  /** Worker thread pool */
-  #workers: Worker[];
-
-  /** Worker message queue */
-  #workerQueue: WorkerMessage[];
-
-  /** Worker availability status */
-  #workerAvailable: boolean[];
-
-  /** Integration state */
-  #integrator: IntegratorState;
-
-  /** Physics constraints */
-  #constraints: Map<string, PhysicsConstraint>;
-
-  /** Winston logger instance */
-  #logger = createServiceLogger("PhysicsService");
-
-  /** Frame timing for performance monitoring */
-  #frameStartTime: number = 0;
-  #frameHistory: number[] = [];
-
-  /**
-   * Private constructor enforcing singleton pattern
-   * Initializes physics service with optimal defaults
-   */
-  private constructor() {
-    this.#logger.info("Initializing PhysicsService singleton instance");
-
-    // Initialize default configuration
-    this.#config = {
-      targetFPS: 60,
-      useWorkerThreads: true,
-      workerThreadCount: navigator.hardwareConcurrency || 4,
-      gravity: -9.81,
-      damping: 0.99,
-      useSpatialPartitioning: true,
-      spatialGridSize: 10
-    };
-
-    // Initialize physics state
-    this.#state = {
-      isRunning: false,
-      simulationTime: 0,
-      lastDeltaTime: 0,
-      algorithm: "verlet",
-      collisionMethod: "spatial-hash",
-      activeParticles: 0
-    };
-
-    // Initialize performance metrics
-    this.#metrics = {
-      currentFPS: 0,
-      averageFrameTime: 0,
-      particleCount: 0,
-      collisionChecks: 0,
-      workerUtilization: 0,
-      memoryUsage: 0
-    };
-
-    // Initialize collections
-    this.#forceFields = new Map();
-    this.#spatialGrid = new Map();
-    this.#workers = [];
-    this.#workerQueue = [];
-    this.#workerAvailable = [];
-    this.#constraints = new Map();
-
-    // Initialize integrator
-    this.#integrator = {
-      positionMethod: "verlet",
-      velocityMethod: "verlet",
-      stepSize: 1/60,
-      subSteps: 1
-    };
-
-    this.#logger.info("PhysicsService initialized successfully", {
-      targetFPS: this.#config.targetFPS,
-      workerThreads: this.#config.useWorkerThreads,
-      workerCount: this.#config.workerThreadCount
-    });
-  }
-
-  /**
-   * Get singleton instance of PhysicsService
-   * Creates new instance if none exists
-   * @returns PhysicsService singleton instance
-   */
-  public static getInstance(): PhysicsService {
-    if (!PhysicsService.#instance) {
-      PhysicsService.#instance = new PhysicsService();
-    }
-    return PhysicsService.#instance;
-  }
-}
-'@
-
-    Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceContent -Encoding UTF8
-    Write-SuccessLog "PhysicsService implementation generated successfully"
-
-    # Generate additional service methods
-    Write-InfoLog "Adding simplified physics service methods"
-    $serviceMethods = @'
 /**
  * Physics Service implementing kinematic helpers and geometry utilities
  * Simplified service - formations now handle all movement calculations
@@ -478,12 +315,8 @@ export class PhysicsService implements IPhysicsService {
     // Initialize default configuration
     this.#config = {
       targetFPS: 60,
-      useWorkerThreads: false, // Simplified - no workers needed
-      workerThreadCount: 0,
       gravity: -9.81,
-      damping: 0.99,
-      useSpatialPartitioning: false, // Formations handle positioning
-      spatialGridSize: 0
+      damping: 0.99
     };
 
     // Initialize physics state
@@ -491,8 +324,8 @@ export class PhysicsService implements IPhysicsService {
       isRunning: false,
       simulationTime: 0,
       lastDeltaTime: 0,
-      algorithm: "euler", // Simplified
-      collisionMethod: "basic", // No complex collision detection
+      algorithm: "euler",
+      collisionMethod: "basic",
       activeParticles: 0
     };
 
@@ -534,6 +367,14 @@ export class PhysicsService implements IPhysicsService {
     this.#state.isRunning = true;
     this.#logger.info("PhysicsService initialization completed (kinematic mode)");
   }
+'@
+
+    Set-Content -Path (Join-Path $servicesPath "PhysicsService.ts") -Value $serviceContent -Encoding UTF8
+    Write-SuccessLog "PhysicsService class structure generated successfully"
+
+    # Add service methods to complete the implementation
+    Write-InfoLog "Adding PhysicsService methods implementation"
+    $serviceMethods = @'
 
   /**
    * Distribute particles in a geometric pattern
@@ -627,6 +468,15 @@ export class PhysicsService implements IPhysicsService {
     const gravityForce = new Vector3(0, this.#config.gravity! * particle.mass, 0);
     particle.acceleration.add(gravityForce.divideScalar(particle.mass));
   }
+'@
+
+    # Append methods to the service file
+    Add-Content -Path (Join-Path $servicesPath "PhysicsService.ts") -Value $serviceMethods -Encoding UTF8
+    Write-SuccessLog "PhysicsService methods added successfully"
+
+    # Add private geometry distribution methods
+    Write-InfoLog "Adding geometry distribution methods"
+    $geometryMethods = @'
 
   // Private geometry distribution methods
 
@@ -639,7 +489,7 @@ export class PhysicsService implements IPhysicsService {
   #distributeGrid(count: number, bounds: Vector3): Vector3[] {
     const positions: Vector3[] = [];
     const side = Math.ceil(Math.cbrt(count));
-    const spacing = bounds.divideScalar(side);
+    const spacing = new Vector3(bounds.x / side, bounds.y / side, bounds.z / side);
 
     for (let x = 0; x < side; x++) {
       for (let y = 0; y < side; y++) {
@@ -667,7 +517,7 @@ export class PhysicsService implements IPhysicsService {
     const radius = bounds.x;
 
     for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2;
+      const angle = (i / count) * 2 * Math.PI;
       positions.push(new Vector3(
         Math.cos(angle) * radius,
         0,
@@ -687,43 +537,42 @@ export class PhysicsService implements IPhysicsService {
   #distributeSphere(count: number, bounds: Vector3): Vector3[] {
     const positions: Vector3[] = [];
     const radius = bounds.x;
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
     for (let i = 0; i < count; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = 2 * Math.PI * u;
-      const phi = Math.acos(2 * v - 1);
+      const y = 1 - (i / (count - 1)) * 2;
+      const radiusAtY = Math.sqrt(1 - y * y);
+      const theta = goldenAngle * i;
 
-      positions.push(new Vector3(
-        radius * Math.sin(phi) * Math.cos(theta),
-        radius * Math.sin(phi) * Math.sin(theta),
-        radius * Math.cos(phi)
-      ));
+      const x = Math.cos(theta) * radiusAtY;
+      const z = Math.sin(theta) * radiusAtY;
+
+      positions.push(new Vector3(x * radius, y * radius, z * radius));
     }
 
     return positions;
   }
 
   /**
-   * Distribute particles using Fibonacci spiral
+   * Distribute particles in a fibonacci spiral pattern
    * @param count - Number of particles
-   * @param bounds - Boundary constraints (uses x as radius)
-   * @returns Array of positions in Fibonacci formation
+   * @param bounds - Boundary constraints
+   * @returns Array of positions in fibonacci formation
    */
   #distributeFibonacci(count: number, bounds: Vector3): Vector3[] {
     const positions: Vector3[] = [];
-    const goldenRatio = (1 + Math.sqrt(5)) / 2;
     const radius = bounds.x;
+    const goldenRatio = (1 + Math.sqrt(5)) / 2;
+    const angleIncrement = 2 * Math.PI / (goldenRatio * goldenRatio);
 
     for (let i = 0; i < count; i++) {
-      const theta = 2 * Math.PI * i / goldenRatio;
-      const y = 1 - (i / (count - 1)) * 2;
-      const radiusAtY = Math.sqrt(1 - y * y);
-
+      const angle = i * angleIncrement;
+      const r = Math.sqrt(i / count) * radius;
+      
       positions.push(new Vector3(
-        Math.cos(theta) * radiusAtY * radius,
-        y * radius,
-        Math.sin(theta) * radiusAtY * radius
+        Math.cos(angle) * r,
+        0,
+        Math.sin(angle) * r
       ));
     }
 
@@ -749,6 +598,31 @@ export class PhysicsService implements IPhysicsService {
 
     return positions;
   }
+'@
+
+    # Append geometry methods to the service file
+    Add-Content -Path (Join-Path $servicesPath "PhysicsService.ts") -Value $geometryMethods -Encoding UTF8
+    Write-SuccessLog "Geometry distribution methods added successfully"
+
+    # Add utility methods and class completion
+    Write-InfoLog "Adding utility methods and completing PhysicsService class"
+    $utilityMethods = @'
+
+  /**
+   * Update performance metrics
+   * @private
+   */
+  #updateMetrics(): void {
+    const frameTime = performance.now() - this.#frameStartTime;
+    this.#frameHistory.push(frameTime);
+
+    if (this.#frameHistory.length > 60) {
+      this.#frameHistory.shift();
+    }
+
+    this.#metrics.currentFPS = 1000 / frameTime;
+    this.#metrics.averageFrameTime = this.#frameHistory.reduce((a, b) => a + b, 0) / this.#frameHistory.length;
+  }
 
   /**
    * Get current physics performance metrics
@@ -768,238 +642,55 @@ export class PhysicsService implements IPhysicsService {
       isRunning: false,
       simulationTime: 0,
       lastDeltaTime: 0,
-      algorithm: "verlet",
-      collisionMethod: "spatial-hash",
+      algorithm: "euler",
+      collisionMethod: "basic",
       activeParticles: 0
     };
 
-    this.#forceFields.clear();
-    this.#spatialGrid.clear();
-    this.#constraints.clear();
-    this.#frameHistory = [];
+    this.#metrics = {
+      currentFPS: 0,
+      averageFrameTime: 0,
+      transformCalculations: 0,
+      geometryOperations: 0,
+      memoryUsage: 0
+    };
 
+    this.#frameHistory = [];
     this.#logger.info("Physics simulation reset completed");
   }
 
   /**
-   * Dispose of resources and cleanup worker threads
+   * Dispose of resources and cleanup
    */
   public dispose(): void {
     this.#logger.info("Disposing PhysicsService resources");
 
-    // Terminate worker threads
-    this.#workers.forEach(worker => {
-      worker.terminate();
-    });
-    this.#workers = [];
-    this.#workerAvailable = [];
-
-    // Clear all data structures
-    this.#forceFields.clear();
-    this.#spatialGrid.clear();
-    this.#constraints.clear();
-    this.#workerQueue = [];
-
-    // Reset singleton instance
+    this.reset();
     PhysicsService.#instance = null;
 
     this.#logger.info("PhysicsService disposal completed");
   }
+}
 
-  // Private helper methods
+// Singleton export
+export const physicsService = PhysicsService.getInstance();
 
-  /**
-   * Initialize worker thread pool
-   */
-  async #initializeWorkers(): Promise<void> {
-    this.#logger.info("Initializing physics worker threads", {
-      count: this.#config.workerThreadCount
-    });
+// Utility functions for physics calculations
+export function calculatePhysicsStep(deltaTime: number): number {
+  return Math.min(deltaTime, 1/30); // Cap at 30fps minimum
+}
 
-    const workerPromises: Promise<void>[] = [];
-
-    for (let i = 0; i < this.#config.workerThreadCount!; i++) {
-      const workerPromise = new Promise<void>((resolve, reject) => {
-        try {
-          // Create physics worker (implementation would reference actual worker file)
-          const worker = new Worker("/src/domains/physics/workers/physicsWorker.js");
-
-          worker.onmessage = (e) => {
-            this.#handleWorkerMessage(i, e.data);
-          };
-
-          worker.onerror = (error) => {
-            this.#logger.error(`Physics worker ${i} error`, { error: error.message });
-            reject(error);
-          };
-
-          this.#workers[i] = worker;
-          this.#workerAvailable[i] = true;
-
-          // Send initialization message
-          worker.postMessage({
-            type: "INIT",
-            payload: { config: this.#config },
-            messageId: `init_${i}`,
-            timestamp: Date.now()
-          });
-
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-      workerPromises.push(workerPromise);
-    }
-
-    await Promise.all(workerPromises);
-    this.#logger.info("All physics workers initialized successfully");
+export function clampVelocity(velocity: Vector3, maxSpeed: number): Vector3 {
+  if (velocity.length() > maxSpeed) {
+    return velocity.normalize().multiplyScalar(maxSpeed);
   }
-
-  /**
-   * Handle worker thread messages
-   * @param workerId - ID of the worker
-   * @param message - Message from worker
-   */
-  #handleWorkerMessage(workerId: number, message: WorkerMessage): void {
-    switch (message.type) {
-      case "WORKER_READY":
-        this.#workerAvailable[workerId] = true;
-        break;
-
-      case "PHYSICS_UPDATE":
-        // Handle physics update completion
-        this.#workerAvailable[workerId] = true;
-        break;
-
-      case "WORKER_ERROR":
-        this.#logger.error(`Worker ${workerId} reported error`, {
-          error: message.payload
-        });
-        this.#workerAvailable[workerId] = true;
-        break;
-
-      default:
-        this.#logger.warn("Unknown worker message type", {
-          workerId,
-          type: message.type
-        });
-    }
-  }
-
-  /**
-   * Update physics using worker threads
-   * @param deltaTime - Time delta
-   * @param particles - Particles to simulate
-   */
-  async #updatePhysicsWorkers(deltaTime: number, particles: ParticlePhysics[]): Promise<void> {
-    const availableWorkers = this.#workerAvailable
-      .map((available, index) => available ? index : -1)
-      .filter(index => index !== -1);
-
-    if (availableWorkers.length === 0) {
-      // Fallback to main thread if no workers available
-      this.#updatePhysicsMainThread(deltaTime, particles);
-      this.#logger.warn("No workers available, falling back to main thread");
-      return;
-    }
-
-    // Divide particles among available workers
-    const particlesPerWorker = Math.ceil(particles.length / availableWorkers.length);
-    const workerPromises: Promise<void>[] = [];
-
-    for (let i = 0; i < availableWorkers.length; i++) {
-      const workerId = availableWorkers[i];
-      const startIndex = i * particlesPerWorker;
-      const endIndex = Math.min(startIndex + particlesPerWorker, particles.length);
-      const workerParticles = particles.slice(startIndex, endIndex);
-
-      if (workerParticles.length > 0) {
-        this.#workerAvailable[workerId] = false;
-
-        const workerPromise = new Promise<void>((resolve) => {
-          const worker = this.#workers[workerId];
-          const messageId = `physics_${Date.now()}_${workerId}`;
-
-          const onMessage = (e: MessageEvent) => {
-            if (e.data.messageId === messageId) {
-              worker.removeEventListener("message", onMessage);
-              // Update particles with results
-              Object.assign(workerParticles, e.data.payload.particles);
-              resolve();
-            }
-          };
-
-          worker.addEventListener("message", onMessage);
-
-          worker.postMessage({
-            type: "PHYSICS_UPDATE",
-            messageId,
-            timestamp: Date.now(),
-            payload: {
-              particles: workerParticles,
-              forceFields: Array.from(this.#forceFields.values()),
-              config: this.#config,
-              deltaTime
-            }
-          });
-        });
-
-        workerPromises.push(workerPromise);
-      }
-    }
-
-    await Promise.all(workerPromises);
-  }
-
-  /**
-   * Update physics on main thread
-   * @param deltaTime - Time delta
-   * @param particles - Particles to simulate
-   */
-  #updatePhysicsMainThread(deltaTime: number, particles: ParticlePhysics[]): void {
-    for (const particle of particles) {
-      // Apply gravity
-      this.applyGravity(particle, deltaTime);
-
-      // Apply force fields
-      this.#applyForceFields(particle);
-
-      // Update velocity (Verlet integration)
-      particle.velocity.add(
-        particle.acceleration.clone().multiplyScalar(deltaTime)
-      );
-
-      // Apply damping
-      particle.velocity.multiplyScalar(this.#config.damping!);
-
-      // Update position
-      particle.position.add(
-        particle.velocity.clone().multiplyScalar(deltaTime)
-      );
-
-      // Reset acceleration
-      particle.acceleration.set(0, 0, 0);
-    }
-
-    // Check collisions
-    this.#checkCollisions(particles);
-  }
-  }
+  return velocity;
+}
 '@
 
-    # Write the complete service methods to file (replacing the initial stub)
-    Set-Content -Path (Join-Path $servicesPath "physicsService.ts") -Value $serviceMethods -Encoding UTF8
-    Write-SuccessLog "PhysicsService implementation with complete methods generated successfully"
-
-    # Note: Complete service implementation already written via $serviceMethods
-    # Skipping redundant Part 3 generation
-
-
-    # Note: Complete service implementation already written via $serviceMethods
-    # Skipping redundant Part 4 generation
-
+    # Append utility methods to complete the service file
+    Add-Content -Path (Join-Path $servicesPath "PhysicsService.ts") -Value $utilityMethods -Encoding UTF8
+    Write-SuccessLog "PhysicsService implementation completed successfully"
 
     # Generate basic physics worker template
     Write-InfoLog "Generating physics worker template"
@@ -1043,7 +734,7 @@ function handleInit(config, messageId) {
 }
 
 function handlePhysicsUpdate(data, messageId) {
-  const { particles, forceFields, config, deltaTime } = data;
+  const { particles, config, deltaTime } = data;
 
   // Physics calculation logic would go here
   // This is a simplified version - full implementation would include
@@ -1073,7 +764,7 @@ function handlePhysicsUpdate(data, messageId) {
  */
 
 // Service exports
-export { PhysicsService, physicsService } from "./services/physicsService";
+export { PhysicsService, physicsService, calculatePhysicsStep, clampVelocity } from "./services/PhysicsService";
 
 // Interface exports
 export type {
@@ -1102,7 +793,7 @@ export type {
     Write-InfoLog "Generated files:"
     Write-InfoLog "  - src/domains/physics/interfaces/IPhysicsService.ts"
     Write-InfoLog "  - src/domains/physics/types/physics.types.ts"
-    Write-InfoLog "  - src/domains/physics/services/physicsService.ts"
+    Write-InfoLog "  - src/domains/physics/services/PhysicsService.ts"
     Write-InfoLog "  - src/domains/physics/workers/physicsWorker.js"
     Write-InfoLog "  - src/domains/physics/index.ts"
 
@@ -1114,4 +805,4 @@ catch {
 }
 finally {
     try { Pop-Location -ErrorAction SilentlyContinue } catch { }
-}
+} 

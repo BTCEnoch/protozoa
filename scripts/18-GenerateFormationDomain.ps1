@@ -1177,19 +1177,19 @@ $formationServicePart4 = @'
 
       switch (pattern.type) {
         case "sphere":
-          return this.calculateSpherePositions(particleCount, scale * spacing);
+          return this.#calculateSpherePositions(particleCount, scale * spacing);
 
         case "cube":
-          return this.calculateCubePositions(particleCount, scale * spacing);
+          return this.#calculateCubePositions(particleCount, scale * spacing);
 
         case "cylinder":
-          return this.calculateCylinderPositions(particleCount, scale * spacing);
+          return this.#calculateCylinderPositions(particleCount, scale * spacing);
 
         case "helix":
-          return this.calculateHelixPositions(particleCount, scale * spacing);
+          return this.#calculateHelixPositions(particleCount, scale * spacing);
 
         case "torus":
-          return this.calculateTorusPositions(particleCount, scale * spacing);
+          return this.#calculateTorusPositions(particleCount, scale * spacing);
 
         case "custom":
           if (pattern.customPositions && pattern.customPositions.length > 0) {
@@ -1202,7 +1202,7 @@ $formationServicePart4 = @'
             type: pattern.type,
             patternId: pattern.id
           });
-          return this.calculateSpherePositions(particleCount, scale * spacing);
+          return this.#calculateSpherePositions(particleCount, scale * spacing);
       }
 
       return positions;
@@ -1214,7 +1214,7 @@ $formationServicePart4 = @'
         context: "calculateFormationPositions"
       });
       // Fallback to simple sphere formation
-      return this.calculateSpherePositions(particleCount, 1.0);
+      return this.#calculateSpherePositions(particleCount, 1.0);
     }
   }
 
@@ -1398,6 +1398,136 @@ $formationServicePart5 = @'
 
       return { x, y, z };
     });
+  }
+
+  /**
+   * Calculate positions for particles arranged in a sphere formation
+   * @param count - Number of particles to position
+   * @param radius - Radius of the sphere
+   * @returns Array of positions on sphere surface
+   * @private
+   */
+  #calculateSpherePositions(count: number, radius: number): IVector3[] {
+    const positions: IVector3[] = [];
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Golden angle in radians
+    
+    for (let i = 0; i < count; i++) {
+      const y = 1 - (i / (count - 1)) * 2; // y goes from 1 to -1
+      const radiusAtY = Math.sqrt(1 - y * y);
+      const theta = goldenAngle * i;
+      
+      const x = Math.cos(theta) * radiusAtY;
+      const z = Math.sin(theta) * radiusAtY;
+      
+      positions.push({
+        x: x * radius,
+        y: y * radius,
+        z: z * radius
+      });
+    }
+    
+    return positions;
+  }
+
+  /**
+   * Calculate positions for particles arranged in a cube formation
+   * @param count - Number of particles to position
+   * @param size - Size of the cube
+   * @returns Array of positions in cube formation
+   * @private
+   */
+  #calculateCubePositions(count: number, size: number): IVector3[] {
+    const positions: IVector3[] = [];
+    const side = Math.ceil(Math.cbrt(count));
+    const spacing = size / side;
+    const offset = (size - spacing) / 2;
+    
+    for (let i = 0; i < count; i++) {
+      const x = (i % side) * spacing - offset;
+      const y = (Math.floor(i / side) % side) * spacing - offset;
+      const z = Math.floor(i / (side * side)) * spacing - offset;
+      
+      positions.push({ x, y, z });
+    }
+    
+    return positions;
+  }
+
+  /**
+   * Calculate positions for particles arranged in a cylinder formation
+   * @param count - Number of particles to position
+   * @param radius - Cylinder radius
+   * @returns Array of positions in cylinder formation
+   * @private
+   */
+  #calculateCylinderPositions(count: number, radius: number): IVector3[] {
+    const positions: IVector3[] = [];
+    const height = radius * 2; // Make cylinder height proportional to radius
+    
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * 2 * Math.PI;
+      const y = (i / count) * height - height / 2;
+      
+      positions.push({
+        x: Math.cos(angle) * radius,
+        y: y,
+        z: Math.sin(angle) * radius
+      });
+    }
+    
+    return positions;
+  }
+
+  /**
+   * Calculate positions for particles arranged in a helix formation
+   * @param count - Number of particles to position
+   * @param radius - Helix radius
+   * @returns Array of positions in helix formation
+   * @private
+   */
+  #calculateHelixPositions(count: number, radius: number): IVector3[] {
+    const positions: IVector3[] = [];
+    const height = radius * 3; // Make helix height proportional to radius
+    const turns = 3; // Number of complete turns
+    
+    for (let i = 0; i < count; i++) {
+      const t = i / count;
+      const angle = t * turns * 2 * Math.PI;
+      const y = t * height - height / 2;
+      
+      positions.push({
+        x: Math.cos(angle) * radius,
+        y: y,
+        z: Math.sin(angle) * radius
+      });
+    }
+    
+    return positions;
+  }
+
+  /**
+   * Calculate positions for particles arranged in a torus formation
+   * @param count - Number of particles to position
+   * @param radius - Major radius of the torus
+   * @returns Array of positions in torus formation
+   * @private
+   */
+  #calculateTorusPositions(count: number, radius: number): IVector3[] {
+    const positions: IVector3[] = [];
+    const minorRadius = radius * 0.3; // Minor radius is 30% of major radius
+    
+    for (let i = 0; i < count; i++) {
+      const u = (i / count) * 2 * Math.PI;
+      const v = ((i * 7) % count / count) * 2 * Math.PI; // 7 creates nice distribution
+      
+      const x = (radius + minorRadius * Math.cos(v)) * Math.cos(u);
+      const y = minorRadius * Math.sin(v);
+      const z = (radius + minorRadius * Math.cos(v)) * Math.sin(u);
+      
+      positions.push({ x, y, z });
+    }
+    
+    return positions;
   }
 
   /**

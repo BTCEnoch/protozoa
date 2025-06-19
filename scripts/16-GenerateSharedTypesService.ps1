@@ -662,6 +662,28 @@ export * from "./loggingTypes";
 
 // Event types for domain communication
 export * from "./eventTypes";
+
+// Type aliases for backward compatibility with service code
+export type OrganismTraits = IOrganismTraits;
+export type VisualTraits = IVisualTraits;
+export type BehavioralTraits = IBehavioralTraits;
+export type EvolutionaryTraits = IEvolutionaryTraits;
+export type MutationTraits = IMutationTraits;
+export type TraitValue = string | number | boolean;
+export type ParticleType = "basic" | "enhanced" | "mutated";
+export type ParticleCreationData = {
+  id: string;
+  position: IVector3;
+  traits: IOrganismTraits;
+  type: ParticleType;
+};
+export type ParticleMetrics = {
+  count: number;
+  activeCount: number;
+  memoryUsage: number;
+  creationRate: number;
+  removalRate: number;
+};
 '@
 
 Write-InfoLog "Writing types index..."

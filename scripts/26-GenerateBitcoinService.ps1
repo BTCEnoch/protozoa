@@ -400,7 +400,6 @@ import {
 import {
   ApiEnvironment,
   CacheEntry,
-  LRUCache,
   RetryConfig,
   RequestOptions,
   ApiError,
@@ -420,11 +419,11 @@ export class BitcoinService implements IBitcoinService {
   /** Service configuration */
   #config: BitcoinConfig;
 
-  /** LRU cache for block info */
-  #blockCache: LRUCache<number, CacheEntry<BlockInfo>>;
+  /** Cache for block info using Map */
+  #blockCache: Map<number, CacheEntry<BlockInfo>>;
 
-  /** LRU cache for inscription content */
-  #inscriptionCache: LRUCache<string, CacheEntry<InscriptionContent>>;
+  /** Cache for inscription content using Map */
+  #inscriptionCache: Map<string, CacheEntry<InscriptionContent>>;
 
   /** Performance metrics */
   #metrics: BitcoinMetrics;
@@ -459,9 +458,9 @@ export class BitcoinService implements IBitcoinService {
       rateLimitDelay: 100 // 100ms between requests
     };
 
-    // Initialize caches
-    this.#blockCache = new Map() as LRUCache<number, CacheEntry<BlockInfo>>;
-    this.#inscriptionCache = new Map() as LRUCache<string, CacheEntry<InscriptionContent>>;
+    // Initialize caches with proper Map implementation
+    this.#blockCache = new Map() as any;
+    this.#inscriptionCache = new Map() as any;
 
     // Initialize metrics
     this.#metrics = {
