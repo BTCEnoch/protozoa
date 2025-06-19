@@ -98,7 +98,10 @@ class FormationService implements IFormationService {
 
     // Generate deterministic cache key → `${id1}:${w1}|${id2}:${w2}|…`
     const cacheKey = patterns
-      .map((p, idx) => `${this.#extractPatternKey(p)}:${weights[idx].toFixed(3)}`)
+      .map((p, idx) => {
+        const keyPart = this.#extractPatternKey(p) ?? `pattern${idx}`
+        return `${keyPart}:${weights[idx].toFixed(3)}`
+      })
       .join('|')
 
     const cached = this.#blendCache.get(cacheKey)
@@ -110,7 +113,7 @@ class FormationService implements IFormationService {
     this.#log.debug(`blendFormations cache-miss → ${cacheKey}`)
 
     // Simple positional blend (linear interpolation)
-    const basePositions = (patterns[0] as any).positions as Vector3[]
+    const basePositions = (patterns[0]! as any).positions as Vector3[]
     const blendedPositions = basePositions.map((__pos: Vector3, idx: number) => {
       const blended = { x: 0, y: 0, z: 0 }
       patterns.forEach((p, pIdx) => {
@@ -124,12 +127,10 @@ class FormationService implements IFormationService {
       return blended
     })
 
-    const blendedPattern: FormationPattern = {
-      id: `blend-${Date.now()}` as unknown as never,
-      name: 'BlendedFormation',
+    const blendedPattern = {
       positions: blendedPositions,
-      metadata: { cacheKey, timestamp: Date.now() }
-    }
+      metadata: { cacheKey, timestamp: Date.now() } as any // TODO: refine once IFormationMetadata is defined
+    } as FormationPattern
 
     this.#updateBlendCache(cacheKey, blendedPattern)
     return blendedPattern
