@@ -120,30 +120,91 @@ Write-SuccessLog "Created shared logger utility"
 
 # Shared types file
 $sharedTypesContent = @'
-// src/shared/types/index.ts
-// Cross-domain shared types and interfaces
-// Referenced from build_checklist.md Phase 1 requirements
+/**
+ * Shared Types Index
+ * Central export point for all shared types and interfaces
+ */
 
-// Vector types for 3D coordinates
-export interface Vector3 {
-  x: number;
-  y: number;
-  z: number;
-}
+// Export THREE.js Vector3 as the standard vector type
+export { Vector3 } from "three";
 
-// Base particle interface used across domains
-export interface Particle {
-  id: string;
-  position: Vector3;
-  velocity: Vector3;
-  traits: OrganismTraits;
-}
+// Core entity types
+export * from "./entityTypes";
+
+// Service configuration types  
+export * from "./configTypes";
+
+// Event types for domain communication
+export * from "./eventTypes";
+
+// Logging types
+export * from "./loggingTypes";
 
 // Organism traits structure
 export interface OrganismTraits {
-  visual?: Record<string, any>;
-  behavior?: Record<string, any>;
-  mutation?: Record<string, any>;
+  visual: {
+    color: { r: number; g: number; b: number };
+    size: number;
+    opacity: number;
+  };
+  behavioral: {
+    speed: number;
+    aggressiveness: number;
+    socialness: number;
+  };
+  evolutionary: {
+    mutationRate: number;
+    adaptability: number;
+    survivability: number;
+  };
+}
+
+// Trait component interfaces
+export interface VisualTraits {
+  color: { r: number; g: number; b: number };
+  size: number;
+  opacity: number;
+}
+
+export interface BehavioralTraits {
+  speed: number;
+  aggressiveness: number;
+  socialness: number;
+}
+
+export interface EvolutionaryTraits {
+  mutationRate: number;
+  adaptability: number;
+  survivability: number;
+}
+
+export interface MutationTraits {
+  rate: number;
+  intensity: number;
+  stability: number;
+}
+
+// Common trait value type
+export type TraitValue = string | number | boolean;
+
+// Particle type definitions
+export type ParticleType = "core" | "membrane" | "nucleus" | "cytoplasm" | "organelle" | "effect";
+
+// Particle creation data
+export interface ParticleCreationData {
+  id: string;
+  position: Vector3;
+  traits: OrganismTraits;
+  type: ParticleType;
+}
+
+// Particle performance metrics
+export interface ParticleMetrics {
+  count: number;
+  activeCount: number;
+  memoryUsage: number;
+  creationRate: number;
+  removalRate: number;
 }
 
 // Formation pattern data structure
@@ -172,6 +233,184 @@ export interface AnimationState {
 
 Set-Content -Path "src/shared/types/index.ts" -Value $sharedTypesContent
 Write-SuccessLog "Created shared types definitions"
+
+# Create individual type files
+Write-InfoLog "Creating individual type definition files..."
+
+# Entity types
+$entityTypesContent = @'
+/**
+ * Core entity type definitions
+ */
+
+import { Vector3 } from "three";
+
+// Base entity interface
+export interface BaseEntity {
+  id: string;
+  position: Vector3;
+  createdAt: number;
+  updatedAt: number;
+}
+
+// Particle entity
+export interface ParticleEntity extends BaseEntity {
+  velocity: Vector3;
+  scale: Vector3;
+  rotation: number;
+  age: number;
+  lifetime: number;
+  active: boolean;
+}
+
+// Group entity
+export interface GroupEntity extends BaseEntity {
+  memberIds: string[];
+  bounds: Vector3;
+  centerOfMass: Vector3;
+}
+'@
+
+Set-Content -Path "src/shared/types/entityTypes.ts" -Value $entityTypesContent
+
+# Config types
+$configTypesContent = @'
+/**
+ * Configuration type definitions
+ */
+
+// Service configuration base
+export interface ServiceConfig {
+  enabled: boolean;
+  logLevel: string;
+  maxRetries: number;
+}
+
+// Rendering configuration
+export interface RenderingConfig extends ServiceConfig {
+  antialias: boolean;
+  shadows: boolean;
+  maxFPS: number;
+}
+
+// Physics configuration
+export interface PhysicsConfig extends ServiceConfig {
+  gravity: number;
+  timeStep: number;
+  iterations: number;
+}
+
+// Bitcoin API configuration
+export interface BitcoinConfig extends ServiceConfig {
+  apiUrl: string;
+  cacheTimeout: number;
+  rateLimit: number;
+}
+'@
+
+Set-Content -Path "src/shared/types/configTypes.ts" -Value $configTypesContent
+
+# Event types
+$eventTypesContent = @'
+/**
+ * Event type definitions for inter-domain communication
+ */
+
+// Base event interface
+export interface BaseEvent {
+  type: string;
+  timestamp: number;
+  source: string;
+  data: Record<string, any>;
+}
+
+// Particle events
+export interface ParticleEvent extends BaseEvent {
+  particleId: string;
+}
+
+export interface ParticleBirthEvent extends ParticleEvent {
+  type: "particle:birth";
+  data: {
+    position: { x: number; y: number; z: number };
+    traits: Record<string, any>;
+  };
+}
+
+export interface ParticleDeathEvent extends ParticleEvent {
+  type: "particle:death";
+  data: {
+    age: number;
+    cause: string;
+  };
+}
+
+// Group events
+export interface GroupEvent extends BaseEvent {
+  groupId: string;
+}
+
+export interface GroupFormationEvent extends GroupEvent {
+  type: "group:formation";
+  data: {
+    memberIds: string[];
+    pattern: string;
+  };
+}
+
+// Animation events
+export interface AnimationEvent extends BaseEvent {
+  animationId: string;
+}
+
+export interface AnimationCompleteEvent extends AnimationEvent {
+  type: "animation:complete";
+  data: {
+    duration: number;
+    success: boolean;
+  };
+}
+'@
+
+Set-Content -Path "src/shared/types/eventTypes.ts" -Value $eventTypesContent
+
+# Logging types
+$loggingTypesContent = @'
+/**
+ * Logging type definitions
+ */
+
+// Log levels
+export type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
+
+// Log entry interface
+export interface LogEntry {
+  level: LogLevel;
+  message: string;
+  timestamp: number;
+  service: string;
+  data?: Record<string, any>;
+  error?: Error;
+}
+
+// Performance log entry
+export interface PerformanceLogEntry extends LogEntry {
+  operation: string;
+  duration: number;
+  memoryUsage?: number;
+}
+
+// Error log entry
+export interface ErrorLogEntry extends LogEntry {
+  level: "error";
+  error: Error;
+  stackTrace?: string;
+}
+'@
+
+Set-Content -Path "src/shared/types/loggingTypes.ts" -Value $loggingTypesContent
+
+Write-SuccessLog "Created individual type definition files"
 
 # Environment configuration
 $envConfigContent = @'

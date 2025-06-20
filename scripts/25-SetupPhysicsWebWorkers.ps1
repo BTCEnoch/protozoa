@@ -114,15 +114,41 @@ export class WorkerManager {
 
   #dispatch() {
     const freeIndex = this.#availability.findIndex(a => a)
-    if (freeIndex === -1 || this.#queue.length === 0) return
+    if (freeIndex === -1 || this.#queue.length === 0) {
+      this.#log.debug("No available workers or empty queue", { 
+        freeIndex, 
+        queueLength: this.#queue.length 
+      })
+      return
+    }
     
-    const req = this.#queue.shift()!
+    const req = this.#queue.shift()
+    if (!req) {
+      this.#log.warn("Queue shift returned undefined")
+      return
+    }
+    
     const id = ++this.#taskId
     
-    this.#availability[freeIndex] = false
-    this.#workers[freeIndex].postMessage({ id, task: req.task, payload: req.payload })
-    ;(this.#workers[freeIndex] as any).__currentId = id
-    ;(this.#workers[freeIndex] as any).__cb = req
+    try {
+      this.#availability[freeIndex] = false
+      this.#workers[freeIndex].postMessage({ id, task: req.task, payload: req.payload })
+      ;(this.#workers[freeIndex] as any).__currentId = id
+      ;(this.#workers[freeIndex] as any).__cb = req
+      
+      this.#log.debug("Task dispatched to worker", { 
+        workerId: freeIndex, 
+        taskId: id, 
+        task: req.task 
+      })
+    } catch (error) {
+      this.#log.error("Failed to dispatch task to worker", { 
+        workerId: freeIndex, 
+        error: error.message 
+      })
+      this.#availability[freeIndex] = true
+      req.reject(error)
+    }
   }
 
   #handleResponse(data: { id: number; result: unknown }) {

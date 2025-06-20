@@ -52,6 +52,12 @@ try {
  */
 
 import { Vector3, Scene, BufferGeometry, Material } from "three";
+import { 
+  ParticleType, 
+  ParticleSystemConfig, 
+  ParticleCreationData, 
+  ParticleMetrics 
+} from "../types/particle.types";
 
 /**
  * Configuration options for Particle service initialization
