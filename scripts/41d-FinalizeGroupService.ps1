@@ -169,12 +169,6 @@ export { GroupService };
     Add-Content -Path $groupServicePath -Value $groupServiceFinal -Encoding UTF8
     Write-SuccessLog "Finalized GroupService implementation with all methods"
 
-    # Create compatibility wrapper
-    $wrapperPath = Join-Path (Split-Path $groupServicePath -Parent) "groupService.ts"
-    $wrapperContent = "export * from './GroupService';"
-    Set-Content -Path $wrapperPath -Value $wrapperContent -Encoding UTF8
-    Write-SuccessLog "Created compatibility wrapper: groupService.ts"
-
     exit 0
 }
 catch {

@@ -93,6 +93,37 @@ export interface GroupFormationConfig {
     Set-Content -Path (Join-Path $interfacesPath "IGroupService.ts") -Value $interfaceContent -Encoding UTF8
     Write-SuccessLog "Generated enhanced IGroupService interface (Part 1)"
 
+    # Step 2: Complete the interface with service methods
+    Write-InfoLog "Step 2: Completing IGroupService interface"
+    & "$PSScriptRoot\41a-CompleteGroupInterface.ps1" -ProjectRoot $ProjectRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "Interface completion failed"
+    }
+
+    # Step 3: Generate GroupService implementation
+    Write-InfoLog "Step 3: Generating GroupService implementation"
+    & "$PSScriptRoot\41b-GenerateGroupServiceImpl.ps1" -ProjectRoot $ProjectRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "GroupService implementation failed"
+    }
+
+    # Step 4: Complete GroupService methods
+    Write-InfoLog "Step 4: Adding remaining GroupService methods"
+    & "$PSScriptRoot\41c-CompleteGroupServiceMethods.ps1" -ProjectRoot $ProjectRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "GroupService methods completion failed"
+    }
+
+    # Step 5: Finalize GroupService
+    Write-InfoLog "Step 5: Finalizing GroupService with exports"
+    & "$PSScriptRoot\41d-FinalizeGroupService.ps1" -ProjectRoot $ProjectRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "GroupService finalization failed"
+    }
+
+    Write-SuccessLog "Enhanced Group Service Generation completed successfully"
+    Write-InfoLog "Generated complete GroupService with swarm management capabilities"
+
     exit 0
 }
 catch {

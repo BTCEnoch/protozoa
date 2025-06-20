@@ -1,90 +1,91 @@
 {
-    "name": "protozoa",
-    "version": "1.0.0",
-    "description": "Bitcoin Ordinals Digital Organism Ecosystem",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "build": "tsc && vite build",
-        "dev": "vite",
-        "preview": "vite preview",
-        "test": "vitest",
-        "test:e2e": "playwright test",
-        "test:watch": "vitest --watch",
-        "test:coverage": "vitest run --coverage",
-        "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-        "lint:fix": "eslint src --ext .ts,.tsx --fix",
-        "type-check": "tsc --noEmit",
-        "fix:here-strings": "node scripts/convert-here-strings.mjs",
-        "prepare": "echo 'Husky v9+ does not require install command'",
-        "docs": "typedoc",
-        "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,md}'",
-        "format:check": "prettier --check 'src/**/*.{ts,tsx,js,jsx,json,md}'"
-    },
-    "keywords": [
-        "bitcoin",
-        "ordinals",
-        "blockchain",
-        "three.js",
-        "react",
-        "typescript",
-        "digital-organisms",
-        "cryptocurrency",
-        "web3",
-        "nft"
+  "name": "protozoa",
+  "version": "1.0.0",
+  "description": "Bitcoin Ordinals Digital Organism Ecosystem",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "fix:here-strings": "node scripts/convert-here-strings.mjs",
+    "prepare": "echo 'Husky v9+ does not require install command'",
+    "docs": "typedoc",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "bitcoin",
+    "ordinals",
+    "blockchain",
+    "three.js",
+    "react",
+    "typescript",
+    "digital-organisms",
+    "cryptocurrency",
+    "web3",
+    "nft"
+  ],
+  "author": "Protozoa Team",
+  "license": "MIT",
+  "dependencies": {
+    "@react-three/drei": "^9.92.7",
+    "@react-three/fiber": "^8.15.11",
+    "@types/three": "^0.177.0",
+    "cross-fetch": "^4.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.177.0",
+    "winston": "^3.17.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^24.0.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.5.0",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.0",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
     ],
-    "author": "Protozoa Team",
-    "license": "MIT",
-    "dependencies": {
-        "@react-three/drei": "^9.92.7",
-        "@react-three/fiber": "^8.15.11",
-        "@types/three": "^0.177.0",
-        "cross-fetch": "^4.1.0",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "three": "^0.177.0",
-        "winston": "^3.17.0",
-        "zustand": "^5.0.5"
-    },
-    "devDependencies": {
-        "@playwright/test": "^1.40.0",
-        "@types/node": "^24.0.3",
-        "@types/react": "^19.1.8",
-        "@types/react-dom": "^19.1.6",
-        "@types/winston": "^2.4.4",
-        "@typescript-eslint/eslint-plugin": "^8.34.1",
-        "@typescript-eslint/parser": "^8.34.1",
-        "@vitejs/plugin-react": "^4.2.1",
-        "@vitest/coverage-v8": "^1.5.0",
-        "eslint": "^9.29.0",
-        "eslint-plugin-react": "^7.33.2",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.5",
-        "husky": "^9.1.7",
-        "lint-staged": "^16.1.2",
-        "prettier": "^3.5.3",
-        "ts-node": "^10.9.1",
-        "typedoc": "^0.28.5",
-        "typescript": "^5.8.3",
-        "vite": "^5.0.0",
-        "vitest": "^3.2.4"
-    },
-    "lint-staged": {
-        "*.{ts,tsx}": [
-            "eslint --fix",
-            "prettier --write"
-        ],
-        "*.{js,jsx}": [
-            "eslint --fix",
-            "prettier --write"
-        ],
-        "*.{json,md,yml,yaml}": [
-            "prettier --write"
-        ]
-    },
-    "engines": {
-        "node": ">=18.0.0",
-        "pnpm": ">=8.0.0"
-    },
-    "packageManager": "pnpm@8.15.0"
-}
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+} 
