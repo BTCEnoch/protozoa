@@ -85,9 +85,13 @@ $scriptSequence = @(
     @{ Phase = 7; Script = "55-SetupPersistenceLayer.ps1"; Description = "Data persistence" },
     @{ Phase = 7; Script = "56-SetupEndToEndValidation.ps1"; Description = "E2E testing" },
 
-    # === PHASE 8: FINAL VALIDATION (1 Script) ===
+    # === PHASE 8: TYPESCRIPT FIXES (1 Script) ===
+    # Critical TypeScript issue resolution
+    @{ Phase = 8; Script = "57-FixCriticalTypeScriptIssues.ps1"; Description = "Critical TypeScript fixes and template regeneration" },
+
+    # === PHASE 9: FINAL VALIDATION (1 Script) ===
     # Complete system validation
-    @{ Phase = 8; Script = "15-ValidateSetupComplete.ps1"; Description = "Comprehensive final validation" }
+    @{ Phase = 9; Script = "15-ValidateSetupComplete.ps1"; Description = "Comprehensive final validation" }
 )
 
 # Track execution results

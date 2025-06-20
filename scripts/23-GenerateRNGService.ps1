@@ -352,10 +352,9 @@ export class RNGService implements IRNGService {
       this.#config = { ...this.#config, ...config };
     }
 
-    // Initialize cache if size changed
-    if (this.#config.cacheSize !== this.#cache.length) {
-      this.#cache = new Array(this.#config.cacheSize!);
-      this.#cachePointer = 0;
+    // Update internal state if seed changed
+    if (config?.defaultSeed && config.defaultSeed !== this.#state.seed) {
+      this.setSeed(config.defaultSeed);
     }
 
     this.#logger.info("RNGService initialization completed");
@@ -366,14 +365,13 @@ export class RNGService implements IRNGService {
    * @param seed - Seed value for PRNG
    */
   public setSeed(seed: number): void {
-    this.#seed = seed;
-    this.#state = seed;
-    this.#counter = 0;
-    this.#cachePointer = 0;
-    this.#metrics.lastSeed = seed;
-    this.#metrics.seedingMethod = "manual";
+    this.#state.seed = seed;
+    this.#internalState = seed;
+    this.#state.generationCount = 0;
+    this.#state.lastSeeded = Date.now();
+    this.#state.source = "manual";
 
-    this.#logger.debug("RNG seed set", { seed, state: this.#state });
+    this.#logger.debug("RNG seed set", { seed, internalState: this.#internalState });
   }
 
   /**
@@ -389,8 +387,7 @@ export class RNGService implements IRNGService {
       const blockSeed = this.#hashBlockNumber(blockNumber);
       this.setSeed(blockSeed);
 
-      this.#lastBitcoinBlock = blockNumber;
-      this.#metrics.seedingMethod = "bitcoin-block";
+      this.#state.source = "bitcoin-block";
 
       this.#logger.info("RNG seeded from Bitcoin block successfully", {
         blockNumber,

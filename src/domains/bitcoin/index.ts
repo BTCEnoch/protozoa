@@ -9,4 +9,4 @@ export { bitcoinService } from './services/BitcoinService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IBitcoinService } from './types';
+export type { IBitcoinService } from './interfaces/IBitcoinService';

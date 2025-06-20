@@ -9,4 +9,4 @@ export { effectService } from './services/EffectService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IEffectService } from './types';
+export type { IEffectService } from './interfaces/IEffectService';

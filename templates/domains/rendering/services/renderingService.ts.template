@@ -81,7 +81,7 @@ class RenderingService implements IRenderingService {
 
   public applyFormation (patternId: string): void {
     if (!this.#formationService) {
-      this.#err.logError(new Error('FormationService unavailable'), { patternId })
+      this.#err.error('FormationService unavailable', { patternId })
       return
     }
     const pattern = this.#formationService.getFormationPattern(patternId)
@@ -95,7 +95,7 @@ class RenderingService implements IRenderingService {
 
   public applyEffect (effectName: string, options?: unknown): void {
     if (!this.#effectService) {
-      this.#err.logError(new Error('EffectService unavailable'), { effectName })
+      this.#err.error('EffectService unavailable', { effectName })
       return
     }
     this.#effectService.triggerEffect(effectName, options)

@@ -12,11 +12,15 @@ export class SwarmService implements ISwarmService {
   }
   update (delta: number) {
     // simple flocking placeholder: iterate groups
-    groupService['#groups']?.forEach((g: any) => {
-      // placeholder physics influence using physicsService
-      physicsService.applyGlobalForces(g)
+    const groups = groupService.getAllGroups()
+    groups.forEach((group) => {
+      // placeholder physics influence - apply forces to group members
+      group.members.forEach((particleId) => {
+        // In full implementation: apply swarm forces to individual particles
+        this.#log.debug('Applying swarm forces to particle', { particleId, groupId: group.id })
+      })
     })
-    this.#log.debug('Swarm update', { delta })
+    this.#log.debug('Swarm update completed', { delta, groupCount: groups.length })
   }
   dispose () {
     SwarmService.#instance = null

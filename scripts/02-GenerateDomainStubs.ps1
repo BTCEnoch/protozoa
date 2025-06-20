@@ -277,7 +277,7 @@ export { ${domain}Service } from './services/$serviceName';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { $interfaceName } from './types';
+export type { $interfaceName } from './interfaces/$interfaceName';
 "@
     Set-Content -Path $domainIndexPath -Value $domainIndexContent
     Write-InfoLog "Generated domain index: $domainIndexPath"

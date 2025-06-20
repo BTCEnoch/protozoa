@@ -50,7 +50,7 @@ $interfacesPath = Join-Path $formationDomainPath "interfaces"
 # Create interface wrapper for compatibility with legacy import paths
 $interfaceWrapperPath = Join-Path $interfacesPath "IFormationService.ts"
 if (-not (Test-Path $interfaceWrapperPath)) {
-    "export * from '../types/IFormationService'" | Set-Content -Path $interfaceWrapperPath -Encoding UTF8
+    "export * from '../types/IFormationService';" | Set-Content -Path $interfaceWrapperPath -Encoding UTF8
     Write-StatusMessage "Generated IFormationService wrapper interface: $interfaceWrapperPath" "SUCCESS"
 }
 

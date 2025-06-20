@@ -9,4 +9,4 @@ export { particleService } from './services/ParticleService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IParticleService } from './types';
+export type { IParticleService } from './interfaces/IParticleService';

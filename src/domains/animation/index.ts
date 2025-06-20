@@ -9,4 +9,4 @@ export { animationService } from './services/AnimationService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IAnimationService } from './types';
+export type { IAnimationService } from './interfaces/IAnimationService';

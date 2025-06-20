@@ -9,4 +9,4 @@ export { groupService } from './services/GroupService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IGroupService } from './types';
+export type { IGroupService } from './interfaces/IGroupService';

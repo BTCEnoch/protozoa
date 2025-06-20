@@ -9,4 +9,4 @@ export { formationService } from './services/FormationService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IFormationService } from './types';
+export type { IFormationService } from './interfaces/IFormationService';

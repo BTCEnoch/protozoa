@@ -115,8 +115,10 @@ export class WorkerManager {
   #dispatch() {
     const freeIndex = this.#availability.findIndex(a => a)
     if (freeIndex === -1 || this.#queue.length === 0) return
+    
     const req = this.#queue.shift()!
     const id = ++this.#taskId
+    
     this.#availability[freeIndex] = false
     this.#workers[freeIndex].postMessage({ id, task: req.task, payload: req.payload })
     ;(this.#workers[freeIndex] as any).__currentId = id

@@ -9,4 +9,4 @@ export { renderingService } from './services/RenderingService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IRenderingService } from './types';
+export type { IRenderingService } from './interfaces/IRenderingService';

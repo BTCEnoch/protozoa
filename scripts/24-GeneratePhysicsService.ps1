@@ -431,7 +431,7 @@ export class PhysicsService implements IPhysicsService {
       position: position.clone(),
       rotation: { ...rotation },
       scale: scale.clone(),
-      matrix: matrix.elements as Float32Array
+      matrix: new Float32Array(matrix.elements)
     };
   }
 

@@ -9,4 +9,4 @@ export { rngService } from './services/RngService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IRNGService } from './types';
+export type { IRNGService } from './interfaces/IRNGService';

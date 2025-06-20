@@ -9,4 +9,4 @@ export { physicsService } from './services/PhysicsService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { IPhysicsService } from './types';
+export type { IPhysicsService } from './interfaces/IPhysicsService';

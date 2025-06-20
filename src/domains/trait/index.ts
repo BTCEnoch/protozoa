@@ -9,4 +9,4 @@ export { traitService } from './services/TraitService';
 export * from './types';
 
 // Interface re-exports for easier imports
-export type { ITraitService } from './types';
+export type { ITraitService } from './interfaces/ITraitService';
