@@ -36,17 +36,19 @@ export interface IDataValidationService {
 
   # Implementation
   $impl = @'
-import { createServiceLogger, createErrorLogger } from '@/shared/lib/logger'
+import { createServiceLogger } from '@/shared/lib/logger'
 import type { IDataValidationService } from '@/domains/bitcoin/interfaces/IDataValidationService'
 
 export class DataValidationService implements IDataValidationService {
   static #instance: DataValidationService|null = null
   #log = createServiceLogger('DATA_VALIDATION')
-  #err = createErrorLogger('DATA_VALIDATION')
   private constructor() {}
   static getInstance(){return this.#instance??(this.#instance=new DataValidationService())}
   validateBlockInfo(data: any): boolean {
-    if(!data||!data.hash||!data.merkle_root){this.#err.logError(new Error('Invalid block'),{data});return false}
+    if(!data||!data.hash||!data.merkle_root){
+      this.#log.error('Invalid block data', { error: 'Missing required fields', data });
+      return false;
+    }
     return true
   }
   validateInscription(content: string): boolean {

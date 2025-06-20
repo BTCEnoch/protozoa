@@ -1,5 +1,5 @@
 import { createServiceLogger } from '@/shared/lib/logger'
-import { rngService } from '@/domains/rng/services/rngService'
+import { rngService } from '@/domains/rng'
 import type { Vector3 } from 'three'
 
 export type FormationPattern = { id: string; positions: Vector3[] }

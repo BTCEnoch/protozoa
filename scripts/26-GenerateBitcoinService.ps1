@@ -874,7 +874,7 @@ export const bitcoinService = BitcoinService.getInstance();
 '@
 
     # Write complete consolidated service (replaces old two-part approach)
-    Set-Content -Path (Join-Path $servicesPath "bitcoinService.ts") -Value $consolidatedServiceContent -Encoding UTF8
+    Set-Content -Path (Join-Path $servicesPath "BitcoinService.ts") -Value $consolidatedServiceContent -Encoding UTF8
     Write-SuccessLog "BitcoinService implementation Part 2 generated successfully"
 
     # Generate export index file
@@ -888,7 +888,7 @@ export const bitcoinService = BitcoinService.getInstance();
  */
 
 // Service exports
-export { BitcoinService, bitcoinService } from "./services/bitcoinService";
+export { BitcoinService, bitcoinService } from "./services/BitcoinService";
 
 // Interface exports
 export type {

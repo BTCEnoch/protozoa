@@ -37,7 +37,7 @@ export interface IAnimationBlendingService {
   $impl = @'
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { IAnimationBlendingService, BlendNode } from '@/domains/animation/interfaces/IAnimationBlendingService'
-import { animationService } from '@/domains/animation/services/animationService'
+import { animationService } from '@/domains/animation'
 
 interface Transition { target: string; time: number; duration: number }
 

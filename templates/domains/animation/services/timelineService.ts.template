@@ -30,7 +30,7 @@ class TimelineService implements ITimelineService {
   update (delta: number) {
     if (!this.#running) return
     this.#time += delta
-    while (this.#frames.length && this.#frames[0].time <= this.#time) {
+    while (this.#frames.length > 0 && this.#frames[0] && this.#frames[0].time <= this.#time) {
       const f = this.#frames.shift()!
       try {
         f.action()

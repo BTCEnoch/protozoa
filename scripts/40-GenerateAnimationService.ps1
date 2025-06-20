@@ -37,12 +37,9 @@ try {
     Write-TemplateFile -TemplateRelPath 'domains/animation/interfaces/IAnimationService.ts.template' `
                       -DestinationPath (Join-Path $interfacesPath 'IAnimationService.ts')
 
+    # Write the template directly to the service file that gets exported
     Write-TemplateFile -TemplateRelPath 'domains/animation/services/animationService.ts.template' `
                       -DestinationPath (Join-Path $servicesPath 'AnimationService.ts')
-
-    # Create lowercase wrapper for consistency
-    $wrapperContent = "export * from './AnimationService'"
-    Set-Content -Path (Join-Path $servicesPath 'animationService.ts') -Value $wrapperContent -Encoding UTF8
 
     Write-SuccessLog "40-GenerateAnimationService.ps1 completed successfully"
     exit 0

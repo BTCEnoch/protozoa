@@ -374,11 +374,17 @@ export class RateLimiter {
    * @returns number - Milliseconds until next request
    */
   getTimeUntilNextRequest(): number {
+    // If we haven't reached the limit, no waiting required
     if (this.requestTimes.length < this.config.maxRequests) {
       return 0;
     }
 
+    // If we're at the limit, calculate when the oldest request expires
     const oldestRequest = this.requestTimes[0];
+    if (oldestRequest === undefined) {
+      return 0;
+    }
+
     const timeUntilOldestExpires = (oldestRequest + this.config.windowMs) - Date.now();
     return Math.max(0, timeUntilOldestExpires);
   }

@@ -1,5 +1,5 @@
 import { createServiceLogger } from '@/shared/lib/logger'
-import { effectService } from '@/domains/effect/services/effectService'
+import { effectService } from '@/domains/effect'
 import type { EffectLayer, IEffectComposerService } from '@/domains/effect/interfaces/IEffectComposerService'
 
 class EffectComposerService implements IEffectComposerService {

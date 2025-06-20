@@ -690,8 +690,7 @@ $formationServicePart1 = @'
 import { IFormationService, IFormationPattern, IFormationConfig, IFormationResult } from "../types/IFormationService";
 import { IVector3 } from "@/shared/types";
 import { FormationPatterns } from "../data/formationPatterns";
-import { formationBlendingService } from "./formationBlendingService";
-import { createServiceLogger, createPerformanceLogger, createErrorLogger } from "@/shared/lib/logger";
+import { createServiceLogger, createPerformanceLogger } from "@/shared/lib/logger";
 
 /**
  * Cache entry for formation calculations
@@ -737,7 +736,6 @@ class FormationService implements IFormationService {
   // Logging utilities
   #log = createServiceLogger("FORMATION_SERVICE");
   #perfLog = createPerformanceLogger("FORMATION_SERVICE");
-  #errorLog = createErrorLogger("FORMATION_SERVICE");
 
   // Performance metrics
   #metrics = {
@@ -763,7 +761,7 @@ class FormationService implements IFormationService {
         cacheLimit: this.#maxCacheSize
       });
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: "FormationService initialization" });
+      this.#log.error("FormationService initialization failed", { error: (error as Error).message, stack: (error as Error).stack });
       throw error;
     }
   }
@@ -801,7 +799,7 @@ class FormationService implements IFormationService {
       });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: "Loading default patterns" });
+      this.#log.error("Loading default patterns failed", { error: (error as Error).message, stack: (error as Error).stack });
       throw error;
     }
   }
@@ -858,7 +856,7 @@ $formationServicePart2 = @'
       return undefined;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { patternId, context: "getFormationPattern" });
+      this.#log.error("Formation pattern retrieval failed", { patternId, error: (error as Error).message });
       return undefined;
     }
   }
@@ -903,9 +901,9 @@ $formationServicePart2 = @'
       return true;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, {
+      this.#log.error("Formation pattern registration failed", {
         patternId: pattern?.id,
-        context: "registerFormationPattern"
+        error: (error as Error).message
       });
       return false;
     }
@@ -933,7 +931,7 @@ $formationServicePart2 = @'
       return false;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { patternId, context: "unregisterFormationPattern" });
+      this.#log.error("Formation pattern unregistration failed", { patternId, error: (error as Error).message });
       return false;
     }
   }
@@ -948,8 +946,98 @@ $formationServicePart2 = @'
       this.#log.debug("Listed available patterns", { count: patterns.length });
       return patterns;
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: "listAvailablePatterns" });
+      this.#log.error("Listing available patterns failed", { error: (error as Error).message });
       return [];
+    }
+  }
+
+  /**
+   * Removes a formation pattern from the service
+   * @param patternId - Unique identifier of pattern to remove
+   * @returns True if pattern was removed, false if not found
+   */
+  public unregisterFormationPattern(patternId: string): boolean {
+    try {
+      const existed = this.#patterns.delete(patternId);
+
+      if (existed) {
+        // Clear any cached entries for this pattern
+        const cacheKey = `pattern_${patternId}`;
+        this.#cache.delete(cacheKey);
+
+        this.#log.info("Formation pattern unregistered", { patternId });
+        return true;
+      }
+
+      this.#log.warn("Attempted to unregister non-existent pattern", { patternId });
+      return false;
+
+    } catch (error) {
+      this.#log.error("Formation pattern unregistration failed", { patternId, error: (error as Error).message });
+      return false;
+    }
+  }
+
+  /**
+   * Clears all cached formation calculations and resets internal state
+   * Used for memory management and testing scenarios
+   * @returns Number of cache entries cleared
+   */
+  public clearCache(): number {
+    try {
+      const cacheSize = this.#cache.size;
+      this.#cache.clear();
+      
+      this.#log.info("Formation cache cleared", { entriesCleared: cacheSize });
+      return cacheSize;
+    } catch (error) {
+      this.#log.error("Cache clearing failed", { error: (error as Error).message });
+      return 0;
+    }
+  }
+
+  /**
+   * Validates that a formation pattern is properly structured
+   * @param pattern - Formation pattern to validate
+   * @returns Validation result with success flag and error details
+   */
+  public validateFormationPattern(pattern: IFormationPattern): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    try {
+      // Check required fields
+      if (!pattern.id || pattern.id.trim().length === 0) {
+        errors.push("Pattern ID is required and cannot be empty");
+      }
+
+      if (!pattern.name || pattern.name.trim().length === 0) {
+        errors.push("Pattern name is required and cannot be empty");
+      }
+
+      if (!pattern.type || pattern.type.trim().length === 0) {
+        errors.push("Pattern type is required and cannot be empty");
+      }
+
+      // Check numeric constraints
+      if (typeof pattern.maxParticles !== "number" || pattern.maxParticles <= 0) {
+        errors.push("maxParticles must be a positive number");
+      }
+
+      // Check positions array
+      if (!Array.isArray(pattern.positions)) {
+        errors.push("positions must be an array");
+      } else if (pattern.positions.length === 0) {
+        errors.push("positions array cannot be empty");
+      }
+
+      return { valid: errors.length === 0, errors };
+
+    } catch (error) {
+      this.#log.error("Formation pattern validation failed", {
+        patternId: pattern?.id,
+        error: (error as Error).message
+      });
+      return { valid: false, errors: ["Validation failed due to unexpected error"] };
     }
   }
 '@
@@ -965,48 +1053,44 @@ $formationServicePart3 = @'
 
   /**
    * Applies a formation pattern to a set of particles
-   * @param patternId - Identifier of the formation pattern to apply
-   * @param particleIds - Array of particle IDs to arrange in formation
-   * @param config - Optional configuration for formation application
-   * @returns Result of formation application including success status and positions
+   * @param config - Configuration for formation application containing pattern ID and particle IDs
+   * @returns Promise that resolves with formation result
    */
-  public applyFormation(patternId: string, particleIds: string[], config?: IFormationConfig): IFormationResult {
+  public async applyFormation(config: IFormationConfig): Promise<IFormationResult> {
     const startTime = performance.now();
 
     try {
       // Get the formation pattern
-      const pattern = this.getFormationPattern(patternId);
+      const pattern = this.getFormationPattern(config.patternId);
       if (!pattern) {
-        const error = `Formation pattern "${patternId}" not found`;
-        this.#log.error(error, { patternId, particleCount: particleIds.length });
+        const error = `Formation pattern "${config.patternId}" not found`;
+        this.#log.error(error, { patternId: config.patternId, particleCount: config.particleIds.length });
         return {
           success: false,
-          error,
-          patternId,
-          particleCount: particleIds.length,
-          positions: []
+          errorMessage: error,
+          particlesPositioned: 0,
+          finalPositions: []
         };
       }
 
       // Validate particle count against pattern limits
-      if (particleIds.length > pattern.maxParticles) {
-        const error = `Too many particles (${particleIds.length}) for pattern "${patternId}" (max: ${pattern.maxParticles})`;
-        this.#log.warn(error, { patternId, requested: particleIds.length, max: pattern.maxParticles });
+      if (config.particleIds.length > pattern.maxParticles) {
+        const error = `Too many particles (${config.particleIds.length}) for pattern "${config.patternId}" (max: ${pattern.maxParticles})`;
+        this.#log.warn(error, { patternId: config.patternId, requested: config.particleIds.length, max: pattern.maxParticles });
         return {
           success: false,
-          error,
-          patternId,
-          particleCount: particleIds.length,
-          positions: []
+          errorMessage: error,
+          particlesPositioned: 0,
+          finalPositions: []
         };
       }
 
       // Calculate positions for particles
-      const positions = this.calculateFormationPositions(pattern, particleIds.length, config);
+      const positions = this.calculateFormationPositions(pattern, config.particleIds.length, config);
 
       // Apply any transformations if specified in config
-      const finalPositions = config?.transform
-        ? this.applyTransformations(positions, config.transform)
+      const finalPositions = config.customScale
+        ? this.scalePositions(positions, config.customScale)
         : positions;
 
       // Update metrics
@@ -1014,112 +1098,71 @@ $formationServicePart3 = @'
       const executionTime = performance.now() - startTime;
 
       this.#perfLog.info("Formation applied successfully", {
-        patternId,
-        particleCount: particleIds.length,
+        patternId: config.patternId,
+        particleCount: config.particleIds.length,
         executionTimeMs: executionTime,
         positionsGenerated: finalPositions.length
       });
 
       return {
         success: true,
-        patternId,
-        particleCount: particleIds.length,
-        positions: finalPositions,
-        executionTimeMs: executionTime
+        particlesPositioned: config.particleIds.length,
+        finalPositions: finalPositions,
+        metrics: {
+          calculationTimeMs: executionTime,
+          memoryUsedBytes: finalPositions.length * 48 // Approximate bytes per Vector3
+        }
       };
 
     } catch (error) {
       const executionTime = performance.now() - startTime;
-      this.#errorLog.logError(error as Error, {
-        patternId,
-        particleCount: particleIds.length,
+      this.#log.error("Formation application failed", {
+        patternId: config.patternId,
+        particleCount: config.particleIds.length,
         executionTimeMs: executionTime,
-        context: "applyFormation"
+        error: (error as Error).message
       });
 
       return {
         success: false,
-        error: (error as Error).message,
-        patternId,
-        particleCount: particleIds.length,
-        positions: [],
-        executionTimeMs: executionTime
+        errorMessage: (error as Error).message,
+        particlesPositioned: 0,
+        finalPositions: [],
+        metrics: {
+          calculationTimeMs: executionTime,
+          memoryUsedBytes: 0
+        }
       };
     }
   }
 
   /**
-   * Creates a smooth transition between two formation patterns
-   * @param fromPatternId - Source formation pattern ID
-   * @param toPatternId - Target formation pattern ID
-   * @param particleIds - Array of particle IDs to transition
-   * @param transitionConfig - Configuration for the transition
-   * @returns Promise that resolves when transition is complete
+   * Calculates particle positions for a given formation pattern
+   * @param pattern - Formation pattern to use for calculations
+   * @param particleCount - Number of particles to position
+   * @param options - Optional configuration for position calculation
+   * @returns Array of calculated positions
    */
-  public async transitionFormation(
-    fromPatternId: string,
-    toPatternId: string,
-    particleIds: string[],
-    transitionConfig?: any
-  ): Promise<IFormationResult> {
+  public calculatePositions(
+    patternId: string,
+    particleCount: number,
+    options?: { scale?: number; rotation?: IVector3 }
+  ): IVector3[] {
     try {
-      this.#log.info("Starting formation transition", {
-        from: fromPatternId,
-        to: toPatternId,
-        particleCount: particleIds.length
-      });
-
-      // Get both patterns
-      const fromPattern = this.getFormationPattern(fromPatternId);
-      const toPattern = this.getFormationPattern(toPatternId);
-
-      if (!fromPattern || !toPattern) {
-        const error = `Missing formation pattern(s): from=${!fromPattern}, to=${!toPattern}`;
-        this.#log.error(error, { fromPatternId, toPatternId });
-        return {
-          success: false,
-          error,
-          patternId: toPatternId,
-          particleCount: particleIds.length,
-          positions: []
-        };
+      const pattern = this.getFormationPattern(patternId);
+      if (!pattern) {
+        this.#log.warn("Formation pattern not found for position calculation", { patternId });
+        return [];
       }
 
-      // Use FormationBlendingService for smooth transition
-      const blendResult = await formationBlendingService.blendFormations(
-        fromPattern,
-        toPattern,
-        particleIds.length,
-        transitionConfig
-      );
-
-      if (blendResult.success) {
-        this.#metrics.formationsApplied++;
-        this.#log.info("Formation transition completed successfully", {
-          from: fromPatternId,
-          to: toPatternId,
-          particleCount: particleIds.length,
-          duration: blendResult.duration
-        });
-      }
-
-      return blendResult;
-
+      return this.calculateFormationPositions(pattern, particleCount, options);
     } catch (error) {
-      this.#errorLog.logError(error as Error, {
-        fromPatternId,
-        toPatternId,
-        particleCount: particleIds.length,
-        context: "transitionFormation"
+      this.#log.error("Position calculation failed", { 
+        patternId, 
+        particleCount, 
+        error: (error as Error).message 
       });
-
-      return {
-        success: false,
-        error: (error as Error).message,
-        patternId: toPatternId,
-        particleCount: particleIds.length,
-        positions: []
-      };
+      return [];
     }
   }
 '@
@@ -1152,7 +1195,7 @@ $formationServicePart4 = @'
       });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: "configureDependencies" });
+      this.#log.error("Dependencies configuration failed", { error: (error as Error).message });
     }
   }
 
@@ -1160,116 +1203,40 @@ $formationServicePart4 = @'
    * Calculates particle positions for a given formation pattern
    * @param pattern - Formation pattern to use for calculations
    * @param particleCount - Number of particles to position
-   * @param config - Optional configuration for position calculation
+   * @param options - Optional configuration for position calculation
    * @returns Array of calculated positions
    * @private
    */
   private calculateFormationPositions(
     pattern: IFormationPattern,
     particleCount: number,
-    config?: IFormationConfig
+    options?: any
   ): IVector3[] {
     try {
-      // Use geometry utilities to calculate positions based on pattern type
-      const positions: IVector3[] = [];
-      const scale = config?.scale || 1.0;
-      const spacing = config?.spacing || pattern.defaultSpacing || 1.0;
+      // Simple implementation: use pattern positions or generate sphere
+      const scale = options?.scale || options?.customScale || 1.0;
 
-      switch (pattern.type) {
-        case "sphere":
-          return this.#calculateSpherePositions(particleCount, scale * spacing);
-
-        case "cube":
-          return this.#calculateCubePositions(particleCount, scale * spacing);
-
-        case "cylinder":
-          return this.#calculateCylinderPositions(particleCount, scale * spacing);
-
-        case "helix":
-          return this.#calculateHelixPositions(particleCount, scale * spacing);
-
-        case "torus":
-          return this.#calculateTorusPositions(particleCount, scale * spacing);
-
-        case "custom":
-          if (pattern.customPositions && pattern.customPositions.length > 0) {
-            return this.scalePositions(pattern.customPositions.slice(0, particleCount), scale);
-          }
-          break;
-
-        default:
-          this.#log.warn("Unknown formation pattern type, using default sphere", {
-            type: pattern.type,
-            patternId: pattern.id
-          });
-          return this.#calculateSpherePositions(particleCount, scale * spacing);
+      if (pattern.positions && pattern.positions.length > 0) {
+        // Use existing pattern positions, scaled and limited to particleCount
+        const positions = pattern.positions.slice(0, particleCount);
+        return this.scalePositions(positions, scale);
       }
 
-      return positions;
+      // Fallback to sphere generation for pattern types
+      return this.#calculateSpherePositions(particleCount, 50 * scale);
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, {
+      this.#log.error("Formation position calculation failed", {
         patternType: pattern.type,
         particleCount,
-        context: "calculateFormationPositions"
+        error: (error as Error).message
       });
       // Fallback to simple sphere formation
-      return this.#calculateSpherePositions(particleCount, 1.0);
+      return this.#calculateSpherePositions(particleCount, 50);
     }
   }
 
-  /**
-   * Validates a formation pattern for correctness and completeness
-   * @param pattern - Formation pattern to validate
-   * @returns Validation result with success status and any errors
-   * @private
-   */
-  private validateFormationPattern(pattern: IFormationPattern): { valid: boolean; errors: string[] } {
-    const errors: string[] = [];
 
-    try {
-      // Check required fields
-      if (!pattern.id || pattern.id.trim().length === 0) {
-        errors.push("Pattern ID is required and cannot be empty");
-      }
-
-      if (!pattern.name || pattern.name.trim().length === 0) {
-        errors.push("Pattern name is required and cannot be empty");
-      }
-
-      if (!pattern.type || pattern.type.trim().length === 0) {
-        errors.push("Pattern type is required and cannot be empty");
-      }
-
-      // Check numeric constraints
-      if (typeof pattern.maxParticles !== "number" || pattern.maxParticles <= 0) {
-        errors.push("maxParticles must be a positive number");
-      }
-
-      if (pattern.defaultSpacing !== undefined &&
-          (typeof pattern.defaultSpacing !== "number" || pattern.defaultSpacing <= 0)) {
-        errors.push("defaultSpacing must be a positive number if specified");
-      }
-
-      // Validate custom positions if provided
-      if (pattern.type === "custom") {
-        if (!pattern.customPositions || !Array.isArray(pattern.customPositions)) {
-          errors.push("Custom pattern type requires customPositions array");
-        } else if (pattern.customPositions.length === 0) {
-          errors.push("Custom pattern customPositions array cannot be empty");
-        }
-      }
-
-      return { valid: errors.length === 0, errors };
-
-    } catch (error) {
-      this.#errorLog.logError(error as Error, {
-        patternId: pattern?.id,
-        context: "validateFormationPattern"
-      });
-      return { valid: false, errors: ["Validation failed due to unexpected error"] };
-    }
-  }
 '@
 
 # Append Part 4 to the existing file
@@ -1303,7 +1270,7 @@ $formationServicePart5 = @'
       this.#perfLog.debug("Cache entry added", { key, cacheSize: this.#cache.size });
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { key, context: "addToCache" });
+      this.#log.error("Cache operation failed", { key, error: (error as Error).message });
     }
   }
 
@@ -1336,9 +1303,9 @@ $formationServicePart5 = @'
       return result;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, {
+      this.#log.error("Position transformation failed", {
         positionCount: positions.length,
-        context: "applyTransformations"
+        error: (error as Error).message
       });
       return positions; // Return original positions on error
     }
@@ -1574,7 +1541,7 @@ $formationServicePart5 = @'
       FormationService.#instance = null;
 
     } catch (error) {
-      this.#errorLog.logError(error as Error, { context: "dispose" });
+      this.#log.error("FormationService disposal failed", { error: (error as Error).message });
     }
   }
 }

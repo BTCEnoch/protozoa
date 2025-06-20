@@ -189,8 +189,23 @@ export interface IFormationPattern extends IEntity {
   name: string;
   /** Array of relative positions for particles */
   positions: IVector3[];
+  /** Maximum number of particles this formation supports */
+  maxParticles: number;
+  /** Formation type category (geometric, organic, custom) */
+  type: "geometric" | "organic" | "custom";
   /** Optional metadata for pattern behavior */
-  metadata?: Record<string, any>;
+  metadata?: {
+    /** Scaling factor for formation size */
+    scale?: number;
+    /** Rotation angles in radians */
+    rotation?: IVector3;
+    /** Animation properties for dynamic formations */
+    animation?: {
+      rotationSpeed?: number;
+      pulseAmplitude?: number;
+      pulseFrequency?: number;
+    };
+  };
 }
 
 /**

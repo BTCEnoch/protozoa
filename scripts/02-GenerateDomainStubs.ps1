@@ -140,7 +140,19 @@ export interface IRenderingService {
 }
 '@ }
         'animation' { @'
-import { AnimationConfig } from '@/shared/types';
+export interface AnimationConfig {
+  duration: number;
+  type: string;
+  easing?: string;
+  loop?: boolean;
+}
+
+export interface AnimationState {
+  role: string;
+  progress: number;
+  duration: number;
+  type: string;
+}
 
 export interface IAnimationService {
   startAnimation(role: string, config: AnimationConfig): void;
