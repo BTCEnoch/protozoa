@@ -706,16 +706,137 @@ if (-not $WhatIf) {
     Set-Content -Path (Join-Path $sharedTypesPath "index.ts") -Value $indexContent -Encoding UTF8
 }
 
+# Generate Shared Service Interfaces
+Write-InfoLog "Generating shared service interfaces..."
+
+$sharedInterfacesPath = Join-Path $ProjectRoot "src/shared/interfaces"
+if (-not (Test-Path $sharedInterfacesPath)) {
+    Write-InfoLog "Creating shared interfaces directory: $sharedInterfacesPath"
+    if (-not $WhatIf) {
+        New-Item -ItemType Directory -Path $sharedInterfacesPath -Force | Out-Null
+    }
+}
+
+# Generate IPersistenceService interface from template (only if missing)
+$persistenceInterfaceFile = Join-Path $sharedInterfacesPath "IPersistenceService.ts"
+$persistenceInterfaceTemplate = Join-Path $ProjectRoot "templates/shared/interfaces/IPersistenceService.ts.template"
+
+if (-not (Test-Path $persistenceInterfaceFile) -and (Test-Path $persistenceInterfaceTemplate)) {
+    Write-InfoLog "Generating IPersistenceService interface from template..."
+    if (-not $WhatIf) {
+        $templateContent = Get-Content -Path $persistenceInterfaceTemplate -Raw
+        Set-Content -Path $persistenceInterfaceFile -Value $templateContent -Encoding UTF8
+    }
+} elseif (Test-Path $persistenceInterfaceFile) {
+    Write-InfoLog "IPersistenceService interface already exists - skipping template generation"
+} else {
+    Write-WarningLog "IPersistenceService template not found at: $persistenceInterfaceTemplate"
+}
+
+# Generate Shared Service Implementations
+Write-InfoLog "Generating enhanced shared service implementations..."
+
+$sharedServicesPath = Join-Path $ProjectRoot "src/shared/services"
+
+# Generate EventBus service from template (only if stub or missing)
+$eventBusFile = Join-Path $sharedServicesPath "eventBus.ts"
+$eventBusTemplate = Join-Path $ProjectRoot "templates/shared/services/eventBus.ts.template"
+$shouldGenerateEventBus = $false
+
+if (-not (Test-Path $eventBusFile)) {
+    $shouldGenerateEventBus = $true
+    Write-InfoLog "EventBus service missing - will generate from template"
+} else {
+    $existingContent = Get-Content -Path $eventBusFile -Raw
+    if ($existingContent.Length -lt 500 -or $existingContent -match "console\.log") {
+        $shouldGenerateEventBus = $true
+        Write-InfoLog "EventBus service appears to be a stub - will enhance from template"
+    } else {
+        Write-InfoLog "EventBus service already has full implementation - skipping template generation"
+    }
+}
+
+if ($shouldGenerateEventBus -and (Test-Path $eventBusTemplate)) {
+    Write-InfoLog "Generating EventBus service from template..."
+    if (-not $WhatIf) {
+        $templateContent = Get-Content -Path $eventBusTemplate -Raw
+        Set-Content -Path $eventBusFile -Value $templateContent -Encoding UTF8
+    }
+} elseif ($shouldGenerateEventBus) {
+    Write-WarningLog "EventBus template not found at: $eventBusTemplate"
+}
+
+# Generate PersistenceService from template (only if stub or missing)
+$persistenceServiceFile = Join-Path $sharedServicesPath "persistenceService.ts"
+$persistenceServiceTemplate = Join-Path $ProjectRoot "templates/shared/services/persistenceService.ts.template"
+$shouldGeneratePersistence = $false
+
+if (-not (Test-Path $persistenceServiceFile)) {
+    $shouldGeneratePersistence = $true
+    Write-InfoLog "PersistenceService missing - will generate from template"
+} else {
+    $existingContent = Get-Content -Path $persistenceServiceFile -Raw
+    if ($existingContent.Length -lt 500 -or $existingContent -match "localStorage\.setItem") {
+        $shouldGeneratePersistence = $true
+        Write-InfoLog "PersistenceService appears to be a stub - will enhance from template"
+    } else {
+        Write-InfoLog "PersistenceService already has full implementation - skipping template generation"
+    }
+}
+
+if ($shouldGeneratePersistence -and (Test-Path $persistenceServiceTemplate)) {
+    Write-InfoLog "Generating PersistenceService from template..."
+    if (-not $WhatIf) {
+        $templateContent = Get-Content -Path $persistenceServiceTemplate -Raw
+        Set-Content -Path $persistenceServiceFile -Value $templateContent -Encoding UTF8
+    }
+} elseif ($shouldGeneratePersistence) {
+    Write-WarningLog "PersistenceService template not found at: $persistenceServiceTemplate"
+}
+
+# Generate PerformanceRegressionService from template (only if stub or missing)
+$performanceRegressionFile = Join-Path $sharedServicesPath "performanceRegressionService.ts"
+$performanceRegressionTemplate = Join-Path $ProjectRoot "templates/shared/services/performanceRegressionService.ts.template"
+$shouldGeneratePerformance = $false
+
+if (-not (Test-Path $performanceRegressionFile)) {
+    $shouldGeneratePerformance = $true
+    Write-InfoLog "PerformanceRegressionService missing - will generate from template"
+} else {
+    $existingContent = Get-Content -Path $performanceRegressionFile -Raw
+    if ($existingContent.Length -lt 500 -or $existingContent -match "#samples:PerfSample\[\]=\[\]") {
+        $shouldGeneratePerformance = $true
+        Write-InfoLog "PerformanceRegressionService appears to be a stub - will enhance from template"
+    } else {
+        Write-InfoLog "PerformanceRegressionService already has full implementation - skipping template generation"
+    }
+}
+
+if ($shouldGeneratePerformance -and (Test-Path $performanceRegressionTemplate)) {
+    Write-InfoLog "Generating PerformanceRegressionService from template..."
+    if (-not $WhatIf) {
+        $templateContent = Get-Content -Path $performanceRegressionTemplate -Raw
+        Set-Content -Path $performanceRegressionFile -Value $templateContent -Encoding UTF8
+    }
+} elseif ($shouldGeneratePerformance) {
+    Write-WarningLog "PerformanceRegressionService template not found at: $performanceRegressionTemplate"
+}
+
 Write-SuccessLog "Shared types generation completed!"
 
 if (-not $WhatIf) {
-    Write-InfoLog "Generated shared types summary:"
+    Write-InfoLog "Generated shared types and services summary:"
     Write-InfoLog "  ✅ vectorTypes.ts - Vector and mathematical interfaces"
     Write-InfoLog "  ✅ entityTypes.ts - Core domain entity definitions"
     Write-InfoLog "  ✅ configTypes.ts - Service configuration interfaces"
     Write-InfoLog "  ✅ loggingTypes.ts - Logging and error handling types"
     Write-InfoLog "  ✅ eventTypes.ts - Inter-domain event interfaces"
     Write-InfoLog "  ✅ index.ts - Central export point"
-    Write-InfoLog "Shared types generation completed successfully"
+    Write-InfoLog "  ✅ IPersistenceService.ts - Persistence service interface (if missing)"
+    Write-InfoLog "  ✅ eventBus.ts - Enhanced EventBus service (if stub or missing)"
+    Write-InfoLog "  ✅ persistenceService.ts - Enhanced PersistenceService (if stub or missing)"
+    Write-InfoLog "  ✅ performanceRegressionService.ts - Enhanced PerformanceRegressionService (if stub or missing)"
+    Write-InfoLog "Shared types and services generation completed successfully"
     Write-InfoLog "Critical Gap 'Shared Types/Interfaces Defined' has been RESOLVED!"
+    Write-InfoLog "Critical Gap 'Service Implementation Stubs' has been ENHANCED!"
 }
