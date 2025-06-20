@@ -75,7 +75,11 @@ try {
         }
     )
 
+    $testCount = 0
     foreach ($test in $concern3Tests) {
+        $testCount++
+        Write-ValidationProgress -ValidationName "Script Dependencies" -Current $testCount -Total $concern3Tests.Count -CurrentItem $test.Name
+        
         try {
             $result = & $test.Test
             if ($result) {
@@ -92,7 +96,11 @@ try {
             $testResults += @{ Test = $test.Name; Status = "ERROR"; Category = "Concern #3" }
             $allTestsPassed = $false
         }
+        
+        Start-Sleep -Milliseconds 200  # Brief pause for progress visibility
     }
+
+    Complete-Progress -Id 2  # Complete the validation progress bar
 
     # Test 2: Validate Concern #4 - TypeScript Configuration
     Write-InfoLog "Beginning TypeScript configuration validation"
@@ -161,10 +169,31 @@ try {
                     return $true
                 } catch { return $false }
             }
+        },
+        @{
+            Name = "Node modules installation check"
+            Test = {
+                return (Test-Path "node_modules" -PathType Container)
+            }
+        },
+        @{
+            Name = "Critical package installation validation"
+            Test = {
+                $criticalPackages = @('typescript', 'winston', 'three', 'react', 'zustand')
+                foreach ($package in $criticalPackages) {
+                    $packagePath = Join-Path "node_modules" $package
+                    if (-not (Test-Path $packagePath)) { return $false }
+                }
+                return $true
+            }
         }
     )
 
+    $testCount = 0
     foreach ($test in $concern4Tests) {
+        $testCount++
+        Write-ValidationProgress -ValidationName "TypeScript Configuration" -Current $testCount -Total $concern4Tests.Count -CurrentItem $test.Name
+        
         try {
             $result = & $test.Test
             if ($result) {
@@ -181,7 +210,11 @@ try {
             $testResults += @{ Test = $test.Name; Status = "ERROR"; Category = "Concern #4" }
             $allTestsPassed = $false
         }
+        
+        Start-Sleep -Milliseconds 200  # Brief pause for progress visibility
     }
+
+    Complete-Progress -Id 2  # Complete the validation progress bar
 
     # Summary Report
     Write-InfoLog "Generating validation summary report"

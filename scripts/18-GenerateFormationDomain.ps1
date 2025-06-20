@@ -70,7 +70,7 @@ $interfaceContent = @'
  * Reference: .cursorrules Service Architecture Standards
  */
 
-import { IVector3, IParticle, IFormationPattern } from "@/shared/types";
+import { IVector3 } from "@/shared/types";
 
 /**
  * Formation pattern definition containing positioning data and metadata
@@ -291,7 +291,7 @@ $formationDataContent = @'
  * Reference: .cursorrules Domain Data Standards
  */
 
-import { IVector3, IFormationPattern } from "@/shared/types";
+import { IVector3 } from "@/shared/types";
 
 /**
  * Utility functions for generating geometric formation patterns
@@ -448,7 +448,7 @@ $formationPatternsContent = @'
  * Reference: .cursorrules Domain Data Standards
  */
 
-import { IFormationPattern } from "@/shared/types";
+import { IFormationPattern } from "../types/IFormationService";
 import { FormationGeometry } from "./formationGeometry";
 
 /**
@@ -948,33 +948,6 @@ $formationServicePart2 = @'
     } catch (error) {
       this.#log.error("Listing available patterns failed", { error: (error as Error).message });
       return [];
-    }
-  }
-
-  /**
-   * Removes a formation pattern from the service
-   * @param patternId - Unique identifier of pattern to remove
-   * @returns True if pattern was removed, false if not found
-   */
-  public unregisterFormationPattern(patternId: string): boolean {
-    try {
-      const existed = this.#patterns.delete(patternId);
-
-      if (existed) {
-        // Clear any cached entries for this pattern
-        const cacheKey = `pattern_${patternId}`;
-        this.#cache.delete(cacheKey);
-
-        this.#log.info("Formation pattern unregistered", { patternId });
-        return true;
-      }
-
-      this.#log.warn("Attempted to unregister non-existent pattern", { patternId });
-      return false;
-
-    } catch (error) {
-      this.#log.error("Formation pattern unregistration failed", { patternId, error: (error as Error).message });
-      return false;
     }
   }
 

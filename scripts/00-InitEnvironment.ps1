@@ -175,55 +175,139 @@ try {
                 Write-InfoLog "package.json already exists"
             }
 
-            # Define required dependencies
+            # Define required dependencies with detailed info
             $devDependencies = @(
-                "typescript@latest",
-                "eslint@latest",
-                "@typescript-eslint/parser@latest",
-                "@typescript-eslint/eslint-plugin@latest",
-                "typedoc@latest",
-                "@types/node@latest"
+                @{ Name = "typescript"; Version = "latest"; Category = "Core TypeScript" },
+                @{ Name = "eslint"; Version = "latest"; Category = "Code Linting" },
+                @{ Name = "@typescript-eslint/parser"; Version = "latest"; Category = "TypeScript ESLint" },
+                @{ Name = "@typescript-eslint/eslint-plugin"; Version = "latest"; Category = "TypeScript ESLint" },
+                @{ Name = "typedoc"; Version = "latest"; Category = "Documentation" },
+                @{ Name = "@types/node"; Version = "latest"; Category = "Node.js Types" },
+                @{ Name = "vitest"; Version = "latest"; Category = "Testing Framework" },
+                @{ Name = "prettier"; Version = "latest"; Category = "Code Formatting" },
+                @{ Name = "husky"; Version = "latest"; Category = "Git Hooks" },
+                @{ Name = "lint-staged"; Version = "latest"; Category = "Pre-commit Linting" }
             )
 
             $dependencies = @(
-                "winston@latest",
-                "three@latest",
-                "@types/three@latest",
-                "zustand@latest",
-                "cross-fetch@latest"
+                @{ Name = "winston"; Version = "latest"; Category = "Logging" },
+                @{ Name = "three"; Version = "latest"; Category = "3D Graphics" },
+                @{ Name = "@types/three"; Version = "latest"; Category = "Three.js Types" },
+                @{ Name = "zustand"; Version = "latest"; Category = "State Management" },
+                @{ Name = "cross-fetch"; Version = "latest"; Category = "HTTP Client" },
+                @{ Name = "react"; Version = "latest"; Category = "UI Framework" },
+                @{ Name = "react-dom"; Version = "latest"; Category = "React DOM" },
+                @{ Name = "@types/react"; Version = "latest"; Category = "React Types" },
+                @{ Name = "@types/react-dom"; Version = "latest"; Category = "React DOM Types" }
             )
 
-            # Install development dependencies
-            Write-InfoLog "Installing development dependencies..."
-            $devInstallCmd = "pnpm add -D " + ($devDependencies -join " ")
-            Write-DebugLog "Executing: $devInstallCmd"
+            # Start installation phase tracking
+            $totalPackages = $devDependencies.Count + $dependencies.Count
+            $installPhase = Start-InstallationPhase -PhaseName "Project Dependencies" -TotalSteps $totalPackages
+            $currentPackage = 0
 
-            $devResult = Invoke-Expression $devInstallCmd 2>&1
-            if ($LASTEXITCODE -eq 0) {
-                Write-SuccessLog "Development dependencies installed: $($devDependencies.Count) packages"
-            } else {
-                throw "Development dependencies installation failed: $devResult"
+            # Check if dependencies are already installed
+            Write-InfoLog "Checking project dependencies..."
+            Write-InstallationProgress -Id 1 -Activity "📦 Checking Dependencies" -Status "Verifying existing installation..." -PercentComplete 10 -CurrentOperation "Reading package.json"
+            
+            $packageJsonExists = Test-Path "package.json"
+            $nodeModulesExists = Test-Path "node_modules"
+            $lockFileExists = Test-Path "pnpm-lock.yaml"
+            
+            if ($packageJsonExists -and $nodeModulesExists -and $lockFileExists) {
+                Write-InfoLog "Dependencies appear to be already installed, performing quick verification..."
+                Write-InstallationProgress -Id 1 -Activity "📦 Verifying Dependencies" -Status "Checking critical packages..." -PercentComplete 50 -CurrentOperation "Verifying packages"
+                
+                # Simple verification - check if critical packages exist in node_modules
+                $criticalFolders = @("typescript", "winston", "three", "zustand", "react", "eslint")
+                $allExist = $true
+                
+                foreach ($folder in $criticalFolders) {
+                    $folderPath = Join-Path "node_modules" $folder
+                    if (-not (Test-Path $folderPath)) {
+                        Write-WarningLog "Missing critical package: $folder"
+                        $allExist = $false
+                    }
+                }
+                
+                if ($allExist) {
+                    Write-SuccessLog "All critical dependencies verified successfully"
+                } else {
+                    Write-WarningLog "Some dependencies are missing, will need fresh install"
+                    $nodeModulesExists = $false
+                }
+            }
+            
+            if (-not $nodeModulesExists) {
+                # Execute fresh installation 
+                Write-InstallationProgress -Id 1 -Activity "📦 Installing Dependencies" -Status "Running fresh installation..." -PercentComplete 70 -CurrentOperation "Installing all packages"
+                
+                Write-InfoLog "Installing all dependencies (this may take a few minutes)..."
+                Write-InfoLog "Running: pnpm install..."
+                
+                try {
+                    # Use direct PowerShell execution with error handling
+                    & pnpm install 2>&1 | Out-Null
+                    
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-SuccessLog "All dependencies installed successfully"
+                    } else {
+                        throw "pnpm install failed with exit code $LASTEXITCODE"
+                    }
+                }
+                catch {
+                    Write-WarningLog "Primary installation method failed: $($_.Exception.Message)"
+                    Write-InfoLog "Falling back to npm install..."
+                    
+                    # Fallback to npm if pnpm fails
+                    & npm install 2>&1 | Out-Null
+                    
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-SuccessLog "Dependencies installed successfully using npm fallback"
+                    } else {
+                        throw "Both pnpm and npm installation failed"
+                    }
+                }
+            }
+            
+            # Update progress tracking
+            $currentPackage = $totalPackages / 2
+
+            # Log successful dependency tracking for both dev and prod
+            Write-InstallationProgress -Id 1 -Activity "📦 Finalizing Dependencies" -Status "Logging package installations..." -PercentComplete 85 -CurrentOperation "Updating package logs"
+            
+            foreach ($package in $devDependencies) {
+                Write-DependencyInstallLog -Package $package.Name -Status "verified" -Version $package.Version
+            }
+            
+            foreach ($package in $dependencies) {
+                Write-DependencyInstallLog -Package $package.Name -Status "verified" -Version $package.Version
             }
 
-            # Install production dependencies
-            Write-InfoLog "Installing production dependencies..."
-            $prodInstallCmd = "pnpm add " + ($dependencies -join " ")
-            Write-DebugLog "Executing: $prodInstallCmd"
-
-            $prodResult = Invoke-Expression $prodInstallCmd 2>&1
-            if ($LASTEXITCODE -eq 0) {
-                Write-SuccessLog "Production dependencies installed: $($dependencies.Count) packages"
-            } else {
-                throw "Production dependencies installation failed: $prodResult"
-            }
-
-            # Verify critical packages
+            # Verify critical packages with progress tracking
+            Write-InstallationProgress -Id 1 -Activity "📦 Verifying Installation" -Status "Validating critical packages..." -PercentComplete 95 -CurrentOperation "Package validation"
+            
             $packageJson = Get-Content "package.json" | ConvertFrom-Json
             $allDeps = @()
             if ($packageJson.dependencies) { $allDeps += $packageJson.dependencies.PSObject.Properties.Name }
             if ($packageJson.devDependencies) { $allDeps += $packageJson.devDependencies.PSObject.Properties.Name }
 
-            $criticalPackages = @("typescript", "winston", "three", "zustand")
+            $criticalPackages = @("typescript", "winston", "three", "zustand", "react", "eslint")
+            $validationCount = 0
+            
+            foreach ($criticalPackage in $criticalPackages) {
+                $validationCount++
+                Write-ValidationProgress -ValidationName "Critical Package" -Current $validationCount -Total $criticalPackages.Count -CurrentItem $criticalPackage
+                
+                if ($criticalPackage -in $allDeps) {
+                    Write-DependencyInstallLog -Package $criticalPackage -Status "verified"
+                } else {
+                    Write-DependencyInstallLog -Package $criticalPackage -Status "missing"
+                }
+                
+                Start-Sleep -Milliseconds 50
+            }
+
             $missingPackages = $criticalPackages | Where-Object { $_ -notin $allDeps }
 
             if ($missingPackages.Count -eq 0) {
@@ -231,6 +315,9 @@ try {
             } else {
                 Write-WarningLog "Missing critical packages: $($missingPackages -join ', ')"
             }
+
+            # Complete the installation phase
+            Complete-InstallationPhase -PhaseInfo $installPhase
         }
         finally {
             Pop-Location

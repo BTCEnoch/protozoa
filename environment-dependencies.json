@@ -1,8 +1,80 @@
 ﻿{
+  "description": "Bitcoin Ordinals Digital Organism Ecosystem - Complete Dependency Architecture",
+  "version": "1.0.0",
   "dependencies": {
-    "winston": "^3.11.0"
+    "winston": "^3.17.0",
+    "three": "^0.177.0",
+    "@types/three": "^0.177.0",
+    "zustand": "^5.0.5",
+    "cross-fetch": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@react-three/fiber": "^8.15.11",
+    "@react-three/drei": "^9.92.7"
   },
   "devDependencies": {
-    "@types/winston": "^2.4.4"
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^24.0.3",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.5.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "categories": {
+    "core": ["react", "react-dom", "three"],
+    "state": ["zustand"],
+    "networking": ["cross-fetch"],
+    "logging": ["winston"],
+    "three-js": ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
+    "testing": ["vitest", "@vitest/coverage-v8", "@playwright/test"],
+    "build": ["vite", "@vitejs/plugin-react", "typescript"],
+    "linting": ["eslint", "@typescript-eslint/eslint-plugin", "@typescript-eslint/parser", "eslint-plugin-react", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh"],
+    "formatting": ["prettier", "lint-staged"],
+    "types": ["@types/node", "@types/react", "@types/react-dom", "@types/winston", "@types/three"],
+    "docs": ["typedoc"],
+    "git": ["husky"]
+  },
+  "architecture": {
+    "frontend": "React + TypeScript + Vite",
+    "3d_engine": "THREE.js + React Three Fiber",
+    "state_management": "Zustand",
+    "logging": "Winston",
+    "blockchain": "Bitcoin Ordinals Protocol",
+    "testing": "Vitest + Playwright",
+    "build_tool": "Vite",
+    "linting": "ESLint 8.x + TypeScript ESLint",
+    "formatting": "Prettier",
+    "package_manager": "pnpm"
+  },
+  "bitcoin_ordinals": {
+    "required_apis": [
+      "https://ordinals.com/r/blockinfo/{blockNumber}",
+      "https://ordinals.com/content/{inscriptionId}"
+    ],
+    "documentation": [
+      "https://docs.ordinals.com/",
+      "https://docs.tap-protocol.com/"
+    ]
+  },
+  "version_compatibility": {
+    "note": "ESLint downgraded to 8.57.0 for compatibility with React plugins",
+    "eslint": "8.57.0",
+    "typescript-eslint": "6.21.0",
+    "react-plugins": "Compatible with ESLint 8.x"
   }
 }

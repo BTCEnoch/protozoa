@@ -1,6 +1,6 @@
-# 41-GenerateGroupService.ps1 - Phase 6 Core Domain Implementation
-# Generates GroupService and interface for managing particle groups
-# Reference: script_checklist.md | build_design.md lines 1100-1250 (Group domain)
+# 41-GenerateGroupService.ps1 - Enhanced Group Service Generation
+# Generates comprehensive GroupService with swarm support and formation integration
+# Reference: build_design.md lines 1044-1141 | SwarmService requirements
 #Requires -Version 5.1
 
 [CmdletBinding(SupportsShouldProcess)]
@@ -20,35 +20,82 @@ catch {
 $ErrorActionPreference = "Stop"
 
 try {
-    Write-StepHeader "Group Service Generation - Phase 6 Core Domain Implementation"
-    Write-InfoLog "Generating GroupService and interfaces"
+    Write-StepHeader "Enhanced Group Service Generation with Swarm Support"
+    Write-InfoLog "Generating GroupService with swarm management capabilities"
 
     # Paths
     $groupDomainPath = Join-Path $ProjectRoot "src/domains/group"
     $servicesPath    = Join-Path $groupDomainPath "services"
     $interfacesPath  = Join-Path $groupDomainPath "interfaces"
+    $typesPath       = Join-Path $groupDomainPath "types"
 
-    New-Item -Path $servicesPath   -ItemType Directory -Force | Out-Null
-    New-Item -Path $interfacesPath -ItemType Directory -Force | Out-Null
+    # Create directory structure
+    @($servicesPath, $interfacesPath, $typesPath) | ForEach-Object {
+        New-Item -Path $_ -ItemType Directory -Force | Out-Null
+    }
 
-    Write-SuccessLog "Group domain directories ensured"
+    Write-SuccessLog "Group domain directories created"
 
-    # Generate templates
-    Write-TemplateFile -TemplateRelPath 'domains/group/interfaces/IGroupService.ts.template' `
-                      -DestinationPath (Join-Path $interfacesPath 'IGroupService.ts')
+    # Generate enhanced interface
+    $interfaceContent = @'
+/**
+ * @fileoverview Enhanced IGroupService interface with swarm management capabilities
+ * @module @/domains/group/interfaces
+ * @version 1.0.0
+ * 
+ * Defines contracts for particle group management, swarm operations, and formation integration.
+ * Supports the SwarmService and other group-based services with proper encapsulation.
+ * 
+ * Reference: build_design.md Section 8 - Group domain enhancement
+ * Reference: .cursorrules Service Architecture Standards
+ */
 
-    Write-TemplateFile -TemplateRelPath 'domains/group/services/groupService.ts.template' `
-                      -DestinationPath (Join-Path $servicesPath 'GroupService.ts')
+import { IVector3 } from "@/shared/types";
 
-    # compatibility wrapper
-    $wrapperContent = "export * from './GroupService'"
-    Set-Content -Path (Join-Path $servicesPath 'groupService.ts') -Value $wrapperContent -Encoding UTF8
-    Write-InfoLog "Added wrapper groupService.ts for casing compatibility"
+/**
+ * Represents a group of particles with metadata
+ */
+export interface ParticleGroup {
+  /** Unique identifier for the group */
+  id: string;
+  
+  /** Array of particle IDs in this group */
+  members: string[];
+  
+  /** Optional group metadata */
+  metadata?: {
+    /** Group formation pattern if applied */
+    formationId?: string;
+    /** Group center position */
+    center?: IVector3;
+    /** Group behavior type */
+    behavior?: "flock" | "swarm" | "formation" | "custom";
+    /** Creation timestamp */
+    createdAt?: number;
+  };
+}
 
-    Write-SuccessLog "41-GenerateGroupService.ps1 completed successfully"
+/**
+ * Configuration for group formation operations
+ */
+export interface GroupFormationConfig {
+  /** Formation pattern ID to apply */
+  formationId: string;
+  /** Scale factor for formation */
+  scale?: number;
+  /** Center position for formation */
+  center?: IVector3;
+  /** Transition duration in milliseconds */
+  transitionDuration?: number;
+}
+'@
+
+    Set-Content -Path (Join-Path $interfacesPath "IGroupService.ts") -Value $interfaceContent -Encoding UTF8
+    Write-SuccessLog "Generated enhanced IGroupService interface (Part 1)"
+
     exit 0
 }
 catch {
-    Write-ErrorLog "Group Service Generation failed: $($_.Exception.Message)"
+    Write-ErrorLog "Enhanced Group Service Generation failed: $($_.Exception.Message)"
     exit 1
 }

@@ -614,6 +614,141 @@ function Get-FileLineCount {
 # Initialize logging on module import
 Initialize-LogFile
 
+# Progress bar utilities for installation and validation phases
+function Write-InstallationProgress {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Activity,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Status,
+        
+        [Parameter(Mandatory = $true)]
+        [int]$PercentComplete,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$CurrentOperation,
+        
+        [Parameter(Mandatory = $false)]
+        [int]$Id = 1
+    )
+    
+    Write-Progress -Id $Id -Activity $Activity -Status $Status -PercentComplete $PercentComplete -CurrentOperation $CurrentOperation
+    Write-DebugLog "Progress: $Activity - $Status ($PercentComplete%)"
+}
+
+function Write-ValidationProgress {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ValidationName,
+        
+        [Parameter(Mandatory = $true)]
+        [int]$Current,
+        
+        [Parameter(Mandatory = $true)]
+        [int]$Total,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$CurrentItem = ""
+    )
+    
+    $percentComplete = [math]::Round(($Current / $Total) * 100, 2)
+    $status = "Validating $Current of $Total"
+    
+    if ($CurrentItem) {
+        $status += " - $CurrentItem"
+    }
+    
+    Write-Progress -Id 2 -Activity "[VALIDATE] $ValidationName Validation" -Status $status -PercentComplete $percentComplete -CurrentOperation $CurrentItem
+    Write-DebugLog "Validation Progress: $ValidationName - $Current/$Total ($percentComplete%)"
+}
+
+function Complete-Progress {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $false)]
+        [int]$Id = 1
+    )
+    
+    Write-Progress -Id $Id -Completed
+}
+
+function Write-DependencyInstallLog {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Package,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Status,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$Version = "",
+        
+        [Parameter(Mandatory = $false)]
+        [string]$InstallTime = "",
+        
+        [Parameter(Mandatory = $false)]
+        [string]$Size = ""
+    )
+    
+    $logMessage = "[PACKAGE] $Package"
+    if ($Version) { $logMessage += " v$Version" }
+    $logMessage += " - $Status"
+    if ($InstallTime) { $logMessage += " (${InstallTime}s)" }
+    if ($Size) { $logMessage += " [$Size]" }
+    
+    switch ($Status.ToLower()) {
+        "installed" { Write-SuccessLog $logMessage }
+        "skipped" { Write-InfoLog $logMessage }
+        "failed" { Write-ErrorLog $logMessage }
+        "downloading" { Write-InfoLog $logMessage }
+        "cached" { Write-InfoLog $logMessage }
+        default { Write-InfoLog $logMessage }
+    }
+}
+
+function Start-InstallationPhase {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PhaseName,
+        
+        [Parameter(Mandatory = $true)]
+        [int]$TotalSteps
+    )
+    
+    Write-StepHeader "[INSTALL] $PhaseName Installation Phase"
+    Write-InfoLog "Beginning $PhaseName installation with $TotalSteps steps"
+    
+    return @{
+        PhaseName = $PhaseName
+        TotalSteps = $TotalSteps
+        CurrentStep = 0
+        StartTime = Get-Date
+    }
+}
+
+function Complete-InstallationPhase {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$PhaseInfo
+    )
+    
+    $endTime = Get-Date
+    $duration = ($endTime - $PhaseInfo.StartTime).TotalSeconds
+    
+    Complete-Progress -Id 1
+    Complete-Progress -Id 2
+    
+    Write-SuccessLog "[SUCCESS] $($PhaseInfo.PhaseName) installation completed successfully!"
+    Write-InfoLog "   Duration: $([math]::Round($duration, 2)) seconds"
+    Write-InfoLog "   Steps completed: $($PhaseInfo.CurrentStep)/$($PhaseInfo.TotalSteps)"
+}
+
 # Export functions with approved verbs and aliases
 Export-ModuleMember -Function @(
     'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
@@ -621,7 +756,9 @@ Export-ModuleMember -Function @(
     'New-DirectoryTree', 'Get-DomainList', 'Get-ServiceName',
     'Write-TemplateFile', 'Invoke-ScriptWithErrorHandling', 'Test-TemplateSyntax',
     'Test-PowerShellVersion', 'Test-ExecutionPolicy', 'Test-TypeScriptCompiles',
-    'Test-DirectoryStructure', 'Test-ProjectStructure', 'Get-FileLineCount'
+    'Test-DirectoryStructure', 'Test-ProjectStructure', 'Get-FileLineCount',
+    'Write-InstallationProgress', 'Write-ValidationProgress', 'Complete-Progress', 
+    'Write-DependencyInstallLog', 'Start-InstallationPhase', 'Complete-InstallationPhase'
 ) -Alias @(
     'Log-Info', 'Log-Success', 'Log-Warning', 'Log-Error', 'Log-Debug', 'Log-Step'
 ) 
