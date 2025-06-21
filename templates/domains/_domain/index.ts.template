@@ -1,0 +1,3 @@
+/** __DOMAIN__ domain exports (Template) */
+export * from './interfaces'
+export * from './services'
