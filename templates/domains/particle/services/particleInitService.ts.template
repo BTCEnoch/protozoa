@@ -1,0 +1,31 @@
+import { Vector3 } from 'three'
+import { createServiceLogger } from '@/shared/lib/logger'
+import type { IParticleInitService, ParticleInitOptions } from '@/domains/particle/interfaces/IParticleInitService'
+import type { Particle } from '@/domains/particle/types/particle.types'
+import { traitService } from '@/domains/trait/services/traitService'
+import { physicsService } from '@/domains/physics/services/PhysicsService'
+
+class ParticleInitService implements IParticleInitService {
+  private static #instance: ParticleInitService | null = null
+  public static getInstance () { return this.#instance ?? (this.#instance = new ParticleInitService()) }
+  private constructor () {}
+  #log = createServiceLogger('PARTICLE_INIT')
+
+  initializeParticles (options: ParticleInitOptions): Particle[] {
+    const { count, distribution } = options
+    this.#log.info('Initializing particles', { count, distribution })
+    const positions = physicsService.distributeParticles(count, distribution, new Vector3(100, 100, 100))
+    const particles: Particle[] = positions.map((pos, idx) => ({
+      id: `p-${idx}`,
+      position: pos,
+      velocity: new Vector3(),
+      traits: traitService.generateTraitsForOrganism(`p-${idx}`),
+      active: true,
+      size: 1,
+      color: { r: 1, g: 1, b: 1 }
+    }))
+    return particles
+  }
+}
+export const particleInitService = ParticleInitService.getInstance()
+export { ParticleInitService }

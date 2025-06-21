@@ -1,0 +1,12 @@
+/** Particle initialization service interface (Template) */
+import type { Particle } from '@/domains/particle/types/particle.types'
+
+export interface ParticleInitOptions {
+  count: number
+  distribution: 'random' | 'sphere' | 'grid'
+}
+
+export interface IParticleInitService {
+  /** Generate initial batch of particles */
+  initializeParticles(options: ParticleInitOptions): Particle[]
+}
