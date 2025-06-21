@@ -15,13 +15,17 @@ try {
   $typesPath = Join-Path $ProjectRoot "src/shared/types"
   New-Item -Path $typesPath -ItemType Directory -Force | Out-Null
 
-  function Copy-Template([string]$rel) {
-    Copy-Item -Path (Join-Path $ProjectRoot $rel) -Destination $typesPath -Force
+  function Copy-Template([string]$rel, [string]$dest) {
+    $sourcePath = Join-Path $ProjectRoot $rel
+    $fileName = (Split-Path $rel -Leaf) -replace '\.template$', ''
+    $destPath = Join-Path $typesPath $fileName
+    Copy-Item -Path $sourcePath -Destination $destPath -Force
+    Write-InfoLog "Copied $fileName"
   }
 
   $templates = @(
     "templates/shared/types/vectorTypes.ts.template",
-    "templates/shared/types/entityTypes.ts.template",
+    "templates/shared/types/entityTypes.ts.template", 
     "templates/shared/types/configTypes.ts.template",
     "templates/shared/types/loggingTypes.ts.template",
     "templates/shared/types/eventTypes.ts.template",
@@ -30,7 +34,6 @@ try {
 
   foreach ($tpl in $templates) {
     Copy-Template $tpl
-    Write-InfoLog "Copied $(Split-Path $tpl -Leaf)"
   }
 
   Write-SuccessLog "Shared types generation completed successfully"

@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { Vector3 } from "three";
+import { Vector3, Color } from "three";
 import { particleService } from '@/domains/particle/services/ParticleService'
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILifecycleEngine } from '@/domains/particle/interfaces/ILifecycleEngine'
@@ -70,7 +70,7 @@ export class LifecycleEngine implements ILifecycleEngine {
       
       for (let i = 0; i < count; i++) {
         const newParticleData: ParticleCreationData = {
-          type: baseConfig?.type || "core",
+          type: baseConfig?.type || "basic",
           position: baseConfig?.position || new Vector3(
             (Math.random() - 0.5) * 10,
             (Math.random() - 0.5) * 10,
@@ -82,13 +82,11 @@ export class LifecycleEngine implements ILifecycleEngine {
             (Math.random() - 0.5) * 2
           ),
           scale: baseConfig?.scale || new Vector3(1, 1, 1),
-          rotation: baseConfig?.rotation || Math.random() * Math.PI * 2,
-          color: baseConfig?.color || {
-            r: Math.random(),
-            g: Math.random(),
-            b: Math.random()
-          },
-          opacity: baseConfig?.opacity || 1.0,
+          color: baseConfig?.color || new Color(
+            Math.random(),
+            Math.random(),
+            Math.random()
+          ),
           lifetime: baseConfig?.lifetime || (5 + Math.random() * 10), // 5-15 seconds
           userData: { ...baseConfig?.userData }
         }
@@ -109,7 +107,7 @@ export class LifecycleEngine implements ILifecycleEngine {
       this.#log.error('Failed to birth particles', { 
         count, 
         systemId, 
-        error: error.message 
+        error: error instanceof Error ? error.message : String(error)
       })
     }
   }
@@ -132,7 +130,7 @@ export class LifecycleEngine implements ILifecycleEngine {
     } catch (error) {
       this.#log.error('Lifecycle update failed', { 
         deltaTime, 
-        error: error.message 
+        error: error instanceof Error ? error.message : String(error)
       })
     }
   }
@@ -154,7 +152,7 @@ export class LifecycleEngine implements ILifecycleEngine {
       this.#log.error('Failed to kill particle', { 
         particleId, 
         immediate, 
-        error: error.message 
+        error: error instanceof Error ? error.message : String(error)
       })
     }
   }
@@ -200,7 +198,7 @@ export class LifecycleEngine implements ILifecycleEngine {
     } catch (error) {
       this.#log.error('Failed to execute particle kill', { 
         particleId, 
-        error: error.message 
+        error: error instanceof Error ? error.message : String(error)
       })
     }
   }
@@ -230,7 +228,7 @@ export class LifecycleEngine implements ILifecycleEngine {
       
     } catch (error) {
       this.#log.error('Failed to check for natural death', { 
-        error: error.message 
+        error: error instanceof Error ? error.message : String(error)
       })
     }
   }

@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { Vector3, Scene, Mesh, InstancedMesh, BufferGeometry, Material } from "three";
+import { Vector3, Scene } from "three";
 import {
   IParticleService,
   ParticleConfig,
@@ -13,10 +13,8 @@ import {
   ParticleSystem
 } from "@/domains/particle/interfaces/IParticleService";
 import {
-  ParticleType,
   ParticleSystemConfig,
   ParticleCreationData,
-  ParticleUpdateData,
   ParticleMetrics
 } from "@/domains/particle/types/particle.types";
 import { createServiceLogger } from "@/shared/lib/logger";
@@ -202,10 +200,14 @@ export class ParticleService implements IParticleService {
       const index = system.particles.findIndex(p => p.id === particleId);
       if (index !== -1) {
         const particle = system.particles[index];
-        this.#returnParticleToPool(particle);
-        system.particles.splice(index, 1);
-        system.activeParticles--;
-        removedCount++;
+        if (particle) {
+          this.#returnParticleToPool(particle);
+          system.particles.splice(index, 1);
+          system.activeParticles--;
+          removedCount++;
+        } else {
+          this.#logger.warn("Particle not found at index for removal", { systemId, particleId, index });
+        }
       }
     }
 
@@ -307,7 +309,9 @@ export class ParticleService implements IParticleService {
     // Clear all systems
     for (const system of this.#systems.values()) {
       for (const particle of system.particles) {
-        this.#returnParticleToPool(particle);
+        if (particle) {
+          this.#returnParticleToPool(particle);
+        }
       }
     }
     this.#systems.clear();
@@ -369,17 +373,26 @@ export class ParticleService implements IParticleService {
       return null;
     }
 
-    const poolIndex = this.#poolIndices.pop()!;
+    const poolIndex = this.#poolIndices.pop();
+    if (poolIndex === undefined || poolIndex === null) {
+      this.#logger.error("Failed to get valid pool index");
+      return null;
+    }
+    
     const particle = this.#particlePool[poolIndex];
+    if (!particle) {
+      this.#logger.error("Failed to retrieve particle from pool", { poolIndex });
+      return null;
+    }
 
     // Initialize particle
     particle.id = `particle_${Date.now()}_${poolIndex}`;
     particle.position.copy(data.position);
     particle.velocity.copy(data.velocity || new Vector3());
     particle.scale.copy(data.scale || new Vector3(1, 1, 1));
-    particle.rotation = data.rotation || 0;
-    particle.color = data.color || { r: 1, g: 1, b: 1 };
-    particle.opacity = data.opacity || 1;
+    particle.rotation = 0; // Use fixed value since rotation not in creation data
+    particle.color = data.color ? { r: data.color.r, g: data.color.g, b: data.color.b } : { r: 1, g: 1, b: 1 };
+    particle.opacity = 1; // Use fixed value since opacity not in creation data
     particle.age = 0;
     particle.lifetime = data.lifetime || 10;
     particle.active = true;
@@ -415,6 +428,11 @@ export class ParticleService implements IParticleService {
 
     for (let i = 0; i < system.particles.length; i++) {
       const particle = system.particles[i];
+      
+      if (!particle) {
+        this.#logger.warn("Found undefined particle in system", { systemId: system.id, particleIndex: i });
+        continue;
+      }
 
       // Update particle age
       particle.age += deltaTime;
@@ -437,8 +455,15 @@ export class ParticleService implements IParticleService {
     // Remove expired particles (reverse order to maintain indices)
     for (let i = particlesToRemove.length - 1; i >= 0; i--) {
       const index = particlesToRemove[i];
+      if (index === undefined || index === null || index < 0 || index >= system.particles.length) {
+        this.#logger.warn("Invalid particle index for removal", { index, particleCount: system.particles.length });
+        continue;
+      }
+      
       const particle = system.particles[index];
-      this.#returnParticleToPool(particle);
+      if (particle) {
+        this.#returnParticleToPool(particle);
+      }
       system.particles.splice(index, 1);
       system.activeParticles--;
     }
