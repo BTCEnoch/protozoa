@@ -62,12 +62,12 @@ export interface IRNGService {
 }
 '@ }
         'physics' { @'
-import { Vector3 } from '@/shared/types';
+import { IVector3 } from '@/shared/types';
 
 export interface IPhysicsService {
-  calculateDistribution(count: number, radius: number): Vector3[];
-  applyGravity(position: Vector3, delta: number): Vector3;
-  detectCollisions(particles: Vector3[]): boolean;
+  calculateDistribution(count: number, radius: number): IVector3[];
+  applyGravity(position: IVector3, delta: number): IVector3;
+  detectCollisions(particles: IVector3[]): boolean;
   dispose(): void;
 }
 '@ }
@@ -87,7 +87,7 @@ export interface IBitcoinService {
 }
 '@ }
         'trait' { @'
-import { OrganismTraits } from '@/shared/types';
+import { OrganismTraits } from '@/domains/trait/types/trait.types';
 
 export interface ITraitService {
   generateTraitsForOrganism(id: string, blockNonce?: number): OrganismTraits;

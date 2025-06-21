@@ -3,7 +3,7 @@ import type { IFormationBlendingService, FormationPattern } from '@/domains/form
 import { Vector3 } from 'three'
 
 class FormationBlendingService implements IFormationBlendingService {
-  private static #instance: FormationBlendingService | null = null
+  static #instance: FormationBlendingService | null = null
   public static getInstance () {
     return this.#instance ?? (this.#instance = new FormationBlendingService())
   }

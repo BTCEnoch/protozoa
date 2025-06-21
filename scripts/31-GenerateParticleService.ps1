@@ -352,7 +352,7 @@ export interface ParticleMetrics {
  */
 
 // Service exports
-export { ParticleService } from "./services/ParticleService";
+export { ParticleService, particleService } from "./services/ParticleService";
 
 // Interface exports
 export type { IParticleService, ParticleConfig, ParticleInstance, ParticleSystem } from "./interfaces/IParticleService";

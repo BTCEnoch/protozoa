@@ -6,7 +6,7 @@ import { traitService } from '@/domains/trait/services/traitService'
 import { physicsService } from '@/domains/physics/services/PhysicsService'
 
 class ParticleInitService implements IParticleInitService {
-  private static #instance: ParticleInitService | null = null
+  static #instance: ParticleInitService | null = null
   public static getInstance () { return this.#instance ?? (this.#instance = new ParticleInitService()) }
   private constructor () {}
   #log = createServiceLogger('PARTICLE_INIT')

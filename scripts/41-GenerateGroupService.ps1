@@ -10,8 +10,11 @@ try { Import-Module "$PSScriptRoot\utils.psm1" -Force -ErrorAction Stop } catch 
 $ErrorActionPreference = "Stop"
 
 function CopyTpl($rel, $destDir) {
-  Copy-Item -Path (Join-Path $ProjectRoot $rel) -Destination $destDir -Force
-  Write-InfoLog "Copied $(Split-Path $rel -Leaf)"
+  $sourcePath = Join-Path $ProjectRoot $rel
+  $fileName = (Split-Path $rel -Leaf) -replace '\.template$', ''
+  $destPath = Join-Path $destDir $fileName
+  Copy-Item -Path $sourcePath -Destination $destPath -Force
+  Write-InfoLog "Generated $fileName from template"
 }
 
 try {
@@ -25,14 +28,14 @@ try {
   # Templates
   CopyTpl "templates/domains/group/interfaces/IGroupService.ts.template" $interfaces
   CopyTpl "templates/domains/group/interfaces/ISwarmService.ts.template" $interfaces
-  CopyTpl "templates/domains/group/services/groupService.ts.template"    $services
-  CopyTpl "templates/domains/group/services/swarmService.ts.template"    $services
+  CopyTpl "templates/domains/group/services/GroupService.ts.template"    $services
+  CopyTpl "templates/domains/group/services/SwarmService.ts.template"    $services
 
   # Create index.ts
   $index = @'
 /** Group domain barrel */
-export { GroupService, groupService } from './services/groupService'
-export { SwarmService, swarmService } from './services/swarmService'
+export { GroupService, groupService } from './services/GroupService'
+export { SwarmService, swarmService } from './services/SwarmService'
 export type * from './interfaces/IGroupService'
 export type * from './interfaces/ISwarmService'
 '@

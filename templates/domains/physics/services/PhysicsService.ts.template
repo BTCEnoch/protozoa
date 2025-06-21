@@ -25,7 +25,7 @@ import { createServiceLogger } from "@/shared/lib/logger"
  */
 export class PhysicsService implements IPhysicsService {
   /* ------------------------------- singleton ------------------------------- */
-  private static #instance: PhysicsService | null = null
+  static #instance: PhysicsService | null = null
   public static getInstance(): PhysicsService {
     if (!PhysicsService.#instance) PhysicsService.#instance = new PhysicsService()
     return PhysicsService.#instance

@@ -28,7 +28,7 @@ export interface IEnvironmentConfig {
 }
 
 class EnvironmentService {
-  private static #instance: EnvironmentService | null = null
+  static #instance: EnvironmentService | null = null
   public static getInstance(): EnvironmentService {
     return this.#instance ?? (this.#instance = new EnvironmentService())
   }

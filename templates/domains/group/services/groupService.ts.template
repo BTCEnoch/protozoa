@@ -24,6 +24,9 @@ class GroupService implements IGroupService {
   getGroup (id: string) {
     return this.#groups.get(id)
   }
+  getAllGroups (): ParticleGroup[] {
+    return Array.from(this.#groups.values())
+  }
   dissolveGroup (id: string) {
     if (this.#groups.delete(id)) this.#log.info('Group dissolved', { id })
   }
@@ -32,4 +35,7 @@ class GroupService implements IGroupService {
     GroupService.#instance = null
   }
 }
+
+// Export both class and singleton instance as per .cursorrules
+export { GroupService }
 export const groupService = GroupService.getInstance()

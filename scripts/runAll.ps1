@@ -79,8 +79,9 @@ $scriptSequence = @(
     # === PHASE 7: FRONTEND INTEGRATION (6 Scripts) ===
     # React and state management
     @{ Phase = 7; Script = "51-SetupGlobalStateManagement.ps1"; Description = "Zustand state management" },
-    @{ Phase = 7; Script = "52-SetupReactIntegration.ps1"; Description = "React component integration" },
-    @{ Phase = 7; Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
+            @{ Phase = 7; Script = "52-SetupReactIntegration.ps1"; Description = "React component integration" },
+        @{ Phase = 7; Script = "59-GenerateMainEntryPoint.ps1"; Description = "Generate React main.tsx entry point" },
+        @{ Phase = 7; Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
     @{ Phase = 7; Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing suite" },
     @{ Phase = 7; Script = "55-SetupPersistenceLayer.ps1"; Description = "Data persistence" },
     @{ Phase = 7; Script = "56-SetupEndToEndValidation.ps1"; Description = "E2E testing" },

@@ -1,8 +1,0 @@
-﻿import type { Object3D } from 'three'
-
-export interface LODConfig { near: number; far: number; minDetail: number; maxDetail: number }
-export interface ILODService {
-  register(obj: Object3D, config: LODConfig): void
-  update(cameraPosition: { x: number; y: number; z: number }): void
-  dispose(): void
-}

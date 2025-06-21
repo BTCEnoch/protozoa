@@ -32,3 +32,11 @@ export function createServiceLogger(service: string): Logger {
     error: (m, meta) => logger.error(m, meta)
   }
 }
+
+export function createPerformanceLogger(service: string = 'performance'): Logger {
+  return createServiceLogger(service)
+}
+
+export function createErrorLogger(service: string = 'error-handler'): Logger {
+  return createServiceLogger(service)
+}

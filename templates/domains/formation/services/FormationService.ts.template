@@ -603,4 +603,6 @@ class FormationService implements IFormationService {
   }
 }
 
+// Export both class and singleton instance as per .cursorrules
+export { FormationService };
 export const formationService = FormationService.getInstance(); 

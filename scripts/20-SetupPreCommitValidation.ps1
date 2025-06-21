@@ -44,66 +44,158 @@ try {
 
     # Check if package.json exists
     if (-not (Test-Path $packageJsonPath)) {
-        Write-InfoLog "Creating package.json"
-        $packageJson = @{
-            name = "protozoa-bitcoin-organisms"
-            version = "1.0.0"
-            description = "Bitcoin Ordinals Digital Organism Ecosystem"
-            main = "index.js"
-            scripts = @{
-                dev = "vite"
-                build = "tsc && vite build"
-                preview = "vite preview"
-                prepare = "husky install"
-                lint = "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
-                "lint:fix" = "eslint . --ext ts,tsx --fix"
-                "type-check" = "tsc --noEmit"
-                test = "vitest"
-                "test:coverage" = "vitest --coverage"
+        Write-InfoLog "Creating package.json from template"
+        
+        # Try to load from template first
+        $templatePath = Join-Path $ProjectRoot "templates/package.json.template"
+        if (Test-Path $templatePath) {
+            $packageJson = Get-Content $templatePath -Raw | ConvertFrom-Json
+            Write-InfoLog "Loaded package.json structure from template"
+            
+            # Add additional dev dependencies needed for pre-commit validation
+            if (-not $packageJson.devDependencies) {
+                $packageJson | Add-Member -MemberType NoteProperty -Name "devDependencies" -Value ([PSCustomObject]@{}) -Force
             }
-            devDependencies = @{
-                husky = "^8.0.3"
+            
+            # Add pre-commit specific dependencies
+            $preCommitDeps = @{
+                "husky" = "^8.0.3"
                 "lint-staged" = "^15.2.0"
                 "@typescript-eslint/eslint-plugin" = "^6.14.0"
                 "@typescript-eslint/parser" = "^6.14.0"
-                eslint = "^8.55.0"
-                prettier = "^3.1.1"
-                typescript = "^5.2.2"
-                vite = "^5.0.8"
-                vitest = "^1.0.4"
+            }
+            
+            foreach ($dep in $preCommitDeps.GetEnumerator()) {
+                if (-not ($packageJson.devDependencies | Get-Member -Name $dep.Key -ErrorAction SilentlyContinue)) {
+                    $packageJson.devDependencies | Add-Member -MemberType NoteProperty -Name $dep.Key -Value $dep.Value -Force
+                }
+            }
+            
+            # Add pre-commit specific scripts
+            if (-not $packageJson.scripts) {
+                $packageJson | Add-Member -MemberType NoteProperty -Name "scripts" -Value ([PSCustomObject]@{}) -Force
+            }
+            
+            $preCommitScripts = @{
+                "prepare" = "husky install"
+                "lint" = "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+                "lint:fix" = "eslint . --ext ts,tsx --fix"
+                "test:coverage" = "vitest --coverage"
+            }
+            
+            foreach ($script in $preCommitScripts.GetEnumerator()) {
+                if (-not ($packageJson.scripts | Get-Member -Name $script.Key -ErrorAction SilentlyContinue)) {
+                    $packageJson.scripts | Add-Member -MemberType NoteProperty -Name $script.Key -Value $script.Value -Force
+                }
+            }
+            
+        } else {
+            Write-WarningLog "Template not found, using fallback minimal structure"
+            $packageJson = @{
+                name = "protozoa"
+                version = "0.1.0"
+                description = "Bitcoin Ordinals Digital Organism Ecosystem"
+                scripts = @{
+                    dev = "vite"
+                    build = "tsc -p tsconfig.app.json && vite build"
+                    preview = "vite preview"
+                    prepare = "husky install"
+                    lint = "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+                    "lint:fix" = "eslint . --ext ts,tsx --fix"
+                    "type-check" = "tsc --noEmit"
+                    test = "vitest"
+                    "test:coverage" = "vitest --coverage"
+                }
+                dependencies = @{
+                    three = "^0.177.0"
+                    react = "^18.2.0"
+                    "react-dom" = "^18.2.0"
+                    "@react-three/fiber" = "^8.15.0"
+                    "@react-three/drei" = "^9.88.0"
+                    "@react-three/postprocessing" = "^2.15.0"
+                    leva = "^0.9.35"
+                    winston = "^3.11.0"
+                    zustand = "^4.4.7"
+                }
+                devDependencies = @{
+                    husky = "^8.0.3"
+                    "lint-staged" = "^15.2.0"
+                    "@typescript-eslint/eslint-plugin" = "^6.14.0"
+                    "@typescript-eslint/parser" = "^6.14.0"
+                    "@types/node" = "^20.10.0"
+                    "@types/react" = "^18.2.45"
+                    "@types/react-dom" = "^18.2.18"
+                    "@types/three" = "^0.177.0"
+                    "@types/winston" = "^2.4.4"
+                    "@vitejs/plugin-react" = "^4.2.1"
+                    "@playwright/test" = "^1.40.0"
+                    eslint = "^8.57.0"
+                    prettier = "^3.0.0"
+                    typescript = "^5.3.3"
+                    vite = "^5.0.8"
+                    vitest = "^1.0.4"
+                }
             }
         }
 
         $packageJsonContent = $packageJson | ConvertTo-Json -Depth 10
         Set-Content -Path $packageJsonPath -Value $packageJsonContent -Encoding UTF8
-        Write-SuccessLog "Package.json created with required dependencies"
+        Write-SuccessLog "Package.json created with complete dependencies from template"
     }
 
-    # Install dependencies using pnpm with conflict resolution
-    Write-InfoLog "Installing dependencies using pnpm with peer dependency resolution..."
+    # Install dependencies with real-time progress display
+    Write-InfoLog "Installing dependencies with real-time progress..."
+    Write-InfoLog "📦 You'll see live installation output below:"
+    Write-Host ("=" * 60) -ForegroundColor Cyan
     
-    # First try normal pnpm install
-    & pnpm install --reporter=silent 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        Write-SuccessLog "Dependencies installed successfully with pnpm"
-    } else {
-        Write-WarningLog "Standard pnpm install failed, trying with conflict resolution..."
+    # First try normal pnpm install with live output
+    Write-InfoLog "🔄 Attempting standard pnpm install (live output)..."
+    try {
+        # Use direct command execution for real-time output
+        Write-Host "Running: pnpm install" -ForegroundColor Yellow
+        Invoke-Expression "pnpm install"
+        $exitCode = $LASTEXITCODE
         
-        # Try with legacy peer deps equivalent for pnpm
-        & pnpm install --no-strict-peer-deps --reporter=silent 2>&1 | Out-Null
-        if ($LASTEXITCODE -eq 0) {
-            Write-SuccessLog "Dependencies installed successfully with peer dependency resolution"
+        if ($exitCode -eq 0) {
+            Write-Host ("=" * 60) -ForegroundColor Green
+            Write-SuccessLog "✅ Dependencies installed successfully with pnpm"
         } else {
-            Write-WarningLog "pnpm install failed, falling back to npm with legacy peer deps..."
+            Write-Host ("=" * 60) -ForegroundColor Yellow
+            Write-WarningLog "⚠️  Standard pnpm install failed (exit code: $exitCode)"
+            Write-InfoLog "🔄 Trying pnpm install with relaxed peer dependencies..."
+            Write-Host ("=" * 60) -ForegroundColor Cyan
             
-            # Final fallback to npm with legacy peer deps
-            & npm install --legacy-peer-deps --silent 2>&1 | Out-Null
-            if ($LASTEXITCODE -eq 0) {
-                Write-SuccessLog "Dependencies installed successfully with npm legacy mode"
+            # Try with relaxed peer deps
+            Write-Host "Running: pnpm install --no-strict-peer-deps" -ForegroundColor Yellow
+            Invoke-Expression "pnpm install --no-strict-peer-deps"
+            $exitCode = $LASTEXITCODE
+            
+            if ($exitCode -eq 0) {
+                Write-Host ("=" * 60) -ForegroundColor Green
+                Write-SuccessLog "✅ Dependencies installed successfully with relaxed peer dependencies"
             } else {
-                Write-WarningLog "Dependency installation failed, but continuing setup (pre-commit hooks can work without perfect deps)"
+                Write-Host ("=" * 60) -ForegroundColor Yellow
+                Write-WarningLog "⚠️  pnpm install failed (exit code: $exitCode), trying npm fallback..."
+                Write-InfoLog "🔄 Attempting npm install with legacy peer deps (final fallback)..."
+                Write-Host ("=" * 60) -ForegroundColor Cyan
+                
+                # Final fallback to npm
+                Write-Host "Running: npm install --legacy-peer-deps" -ForegroundColor Yellow
+                Invoke-Expression "npm install --legacy-peer-deps"
+                $exitCode = $LASTEXITCODE
+                
+                Write-Host ("=" * 60) -ForegroundColor Cyan
+                if ($exitCode -eq 0) {
+                    Write-SuccessLog "✅ Dependencies installed successfully with npm legacy mode"
+                } else {
+                    Write-WarningLog "⚠️  All dependency installation methods failed (exit code: $exitCode)"
+                    Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
+                }
             }
         }
+    } catch {
+        Write-ErrorLog "Installation process failed: $($_.Exception.Message)"
+        Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
     }
 
     # Initialize Husky (modern approach for v9+)

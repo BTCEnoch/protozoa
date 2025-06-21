@@ -127,13 +127,49 @@ export function createPerformanceLogger(service = 'performance') {
             throw
         }
     } else {
-        Write-InfoLog "Creating new package.json structure"
-        $pkgJson = [PSCustomObject]@{ 
-            name = "protozoa"
-            version = "0.0.1"
-            scripts = [PSCustomObject]@{}
-            dependencies = [PSCustomObject]@{}
-            devDependencies = [PSCustomObject]@{}
+        Write-InfoLog "Creating new package.json from template"
+        $templatePath = Join-Path $ProjectRoot "templates/package.json.template"
+        if (Test-Path $templatePath) {
+            $pkgJson = Get-Content $templatePath -Raw | ConvertFrom-Json
+            Write-InfoLog "Loaded package.json structure from template"
+        } else {
+            Write-WarningLog "Template not found, using fallback structure"
+            $pkgJson = [PSCustomObject]@{ 
+                name = "protozoa"
+                version = "0.1.0"
+                scripts = [PSCustomObject]@{
+                    dev = "vite"
+                    build = "tsc -p tsconfig.app.json && vite build"
+                    "type-check" = "tsc --noEmit"
+                    test = "vitest"
+                    preview = "vite preview"
+                }
+                dependencies = [PSCustomObject]@{
+                    three = "^0.177.0"
+                    react = "^18.2.0"
+                    "react-dom" = "^18.2.0"
+                    "@react-three/fiber" = "^8.15.0"
+                    "@react-three/drei" = "^9.88.0"
+                    "@react-three/postprocessing" = "^2.15.0"
+                    leva = "^0.9.35"
+                    winston = "^3.11.0"
+                    zustand = "^4.4.7"
+                }
+                devDependencies = [PSCustomObject]@{
+                    "@types/node" = "^20.10.0"
+                    "@types/react" = "^18.2.45"
+                    "@types/react-dom" = "^18.2.18"
+                    "@types/three" = "^0.177.0"
+                    "@types/winston" = "^2.4.4"
+                    "@vitejs/plugin-react" = "^4.2.1"
+                    "@playwright/test" = "^1.40.0"
+                    typescript = "^5.3.3"
+                    vite = "^5.0.8"
+                    vitest = "^1.0.4"
+                    eslint = "^8.57.0"
+                    prettier = "^3.0.0"
+                }
+            }
         }
     }
 
