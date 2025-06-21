@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Generates GitHub Actions CI pipeline with lint, test, bundle-size, SonarQube gates.
+#>

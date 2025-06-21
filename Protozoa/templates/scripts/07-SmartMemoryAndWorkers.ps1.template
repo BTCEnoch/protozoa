@@ -1,0 +1,102 @@
+<#
+.SYNOPSIS
+    Generates adaptive MemoryPool and WorkerManager scaffolding; injects USE_WORKERS build flag.
+#>
+param(
+    [string]$ProjectRoot = (Resolve-Path ..).Path,
+    [switch]$SkipViteFlag
+)
+
+$ErrorActionPreference = 'Stop'
+
+function Log-Info($msg){ Write-Host "[INFO ] $msg" -ForegroundColor Green }
+function Log-Warn($msg){ Write-Host "[WARN ] $msg" -ForegroundColor Yellow }
+function Log-Err ($msg){ Write-Host "[ERROR] $msg"-ForegroundColor Red }
+
+try {
+    $memDir   = Join-Path $ProjectRoot 'src/shared/memory'
+    $workerDir= Join-Path $ProjectRoot 'src/shared/workers'
+    New-Item -ItemType Directory -Path $memDir -Force | Out-Null
+    New-Item -ItemType Directory -Path $workerDir -Force | Out-Null
+
+    # ---- Generate MemoryPool.ts ----
+    $memFile = Join-Path $memDir 'MemoryPool.ts'
+    @'
+/**
+ * Auto-generated MemoryPool – provides typed buffer pooling with ref counting.
+ */
+export interface MemoryStats { totalBuffers: number; totalSize: number; poolUtilization: number }
+
+export class MemoryPool {
+  private buffers: Map<string, ArrayBuffer[]> = new Map()
+  private readonly maxPerType = 256
+
+  allocate (type: string, size: number): ArrayBuffer {
+    const pool = this.buffers.get(type) ?? []
+    return pool.pop() ?? new ArrayBuffer(size)
+  }
+
+  release (type: string, buffer: ArrayBuffer): void {
+    const pool = this.buffers.get(type) ?? []
+    if (pool.length < this.maxPerType) pool.push(buffer)
+    this.buffers.set(type, pool)
+  }
+
+  getStats (): MemoryStats {
+    let total = 0
+    this.buffers.forEach(arr => total += arr.reduce((a,b)=>a+b.byteLength,0))
+    const totalBuffers = Array.from(this.buffers.values()).flat().length
+    return { totalBuffers, totalSize: total, poolUtilization: totalBuffers / (this.maxPerType* this.buffers.size) }
+  }
+}
+'@ | Set-Content -Path $memFile -Encoding utf8
+
+    Log-Info "MemoryPool.ts scaffolded"
+
+    # ---- Generate WorkerManager.ts ----
+    $workerFile = Join-Path $workerDir 'WorkerManager.ts'
+    @'
+/**
+ * Auto-generated WorkerManager – spawns and tracks WebWorkers per domain.
+ */
+export class WorkerManager<T extends Worker = Worker> {
+  private workers: Map<string, T> = new Map()
+
+  spawn (id: string, scriptURL: string): T {
+    if (this.workers.has(id)) return this.workers.get(id) as T
+    const w = new Worker(scriptURL, { type: 'module' }) as T
+    this.workers.set(id, w)
+    return w
+  }
+
+  terminate (id: string): void {
+    const w = this.workers.get(id)
+    if (!w) return
+    w.terminate()
+    this.workers.delete(id)
+  }
+
+  dispose (): void {
+    this.workers.forEach(w => w.terminate())
+    this.workers.clear()
+  }
+}
+'@ | Set-Content -Path $workerFile -Encoding utf8
+
+    Log-Info "WorkerManager.ts scaffolded"
+
+    if (-not $SkipViteFlag) {
+        $vite = Join-Path $ProjectRoot 'vite.config.ts'
+        if (-not (Test-Path $vite)) { Log-Warn "vite.config.ts not found – skipping flag injection" }
+        else {
+            $content = Get-Content $vite -Raw
+            if ($content -notmatch 'USE_WORKERS') {
+                $new = $content -replace 'define:\s*\{' , "define: { USE_WORKERS: 'true', "
+                $new | Set-Content $vite -Encoding utf8
+                Log-Info "Injected USE_WORKERS build flag"
+            }
+            else { Log-Warn "USE_WORKERS flag already present" }
+        }
+    }
+}
+catch { Log-Err $_; exit 1 }

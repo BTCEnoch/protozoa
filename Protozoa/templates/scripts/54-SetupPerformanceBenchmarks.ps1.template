@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Adds vitest + tinybench benchmark harness for physics & particle algorithms.
+#>

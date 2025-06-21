@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Replaces imperative Three.js usage with React Three Fiber components scaffold.
+#>

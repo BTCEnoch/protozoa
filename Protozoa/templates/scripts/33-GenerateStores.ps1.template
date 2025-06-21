@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Generates Zustand stores: useSimulationStore, useParticleStore with devtools.
+#>

@@ -1,0 +1,9 @@
+<#
+.SYNOPSIS
+    Adds mutation probability tables and milestone evolution logic to TraitService.
+.DESCRIPTION
+    - Generates `mutationProbabilities.ts` data file.
+    - Injects evolution methods into TraitService.
+    - Adds winston logs.
+    Fill in TODO sections before execution.
+#>
