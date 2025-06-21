@@ -142,16 +142,32 @@ if ($importFixes -gt 0) {
     Write-SuccessLog "Updated imports in $importFixes files"
 }
 
-# Step 6: Clean up empty directories
+# Step 6: Clean up empty directories (but preserve essential directories)
 Write-InfoLog "Removing empty directories..."
 if (Test-Path "src") {
+    # Define essential directories that should not be removed even if empty
+    $essentialDirs = @(
+        "src/shared",
+        "src/shared/config", 
+        "src/shared/lib",
+        "src/shared/types",
+        "src/domains"
+    )
+    
     do {
         $emptyDirs = Get-ChildItem -Path "src" -Recurse -Directory | Where-Object {
-            $_.GetFileSystemInfos().Count -eq 0
+            $_.GetFileSystemInfos().Count -eq 0 -and 
+            $_.FullName -notin ($essentialDirs | ForEach-Object { Join-Path (Get-Location) $_ })
         }
         foreach ($dir in $emptyDirs) {
-            Write-InfoLog "Removing empty directory: $($dir.FullName)"
-            Remove-Item $dir.FullName -Force
+            # Double-check this isn't an essential directory
+            $relativePath = $dir.FullName.Replace((Get-Location).Path, "").TrimStart('\').Replace('\', '/')
+            $isEssential = $essentialDirs | Where-Object { $_.Replace('\', '/') -eq $relativePath }
+            
+            if (-not $isEssential) {
+                Write-InfoLog "Removing empty directory: $($dir.FullName)"
+                Remove-Item $dir.FullName -Force
+            }
         }
     } while ($emptyDirs.Count -gt 0)
 } else {
