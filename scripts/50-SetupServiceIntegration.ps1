@@ -19,17 +19,10 @@ try {
     $rootDir = Join-Path $ProjectRoot 'src'
     New-Item -Path $rootDir -ItemType Directory -Force | Out-Null
     
-    # Create simple composition root
-    $compContent = '// compositionRoot.ts - initializes all domain singletons
-export function initServices() {
-  console.info("Services initialized")
-}
-
-export function disposeServices() {
-  console.info("Services disposed")
-}'
-
-    Set-Content -Path (Join-Path $rootDir 'compositionRoot.ts') -Value $compContent -Encoding UTF8
+    # Generate composition root from template
+    Write-TemplateFile -TemplateRelPath 'src/compositionRoot.ts.template' `
+                      -DestinationPath (Join-Path $rootDir 'compositionRoot.ts')
+    
     Write-SuccessLog "compositionRoot.ts generated"
     exit 0
 } catch {

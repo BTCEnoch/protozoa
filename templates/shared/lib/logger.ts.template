@@ -188,7 +188,7 @@ export function createServiceLogger(service: string, level?: LogLevel): Logger {
       }
       
       // Check for Vite development mode
-      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+      if (typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV) {
         return 'debug'
       }
       
@@ -276,7 +276,7 @@ export function initializeLogging(): void {
   
   // Log environment info
   try {
-    const env = typeof import.meta !== 'undefined' && import.meta.env?.DEV ? 'development' : 'production'
+    const env = typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV ? 'development' : 'production'
     logger.info(`🌍 Environment: ${env}`)
     
     if (typeof window !== 'undefined') {
@@ -285,5 +285,4 @@ export function initializeLogging(): void {
   } catch {
     logger.debug('Environment detection failed - continuing with defaults')
   }
-}
 }

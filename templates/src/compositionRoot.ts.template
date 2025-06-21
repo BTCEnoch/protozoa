@@ -15,13 +15,9 @@ import { BitcoinService } from '@/domains/bitcoin/services/BitcoinService'
 import { TraitService } from '@/domains/trait/services/TraitService'
 import { FormationService } from '@/domains/formation/services/FormationService'
 import { GroupService } from '@/domains/group/services/GroupService'
-import { SwarmService } from '@/domains/group/services/SwarmService'
-import { RenderingService } from '@/domains/rendering/services/RenderingService'
-import { AnimationService } from '@/domains/animation/services/AnimationService'
-import { EffectService } from '@/domains/effect/services/EffectService'
 
 // Shared Service Imports
-import { eventBus } from '@/shared/services/eventBus'
+import { EventBus } from '@/shared/services/eventBus'
 
 // Service State Management
 let servicesInitialized = false
@@ -95,7 +91,10 @@ const serviceConfigs: ServiceConfig[] = [
   },
   {
     name: 'SwarmService',
-    factory: async () => SwarmService.getInstance(),
+    factory: async () => {
+      const { swarmService } = await import('@/domains/group/services/SwarmService')
+      return swarmService
+    },
     dependencies: ['GroupService', 'PhysicsService'],
     critical: false // Non-critical for basic functionality
   },
@@ -103,19 +102,28 @@ const serviceConfigs: ServiceConfig[] = [
   // Phase 5: Rendering and Visual Services
   {
     name: 'RenderingService',
-    factory: async () => RenderingService.getInstance(),
+    factory: async () => {
+      const { renderingService } = await import('@/domains/rendering/services/RenderingService')
+      return renderingService
+    },
     dependencies: ['ParticleService', 'GroupService'],
     critical: true
   },
   {
     name: 'AnimationService',
-    factory: async () => AnimationService.getInstance(),
+    factory: async () => {
+      const { animationService } = await import('@/domains/animation/services/AnimationService')
+      return animationService
+    },
     dependencies: ['RenderingService', 'PhysicsService'],
     critical: false
   },
   {
     name: 'EffectService',
-    factory: async () => EffectService.getInstance(),
+    factory: async () => {
+      const { effectService } = await import('@/domains/effect/services/EffectService')
+      return effectService
+    },
     dependencies: ['RenderingService', 'AnimationService'],
     critical: false
   }
@@ -191,7 +199,8 @@ export async function initServices(): Promise<void> {
       
       // Initialize event bus
       logger.info('📡 Initializing event bus...')
-      // Event bus is already initialized as a singleton
+      const eventBus = EventBus.getInstance()
+      serviceRegistry.set('EventBus', eventBus)
       
       // Initialize services in dependency order
       for (const config of serviceConfigs) {
@@ -201,34 +210,19 @@ export async function initServices(): Promise<void> {
       // Mark as initialized
       servicesInitialized = true
       
-      // Log completion
       const totalDuration = perfLogger.endTimer(totalTimer)
-      logger.info(`✅ All services initialized successfully (${totalDuration.toFixed(2)}ms)`)
-      
-      // Log service registry status
-      const registeredServices = Array.from(serviceRegistry.keys())
-      logger.info('📊 Service Registry:', {
-        total: registeredServices.length,
-        services: registeredServices
-      })
-      
-      // Log memory usage after initialization
-      perfLogger.logMemoryUsage()
+      logger.info(`🎉 All services initialized successfully in ${totalDuration.toFixed(2)}ms`)
       
     } catch (error) {
       perfLogger.endTimer(totalTimer)
-      logger.error('❌ Service initialization failed:', error)
-      
-      // Clean up partial initialization
-      await disposeServices()
-      
+      logger.error(`❌ Service initialization failed: ${error}`)
       throw error
     } finally {
-      // Clear the initialization promise
+      // Reset initialization promise
       initializationPromise = null
     }
   })()
-  
+
   return initializationPromise
 }
 
@@ -236,59 +230,46 @@ export async function initServices(): Promise<void> {
  * Dispose all services and clean up resources
  */
 export async function disposeServices(): Promise<void> {
-  if (!servicesInitialized && serviceRegistry.size === 0) {
-    logger.info('ℹ️ No services to dispose')
+  if (!servicesInitialized) {
+    logger.info('⚠️ Services not initialized, nothing to dispose')
     return
   }
+
+  logger.info('🧹 Disposing all services...')
+  const disposeTimer = 'service_disposal'
+  perfLogger.startTimer(disposeTimer)
+
+  // Dispose services in reverse order
+  const services = Array.from(serviceRegistry.entries()).reverse()
   
-  const disposalTimer = 'service_disposal'
-  perfLogger.startTimer(disposalTimer)
-  
-  logger.info('🧹 Disposing Protozoa services...')
-  
-  try {
-    // Dispose services in reverse order of initialization
-    const reverseConfigs = [...serviceConfigs].reverse()
-    
-    for (const config of reverseConfigs) {
-      const service = serviceRegistry.get(config.name)
-      
+  for (const [name, service] of services) {
+    try {
       if (service && typeof service.dispose === 'function') {
-        try {
-          logger.debug(`🗑️ Disposing ${config.name}...`)
-          await service.dispose()
-          logger.debug(`✅ ${config.name} disposed`)
-        } catch (error) {
-          logger.warn(`⚠️ Failed to dispose ${config.name}:`, error)
-        }
+        await service.dispose()
+        logger.info(`🗑️ Disposed ${name}`)
       }
+    } catch (error) {
+      logger.warn(`⚠️ Failed to dispose ${name}: ${error}`)
     }
-    
-    // Clear the service registry
-    serviceRegistry.clear()
-    servicesInitialized = false
-    
-    const duration = perfLogger.endTimer(disposalTimer)
-    logger.info(`✅ Services disposed successfully (${duration.toFixed(2)}ms)`)
-    
-  } catch (error) {
-    perfLogger.endTimer(disposalTimer)
-    logger.error('❌ Service disposal failed:', error)
-    throw error
   }
+
+  // Clear registry and reset state
+  serviceRegistry.clear()
+  servicesInitialized = false
+  
+  const disposeDuration = perfLogger.endTimer(disposeTimer)
+  logger.info(`✅ All services disposed in ${disposeDuration.toFixed(2)}ms`)
 }
 
 /**
- * Get a service from the registry
+ * Get a service instance from the registry
  */
 export function getService<T>(serviceName: string): T | null {
   const service = serviceRegistry.get(serviceName)
-  
   if (!service) {
-    logger.warn(`⚠️ Service ${serviceName} not found in registry`)
+    logger.warn(`⚠️ Service '${serviceName}' not found in registry`)
     return null
   }
-  
   return service as T
 }
 
@@ -296,74 +277,62 @@ export function getService<T>(serviceName: string): T | null {
  * Check if a specific service is initialized
  */
 export function isServiceInitialized(serviceName: string): boolean {
-  return serviceRegistry.has(serviceName) && serviceRegistry.get(serviceName) !== null
+  return serviceRegistry.has(serviceName)
 }
 
 /**
- * Get the overall service initialization status
+ * Get overall service initialization status
  */
 export function getServiceStatus(): boolean {
   return servicesInitialized
 }
 
 /**
- * Get service registry information for debugging
+ * Get information about all registered services
  */
 export function getServiceRegistryInfo(): Record<string, any> {
   const info: Record<string, any> = {}
-  
   for (const [name, service] of serviceRegistry.entries()) {
     info[name] = {
-      initialized: service !== null,
-      type: service ? service.constructor.name : 'null'
+      initialized: true,
+      type: service?.constructor?.name || 'Unknown',
+      hasDispose: typeof service?.dispose === 'function'
     }
   }
-  
   return info
 }
 
 /**
- * Health check for all critical services
+ * Health check for all services
  */
 export async function healthCheck(): Promise<Record<string, boolean>> {
-  const results: Record<string, boolean> = {}
+  const health: Record<string, boolean> = {}
   
-  logger.info('🏥 Performing service health check...')
-  
-  for (const config of serviceConfigs.filter(c => c.critical)) {
-    const service = serviceRegistry.get(config.name)
-    
+  for (const [name, service] of serviceRegistry.entries()) {
     try {
       if (service && typeof service.healthCheck === 'function') {
-        const isHealthy = await service.healthCheck()
-        results[config.name] = isHealthy
-        logger.debug(`${isHealthy ? '✅' : '❌'} ${config.name} health check`)
+        health[name] = await service.healthCheck()
       } else {
-        // If no health check method, assume healthy if service exists
-        results[config.name] = service !== null
-        logger.debug(`${service ? '✅' : '❌'} ${config.name} exists`)
+        // Basic health check - service exists and is not null
+        health[name] = service !== null && service !== undefined
       }
     } catch (error) {
-      results[config.name] = false
-      logger.warn(`❌ ${config.name} health check failed:`, error)
+      logger.error(`❌ Health check failed for ${name}: ${error}`)
+      health[name] = false
     }
   }
   
-  const healthyCount = Object.values(results).filter(Boolean).length
-  const totalCount = Object.keys(results).length
-  
-  logger.info(`🏥 Health check complete: ${healthyCount}/${totalCount} services healthy`)
-  
-  return results
+  return health
 }
 
 /**
- * Restart a specific service (for error recovery)
+ * Restart a specific service
  */
 export async function restartService(serviceName: string): Promise<boolean> {
-  logger.info(`🔄 Restarting service: ${serviceName}`)
-  
   try {
+    logger.info(`🔄 Restarting service: ${serviceName}`)
+    
+    // Find service config
     const config = serviceConfigs.find(c => c.name === serviceName)
     if (!config) {
       logger.error(`❌ Service config not found: ${serviceName}`)
@@ -386,7 +355,7 @@ export async function restartService(serviceName: string): Promise<boolean> {
     return true
     
   } catch (error) {
-    logger.error(`❌ Failed to restart service ${serviceName}:`, error)
+    logger.error(`❌ Failed to restart service ${serviceName}: ${error}`)
     return false
   }
 }

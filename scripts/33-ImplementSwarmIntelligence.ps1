@@ -21,8 +21,8 @@ try{
  Write-TemplateFile -TemplateRelPath 'domains/group/interfaces/ISwarmService.ts.template' `
                    -DestinationPath (Join-Path $interfaces 'ISwarmService.ts')
 
- Write-TemplateFile -TemplateRelPath 'domains/group/services/swarmService.ts.template' `
-                   -DestinationPath (Join-Path $services 'swarmService.ts')
+ Write-TemplateFile -TemplateRelPath 'domains/group/services/SwarmService.ts.template' `
+                   -DestinationPath (Join-Path $services 'SwarmService.ts')
 
  Write-SuccessLog "SwarmService generated"
  exit 0

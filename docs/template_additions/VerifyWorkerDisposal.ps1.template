@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Scans TS services to verify any spawned Worker is terminated in dispose().
+#>

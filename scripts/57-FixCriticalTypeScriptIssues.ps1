@@ -39,16 +39,11 @@ try {
 
     # 2. Regenerate SwarmService from fixed template  
     Write-InfoLog "Step 2: Regenerating SwarmService with fixed group access"
+    $swarmTemplatePath = Join-Path $ProjectRoot "templates/domains/group/services/SwarmService.ts.template"
     $groupServicesPath = Join-Path $ProjectRoot "src/domains/group/services"
-    $swarmTemplatePath = Join-Path $ProjectRoot "templates/domains/group/services/swarmService.ts.template"
-    
-    if (Test-Path $swarmTemplatePath) {
-        $swarmContent = Get-Content $swarmTemplatePath -Raw -Encoding UTF8
-        Set-Content -Path (Join-Path $groupServicesPath "swarmService.ts") -Value $swarmContent -Encoding UTF8
-        Write-SuccessLog "SwarmService regenerated with fixed group access"
-    } else {
-        Write-WarningLog "SwarmService template not found, skipping"
-    }
+    $swarmContent = Get-Content $swarmTemplatePath -Raw
+    Set-Content -Path (Join-Path $groupServicesPath "SwarmService.ts") -Value $swarmContent -Encoding UTF8
+    Write-SuccessLog "SwarmService regenerated with fixed group access"
 
     # 3. Regenerate PhysicsService with Matrix4Tuple fix
     Write-InfoLog "Step 3: Regenerating PhysicsService with Matrix4Tuple conversion fix"

@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Installs OpenTelemetry libs and patches Winston transport for OT span meta propagation.
+#>

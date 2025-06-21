@@ -17,6 +17,8 @@ $scriptSequence = @(
     @{ Phase = 0; Script = "02-GenerateDomainStubs.ps1"; Description = "Service interfaces and stubs" },
     @{ Phase = 0; Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy cleanup" },
     @{ Phase = 0; Script = "04-EnforceSingletonPatterns.ps1"; Description = "Architectural patterns" },
+    @{ Phase = 0; Script = "04a-GenerateThemeCSS.ps1"; Description = "Theme CSS generation from TypeScript palettes" },
+    @{ Phase = 0; Script = "04b-SmartMemoryAndWorkers.ps1"; Description = "Memory pooling and worker management infrastructure" },
     @{ Phase = 0; Script = "05-VerifyCompliance.ps1"; Description = "Domain compliance validation" },
     @{ Phase = 0; Script = "06-DomainLint.ps1"; Description = "Domain-specific linting rules" },
     @{ Phase = 0; Script = "07-BuildAndTest.ps1"; Description = "Build verification" },
@@ -29,6 +31,7 @@ $scriptSequence = @(
     @{ Phase = 1; Script = "17-GenerateEnvironmentConfig.ps1"; Description = "Environment detection & config" },
     @{ Phase = 1; Script = "18a-SetupLoggingService.ps1"; Description = "Winston logging infrastructure" },
     @{ Phase = 1; Script = "18-GenerateFormationDomain.ps1"; Description = "Formation domain implementation" },
+    @{ Phase = 1; Script = "10a-EnhanceParticleInitService.ps1"; Description = "Enhanced particle initialization with 500-particle allocation" },
     @{ Phase = 1; Script = "14-FixUtilityFunctions.ps1"; Description = "Utility function validation" },
 
     # === PHASE 2: DEVELOPMENT ENVIRONMENT (2 Scripts) ===
@@ -40,19 +43,24 @@ $scriptSequence = @(
     # Fundamental domain services
     @{ Phase = 3; Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin Ordinals protocol" },
     @{ Phase = 3; Script = "23-GenerateRNGService.ps1"; Description = "Random number generation service" },
+    @{ Phase = 3; Script = "23a-GenerateFormationService.ps1"; Description = "Formation service with pattern library and caching" },
     @{ Phase = 3; Script = "24-GeneratePhysicsService.ps1"; Description = "Physics engine service" },
     @{ Phase = 3; Script = "25-SetupPhysicsWebWorkers.ps1"; Description = "Physics worker threads" },
     @{ Phase = 3; Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin blockchain service" },
+    @{ Phase = 3; Script = "26a-EnhanceBitcoinServiceRetry.ps1"; Description = "Bitcoin service retry logic and rate limiting" },
     @{ Phase = 3; Script = "27-GenerateTraitService.ps1"; Description = "Trait management service" },
     @{ Phase = 3; Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Real-time blockchain data" },
     @{ Phase = 3; Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation framework" },
+    @{ Phase = 3; Script = "29a-SetupOpenTelemetry.ps1"; Description = "OpenTelemetry observability with Winston integration" },
 
     # === PHASE 4: DOMAIN SERVICES (10 Scripts) ===
     # Core entity and behavior services
     @{ Phase = 4; Script = "30-EnhanceTraitSystem.ps1"; Description = "Enhanced trait system" },
     @{ Phase = 4; Script = "31-GenerateParticleService.ps1"; Description = "Particle service (core entity)" },
     @{ Phase = 4; Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle" },
+    @{ Phase = 4; Script = "32a-GenerateEvolutionEngine.ps1"; Description = "Evolution engine with mutation algorithms and trait inheritance" },
     @{ Phase = 4; Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm behavior" },
+    @{ Phase = 4; Script = "33a-GenerateStores.ps1"; Description = "Zustand stores with devtools integration" },
     @{ Phase = 4; Script = "34-EnhanceFormationSystem.ps1"; Description = "Formation enhancements" },
     @{ Phase = 4; Script = "35-GenerateRenderingService.ps1"; Description = "THREE.js rendering service" },
     @{ Phase = 4; Script = "36-GenerateEffectService.ps1"; Description = "Visual effects service" },
@@ -63,6 +71,7 @@ $scriptSequence = @(
     # Animation and advanced behaviors
     @{ Phase = 5; Script = "40-GenerateAnimationService.ps1"; Description = "Animation service" },
     @{ Phase = 5; Script = "41-GenerateGroupService.ps1"; Description = "Group management service" },
+    @{ Phase = 5; Script = "41a-SetupR3FIntegration.ps1"; Description = "React Three Fiber declarative rendering" },
     @{ Phase = 5; Script = "42-SetupPhysicsBasedAnimation.ps1"; Description = "Physics-driven animation" },
     @{ Phase = 5; Script = "43-ImplementAdvancedTimeline.ps1"; Description = "Timeline system" },
     @{ Phase = 5; Script = "44-SetupAnimationBlending.ps1"; Description = "Animation blending" },
@@ -83,8 +92,10 @@ $scriptSequence = @(
             @{ Phase = 7; Script = "52-SetupReactIntegration.ps1"; Description = "React component integration" },
         @{ Phase = 7; Script = "59-GenerateMainEntryPoint.ps1"; Description = "Generate React main.tsx entry point" },
         @{ Phase = 7; Script = "60-SetupBrowserServerRequirements.ps1"; Description = "Vite config, path aliases, and development server setup" },
+        @{ Phase = 7; Script = "60a-VerifyWorkerDisposal.ps1"; Description = "AST validation for proper worker cleanup" },
         @{ Phase = 7; Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
     @{ Phase = 7; Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing suite" },
+    @{ Phase = 7; Script = "54a-SetupPerformanceBenchmarks.ps1"; Description = "Vitest performance benchmarks with CI integration" },
     @{ Phase = 7; Script = "55-SetupPersistenceLayer.ps1"; Description = "Data persistence" },
     @{ Phase = 7; Script = "56-SetupEndToEndValidation.ps1"; Description = "E2E testing" },
 

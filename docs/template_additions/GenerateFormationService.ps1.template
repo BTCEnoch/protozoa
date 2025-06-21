@@ -1,0 +1,4 @@
+<#
+.SYNOPSIS
+    Scaffolds Formation domain core: IFormationService, FormationService, FormationBlendingService, default data.
+#>
