@@ -2,8 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "allowJs": false
+    "allowJs": false,
+    "declaration": true,
+    "noEmit": false,
+    "composite": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts", "tests"]
+  "exclude": ["src/**/*.test.ts", "tests/**/*", "**/*.spec.ts"]
 }

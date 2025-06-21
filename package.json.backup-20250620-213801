@@ -1,0 +1,102 @@
+﻿{
+    "name":  "protozoa",
+    "version":  "1.0.0",
+    "description":  "Bitcoin Ordinals Digital Organism Ecosystem",
+    "main":  "index.js",
+    "type":  "module",
+    "scripts":  {
+                    "build":  "tsc \u0026\u0026 vite build",
+                    "dev":  "vite",
+                    "preview":  "vite preview",
+                    "test":  "vitest",
+                    "test:e2e":  "playwright test",
+                    "test:watch":  "vitest --watch",
+                    "test:coverage":  "vitest run --coverage",
+                    "lint":  "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+                    "lint:fix":  "eslint src --ext .ts,.tsx --fix",
+                    "type-check":  "tsc --noEmit",
+                    "fix:here-strings":  "node scripts/convert-here-strings.mjs",
+                    "prepare":  "echo \u0027Husky v9+ does not require install command\u0027",
+                    "docs":  "typedoc",
+                    "format":  "prettier --write \u0027src/**/*.{ts,tsx,js,jsx,json,md}\u0027",
+                    "format:check":  "prettier --check \u0027src/**/*.{ts,tsx,js,jsx,json,md}\u0027",
+                    "coverage":  "vitest run --coverage"
+                },
+    "keywords":  [
+                     "bitcoin",
+                     "ordinals",
+                     "blockchain",
+                     "three.js",
+                     "react",
+                     "typescript",
+                     "digital-organisms",
+                     "cryptocurrency",
+                     "web3",
+                     "nft"
+                 ],
+    "author":  "Enoch",
+    "license":  "MIT",
+    "dependencies":  {
+                         "@react-three/drei":  "^9.92.7",
+                         "@react-three/fiber":  "^8.15.11",
+                         "cross-fetch":  "^4.1.0",
+                         "react":  "^19.1.0",
+                         "react-dom":  "^19.1.0",
+                         "three":  "^0.177.0",
+                         "winston":  "^3.17.0",
+                         "zustand":  "^5.0.5"
+                     },
+    "devDependencies":  {
+                            "@babel/core":  "^7.25.8",
+                            "@babel/generator":  "^7.25.6",
+                            "@babel/template":  "^7.25.0",
+                            "@babel/traverse":  "^7.25.6",
+                            "@playwright/test":  "^1.40.0",
+                            "@types/babel__core":  "^7.20.5",
+                            "@types/babel__generator":  "^7.6.8",
+                            "@types/babel__template":  "^7.4.4",
+                            "@types/babel__traverse":  "^7.20.6",
+                            "@types/estree":  "^1.0.6",
+                            "@types/json-schema":  "^7.0.15",
+                            "@types/node":  "^24.0.3",
+                            "@types/react":  "^19.1.8",
+                            "@types/react-dom":  "^19.1.6",
+                            "@types/three":  "^0.177.0",
+                            "@types/webxr":  "^0.5.20",
+                            "@typescript-eslint/eslint-plugin":  "^8.34.1",
+                            "@typescript-eslint/parser":  "^8.34.1",
+                            "@vitejs/plugin-react":  "^4.2.1",
+                            "@vitest/coverage-v8":  "^1.5.0",
+                            "eslint":  "^9.29.0",
+                            "eslint-plugin-react":  "^7.33.2",
+                            "eslint-plugin-react-hooks":  "^4.6.0",
+                            "eslint-plugin-react-refresh":  "^0.4.5",
+                            "husky":  "^9.1.7",
+                            "lint-staged":  "^16.1.2",
+                            "prettier":  "^3.5.3",
+                            "ts-node":  "^10.9.1",
+                            "typedoc":  "^0.28.5",
+                            "typescript":  "^5.8.3",
+                            "vite":  "^5.0.0",
+                            "vitest":  "^3.2.4",
+                            "@types/winston":  "^2.4.4"
+                        },
+    "lint-staged":  {
+                        "*.{ts,tsx}":  [
+                                           "eslint --fix",
+                                           "prettier --write"
+                                       ],
+                        "*.{js,jsx}":  [
+                                           "eslint --fix",
+                                           "prettier --write"
+                                       ],
+                        "*.{json,md,yml,yaml}":  [
+                                                     "prettier --write"
+                                                 ]
+                    },
+    "engines":  {
+                    "node":  "\u003e=18.0.0",
+                    "pnpm":  "\u003e=8.0.0"
+                },
+    "packageManager":  "pnpm@8.15.0"
+}

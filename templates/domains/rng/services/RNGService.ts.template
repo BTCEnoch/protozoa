@@ -18,10 +18,10 @@ function mulberry32(a: number): () => number {
 }
 
 export class RNGService implements IRNGService {
-  private static #instance: RNGService | null = null
+  private static instance: RNGService | null = null
   public static getInstance(): RNGService {
-    if (!RNGService.#instance) RNGService.#instance = new RNGService()
-    return RNGService.#instance
+    if (!RNGService.instance) RNGService.instance = new RNGService()
+    return RNGService.instance
   }
 
   private constructor() {
@@ -90,7 +90,7 @@ export class RNGService implements IRNGService {
   }
 
   dispose(): void {
-    RNGService.#instance = null
+    RNGService.instance = null
     this.#logger.info("RNGService disposed")
   }
 }

@@ -32,11 +32,12 @@ $domains = Get-DomainList
 Write-InfoLog "Generating service stubs for: $($domains -join ', ')"
 
 foreach ($domain in $domains) {
-    $serviceName = Get-ServiceName -Domain $domain
-    # Special case for RNG service to match the hardcoded interface name
+    # Special case for RNG service to match the correct naming convention
     if ($domain -eq 'rng') {
+        $serviceName = "RNGService"
         $interfaceName = "IRNGService"
     } else {
+        $serviceName = Get-ServiceName -Domain $domain
         $interfaceName = "I$serviceName"  
     }
     $serviceFilePath = "src/domains/$domain/services/$serviceName.ts"
@@ -304,8 +305,16 @@ $indexContent = @'
 '@
 
 foreach ($domain in $domains) {
+    # Handle RNG service naming specially
+    if ($domain -eq 'rng') {
+        $exportName = "rngService"
+        $serviceName = "RNGService"
+    } else {
+        $exportName = "${domain}Service"
+        $serviceName = Get-ServiceName $domain
+    }
     $indexContent += @"
-export { $($domain)Service } from './$domain/services/$(Get-ServiceName $domain)';
+export { $exportName } from './$domain/services/$serviceName';
 "@
 }
 

@@ -1,0 +1,12 @@
+﻿import { describe, it, expect } from 'vitest'
+import { particleService } from '@/domains/particle/services/ParticleService'
+
+describe('Particle update performance', () => {
+  it('updates 10k particles under 16ms', () => {
+    for (let i = 0; i < 10000; i++) particleService.createParticle()
+    const start = performance.now()
+    particleService.updateParticles(16)
+    const duration = performance.now() - start
+    expect(duration).toBeLessThan(16)
+  })
+})

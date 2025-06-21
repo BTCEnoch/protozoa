@@ -1,0 +1,38 @@
+﻿import { createServiceLogger } from '@/shared/lib/logger'
+import { particleService } from '@/domains/particle'
+import type { IPhysicsAnimationService } from '@/domains/animation/interfaces/IPhysicsAnimationService'
+
+interface Spring { pid: string; anchor: { x: number; y: number; z: number }; k: number; d: number }
+
+class PhysicsAnimationService implements IPhysicsAnimationService {
+  static #instance: PhysicsAnimationService | null = null
+  #log = createServiceLogger('PHYS_ANIM')
+  #springs: Spring[] = []
+  private constructor () {}
+  static getInstance () {
+    return this.#instance ?? (this.#instance = new PhysicsAnimationService())
+  }
+  addSpring (particleId: string, anchor: { x: number; y: number; z: number }, k: number, damper: number): void {
+    this.#springs.push({ pid: particleId, anchor, k, d: damper })
+  }
+  update (delta: number): void {
+    this.#springs.forEach(s => {
+      // Note: Since getParticleById doesn't exist, we'll need to find particles differently
+      // For now, logging the spring update instead of actual particle manipulation
+      this.#log.debug('Updating spring physics', { 
+        particleId: s.pid, 
+        anchor: s.anchor, 
+        springConstant: s.k, 
+        damping: s.d 
+      })
+      
+      // TODO: Implement proper particle lookup once ParticleService has particle retrieval methods
+      // This is a placeholder implementation
+    })
+  }
+  dispose (): void {
+    this.#springs = []
+    PhysicsAnimationService.#instance = null
+  }
+}
+export const physicsAnimationService = PhysicsAnimationService.getInstance()

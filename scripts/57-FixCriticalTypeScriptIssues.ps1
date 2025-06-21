@@ -91,52 +91,8 @@ try {
     } catch {
         Write-WarningLog "RNG Service regeneration failed: $($_.Exception.Message)"
         
-        # Create a minimal RNG service as fallback
-        Write-InfoLog "Creating minimal RNG service as fallback"
-        $rngServicesPath = Join-Path $ProjectRoot "src/domains/rng/services"
-        $minimalRngContent = @'
-/**
- * @fileoverview Minimal RNG Service Implementation
- * @description Simple deterministic random number generation service
- */
-
-import { createServiceLogger } from "@/shared/lib/logger";
-
-export class RngService {
-  static #instance: RngService | null = null;
-  #logger = createServiceLogger("RNGService");
-  #seed: number = 12345;
-
-  private constructor() {
-    this.#logger.info("RngService initialized");
-  }
-
-  public static getInstance(): RngService {
-    if (!RngService.#instance) {
-      RngService.#instance = new RngService();
-    }
-    return RngService.#instance;
-  }
-
-  public setSeed(seed: number): void {
-    this.#seed = seed;
-  }
-
-  public random(): number {
-    this.#seed = (this.#seed * 9301 + 49297) % 233280;
-    return this.#seed / 233280;
-  }
-
-  public dispose(): void {
-    RngService.#instance = null;
-  }
-}
-
-export const rngService = RngService.getInstance();
-'@
-        New-Item -Path $rngServicesPath -ItemType Directory -Force | Out-Null
-        Set-Content -Path (Join-Path $rngServicesPath "RngService.ts") -Value $minimalRngContent -Encoding UTF8
-        Write-SuccessLog "Minimal RNG service created as fallback"
+        # RNG service generation handled by template system - no fallback needed
+        Write-InfoLog "RNG Service should be handled by template system - skipping fallback"
     }
 
     # 6. Update worker manager with better type checking

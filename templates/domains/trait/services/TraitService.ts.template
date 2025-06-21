@@ -34,7 +34,7 @@ import { createServiceLogger } from "@/shared/lib/logger";
  */
 export class TraitService implements ITraitService {
   /** Singleton instance */
-  static #instance: TraitService | null = null;
+  static instance: TraitService | null = null;
 
   /** Service configuration */
   #config: TraitConfig;
@@ -105,10 +105,10 @@ export class TraitService implements ITraitService {
    * @returns TraitService singleton instance
    */
   public static getInstance(): TraitService {
-    if (!TraitService.#instance) {
-      TraitService.#instance = new TraitService();
+    if (!TraitService.instance) {
+      TraitService.instance = new TraitService();
     }
-    return TraitService.#instance;
+    return TraitService.instance;
   }
 
   /**
@@ -247,6 +247,27 @@ export class TraitService implements ITraitService {
   }
 
   /**
+   * Mutate a single trait value (helper method for trait inheritance)
+   * @param traitKey - The trait identifier
+   * @param value - The current trait value
+   * @returns Mutated trait value
+   */
+  public mutateTrait(traitKey: string, value: any): any {
+    // Apply simple mutation logic - can be extended for more complex mutations
+    if (typeof value === 'number') {
+      const range = this.#traitRanges.get(traitKey);
+      if (range) {
+        return this.#mutateNumericTrait(value, traitKey, 0.1);
+      }
+      return value * (0.9 + Math.random() * 0.2); // ±10% variation
+    }
+    if (typeof value === 'string' && traitKey === 'shape') {
+      return this.#availableShapes[Math.floor(Math.random() * this.#availableShapes.length)];
+    }
+    return value; // No mutation for unknown types
+  }
+
+  /**
    * Dispose of resources and cleanup
    */
   public dispose(): void {
@@ -256,7 +277,7 @@ export class TraitService implements ITraitService {
     this.#traitRanges.clear();
 
     // Reset singleton instance
-    TraitService.#instance = null;
+    TraitService.instance = null;
 
     this.#logger.info("TraitService disposal completed");
   }
@@ -319,7 +340,7 @@ export class TraitService implements ITraitService {
       secondaryColor: this.#generateColor(hash, 1),
       size: this.#generateTraitValue("size", hash, 2),
       opacity: this.#generateTraitValue("opacity", hash, 3),
-      shape: this.#availableShapes[hash[4] % this.#availableShapes.length],
+      shape: this.#availableShapes[(hash[4] || 0) % this.#availableShapes.length],
       particleDensity: this.#generateTraitValue("particleDensity", hash, 5),
       glowIntensity: this.#generateTraitValue("glowIntensity", hash, 6)
     };
@@ -385,9 +406,9 @@ export class TraitService implements ITraitService {
    * @returns RGB color hex string
    */
   #generateColor(hash: number[], offset: number): string {
-    const r = hash[offset % hash.length] % 256;
-    const g = hash[(offset + 1) % hash.length] % 256;
-    const b = hash[(offset + 2) % hash.length] % 256;
+    const r = (hash[offset % hash.length] || 128) % 256;
+    const g = (hash[(offset + 1) % hash.length] || 128) % 256;
+    const b = (hash[(offset + 2) % hash.length] || 128) % 256;
 
     return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
   }
@@ -403,7 +424,7 @@ export class TraitService implements ITraitService {
     const range = this.#traitRanges.get(traitName);
     if (!range) return 1.0;
 
-    const normalizedValue = (hash[offset % hash.length] % 1000) / 1000;
+    const normalizedValue = ((hash[offset % hash.length] || 500) % 1000) / 1000;
     return range.min + (normalizedValue * (range.max - range.min));
   }
 
