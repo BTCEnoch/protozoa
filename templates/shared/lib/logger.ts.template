@@ -1,0 +1,34 @@
+/**
+ * @fileoverview Winston logger helper (Template)
+ * @module @/shared/lib/logger
+ * @version 1.0.0
+ */
+
+import winston from "winston"
+
+export interface Logger {
+  debug(msg: string, meta?: any): void
+  info(msg: string, meta?: any): void
+  warn(msg: string, meta?: any): void
+  error(msg: string, meta?: any): void
+}
+
+export function createServiceLogger(service: string): Logger {
+  const logger = winston.createLogger({
+    level: process.env.NODE_ENV === "production" ? "info" : "debug",
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.errors({ stack: true }),
+      winston.format.json()
+    ),
+    defaultMeta: { service },
+    transports: [new winston.transports.Console({ format: winston.format.simple() })]
+  })
+
+  return {
+    debug: (m, meta) => logger.debug(m, meta),
+    info: (m, meta) => logger.info(m, meta),
+    warn: (m, meta) => logger.warn(m, meta),
+    error: (m, meta) => logger.error(m, meta)
+  }
+}
