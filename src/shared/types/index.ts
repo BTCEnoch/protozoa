@@ -1,109 +1,51 @@
-/**
+﻿/**
  * Shared Types Index
  * Central export point for all shared types and interfaces
  */
 
-// Export THREE.js Vector3 as the standard vector type
-export { Vector3 } from "three";
+// Vector and mathematical types
+export * from "./vectorTypes";
 
 // Core entity types
 export * from "./entityTypes";
 
-// Service configuration types  
+// Service configuration types
 export * from "./configTypes";
+
+// Logging and error types
+export * from "./loggingTypes";
 
 // Event types for domain communication
 export * from "./eventTypes";
 
-// Logging types
-export * from "./loggingTypes";
+// Import specific interfaces for type aliases
+import type { 
+  IOrganismTraits, 
+  IVisualTraits, 
+  IBehavioralTraits, 
+  IEvolutionaryTraits, 
+  IMutationTraits
+} from "./entityTypes";
+import type { IVector3 } from "./vectorTypes";
 
-// Organism traits structure
-export interface OrganismTraits {
-  visual: {
-    color: { r: number; g: number; b: number };
-    size: number;
-    opacity: number;
-  };
-  behavioral: {
-    speed: number;
-    aggressiveness: number;
-    socialness: number;
-  };
-  evolutionary: {
-    mutationRate: number;
-    adaptability: number;
-    survivability: number;
-  };
-}
-
-// Trait component interfaces
-export interface VisualTraits {
-  color: { r: number; g: number; b: number };
-  size: number;
-  opacity: number;
-}
-
-export interface BehavioralTraits {
-  speed: number;
-  aggressiveness: number;
-  socialness: number;
-}
-
-export interface EvolutionaryTraits {
-  mutationRate: number;
-  adaptability: number;
-  survivability: number;
-}
-
-export interface MutationTraits {
-  rate: number;
-  intensity: number;
-  stability: number;
-}
-
-// Common trait value type
+// Type aliases for backward compatibility with service code
+export type OrganismTraits = IOrganismTraits;
+export type VisualTraits = IVisualTraits;
+export type BehavioralTraits = IBehavioralTraits;
+export type EvolutionaryTraits = IEvolutionaryTraits;
+export type MutationTraits = IMutationTraits;
 export type TraitValue = string | number | boolean;
-
-// Particle type definitions
-export type ParticleType = "core" | "membrane" | "nucleus" | "cytoplasm" | "organelle" | "effect";
-
-// Particle creation data
-export interface ParticleCreationData {
+export type ParticleType = "basic" | "enhanced" | "mutated";
+export type ParticleCreationData = {
   id: string;
-  position: Vector3;
-  traits: OrganismTraits;
+  position: IVector3;
+  traits: IOrganismTraits;
   type: ParticleType;
-}
-
-// Particle performance metrics
-export interface ParticleMetrics {
+};
+export type ParticleMetrics = {
   count: number;
   activeCount: number;
   memoryUsage: number;
   creationRate: number;
   removalRate: number;
-}
-
-// Formation pattern data structure
-export interface FormationPattern {
-  id: string;
-  name: string;
-  positions: Vector3[];
-  metadata?: Record<string, any>;
-}
-
-// Animation configuration
-export interface AnimationConfig {
-  duration: number;
-  type: string;
-  parameters?: Record<string, any>;
-}
-
-// Animation state tracking
-export interface AnimationState {
-  role: string;
-  progress: number;
-  duration: number;
-  type: string;
-}
+};

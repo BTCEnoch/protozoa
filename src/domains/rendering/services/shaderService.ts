@@ -1,0 +1,51 @@
+﻿import * as THREE from 'three'
+import { createServiceLogger } from '@/shared/lib/logger'
+import { Shaders } from '@/domains/rendering/data/shaderLibrary'
+import type { IShaderService } from '@/domains/rendering/interfaces/IShaderService'
+
+class ShaderService implements IShaderService {
+  static #instance: ShaderService | null = null
+  #log = createServiceLogger('SHADER_SERVICE')
+  #materials: Map<string, THREE.ShaderMaterial> = new Map()
+
+  private constructor () {
+    // precompile bundled shaders
+    Object.entries(Shaders).forEach(([k, frag]) => {
+      this.compile(
+        k,
+        'void main(){gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+        frag as string
+      )
+    })
+  }
+
+  static getInstance () {
+    return this.#instance ?? (this.#instance = new ShaderService())
+  }
+
+  compile (name: string, vertexSrc: string, fragmentSrc: string) {
+    const mat = new THREE.ShaderMaterial({ vertexShader: vertexSrc, fragmentShader: fragmentSrc })
+    this.#materials.set(name, mat)
+    this.#log.info('Shader compiled', { name })
+    return mat
+  }
+
+  get (name: string) {
+    return this.#materials.get(name)
+  }
+
+  hotReload (name: string, newFrag: string) {
+    const mat = this.#materials.get(name)
+    if (!mat) return
+    mat.fragmentShader = newFrag
+    mat.needsUpdate = true
+    this.#log.warn('Shader hot-reloaded', { name })
+  }
+
+  dispose () {
+    this.#materials.forEach(m => m.dispose())
+    this.#materials.clear()
+    ShaderService.#instance = null
+  }
+}
+export const shaderService = ShaderService.getInstance()

@@ -1,6 +1,6 @@
 import { createServiceLogger } from '@/shared/lib/logger'
-import { groupService } from '@/domains/group/services/groupService'
-import { physicsService } from '@/domains/physics/services/physicsService'
+import { groupService } from '@/domains/group/services/GroupService'
+import { physicsService } from '@/domains/physics/services/PhysicsService'
 import type { ISwarmService } from '@/domains/group/interfaces/ISwarmService'
 
 export class SwarmService implements ISwarmService {

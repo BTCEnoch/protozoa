@@ -678,6 +678,16 @@ export * from "./loggingTypes";
 // Event types for domain communication
 export * from "./eventTypes";
 
+// Import specific interfaces for type aliases
+import type { 
+  IOrganismTraits, 
+  IVisualTraits, 
+  IBehavioralTraits, 
+  IEvolutionaryTraits, 
+  IMutationTraits
+} from "./entityTypes";
+import type { IVector3 } from "./vectorTypes";
+
 // Type aliases for backward compatibility with service code
 export type OrganismTraits = IOrganismTraits;
 export type VisualTraits = IVisualTraits;

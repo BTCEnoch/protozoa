@@ -1,9 +1,13 @@
 'use client'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
-import { renderingService } from '@/domains/rendering/services/renderingService'
+import React, { Suspense } from 'react'
+import { Canvas, extend } from '@react-three/fiber'
+import { Mesh, Scene, BoxGeometry, MeshBasicMaterial } from 'three'
+import { renderingService } from '@/domains/rendering/services/RenderingService'
 
-export function SimulationCanvas () {
+// Extend Three.js objects for React Three Fiber
+extend({ Scene, Mesh, BoxGeometry, MeshBasicMaterial })
+
+export function SimulationCanvas() {
   return (
     <Canvas>
       <Suspense fallback={null}>

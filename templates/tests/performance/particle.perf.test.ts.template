@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { particleService } from '@/domains/particle/services/particleService'
+import { particleService } from '@/domains/particle/services/ParticleService'
 
 describe('Particle update performance', () => {
   it('updates 10k particles under 16ms', () => {

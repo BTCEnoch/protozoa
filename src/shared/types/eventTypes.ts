@@ -1,58 +1,137 @@
-/**
- * Event type definitions for inter-domain communication
+﻿/**
+ * Event Types for Domain Communication
+ * Standardized event interfaces for inter-domain messaging
  */
 
-// Base event interface
-export interface BaseEvent {
+/**
+ * Base event interface
+ */
+export interface IBaseEvent {
+  /** Event type identifier */
   type: string;
-  timestamp: number;
+  /** Event timestamp */
+  timestamp: Date;
+  /** Source domain/service */
   source: string;
-  data: Record<string, any>;
+  /** Event payload */
+  payload: Record<string, any>;
+  /** Correlation ID for tracking */
+  correlationId?: string;
 }
 
-// Particle events
-export interface ParticleEvent extends BaseEvent {
+/**
+ * Particle lifecycle events
+ */
+export interface IParticleEvent extends IBaseEvent {
+  /** Particle ID */
   particleId: string;
 }
 
-export interface ParticleBirthEvent extends ParticleEvent {
-  type: "particle:birth";
-  data: {
-    position: { x: number; y: number; z: number };
-    traits: Record<string, any>;
+export interface IParticleCreatedEvent extends IParticleEvent {
+  type: "particle.created";
+  payload: {
+    particle: import("./entityTypes").IParticle;
   };
 }
 
-export interface ParticleDeathEvent extends ParticleEvent {
-  type: "particle:death";
-  data: {
-    age: number;
-    cause: string;
+export interface IParticleUpdatedEvent extends IParticleEvent {
+  type: "particle.updated";
+  payload: {
+    previousState: Partial<import("./entityTypes").IParticle>;
+    currentState: import("./entityTypes").IParticle;
   };
 }
 
-// Group events
-export interface GroupEvent extends BaseEvent {
-  groupId: string;
-}
-
-export interface GroupFormationEvent extends GroupEvent {
-  type: "group:formation";
-  data: {
-    memberIds: string[];
-    pattern: string;
+export interface IParticleRemovedEvent extends IParticleEvent {
+  type: "particle.removed";
+  payload: {
+    reason: string;
   };
 }
 
-// Animation events
-export interface AnimationEvent extends BaseEvent {
-  animationId: string;
+/**
+ * Formation events
+ */
+export interface IFormationEvent extends IBaseEvent {
+  /** Formation pattern ID */
+  formationId: string;
 }
 
-export interface AnimationCompleteEvent extends AnimationEvent {
-  type: "animation:complete";
-  data: {
+export interface IFormationAppliedEvent extends IFormationEvent {
+  type: "formation.applied";
+  payload: {
+    particleIds: string[];
+    pattern: import("./entityTypes").IFormationPattern;
+  };
+}
+
+export interface IFormationTransitionEvent extends IFormationEvent {
+  type: "formation.transition";
+  payload: {
+    fromFormationId: string;
+    toFormationId: string;
+    progress: number;
+  };
+}
+
+/**
+ * Trait mutation events
+ */
+export interface ITraitMutationEvent extends IBaseEvent {
+  type: "trait.mutated";
+  payload: {
+    organismId: string;
+    traitType: string;
+    oldValue: any;
+    newValue: any;
+    mutationFactor: number;
+  };
+}
+
+/**
+ * Effect events
+ */
+export interface IEffectEvent extends IBaseEvent {
+  /** Effect name */
+  effectName: string;
+}
+
+export interface IEffectTriggeredEvent extends IEffectEvent {
+  type: "effect.triggered";
+  payload: {
+    targetIds: string[];
     duration: number;
-    success: boolean;
+    intensity: number;
   };
+}
+
+/**
+ * Union type for all domain events
+ */
+export type DomainEvent =
+  | IParticleCreatedEvent
+  | IParticleUpdatedEvent
+  | IParticleRemovedEvent
+  | IFormationAppliedEvent
+  | IFormationTransitionEvent
+  | ITraitMutationEvent
+  | IEffectTriggeredEvent;
+
+/**
+ * Event handler function type
+ */
+export type EventHandler<T extends IBaseEvent = IBaseEvent> = (event: T) => void | Promise<void>;
+
+/**
+ * Event bus interface
+ */
+export interface IEventBus {
+  /** Subscribe to events */
+  subscribe<T extends IBaseEvent>(eventType: string, handler: EventHandler<T>): void;
+  /** Unsubscribe from events */
+  unsubscribe<T extends IBaseEvent>(eventType: string, handler: EventHandler<T>): void;
+  /** Emit an event */
+  emit<T extends IBaseEvent>(event: T): Promise<void>;
+  /** Remove all listeners */
+  removeAllListeners(): void;
 }
