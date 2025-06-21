@@ -28,7 +28,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     Write-StepHeader "Enhanced ParticleInitService Generation"
-    Write-InfoLog "🎯 Enhancing ParticleInitService with advanced features..."
+    Write-InfoLog "Enhancing ParticleInitService with advanced features..."
     
     # Validate project structure
     $particleDomain = Join-Path $ProjectRoot "src/domains/particle"
@@ -69,41 +69,41 @@ try {
     }
     
     # Copy enhanced templates
-    Write-InfoLog "📋 Copying enhanced particle types template..."
+    Write-InfoLog "Copying enhanced particle types template..."
     $particleTypesTemplate = Join-Path $ProjectRoot "templates/domains/particle/types/particle.types.ts.template"
     $particleTypesTarget = Join-Path $typesDir "particle.types.ts"
     
     if (Test-Path $particleTypesTemplate) {
         Copy-Item $particleTypesTemplate $particleTypesTarget -Force
-        Write-SuccessLog "✅ Enhanced particle types → $particleTypesTarget"
+        Write-SuccessLog "Enhanced particle types → $particleTypesTarget"
     } else {
         Write-ErrorLog "Particle types template not found: $particleTypesTemplate"
     }
     
-    Write-InfoLog "🔧 Copying enhanced ParticleInitService interface..."
+    Write-InfoLog "Copying enhanced ParticleInitService interface..."
     $interfaceTemplate = Join-Path $ProjectRoot "templates/domains/particle/interfaces/IParticleInitService.ts.template"
     $interfaceTarget = Join-Path $interfacesDir "IParticleInitService.ts"
     
     if (Test-Path $interfaceTemplate) {
         Copy-Item $interfaceTemplate $interfaceTarget -Force
-        Write-SuccessLog "✅ Enhanced interface → $interfaceTarget"
+        Write-SuccessLog "Enhanced interface → $interfaceTarget"
     } else {
         Write-ErrorLog "Interface template not found: $interfaceTemplate"
     }
     
-    Write-InfoLog "⚙️ Copying enhanced ParticleInitService implementation..."
+    Write-InfoLog "Copying enhanced ParticleInitService implementation..."
     $serviceTemplate = Join-Path $ProjectRoot "templates/domains/particle/services/particleInitService.ts.template"
     $serviceTarget = Join-Path $servicesDir "particleInitService.ts"
     
     if (Test-Path $serviceTemplate) {
         Copy-Item $serviceTemplate $serviceTarget -Force
-        Write-SuccessLog "✅ Enhanced service → $serviceTarget"
+        Write-SuccessLog "Enhanced service → $serviceTarget"
     } else {
         Write-ErrorLog "Service template not found: $serviceTemplate"
     }
     
     # Update particle domain index exports
-    Write-InfoLog "📝 Updating particle domain exports..."
+    Write-InfoLog "Updating particle domain exports..."
     $domainIndex = Join-Path $particleDomain "index.ts"
     $indexContent = @"
 /**
@@ -141,37 +141,37 @@ export type {
 "@
     
     $indexContent | Set-Content -Path $domainIndex -Encoding UTF8
-    Write-SuccessLog "✅ Updated domain exports → $domainIndex"
+    Write-SuccessLog "Updated domain exports → $domainIndex"
     
     # Verify TypeScript compilation
-    Write-InfoLog "🔍 Verifying TypeScript compilation..."
+    Write-InfoLog "Verifying TypeScript compilation..."
     Push-Location $ProjectRoot
     try {
         $result = & npx tsc --noEmit --skipLibCheck 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Write-SuccessLog "✅ TypeScript compilation successful"
+            Write-SuccessLog "TypeScript compilation successful"
         } else {
-            Write-WarningLog "⚠️ TypeScript compilation has issues: $result"
+            Write-WarningLog "TypeScript compilation has issues: $result"
         }
     } catch {
-        Write-WarningLog "⚠️ Could not verify TypeScript compilation: $_"
+        Write-WarningLog "Could not verify TypeScript compilation: $_"
     } finally {
         Pop-Location
     }
     
-    Write-SuccessLog "🎉 ParticleInitService enhancement completed!"
-    Write-InfoLog "🔧 Features added:"
-    Write-InfoLog "  • 500-particle allocation algorithm (40 base + 460 variable)"
-    Write-InfoLog "  • 8 particle roles with weighted distribution"
-    Write-InfoLog "  • 9 emergent behaviors with 30% assignment probability"
-    Write-InfoLog "  • Comprehensive dependency injection support"
-    Write-InfoLog "  • Performance monitoring and health checks"
-    Write-InfoLog "  • Memory usage estimation and optimization"
+    Write-SuccessLog "ParticleInitService enhancement completed!"
+    Write-InfoLog "Features added:"
+    Write-InfoLog "  - 500-particle allocation algorithm"
+    Write-InfoLog "  - 8 particle roles with weighted distribution"  
+    Write-InfoLog "  - 9 emergent behaviors with assignment probability"
+    Write-InfoLog "  - Comprehensive dependency injection support"
+    Write-InfoLog "  - Performance monitoring and health checks"
+    Write-InfoLog "  - Memory usage estimation and optimization"
     
     exit 0
     
 } catch {
-    Write-ErrorLog "❌ ParticleInitService enhancement failed: $_"
+    Write-ErrorLog "ParticleInitService enhancement failed: $_"
     Write-DebugLog "Stack trace: $($_.ScriptStackTrace)"
     exit 1
 } 

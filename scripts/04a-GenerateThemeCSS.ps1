@@ -24,8 +24,7 @@ function Write-ErrorLog($msg) { Write-Host "[ERROR] $msg" -ForegroundColor Red  
 
 try {
     # Path resolution
-    $palettesTS = Join-Path $ProjectRoot 'src/shared/data/colorPalettes.ts'
-    $themeDir   = Join-Path $ProjectRoot 'src/assets/themes'
+    $themeDir = Join-Path $ProjectRoot 'src/assets/themes'
     if (-not (Test-Path $themeDir)) { New-Item -ItemType Directory -Path $themeDir | Out-Null }
 
     # Create basic theme palettes (simplified approach)
