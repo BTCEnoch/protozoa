@@ -1,0 +1,17 @@
+{
+  "name": "protozoa",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.app.json",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^4.0.0",
+    "vitest": "^1.0.0"
+  }
+}
