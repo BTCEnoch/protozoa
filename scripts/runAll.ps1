@@ -7,6 +7,14 @@ Import-Module "$PSScriptRoot\utils.psm1" -Force
 Write-StepHeader "NEW-PROTOZOA AUTOMATION PIPELINE"
 Write-InfoLog "Starting complete project setup automation..."
 
+# === added logging transcript ===
+$global:AutomationLogPath = Join-Path $PSScriptRoot "automation.log"
+Remove-Item $AutomationLogPath -ErrorAction SilentlyContinue
+Start-Transcript -Path $AutomationLogPath | Out-Null
+
+# Prepare progress bar variables
+$totalSteps = 0
+
 # Define script execution sequence following optimal 8-phase architecture
 $scriptSequence = @(
     # === PHASE 0: ENVIRONMENT & FOUNDATION (10 Scripts) ===
@@ -94,6 +102,8 @@ $scriptSequence = @(
     @{ Phase = 9; Script = "15-ValidateSetupComplete.ps1"; Description = "Comprehensive final validation" }
 )
 
+$totalSteps = $scriptSequence.Count  # progress total
+
 # Track execution results
 $results = @()
 $startTime = Get-Date
@@ -102,6 +112,8 @@ $startTime = Get-Date
 for ($i = 0; $i -lt $scriptSequence.Count; $i++) {
     $step = $scriptSequence[$i]
     $stepNumber = $i + 1
+    $percent = [int](($stepNumber / $totalSteps) * 100)
+    Write-Progress -Activity "Automation Pipeline" -Status "Running $($step.Script)" -PercentComplete $percent
     $scriptPath = Join-Path $PSScriptRoot $step.Script
 
     Write-StepHeader "PHASE $($step.Phase) - STEP $stepNumber : $($step.Description)"
@@ -224,3 +236,6 @@ $completionInfo = @{
 
 Set-Content -Path ".automation-complete" -Value $completionInfo
 Write-InfoLog "Automation completion marker created: .automation-complete"
+
+Stop-Transcript | Out-Null
+Write-InfoLog "Full execution log available at $AutomationLogPath"
