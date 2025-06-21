@@ -1,6 +1,7 @@
 ﻿# runAll.ps1
 # Master orchestrator that runs all automation scripts in the correct sequence
 # Implements the complete 8-phase automation pipeline for new-protozoa setup
+# Updated: Added 60-SetupBrowserServerRequirements.ps1 for complete dev server setup
 
 Import-Module "$PSScriptRoot\utils.psm1" -Force
 
@@ -76,11 +77,12 @@ $scriptSequence = @(
     @{ Phase = 6; Script = "49-SetupAutomatedDocumentation.ps1"; Description = "TypeDoc documentation" },
     @{ Phase = 6; Script = "50-SetupServiceIntegration.ps1"; Description = "Dependency injection setup" },
 
-    # === PHASE 7: FRONTEND INTEGRATION (6 Scripts) ===
+    # === PHASE 7: FRONTEND INTEGRATION (7 Scripts) ===
     # React and state management
     @{ Phase = 7; Script = "51-SetupGlobalStateManagement.ps1"; Description = "Zustand state management" },
             @{ Phase = 7; Script = "52-SetupReactIntegration.ps1"; Description = "React component integration" },
         @{ Phase = 7; Script = "59-GenerateMainEntryPoint.ps1"; Description = "Generate React main.tsx entry point" },
+        @{ Phase = 7; Script = "60-SetupBrowserServerRequirements.ps1"; Description = "Vite config, path aliases, and development server setup" },
         @{ Phase = 7; Script = "53-SetupEventBusSystem.ps1"; Description = "Event bus system" },
     @{ Phase = 7; Script = "54-SetupPerformanceTesting.ps1"; Description = "Performance testing suite" },
     @{ Phase = 7; Script = "55-SetupPersistenceLayer.ps1"; Description = "Data persistence" },

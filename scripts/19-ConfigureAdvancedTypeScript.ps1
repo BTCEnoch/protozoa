@@ -40,200 +40,58 @@ try {
     Write-SuccessLog "Advanced TypeScript configuration setup initialized"
 
     # Generate main tsconfig.json with strict settings
-    Write-InfoLog "Generating main tsconfig.json with strict validation"
-    $mainTsConfig = @{
-        compilerOptions = @{
-            # Strict type checking options
-            strict = $true
-            noImplicitAny = $true
-            strictNullChecks = $true
-            strictFunctionTypes = $true
-            strictBindCallApply = $true
-            strictPropertyInitialization = $true
-            noImplicitReturns = $true
-            noFallthroughCasesInSwitch = $true
-            noUncheckedIndexedAccess = $true
-
-            # Module resolution
-            target = "ES2022"
-            lib = @("ES2022", "DOM", "DOM.Iterable")
-            allowJs = $false
-            skipLibCheck = $false
-            esModuleInterop = $true
-            allowSyntheticDefaultImports = $true
-            forceConsistentCasingInFileNames = $true
-
-            # Path mapping for domain boundaries
-            baseUrl = "."
-            paths = @{
-                "@/*" = @("./src/*")
-                "@/domains/*" = @("./src/domains/*")
-                "@/shared/*" = @("./src/shared/*")
-                "@/components/*" = @("./src/components/*")
-                "@/lib/*" = @("./src/lib/*")
-                "@/types/*" = @("./src/types/*")
-            }
-
-            # Output and module settings
-            module = "ESNext"
-            moduleResolution = "bundler"
-            resolveJsonModule = $true
-            isolatedModules = $true
-            noEmit = $true
-            jsx = "react-jsx"
-
-            # Advanced options for performance
-            incremental = $true
-            composite = $false
-            declaration = $true
-            declarationMap = $true
-            sourceMap = $true
-        }
-
-        # Include/exclude patterns
-        include = @(
-            "src/**/*"
-            "vite.config.ts"
-        )
-
-        exclude = @(
-            "node_modules"
-            "dist"
-            "build"
-            "scripts"
-            "**/*.test.ts"
-            "**/*.test.tsx"
-            "**/*.spec.ts"
-            "**/*.spec.tsx"
-        )
-
-        # TypeScript references for better performance
-        references = @(
-            @{ path = "./tsconfig.app.json" }
-            @{ path = "./tsconfig.node.json" }
-        )
+    # Copy main tsconfig.json from template ONLY
+    Write-InfoLog "Copying main tsconfig.json from template"
+    $tsConfigTemplate = Join-Path $ProjectRoot "templates/tsconfig.json.template"
+    if (Test-Path $tsConfigTemplate) {
+        Copy-Item -Path $tsConfigTemplate -Destination $tsConfigPath -Force
+        Write-SuccessLog "Main tsconfig.json copied from template"
+    } else {
+        Write-ErrorLog "CRITICAL: tsconfig.json template not found at $tsConfigTemplate"
+        Write-ErrorLog "All configurations must use templates - no inline generation allowed"
+        throw "Required template file missing: tsconfig.json.template"
     }
 
-    $mainTsConfigJson = $mainTsConfig | ConvertTo-Json -Depth 10
-    Set-Content -Path $tsConfigPath -Value $mainTsConfigJson -Encoding UTF8
-    Write-SuccessLog "Main tsconfig.json generated with strict settings"
-
-    # Generate tsconfig.app.json for application code
-    Write-InfoLog "Generating tsconfig.app.json for application code"
-    $appTsConfig = @{
-        extends = "./tsconfig.json"
-        compilerOptions = @{
-            composite = $true
-            tsBuildInfoFile = "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
-        }
-        include = @(
-            "src/**/*"
-        )
-        exclude = @(
-            "src/**/*.test.ts"
-            "src/**/*.test.tsx"
-            "src/**/*.spec.ts"
-            "src/**/*.spec.tsx"
-            "node_modules"
-        )
+    # Copy tsconfig.app.json from template ONLY
+    Write-InfoLog "Copying tsconfig.app.json from template"
+    $tsConfigAppTemplate = Join-Path $ProjectRoot "templates/tsconfig.app.json.template"
+    if (Test-Path $tsConfigAppTemplate) {
+        Copy-Item -Path $tsConfigAppTemplate -Destination $tsConfigAppPath -Force
+        Write-SuccessLog "tsconfig.app.json copied from template"
+    } else {
+        Write-ErrorLog "CRITICAL: tsconfig.app.json template not found at $tsConfigAppTemplate"
+        Write-ErrorLog "All configurations must use templates - no inline generation allowed"
+        throw "Required template file missing: tsconfig.app.json.template"
     }
 
-    $appTsConfigJson = $appTsConfig | ConvertTo-Json -Depth 10
-    Set-Content -Path $tsConfigAppPath -Value $appTsConfigJson -Encoding UTF8
-    Write-SuccessLog "tsconfig.app.json generated for application code"
-
-    # Generate tsconfig.node.json for build tools
-    Write-InfoLog "Generating tsconfig.node.json for build tools"
-    $nodeTsConfig = @{
-        extends = "./tsconfig.json"
-        compilerOptions = @{
-            composite = $true
-            skipLibCheck = $true
-            module = "ESNext"
-            moduleResolution = "bundler"
-            allowSyntheticDefaultImports = $true
-            tsBuildInfoFile = "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
-        }
-        include = @(
-            "vite.config.ts"
-            "scripts/**/*"
-        )
-        exclude = @(
-            "src/**/*"
-        )
+    # Copy tsconfig.node.json from template ONLY
+    Write-InfoLog "Copying tsconfig.node.json from template"
+    $tsConfigNodeTemplate = Join-Path $ProjectRoot "templates/tsconfig.node.json.template"
+    if (Test-Path $tsConfigNodeTemplate) {
+        Copy-Item -Path $tsConfigNodeTemplate -Destination $tsConfigNodePath -Force
+        Write-SuccessLog "tsconfig.node.json copied from template"
+    } else {
+        Write-ErrorLog "CRITICAL: tsconfig.node.json template not found at $tsConfigNodeTemplate"
+        Write-ErrorLog "All configurations must use templates - no inline generation allowed"
+        throw "Required template file missing: tsconfig.node.json.template"
     }
 
-    $nodeTsConfigJson = $nodeTsConfig | ConvertTo-Json -Depth 10
-    Set-Content -Path $tsConfigNodePath -Value $nodeTsConfigJson -Encoding UTF8
-    Write-SuccessLog "tsconfig.node.json generated for build tools"
-
-    # Create custom type definitions for Bitcoin Ordinals API
-    Write-InfoLog "Creating custom type definitions for Bitcoin Ordinals API"
+    # Copy Bitcoin Ordinals type definitions from template ONLY
+    Write-InfoLog "Copying Bitcoin Ordinals type definitions from template"
     $typesDir = Join-Path $srcPath "types"
     New-Item -Path $typesDir -ItemType Directory -Force | Out-Null
-
-    $ordinalsTypes = @'
-/**
- * @fileoverview Bitcoin Ordinals API Type Definitions
- * @description Custom TypeScript definitions for Bitcoin Ordinals Protocol
- * @author Protozoa Development Team
- * @version 1.0.0
- */
-
-declare namespace BitcoinOrdinals {
-  interface BlockInfo {
-    hash: string;
-    height: number;
-    timestamp: number;
-    difficulty: number;
-    nonce: number;
-    merkleroot: string;
-    previousblockhash?: string;
-    nextblockhash?: string;
-    size: number;
-    weight: number;
-    version: number;
-    versionHex: string;
-    bits: string;
-    chainwork: string;
-    nTx: number;
-    mediantime: number;
-  }
-
-  interface InscriptionContent {
-    content_type: string;
-    content_length: number;
-    content: string | ArrayBuffer;
-    inscription_id: string;
-    inscription_number: number;
-    genesis_height: number;
-    genesis_fee: number;
-    output_value: number;
-    address?: string;
-    sat?: number;
-    timestamp: number;
-  }
-
-  interface APIResponse<T> {
-    success: boolean;
-    data?: T;
-    error?: string;
-    timestamp: number;
-  }
-}
-
-// Extend Window interface for browser environment
-declare global {
-  interface Window {
-    BitcoinOrdinals?: any;
-  }
-}
-
-export {};
-'@
-
-    Set-Content -Path (Join-Path $typesDir "bitcoin-ordinals.d.ts") -Value $ordinalsTypes -Encoding UTF8
-    Write-SuccessLog "Bitcoin Ordinals API type definitions created"
+    
+    $bitcoinTypesTemplate = Join-Path $ProjectRoot "templates/src/types/bitcoin-ordinals.d.ts.template"
+    $bitcoinTypesTarget = Join-Path $typesDir "bitcoin-ordinals.d.ts"
+    
+    if (Test-Path $bitcoinTypesTemplate) {
+        Copy-Item -Path $bitcoinTypesTemplate -Destination $bitcoinTypesTarget -Force
+        Write-SuccessLog "Bitcoin Ordinals type definitions copied from template"
+    } else {
+        Write-ErrorLog "CRITICAL: bitcoin-ordinals.d.ts template not found at $bitcoinTypesTemplate"
+        Write-ErrorLog "All type definitions must use templates - no inline generation allowed"
+        throw "Required template file missing: bitcoin-ordinals.d.ts.template"
+    }
 
     Write-InfoLog "Advanced TypeScript configuration setup completed"
 

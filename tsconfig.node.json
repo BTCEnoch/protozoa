@@ -1,8 +1,19 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "dist-node"
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
-  "include": ["scripts/**/*"]
+  "include": [
+    "vite.config.ts",
+    "scripts/**/*"
+  ],
+  "exclude": [
+    "src/**/*"
+  ]
 }

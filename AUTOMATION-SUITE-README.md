@@ -5,8 +5,9 @@
 This is a **clean automation infrastructure package** that contains only the essential scripts, templates, and configuration needed to build and deploy the complete Protozoa Bitcoin Ordinals Digital Organism Ecosystem from scratch.
 
 The automation suite implements an **8-phase pipeline** that generates ~600KB of production-ready TypeScript code, complete with:
+
 - Domain-driven architecture with singleton services
-- Bitcoin Ordinals Protocol integration  
+- Bitcoin Ordinals Protocol integration
 - THREE.js particle physics engine
 - Comprehensive Winston logging
 - Performance optimization for 60fps targets
@@ -15,18 +16,19 @@ The automation suite implements an **8-phase pipeline** that generates ~600KB of
 ## 📦 What's Included
 
 ### Essential Automation Infrastructure
+
 ```
 📁 scripts/                    # 57 PowerShell automation scripts
   ├── 00-InitEnvironment.ps1   # Environment setup & dependencies
   ├── 01-31: Core Generation   # Project structure & services
   ├── 32-44: Domain Enhancement # Advanced features
-  ├── 45-56: CI/CD & Testing   # Deployment & validation
+  ├── 45-60: CI/CD & Testing   # Deployment, validation & browser setup
   ├── runAll.ps1              # Master orchestrator
   └── utils.psm1              # Shared utilities (1000+ lines)
 
 📁 docs/                      # Complete technical documentation
   ├── overview/               # Architecture & MVP specs
-  ├── domains/               # Domain-specific documentation  
+  ├── domains/               # Domain-specific documentation
   └── design_lists/          # Build checklists & diagnostics
 
 📁 templates/                 # Code generation templates
@@ -40,7 +42,9 @@ The automation suite implements an **8-phase pipeline** that generates ~600KB of
 ```
 
 ### What Gets Generated (After Running Scripts)
+
 The automation suite will generate a complete application with:
+
 - **~30,000 lines** of TypeScript/React code
 - **8 domain services** (RNG, Physics, Bitcoin, Particle, etc.)
 - **Winston logging** system with multiple levels
@@ -52,12 +56,14 @@ The automation suite will generate a complete application with:
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - **PowerShell 5.1+** (Windows) or **PowerShell Core 7+** (cross-platform)
 - **Node.js 18+** and **npm/pnpm**
 - **Git** for version control
 - **Docker** (optional, for containerized deployment)
 
 ### Run the Complete Automation
+
 ```powershell
 # Clone/extract the automation suite
 cd protozoa-automation-suite
@@ -70,6 +76,7 @@ pwsh scripts/runAll.ps1
 ```
 
 ### Manual Phase Execution
+
 ```powershell
 # Phase 0: Environment Setup
 pwsh scripts/00-InitEnvironment.ps1
@@ -86,6 +93,7 @@ pwsh scripts/26-GenerateBitcoinService.ps1
 ## 🏗️ Architecture Generated
 
 ### Domain-Driven Structure
+
 ```
 src/
 ├── domains/                 # 8 core domains
@@ -102,7 +110,9 @@ src/
 ```
 
 ### Service Architecture (Class-Based Excellence)
+
 Each domain implements:
+
 - **Singleton Services** with dependency injection
 - **Interface Contracts** for testability
 - **Winston Logging** throughout all methods
@@ -114,11 +124,13 @@ Each domain implements:
 The generated application integrates with Bitcoin Ordinals Protocol:
 
 ### API Endpoints
+
 - **Dev**: `https://ordinals.com/r/blockinfo/{blockNumber}`
 - **Production**: `/r/blockinfo/{blockNumber}`
 - **Inscriptions**: `https://ordinals.com/content/{inscription_id}`
 
 ### Key Features Generated
+
 - Block data parsing for organism trait generation
 - Inscription content retrieval and validation
 - Caching layer for blockchain data
@@ -128,6 +140,7 @@ The generated application integrates with Bitcoin Ordinals Protocol:
 ## 📊 Performance Targets
 
 The automation generates code optimized for:
+
 - **60fps rendering** for particle systems
 - **<3 second** initial page load
 - **<200MB** memory usage for core application
@@ -137,13 +150,15 @@ The automation generates code optimized for:
 ## 🧪 Quality Assurance Generated
 
 ### Testing Infrastructure
+
 - **Unit tests** for all service methods
-- **Integration tests** for service interactions  
+- **Integration tests** for service interactions
 - **E2E tests** for complete workflows
 - **Performance benchmarks** for critical algorithms
 - **Visual regression tests** for UI components
 
 ### Development Tools
+
 - **ESLint** configuration with strict rules
 - **TypeScript** with advanced type checking
 - **Pre-commit hooks** for code validation
@@ -153,12 +168,14 @@ The automation generates code optimized for:
 ## 🔧 Customization
 
 ### Modifying the Generation Process
+
 1. **Edit templates** in `/templates/` directory
-2. **Modify scripts** in `/scripts/` directory  
+2. **Modify scripts** in `/scripts/` directory
 3. **Update configuration** in `package.json` or `environment-dependencies.json`
 4. **Re-run specific phases** or complete pipeline
 
 ### Adding New Domains
+
 1. Create templates in `/templates/domains/your-domain/`
 2. Add generation script following naming pattern `XX-GenerateYourDomain.ps1`
 3. Update `runAll.ps1` sequence
@@ -167,18 +184,21 @@ The automation generates code optimized for:
 ## 🛡️ Enterprise Features Generated
 
 ### Security
+
 - Input validation and sanitization
 - API rate limiting and error handling
 - Secure Bitcoin API integration
 - HTTPS enforcement in production
 
-### Monitoring & Observability  
+### Monitoring & Observability
+
 - Winston logging with multiple levels
 - Performance metrics collection
 - Error tracking and alerting
 - Health check endpoints
 
 ### Scalability
+
 - Modular domain architecture
 - Service-based dependency injection
 - Efficient memory management
@@ -194,6 +214,7 @@ The automation generates code optimized for:
 ## 🔄 Maintenance & Updates
 
 ### Updating Dependencies
+
 ```powershell
 # Update package versions
 pwsh scripts/17-GenerateEnvironmentConfig.ps1
@@ -203,6 +224,7 @@ pwsh scripts/00-InitEnvironment.ps1
 ```
 
 ### Validating Generated Code
+
 ```powershell
 # Run all validation checks
 pwsh scripts/05-VerifyCompliance.ps1
@@ -217,6 +239,7 @@ pwsh scripts/07-BuildAndTest.ps1
 ## 🎯 Success Metrics
 
 After successful automation execution:
+
 - ✅ **57 scripts** completed successfully
 - ✅ **~600KB** of generated TypeScript code
 - ✅ **30,000+ lines** across all domains
@@ -226,17 +249,19 @@ After successful automation execution:
 ## 🆘 Troubleshooting
 
 ### Common Issues
+
 1. **PowerShell execution policy**: Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 2. **Node.js version**: Ensure Node.js 18+ is installed
 3. **Template parsing errors**: Run `pwsh scripts/fix-content-parsing.ps1`
 4. **Permission errors**: Run PowerShell as Administrator (Windows)
 
 ### Validation Tools
+
 ```powershell
 # Check all prerequisites
 pwsh scripts/15-ValidateSetupComplete.ps1
 
-# Analyze any issues  
+# Analyze any issues
 pwsh scripts/script_scrub/01-analyze-dependencies.ps1
 
 # Generate comprehensive report
@@ -252,4 +277,4 @@ pwsh scripts/script_scrub/06-generate-final-report.ps1
 ---
 
 **Built with ❤️ by the Protozoa Team**  
-*Transforming Bitcoin Ordinals into digital organisms through advanced automation* 
+_Transforming Bitcoin Ordinals into digital organisms through advanced automation_

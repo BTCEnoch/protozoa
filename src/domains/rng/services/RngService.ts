@@ -1,46 +1,98 @@
-// src/domains/rng/services/RNGService.ts
-// RNGService implementation - Auto-generated stub
-// Referenced from build_design.md Section 2
-
-import { IRNGService } from '../types';
-import { createServiceLogger } from '@/shared/lib/logger';
-
 /**
- * RNGService – manages rng domain operations.
- * Auto-generated stub following .cursorrules singleton pattern.
- * TODO: Implement actual logic in Phase 2.
+ * @fileoverview RNG Service Implementation (Template)
+ * @module @/domains/rng/services/RNGService
+ * @version 1.0.0
  */
-class RNGService implements IRNGService {
-  static #instance: RNGService | null = null;
-  #log = createServiceLogger('RNG_SERVICE');
 
-  /**
-   * Private constructor enforces singleton pattern.
-   */
-  private constructor() {
-    this.#log.info('RNGService initialized');
-  }
+import type { IRNGService, RNGConfig, RNGState, RNGOptions } from "@/domains/rng/interfaces/IRNGService"
+import type { RNGMetrics, PRNGAlgorithm, SeedSource } from "@/domains/rng/types/rng.types"
+import { createServiceLogger } from "@/shared/lib/logger"
 
-  /**
-   * Singleton accessor - returns existing instance or creates new one.
-   */
-  public static getInstance(): RNGService {
-    if (!RNGService.#instance) {
-      RNGService.#instance = new RNGService();
-    }
-    return RNGService.#instance;
-  }
-
-  // TODO: Implement interface methods here
-
-  /**
-   * Disposes of service resources and resets singleton instance.
-   */
-  public dispose(): void {
-    this.#log.info('RNGService disposed');
-    RNGService.#instance = null;
+function mulberry32(a: number): () => number {
+  return function () {
+    let t = (a += 0x6d2b79f5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
 
-// Singleton export as required by .cursorrules
-export const rngService = RNGService.getInstance();
+export class RNGService implements IRNGService {
+  private static instance: RNGService | null = null
+  public static getInstance(): RNGService {
+    if (!RNGService.instance) RNGService.instance = new RNGService()
+    return RNGService.instance
+  }
+
+  private constructor() {
+    this.#logger.info("RNGService instantiated")
+    this.setSeed(this.#state.seed)
+  }
+
+  /* ------------------------------- internals ------------------------------ */
+  #logger = createServiceLogger("RNG_SERVICE")
+  #config: RNGConfig = { defaultSeed: 12345, useBitcoinSeeding: true }
+  #state: RNGState = { seed: 12345, counter: 0 }
+  #metrics: RNGMetrics = { totalGenerated: 0, averageGenerationTime: 0, algorithm: "mulberry32", source: "manual" }
+  #prng: () => number = mulberry32(12345)
+
+  /* -------------------------------- public -------------------------------- */
+  async initialize(config?: RNGConfig): Promise<void> {
+    if (config) this.#config = { ...this.#config, ...config }
+    if (config?.defaultSeed !== undefined) this.setSeed(config.defaultSeed)
+  }
+
+  setSeed(seed: number): void {
+    this.#state.seed = seed >>> 0
+    this.#prng = mulberry32(this.#state.seed)
+    this.#state.counter = 0
+    this.#metrics.source = "manual"
+  }
+
+  async seedFromBlock(blockNumber: number): Promise<void> {
+    // Simplified: use blockNumber as deterministic seed; real impl would hash block header
+    this.setSeed(blockNumber)
+    this.#metrics.source = "bitcoin-block"
+  }
+
+  random(): number {
+    this.#state.counter++
+    this.#metrics.totalGenerated++
+    return this.#prng()
+  }
+
+  randomInt(min: number, max: number): number {
+    return Math.floor(this.random() * (max - min)) + min
+  }
+
+  randomFloat(min: number, max: number): number {
+    return this.random() * (max - min) + min
+  }
+
+  randomArray({ min = 0, max = 1, count = 1, seed }: RNGOptions): number[] {
+    const originalSeed = this.#state.seed
+    if (seed !== undefined) this.setSeed(seed)
+    const arr = Array.from({ length: count }, () => this.randomFloat(min, max))
+    if (seed !== undefined) this.setSeed(originalSeed)
+    return arr
+  }
+
+  getState(): RNGState {
+    return { ...this.#state }
+  }
+  setState(state: RNGState): void {
+    this.#state = { ...state }
+    this.setSeed(state.seed)
+  }
+
+  reset(): void {
+    this.setSeed(this.#config.defaultSeed || 12345)
+  }
+
+  dispose(): void {
+    RNGService.instance = null
+    this.#logger.info("RNGService disposed")
+  }
+}
+
+export const rngService = RNGService.getInstance()

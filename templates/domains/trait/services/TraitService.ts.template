@@ -340,7 +340,7 @@ export class TraitService implements ITraitService {
       secondaryColor: this.#generateColor(hash, 1),
       size: this.#generateTraitValue("size", hash, 2),
       opacity: this.#generateTraitValue("opacity", hash, 3),
-      shape: this.#availableShapes[(hash[4] || 0) % this.#availableShapes.length],
+      shape: this.#availableShapes[((hash[4] ?? 0) || 0) % this.#availableShapes.length] || 'circle',
       particleDensity: this.#generateTraitValue("particleDensity", hash, 5),
       glowIntensity: this.#generateTraitValue("glowIntensity", hash, 6)
     };

@@ -1,12 +1,20 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "allowJs": false,
-    "declaration": true,
-    "noEmit": false,
-    "composite": true
+    "noEmit": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts", "tests/**/*", "**/*.spec.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx", 
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "tests/**/*",
+    "node_modules"
+  ]
 }

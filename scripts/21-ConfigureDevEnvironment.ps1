@@ -28,7 +28,7 @@ try {
 
   # ESLint, Prettier, EditorConfig
   Copy-TemplateFile "templates/.eslintrc.json.template" (Join-Path $ProjectRoot ".eslintrc.json")
-  Copy-TemplateFile "templates/.prettierrc.template"   (Join-Path $ProjectRoot ".prettierrc")
+  Copy-TemplateFile "templates/.prettierrc.json.template" (Join-Path $ProjectRoot ".prettierrc.json")
   Copy-TemplateFile "templates/.editorconfig.template"  (Join-Path $ProjectRoot ".editorconfig")
 
   Write-SuccessLog "Dev environment templates installed"

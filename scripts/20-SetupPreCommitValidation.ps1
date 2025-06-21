@@ -42,105 +42,23 @@ try {
     Write-InfoLog "Installing Husky and lint-staged packages"
     Push-Location $ProjectRoot
 
-    # Check if package.json exists
-    if (-not (Test-Path $packageJsonPath)) {
-        Write-InfoLog "Creating package.json from template"
-        
-        # Try to load from template first
-        $templatePath = Join-Path $ProjectRoot "templates/package.json.template"
-        if (Test-Path $templatePath) {
-            $packageJson = Get-Content $templatePath -Raw | ConvertFrom-Json
-            Write-InfoLog "Loaded package.json structure from template"
-            
-            # Add additional dev dependencies needed for pre-commit validation
-            if (-not $packageJson.devDependencies) {
-                $packageJson | Add-Member -MemberType NoteProperty -Name "devDependencies" -Value ([PSCustomObject]@{}) -Force
-            }
-            
-            # Add pre-commit specific dependencies
-            $preCommitDeps = @{
-                "husky" = "^8.0.3"
-                "lint-staged" = "^15.2.0"
-                "@typescript-eslint/eslint-plugin" = "^6.14.0"
-                "@typescript-eslint/parser" = "^6.14.0"
-            }
-            
-            foreach ($dep in $preCommitDeps.GetEnumerator()) {
-                if (-not ($packageJson.devDependencies | Get-Member -Name $dep.Key -ErrorAction SilentlyContinue)) {
-                    $packageJson.devDependencies | Add-Member -MemberType NoteProperty -Name $dep.Key -Value $dep.Value -Force
-                }
-            }
-            
-            # Add pre-commit specific scripts
-            if (-not $packageJson.scripts) {
-                $packageJson | Add-Member -MemberType NoteProperty -Name "scripts" -Value ([PSCustomObject]@{}) -Force
-            }
-            
-            $preCommitScripts = @{
-                "prepare" = "husky install"
-                "lint" = "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
-                "lint:fix" = "eslint . --ext ts,tsx --fix"
-                "test:coverage" = "vitest --coverage"
-            }
-            
-            foreach ($script in $preCommitScripts.GetEnumerator()) {
-                if (-not ($packageJson.scripts | Get-Member -Name $script.Key -ErrorAction SilentlyContinue)) {
-                    $packageJson.scripts | Add-Member -MemberType NoteProperty -Name $script.Key -Value $script.Value -Force
-                }
-            }
-            
-        } else {
-            Write-WarningLog "Template not found, using fallback minimal structure"
-            $packageJson = @{
-                name = "protozoa"
-                version = "0.1.0"
-                description = "Bitcoin Ordinals Digital Organism Ecosystem"
-                scripts = @{
-                    dev = "vite"
-                    build = "tsc -p tsconfig.app.json && vite build"
-                    preview = "vite preview"
-                    prepare = "husky install"
-                    lint = "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
-                    "lint:fix" = "eslint . --ext ts,tsx --fix"
-                    "type-check" = "tsc --noEmit"
-                    test = "vitest"
-                    "test:coverage" = "vitest --coverage"
-                }
-                dependencies = @{
-                    three = "^0.177.0"
-                    react = "^18.2.0"
-                    "react-dom" = "^18.2.0"
-                    "@react-three/fiber" = "^8.15.0"
-                    "@react-three/drei" = "^9.88.0"
-                    "@react-three/postprocessing" = "^2.15.0"
-                    leva = "^0.9.35"
-                    winston = "^3.11.0"
-                    zustand = "^4.4.7"
-                }
-                devDependencies = @{
-                    husky = "^8.0.3"
-                    "lint-staged" = "^15.2.0"
-                    "@typescript-eslint/eslint-plugin" = "^6.14.0"
-                    "@typescript-eslint/parser" = "^6.14.0"
-                    "@types/node" = "^20.10.0"
-                    "@types/react" = "^18.2.45"
-                    "@types/react-dom" = "^18.2.18"
-                    "@types/three" = "^0.177.0"
-                    "@types/winston" = "^2.4.4"
-                    "@vitejs/plugin-react" = "^4.2.1"
-                    "@playwright/test" = "^1.40.0"
-                    eslint = "^8.57.0"
-                    prettier = "^3.0.0"
-                    typescript = "^5.3.3"
-                    vite = "^5.0.8"
-                    vitest = "^1.0.4"
-                }
-            }
+    # TEMPLATE-ONLY APPROACH: All pre-commit validation dependencies managed through templates
+    Write-InfoLog "Pre-commit validation dependencies managed through package.json.template"
+    Write-InfoLog "ESLint, Prettier, lint-staged, and Husky configuration managed through templates"
+    
+    $templatePath = Join-Path $ProjectRoot "templates/package.json.template"
+    
+    if (Test-Path $templatePath) {
+        Write-InfoLog "package.json template verified - all pre-commit dependencies managed through template"
+        if (-not $DryRun) {
+            # Ensure package.json is up to date with template
+            Copy-Item -Path $templatePath -Destination $packageJsonPath -Force
+            Write-SuccessLog "package.json synchronized with template for pre-commit validation"
         }
-
-        $packageJsonContent = $packageJson | ConvertTo-Json -Depth 10
-        Set-Content -Path $packageJsonPath -Value $packageJsonContent -Encoding UTF8
-        Write-SuccessLog "Package.json created with complete dependencies from template"
+    } else {
+        Write-ErrorLog "CRITICAL: package.json template not found at $templatePath"
+        Write-ErrorLog "All pre-commit dependencies must be managed through templates - no inline modifications allowed"
+        throw "Required template file missing: package.json.template"
     }
 
     # Install dependencies with real-time progress display
@@ -166,8 +84,8 @@ try {
             Write-Host ("=" * 60) -ForegroundColor Cyan
             
             # Try with relaxed peer deps
-            Write-Host "Running: pnpm install --no-strict-peer-deps" -ForegroundColor Yellow
-            Invoke-Expression "pnpm install --no-strict-peer-deps"
+            Write-Host "Running: pnpm install --no-strict-peer-dependencies" -ForegroundColor Yellow
+            Invoke-Expression "pnpm install --no-strict-peer-dependencies"
             $exitCode = $LASTEXITCODE
             
             if ($exitCode -eq 0) {
@@ -261,94 +179,55 @@ echo "✅ All pre-commit validations passed!"
     }
     Write-SuccessLog "Pre-commit hook created successfully"
 
-    # Create lint-staged configuration
-    Write-InfoLog "Creating lint-staged configuration for incremental validation"
-    $lintStagedConfig = @{
-        "*.{ts,tsx}" = @(
-            "eslint --fix"
-            "prettier --write"
-            "git add"
-        )
-        "*.{js,jsx}" = @(
-            "eslint --fix"
-            "prettier --write"
-            "git add"
-        )
-        "*.{json,md,yml,yaml}" = @(
-            "prettier --write"
-            "git add"
-        )
-        "*.ps1" = @(
-            "pwsh -Command 'Import-Module PSScriptAnalyzer; Invoke-ScriptAnalyzer $_'"
-        )
+    # Create lint-staged configuration from template ONLY
+    Write-InfoLog "Creating lint-staged configuration from template"
+    $lintStagedTemplatePath = Join-Path $ProjectRoot "templates/.lintstagedrc.json.template"
+    
+    if (Test-Path $lintStagedTemplatePath) {
+        Copy-Item -Path $lintStagedTemplatePath -Destination $lintStagedConfigPath -Force
+        Write-SuccessLog "Lint-staged configuration copied from template with proper formatting"
+    } else {
+        Write-ErrorLog "CRITICAL: .lintstagedrc.json template not found at $lintStagedTemplatePath"
+        Write-ErrorLog "All configurations must use templates - no inline JSON generation allowed"
+        throw "Required template file missing: .lintstagedrc.json.template"
     }
-
-    $lintStagedConfigJson = $lintStagedConfig | ConvertTo-Json -Depth 10
-    Set-Content -Path $lintStagedConfigPath -Value $lintStagedConfigJson -Encoding UTF8
-    Write-SuccessLog "Lint-staged configuration created"
 
     # Create ESLint configuration for domain boundary enforcement
     Write-InfoLog "Creating ESLint configuration with domain boundary rules"
     $eslintConfigPath = Join-Path $ProjectRoot ".eslintrc.json"
-    $eslintConfig = @{
-        extends = @(
-            "@typescript-eslint/recommended"
-            "prettier"
-        )
-        parser = "@typescript-eslint/parser"
-        plugins = @("@typescript-eslint")
-        root = $true
-        env = @{
-            browser = $true
-            es2022 = $true
-            node = $true
-        }
-        parserOptions = @{
-            ecmaVersion = "latest"
-            sourceType = "module"
-            ecmaFeatures = @{
-                jsx = $true
-            }
-        }
-        rules = @{
-            # Domain boundary enforcement rules
-            "no-restricted-imports" = @(
-                "error"
-                @{
-                    patterns = @(
-                        @{
-                            group = @("../../../*")
-                            message = "Relative imports across domain boundaries are not allowed. Use @/domains/* instead."
-                        }
-                        @{
-                            group = @("**/lib/utils/physics*")
-                            message = "Physics utilities must be imported from @/domains/physics/services/PhysicsService only."
-                        }
-                        @{
-                            group = @("**/lib/utils/rng*")
-                            message = "RNG utilities must be imported from @/domains/rng/services/RNGService only."
-                        }
-                    )
-                }
-            )
 
-            # TypeScript specific rules
-            "@typescript-eslint/no-unused-vars" = "error"
-            "@typescript-eslint/no-explicit-any" = "error"
-            "@typescript-eslint/prefer-const" = "error"
-            "@typescript-eslint/no-non-null-assertion" = "error"
-
-            # General code quality rules
-            "prefer-const" = "error"
-            "no-var" = "error"
-            "no-console" = "warn"
-            "eqeqeq" = "error"
-        }
+    # FIXED: Use template instead of ConvertTo-Json to prevent JSON corruption
+    $eslintTemplatePath = Join-Path $ProjectRoot "templates/.eslintrc.json.template"
+    if (Test-Path $eslintTemplatePath) {
+        Copy-Item -Path $eslintTemplatePath -Destination $eslintConfigPath -Force
+        Write-SuccessLog "ESLint configuration restored from template with proper formatting"
+    } else {
+        # Fallback to manual JSON if template not found
+        Write-WarningLog "ESLint template not found, creating basic configuration"
+        $eslintConfigJson = @'
+{
+  "env": { 
+    "browser": true, 
+    "es2021": true, 
+    "node": true 
+  },
+  "extends": [
+    "eslint:recommended", 
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "prefer-const": "error",
+    "no-var": "error"
+  }
+}
+'@
+        Set-Content -Path $eslintConfigPath -Value $eslintConfigJson -Encoding UTF8
+        Write-SuccessLog "ESLint configuration created with manual JSON formatting"
     }
-
-    $eslintConfigJson = $eslintConfig | ConvertTo-Json -Depth 10
-    Set-Content -Path $eslintConfigPath -Value $eslintConfigJson -Encoding UTF8
-    Write-SuccessLog "ESLint configuration created with domain boundary rules"
 
     Pop-Location
     Write-SuccessLog "Pre-commit validation setup completed successfully"
