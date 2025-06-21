@@ -1,6 +1,6 @@
 # 18a-SetupLoggingService.ps1
-# Ensures browser-compatible logging infrastructure is present in src/shared/lib/logger.ts
-# Uses console API in browser, Winston in Node.js (optional dependency)
+# Ensures pure browser-compatible logging infrastructure is present in src/shared/lib/logger.ts
+# Uses console API with enhanced formatting - no Node.js dependencies required
 # If file already exists, the script validates and updates for browser compatibility.
 # Usage: Executed by runAll.ps1 right after environment configuration generation.
 
@@ -50,16 +50,16 @@ try {
     if (Test-Path $loggerPath) {
         Write-InfoLog "logger.ts already exists - validating for browser compatibility"
         $existingContent = Get-Content $loggerPath -Raw
-        if (-not ($existingContent | Select-String -Pattern "Universal Logger - Browser & Node.js Compatible")) {
+        if (-not ($existingContent | Select-String -Pattern "Universal Browser-Compatible Logger")) {
             Write-WarningLog "Existing logger.ts detected but not browser-compatible - backing up and updating"
             $backupPath = "$loggerPath.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
             if (-not $DryRun) { 
                 Copy-Item -Path $loggerPath -Destination $backupPath -Force
                 Set-Content -Path $loggerPath -Value $loggerContent -Encoding UTF8 
-                Write-InfoLog "Updated logger.ts with browser-compatible implementation"
+                Write-InfoLog "Updated logger.ts with pure browser-compatible implementation"
             }
         } else {
-            Write-InfoLog "Browser-compatible logger already present"
+            Write-InfoLog "Pure browser-compatible logger already present"
         }
     } else {
         Write-InfoLog "Creating browser-compatible logger.ts"
@@ -69,8 +69,8 @@ try {
     }
 
     # TEMPLATE-ONLY APPROACH: All dependencies managed through package.json.template
-    Write-InfoLog "Browser-compatible logger dependencies managed through package.json.template"
-    Write-InfoLog "Winston is optional dependency - browser uses console API, Node.js uses Winston with fallback"
+    Write-InfoLog "Pure browser-compatible logger - no external dependencies required"
+    Write-InfoLog "Uses console API with enhanced formatting - works in all environments"
     
     # Verify package.json template exists with proper dependencies
     $pkgJsonPath = Join-Path $ProjectRoot "package.json"
@@ -89,7 +89,7 @@ try {
         throw "Required template file missing: package.json.template"
     }
 
-    Write-SuccessLog "Winston logging setup complete"
+    Write-SuccessLog "Pure browser-compatible logging setup complete"
     exit 0
 
 } catch {

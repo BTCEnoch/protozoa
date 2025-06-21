@@ -361,45 +361,61 @@ export function SimulationCanvas() {
         Write-SuccessLog "SimulationCanvas updated for development mode"
     }
 
-    # 6. Create a development-ready composition root
-    Write-InfoLog "Updating composition root for development"
+    # 6. Generate composition root from template
+    Write-InfoLog "Generating composition root from template"
     $compositionRootPath = Join-Path $ProjectRoot "src/compositionRoot.ts"
-    $compositionRootContent = @'
+    $compositionRootTemplatePath = Join-Path $ProjectRoot "templates/src/compositionRoot.ts.template"
+    
+    if (Test-Path $compositionRootTemplatePath) {
+        $compositionRootContent = Get-Content -Path $compositionRootTemplatePath -Raw -Encoding UTF8
+        
+        if (-not $DryRun) {
+            Set-Content -Path $compositionRootPath -Value $compositionRootContent -Encoding UTF8
+            Write-SuccessLog "Composition root generated from template"
+        }
+    } else {
+        Write-WarningLog "Composition root template not found, creating basic version"
+        $basicCompositionRootContent = @'
 /**
  * @fileoverview Composition Root - Dependency Injection Container
- * @description Initializes and manages all domain services
+ * @description Basic composition root for development
  * @author Protozoa Development Team
  * @version 1.0.0
  */
+
+import { logger, initializeLogging } from '@/shared/lib/logger'
 
 let servicesInitialized = false
 
 export async function initServices(): Promise<void> {
   if (servicesInitialized) {
-    console.log('⚠️ Services already initialized')
+    logger.info('⚠️ Services already initialized')
     return
   }
 
-  console.log('🚀 Initializing Protozoa domain services...')
+  logger.info('🚀 Initializing Protozoa domain services...')
   
   try {
+    // Initialize logging system first
+    initializeLogging()
+    
     // In development mode, we'll gradually initialize services
     // This prevents blocking the initial app load
     
     // Phase 1: Core utilities
-    console.log('📦 Phase 1: Core utilities loading...')
+    logger.info('📦 Phase 1: Core utilities loading...')
     
     // Phase 2: Domain services (placeholder)
-    console.log('🧬 Phase 2: Domain services loading...')
+    logger.info('🧬 Phase 2: Domain services loading...')
     
     // Phase 3: Integration services (placeholder)
-    console.log('🔗 Phase 3: Integration services loading...')
+    logger.info('🔗 Phase 3: Integration services loading...')
     
     servicesInitialized = true
-    console.log('✅ All services initialized successfully')
+    logger.info('✅ All services initialized successfully')
     
   } catch (error) {
-    console.error('❌ Service initialization failed:', error)
+    logger.error('❌ Service initialization failed:', error)
     throw error
   }
 }
@@ -409,14 +425,14 @@ export function disposeServices(): void {
     return
   }
   
-  console.log('🧹 Disposing Protozoa services...')
+  logger.info('🧹 Disposing Protozoa services...')
   
   try {
     // Cleanup logic will go here
     servicesInitialized = false
-    console.log('✅ Services disposed successfully')
+    logger.info('✅ Services disposed successfully')
   } catch (error) {
-    console.error('❌ Service disposal failed:', error)
+    logger.error('❌ Service disposal failed:', error)
   }
 }
 
@@ -424,10 +440,11 @@ export function getServiceStatus(): boolean {
   return servicesInitialized
 }
 '@
-
-    if (-not $DryRun) {
-        Set-Content -Path $compositionRootPath -Value $compositionRootContent -Encoding UTF8
-        Write-SuccessLog "Composition root updated for development"
+        
+        if (-not $DryRun) {
+            Set-Content -Path $compositionRootPath -Value $basicCompositionRootContent -Encoding UTF8
+            Write-SuccessLog "Basic composition root created for development"
+        }
     }
 
     Write-SuccessLog "Browser/Server requirements setup completed successfully"

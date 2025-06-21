@@ -1,0 +1,395 @@
+/**
+ * @fileoverview Composition Root - Dependency Injection Container
+ * @description Initializes and manages all domain services with proper dependency injection
+ * @author Protozoa Development Team
+ * @version 2.0.0
+ */
+
+import { logger, initializeLogging, perfLogger } from '@/shared/lib/logger'
+
+// Domain Service Imports
+import { RNGService } from '@/domains/rng/services/RNGService'
+import { PhysicsService } from '@/domains/physics/services/PhysicsService'
+import { ParticleService } from '@/domains/particle/services/ParticleService'
+import { BitcoinService } from '@/domains/bitcoin/services/BitcoinService'
+import { TraitService } from '@/domains/trait/services/TraitService'
+import { FormationService } from '@/domains/formation/services/FormationService'
+import { GroupService } from '@/domains/group/services/GroupService'
+import { SwarmService } from '@/domains/group/services/SwarmService'
+import { RenderingService } from '@/domains/rendering/services/RenderingService'
+import { AnimationService } from '@/domains/animation/services/AnimationService'
+import { EffectService } from '@/domains/effect/services/EffectService'
+
+// Shared Service Imports
+import { eventBus } from '@/shared/services/eventBus'
+
+// Service State Management
+let servicesInitialized = false
+let initializationPromise: Promise<void> | null = null
+
+// Service Registry for Dependency Injection
+const serviceRegistry = new Map<string, any>()
+
+/**
+ * Service Initialization Configuration
+ */
+interface ServiceConfig {
+  name: string
+  factory: () => Promise<any>
+  dependencies: string[]
+  critical: boolean // If true, failure will halt initialization
+}
+
+/**
+ * Define service initialization order and dependencies
+ */
+const serviceConfigs: ServiceConfig[] = [
+  // Phase 1: Core Infrastructure Services (no dependencies)
+  {
+    name: 'RNGService',
+    factory: async () => RNGService.getInstance(),
+    dependencies: [],
+    critical: true
+  },
+  {
+    name: 'BitcoinService', 
+    factory: async () => BitcoinService.getInstance(),
+    dependencies: [],
+    critical: true
+  },
+  
+  // Phase 2: Domain Logic Services (depend on core services)
+  {
+    name: 'PhysicsService',
+    factory: async () => PhysicsService.getInstance(),
+    dependencies: ['RNGService'],
+    critical: true
+  },
+  {
+    name: 'TraitService',
+    factory: async () => TraitService.getInstance(),
+    dependencies: ['RNGService', 'BitcoinService'],
+    critical: true
+  },
+  
+  // Phase 3: Entity Management Services
+  {
+    name: 'ParticleService',
+    factory: async () => ParticleService.getInstance(),
+    dependencies: ['PhysicsService', 'TraitService'],
+    critical: true
+  },
+  {
+    name: 'FormationService',
+    factory: async () => FormationService.getInstance(),
+    dependencies: ['ParticleService', 'PhysicsService'],
+    critical: true
+  },
+  
+  // Phase 4: Group and Swarm Services
+  {
+    name: 'GroupService',
+    factory: async () => GroupService.getInstance(),
+    dependencies: ['ParticleService', 'FormationService'],
+    critical: true
+  },
+  {
+    name: 'SwarmService',
+    factory: async () => SwarmService.getInstance(),
+    dependencies: ['GroupService', 'PhysicsService'],
+    critical: false // Non-critical for basic functionality
+  },
+  
+  // Phase 5: Rendering and Visual Services
+  {
+    name: 'RenderingService',
+    factory: async () => RenderingService.getInstance(),
+    dependencies: ['ParticleService', 'GroupService'],
+    critical: true
+  },
+  {
+    name: 'AnimationService',
+    factory: async () => AnimationService.getInstance(),
+    dependencies: ['RenderingService', 'PhysicsService'],
+    critical: false
+  },
+  {
+    name: 'EffectService',
+    factory: async () => EffectService.getInstance(),
+    dependencies: ['RenderingService', 'AnimationService'],
+    critical: false
+  }
+]
+
+/**
+ * Initialize a single service with dependency injection
+ */
+async function initializeService(config: ServiceConfig): Promise<void> {
+  const timer = `${config.name}_init`
+  perfLogger.startTimer(timer)
+  
+  try {
+    logger.info(`🔧 Initializing ${config.name}...`)
+    
+    // Check if dependencies are available
+    for (const dep of config.dependencies) {
+      if (!serviceRegistry.has(dep)) {
+        throw new Error(`Dependency ${dep} not available for ${config.name}`)
+      }
+    }
+    
+    // Initialize the service
+    const service = await config.factory()
+    
+    // Register the service
+    serviceRegistry.set(config.name, service)
+    
+    // Log successful initialization
+    const duration = perfLogger.endTimer(timer)
+    logger.info(`✅ ${config.name} initialized successfully (${duration.toFixed(2)}ms)`)
+    
+  } catch (error) {
+    perfLogger.endTimer(timer)
+    const errorMsg = `Failed to initialize ${config.name}: ${error}`
+    
+    if (config.critical) {
+      logger.error(`❌ CRITICAL: ${errorMsg}`)
+      throw new Error(errorMsg)
+    } else {
+      logger.warn(`⚠️ NON-CRITICAL: ${errorMsg}`)
+      // Register a null placeholder for non-critical services
+      serviceRegistry.set(config.name, null)
+    }
+  }
+}
+
+/**
+ * Initialize all domain services with proper dependency injection
+ */
+export async function initServices(): Promise<void> {
+  // Return existing promise if initialization is in progress
+  if (initializationPromise) {
+    return initializationPromise
+  }
+  
+  // Return immediately if already initialized
+  if (servicesInitialized) {
+    logger.info('⚠️ Services already initialized')
+    return Promise.resolve()
+  }
+
+  // Create and store the initialization promise
+  initializationPromise = (async () => {
+    const totalTimer = 'total_service_initialization'
+    perfLogger.startTimer(totalTimer)
+    
+    try {
+      logger.info('🚀 Initializing Protozoa domain services...')
+      
+      // Initialize logging system first
+      initializeLogging()
+      
+      // Initialize event bus
+      logger.info('📡 Initializing event bus...')
+      // Event bus is already initialized as a singleton
+      
+      // Initialize services in dependency order
+      for (const config of serviceConfigs) {
+        await initializeService(config)
+      }
+      
+      // Mark as initialized
+      servicesInitialized = true
+      
+      // Log completion
+      const totalDuration = perfLogger.endTimer(totalTimer)
+      logger.info(`✅ All services initialized successfully (${totalDuration.toFixed(2)}ms)`)
+      
+      // Log service registry status
+      const registeredServices = Array.from(serviceRegistry.keys())
+      logger.info('📊 Service Registry:', {
+        total: registeredServices.length,
+        services: registeredServices
+      })
+      
+      // Log memory usage after initialization
+      perfLogger.logMemoryUsage()
+      
+    } catch (error) {
+      perfLogger.endTimer(totalTimer)
+      logger.error('❌ Service initialization failed:', error)
+      
+      // Clean up partial initialization
+      await disposeServices()
+      
+      throw error
+    } finally {
+      // Clear the initialization promise
+      initializationPromise = null
+    }
+  })()
+  
+  return initializationPromise
+}
+
+/**
+ * Dispose all services and clean up resources
+ */
+export async function disposeServices(): Promise<void> {
+  if (!servicesInitialized && serviceRegistry.size === 0) {
+    logger.info('ℹ️ No services to dispose')
+    return
+  }
+  
+  const disposalTimer = 'service_disposal'
+  perfLogger.startTimer(disposalTimer)
+  
+  logger.info('🧹 Disposing Protozoa services...')
+  
+  try {
+    // Dispose services in reverse order of initialization
+    const reverseConfigs = [...serviceConfigs].reverse()
+    
+    for (const config of reverseConfigs) {
+      const service = serviceRegistry.get(config.name)
+      
+      if (service && typeof service.dispose === 'function') {
+        try {
+          logger.debug(`🗑️ Disposing ${config.name}...`)
+          await service.dispose()
+          logger.debug(`✅ ${config.name} disposed`)
+        } catch (error) {
+          logger.warn(`⚠️ Failed to dispose ${config.name}:`, error)
+        }
+      }
+    }
+    
+    // Clear the service registry
+    serviceRegistry.clear()
+    servicesInitialized = false
+    
+    const duration = perfLogger.endTimer(disposalTimer)
+    logger.info(`✅ Services disposed successfully (${duration.toFixed(2)}ms)`)
+    
+  } catch (error) {
+    perfLogger.endTimer(disposalTimer)
+    logger.error('❌ Service disposal failed:', error)
+    throw error
+  }
+}
+
+/**
+ * Get a service from the registry
+ */
+export function getService<T>(serviceName: string): T | null {
+  const service = serviceRegistry.get(serviceName)
+  
+  if (!service) {
+    logger.warn(`⚠️ Service ${serviceName} not found in registry`)
+    return null
+  }
+  
+  return service as T
+}
+
+/**
+ * Check if a specific service is initialized
+ */
+export function isServiceInitialized(serviceName: string): boolean {
+  return serviceRegistry.has(serviceName) && serviceRegistry.get(serviceName) !== null
+}
+
+/**
+ * Get the overall service initialization status
+ */
+export function getServiceStatus(): boolean {
+  return servicesInitialized
+}
+
+/**
+ * Get service registry information for debugging
+ */
+export function getServiceRegistryInfo(): Record<string, any> {
+  const info: Record<string, any> = {}
+  
+  for (const [name, service] of serviceRegistry.entries()) {
+    info[name] = {
+      initialized: service !== null,
+      type: service ? service.constructor.name : 'null'
+    }
+  }
+  
+  return info
+}
+
+/**
+ * Health check for all critical services
+ */
+export async function healthCheck(): Promise<Record<string, boolean>> {
+  const results: Record<string, boolean> = {}
+  
+  logger.info('🏥 Performing service health check...')
+  
+  for (const config of serviceConfigs.filter(c => c.critical)) {
+    const service = serviceRegistry.get(config.name)
+    
+    try {
+      if (service && typeof service.healthCheck === 'function') {
+        const isHealthy = await service.healthCheck()
+        results[config.name] = isHealthy
+        logger.debug(`${isHealthy ? '✅' : '❌'} ${config.name} health check`)
+      } else {
+        // If no health check method, assume healthy if service exists
+        results[config.name] = service !== null
+        logger.debug(`${service ? '✅' : '❌'} ${config.name} exists`)
+      }
+    } catch (error) {
+      results[config.name] = false
+      logger.warn(`❌ ${config.name} health check failed:`, error)
+    }
+  }
+  
+  const healthyCount = Object.values(results).filter(Boolean).length
+  const totalCount = Object.keys(results).length
+  
+  logger.info(`🏥 Health check complete: ${healthyCount}/${totalCount} services healthy`)
+  
+  return results
+}
+
+/**
+ * Restart a specific service (for error recovery)
+ */
+export async function restartService(serviceName: string): Promise<boolean> {
+  logger.info(`🔄 Restarting service: ${serviceName}`)
+  
+  try {
+    const config = serviceConfigs.find(c => c.name === serviceName)
+    if (!config) {
+      logger.error(`❌ Service config not found: ${serviceName}`)
+      return false
+    }
+    
+    // Dispose existing service
+    const existingService = serviceRegistry.get(serviceName)
+    if (existingService && typeof existingService.dispose === 'function') {
+      await existingService.dispose()
+    }
+    
+    // Remove from registry
+    serviceRegistry.delete(serviceName)
+    
+    // Reinitialize
+    await initializeService(config)
+    
+    logger.info(`✅ Service restarted successfully: ${serviceName}`)
+    return true
+    
+  } catch (error) {
+    logger.error(`❌ Failed to restart service ${serviceName}:`, error)
+    return false
+  }
+}
+
+// Export service registry for advanced use cases
+export { serviceRegistry } 
