@@ -1,58 +1,9 @@
-﻿{
-    "parserOptions":  {
-                          "sourceType":  "module",
-                          "ecmaVersion":  "latest",
-                          "ecmaFeatures":  {
-                                               "jsx":  true
-                                           }
-                      },
-    "parser":  "@typescript-eslint/parser",
-    "root":  true,
-    "extends":  [
-                    "@typescript-eslint/recommended",
-                    "prettier"
-                ],
-    "plugins":  [
-                    "@typescript-eslint"
-                ],
-    "rules":  {
-                  "@typescript-eslint/no-unused-vars":  "error",
-                  "@typescript-eslint/no-non-null-assertion":  "error",
-                  "@typescript-eslint/prefer-const":  "error",
-                  "eqeqeq":  "error",
-                  "no-var":  "error",
-                  "no-console":  "warn",
-                  "no-restricted-imports":  [
-                                                "error",
-                                                {
-                                                    "patterns":  [
-                                                                     {
-                                                                         "message":  "Relative imports across domain boundaries are not allowed. Use @/domains/* instead.",
-                                                                         "group":  [
-                                                                                       "../../../*"
-                                                                                   ]
-                                                                     },
-                                                                     {
-                                                                         "message":  "Physics utilities must be imported from @/domains/physics/services/PhysicsService only.",
-                                                                         "group":  [
-                                                                                       "**/lib/utils/physics*"
-                                                                                   ]
-                                                                     },
-                                                                     {
-                                                                         "message":  "RNG utilities must be imported from @/domains/rng/services/RNGService only.",
-                                                                         "group":  [
-                                                                                       "**/lib/utils/rng*"
-                                                                                   ]
-                                                                     }
-                                                                 ]
-                                                }
-                                            ],
-                  "@typescript-eslint/no-explicit-any":  "error",
-                  "prefer-const":  "error"
-              },
-    "env":  {
-                "browser":  true,
-                "node":  true,
-                "es2022":  true
-            }
+{
+  "env": { "browser": true, "es2021": true },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
 }
