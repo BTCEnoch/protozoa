@@ -152,7 +152,7 @@ export function teardownTraitTestEnvironment() {
         }
     }
     else {
-        Write-WarnLog "package.json.template not found - test scripts may need manual configuration"
+        Write-WarningLog "package.json.template not found - test scripts may need manual configuration"
     }
 
     # Validate TypeScript compilation
@@ -165,11 +165,11 @@ export function teardownTraitTestEnvironment() {
             Write-SuccessLog "TypeScript validation passed"
         }
         else {
-            Write-WarnLog "TypeScript validation warnings (non-critical): $tscResult"
+            Write-WarningLog "TypeScript validation warnings (non-critical): $tscResult"
         }
     }
     catch {
-        Write-WarnLog "TypeScript validation could not be performed: $($_.Exception.Message)"
+        Write-WarningLog "TypeScript validation could not be performed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location

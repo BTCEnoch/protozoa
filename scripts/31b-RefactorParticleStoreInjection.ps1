@@ -256,7 +256,7 @@ configureAllDomainStores()
         }
     }
     else {
-        Write-WarnLog "Composition root not found - store integration will need manual configuration"
+        Write-WarningLog "Composition root not found - store integration will need manual configuration"
     }
 
     # Validate TypeScript compilation
@@ -269,11 +269,11 @@ configureAllDomainStores()
             Write-SuccessLog "TypeScript validation passed"
         }
         else {
-            Write-WarnLog "TypeScript validation warnings (non-critical): $tscResult"
+            Write-WarningLog "TypeScript validation warnings (non-critical): $tscResult"
         }
     }
     catch {
-        Write-WarnLog "TypeScript validation could not be performed: $($_.Exception.Message)"
+        Write-WarningLog "TypeScript validation could not be performed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location

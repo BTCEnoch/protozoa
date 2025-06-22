@@ -92,7 +92,7 @@ try {
         Write-SuccessLog "EffectComposerService generated: $composerOutput"
     }
     else {
-        Write-WarnLog "EffectComposerService template not found - creating basic implementation"
+        Write-WarningLog "EffectComposerService template not found - creating basic implementation"
         
         # Create basic composer service
         $basicComposerContent = @'
@@ -401,11 +401,11 @@ export * from './effect.types';
             Write-SuccessLog "TypeScript validation passed"
         }
         else {
-            Write-WarnLog "TypeScript validation warnings (non-critical): $tscResult"
+            Write-WarningLog "TypeScript validation warnings (non-critical): $tscResult"
         }
     }
     catch {
-        Write-WarnLog "TypeScript validation could not be performed: $($_.Exception.Message)"
+        Write-WarningLog "TypeScript validation could not be performed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location
