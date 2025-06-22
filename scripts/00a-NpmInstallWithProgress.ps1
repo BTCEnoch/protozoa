@@ -155,7 +155,8 @@ try {
     }
 
     # Prepare installation command (avoiding deprecated flags)
-    $installArgs = @("install", "--omit=optional", "--no-fund", "--no-audit", "--progress=false", "--timing=false")
+    # Note: Removed --omit=optional to ensure Rollup native dependencies are installed
+    $installArgs = @("install", "--no-fund", "--no-audit", "--progress=false", "--timing=false")
     
     if ($VerboseOutput) { 
         $installArgs += "--loglevel=verbose" 
@@ -282,6 +283,27 @@ try {
     
     if ($exitCode -eq 0) {
         Write-SuccessLog "npm installation completed successfully"
+        
+        # Check for Rollup native dependency issues (Windows-specific fix)
+        Write-InfoLog "Checking for Rollup native dependencies..."
+        $rollupNativePath = "node_modules/@rollup/rollup-win32-x64-msvc"
+        if (-not (Test-Path $rollupNativePath)) {
+            Write-WarningLog "Rollup native dependency missing, attempting fix..."
+            try {
+                $rollupFixArgs = @("install", "@rollup/rollup-win32-x64-msvc", "--no-fund", "--no-audit")
+                $rollupFixProcess = Start-Process -FilePath "npm" -ArgumentList $rollupFixArgs -NoNewWindow -PassThru -Wait
+                if ($rollupFixProcess.ExitCode -eq 0) {
+                    Write-SuccessLog "Rollup native dependency fix applied successfully"
+                } else {
+                    Write-WarningLog "Rollup native dependency fix failed, but installation may still work"
+                }
+            }
+            catch {
+                Write-WarningLog "Could not apply Rollup native dependency fix: $($_.Exception.Message)"
+            }
+        } else {
+            Write-SuccessLog "Rollup native dependencies are properly installed"
+        }
         
         # Post-installation validation
         if (Test-Path "node_modules") {

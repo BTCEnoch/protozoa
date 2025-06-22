@@ -61,6 +61,7 @@
     "@react-three/drei": "^9.92.7",
     "zustand": "^4.4.7",
     "winston": "^3.11.0",
+    "cross-fetch": "^4.0.0",
     "axios": "^1.6.2"
   },
   "devDependencies": {
@@ -119,5 +120,8 @@
   "overrides": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.9.0"
   }
 }
