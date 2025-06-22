@@ -241,7 +241,7 @@ try {
         Write-InfoLog "Your new-protozoa project setup is now complete and ready for development!"
         Write-InfoLog "Development environment is ready for next phase"
         Write-InfoLog "Next steps:"
-        Write-InfoLog "  1. Run 'pnpm install' to install dependencies"
+        Write-InfoLog "  1. Run 'npm install' to install dependencies"
         Write-InfoLog "  2. Begin domain implementation with Cursor AI"
         Write-InfoLog "  3. Use the generated service stubs as starting points"
 

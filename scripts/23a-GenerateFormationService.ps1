@@ -29,7 +29,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     Write-StepHeader "Formation Domain Services Generation"
-    Write-InfoLog "🔺 Generating comprehensive Formation domain services..."
+    Write-InfoLog "Generating comprehensive Formation domain services..."
     
     # Validate project structure
     $formationDomain = Join-Path $ProjectRoot "src/domains/formation"
@@ -75,7 +75,7 @@ try {
     }
     
     # Copy interface templates
-    Write-InfoLog "🔧 Copying formation interface templates..."
+    Write-InfoLog "Copying formation interface templates..."
     
     $interfaceTemplates = @(
         @{ Template = "IFormationService.ts.template"; Target = "IFormationService.ts" },
@@ -88,14 +88,14 @@ try {
         
         if (Test-Path $templatePath) {
             Copy-Item $templatePath $targetPath -Force
-            Write-SuccessLog "✅ Interface template → $($template.Target)"
+            Write-SuccessLog "Interface template -> $($template.Target)"
         } else {
             Write-ErrorLog "Template not found: $templatePath"
         }
     }
     
     # Copy service templates
-    Write-InfoLog "⚙️ Copying formation service templates..."
+    Write-InfoLog "Copying formation service templates..."
     
     $serviceTemplates = @(
         @{ Template = "FormationService.ts.template"; Target = "FormationService.ts" },
@@ -110,14 +110,14 @@ try {
         
         if (Test-Path $templatePath) {
             Copy-Item $templatePath $targetPath -Force
-            Write-SuccessLog "✅ Service template → $($template.Target)"
+            Write-SuccessLog "Service template -> $($template.Target)"
         } else {
             Write-ErrorLog "Template not found: $templatePath"
         }
     }
     
     # Copy data templates
-    Write-InfoLog "📊 Copying formation data templates..."
+    Write-InfoLog "Copying formation data templates..."
     
     $dataTemplates = @(
         @{ Template = "formationGeometry.ts.template"; Target = "formationGeometry.ts" },
@@ -130,87 +130,28 @@ try {
         
         if (Test-Path $templatePath) {
             Copy-Item $templatePath $targetPath -Force
-            Write-SuccessLog "✅ Data template → $($template.Target)"
+            Write-SuccessLog "Data template -> $($template.Target)"
         } else {
-            Write-WarningLog "Data template not found (will create basic): $templatePath"
-            
-            # Create basic data file if template missing
-            if ($template.Target -eq "formationGeometry.ts") {
-                $basicGeometry = @'
-/**
- * Formation Geometry Data
- * Basic geometric patterns for particle formations
- */
-
-export const FORMATION_GEOMETRIES = {
-  sphere: { vertices: [], faces: [], radius: 1.0 },
-  cube: { vertices: [], faces: [], size: 1.0 },
-  pyramid: { vertices: [], faces: [], height: 1.0 },
-  torus: { vertices: [], faces: [], majorRadius: 1.0, minorRadius: 0.3 }
-} as const;
-'@
-                $basicGeometry | Set-Content -Path $targetPath -Encoding UTF8
-            } elseif ($template.Target -eq "formationPatterns.ts") {
-                $basicPatterns = @'
-/**
- * Formation Patterns Data
- * Predefined formation patterns for particle systems
- */
-
-export const FORMATION_PATTERNS = {
-  spiral: { type: 'spiral', density: 0.8, rotation: 1.0 },
-  grid: { type: 'grid', spacing: 2.0, dimensions: [10, 10, 10] },
-  cluster: { type: 'cluster', centers: 3, radius: 5.0 },
-  wave: { type: 'wave', amplitude: 2.0, frequency: 1.0 }
-} as const;
-'@
-                $basicPatterns | Set-Content -Path $targetPath -Encoding UTF8
-            }
-            Write-SuccessLog "✅ Created basic data → $($template.Target)"
+            Write-ErrorLog "Template not found: $templatePath"
+            throw "Required template missing: $($template.Template)"
         }
     }
     
-    # Create formation types if missing
-    Write-InfoLog "📝 Creating formation types..."
+    # Create formation types using template
+    Write-InfoLog "Copying formation types template..."
+    $typesTemplate = Join-Path $ProjectRoot "templates/domains/formation/types/formation.types.ts.template"
     $formationTypes = Join-Path $typesDir "formation.types.ts"
-    if (-not (Test-Path $formationTypes)) {
-        $typesContent = @'
-/**
- * Formation Types Definition
- * @module @/domains/formation/types/formation.types
- */
 
-export interface IFormationPattern {
-  id: string
-  name: string
-  type: 'geometric' | 'organic' | 'mathematical'
-  complexity: number
-  parameters: Record<string, any>
-}
-
-export interface IFormationGeometry {
-  vertices: number[][]
-  faces: number[][]
-  normals?: number[][]
-  uvs?: number[][]
-}
-
-export interface FormationConfig {
-  pattern: string
-  scale: number
-  rotation: { x: number; y: number; z: number }
-  position: { x: number; y: number; z: number }
-  particleCount: number
-}
-
-export type FormationType = 'sphere' | 'cube' | 'pyramid' | 'torus' | 'spiral' | 'grid' | 'cluster' | 'wave'
-'@
-        $typesContent | Set-Content -Path $formationTypes -Encoding UTF8
-        Write-SuccessLog "✅ Created formation types"
+    if (Test-Path $typesTemplate) {
+        Copy-Item $typesTemplate $formationTypes -Force
+        Write-SuccessLog "Formation types template -> formation.types.ts"
+    } else {
+        Write-ErrorLog "Formation types template not found: $typesTemplate"
+        throw "Required template missing: formation.types.ts.template"
     }
     
     # Update formation domain index exports
-    Write-InfoLog "📝 Updating formation domain exports..."
+    Write-InfoLog "Updating formation domain exports..."
     $domainIndex = Join-Path $formationDomain "index.ts"
     $indexContent = @"
 /**
@@ -242,37 +183,37 @@ export { FORMATION_PATTERNS } from './data/formationPatterns'
 "@
     
     $indexContent | Set-Content -Path $domainIndex -Encoding UTF8
-    Write-SuccessLog "✅ Updated domain exports → $domainIndex"
+    Write-SuccessLog "Updated domain exports -> $domainIndex"
     
     # Verify TypeScript compilation
-    Write-InfoLog "🔍 Verifying TypeScript compilation..."
+    Write-InfoLog "Verifying TypeScript compilation..."
     Push-Location $ProjectRoot
     try {
         $result = & npx tsc --noEmit --skipLibCheck 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Write-SuccessLog "✅ TypeScript compilation successful"
+            Write-SuccessLog "TypeScript compilation successful"
         } else {
-            Write-WarningLog "⚠️ TypeScript compilation has issues: $result"
+            Write-WarningLog "TypeScript compilation has issues: $result"
         }
     } catch {
-        Write-WarningLog "⚠️ Could not verify TypeScript compilation: $_"
+        Write-WarningLog "Could not verify TypeScript compilation: $_"
     } finally {
         Pop-Location
     }
     
-    Write-SuccessLog "🎉 Formation domain services generated successfully!"
-    Write-InfoLog "🔧 Components created:"
-    Write-InfoLog "  • FormationService with pattern library and caching"
-    Write-InfoLog "  • FormationBlendingService for interpolation"
-    Write-InfoLog "  • DynamicFormationGenerator for runtime patterns"
-    Write-InfoLog "  • FormationEnhancer for optimization"
-    Write-InfoLog "  • Formation geometry and pattern data"
-    Write-InfoLog "  • Comprehensive TypeScript interfaces"
+    Write-SuccessLog "Formation domain services generated successfully!"
+    Write-InfoLog "Components created:"
+    Write-InfoLog "  - FormationService with pattern library and caching"
+    Write-InfoLog "  - FormationBlendingService for interpolation"
+    Write-InfoLog "  - DynamicFormationGenerator for runtime patterns"
+    Write-InfoLog "  - FormationEnhancer for optimization"
+    Write-InfoLog "  - Formation geometry and pattern data"
+    Write-InfoLog "  - Comprehensive TypeScript interfaces"
     
     exit 0
     
 } catch {
-    Write-ErrorLog "❌ Formation domain generation failed: $_"
+    Write-ErrorLog "Formation domain generation failed: $_"
     Write-DebugLog "Stack trace: $($_.ScriptStackTrace)"
     exit 1
 } 

@@ -70,7 +70,7 @@ The project enforces strict architectural discipline:
 
 Complete PowerShell automation package in `/scripts`:
 
-- `00-InitEnvironment.ps1` - Install Node.js, pnpm, dependencies
+- `00-NpmEnvironmentSetup.ps1` - Install Node.js, npm, dependencies
 - `01-ScaffoldProjectStructure.ps1` - Create domain directories
 - `02-GenerateDomainStubs.ps1` - Generate TypeScript service stubs
 - `03-MoveAndCleanCodebase.ps1` - Legacy cleanup and migration

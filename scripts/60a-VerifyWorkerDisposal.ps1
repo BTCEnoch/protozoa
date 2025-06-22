@@ -209,7 +209,7 @@ try {
     }
 
     # Summary
-    Write-InfoLog ""
+    Write-InfoLog " "
     Write-InfoLog "=== WORKER DISPOSAL COMPLIANCE SUMMARY ==="
     Write-InfoLog "Total files analyzed: $($serviceFiles.Count)"
     Write-InfoLog "Files with worker code: $($workerFiles.Count)"
@@ -217,7 +217,7 @@ try {
     Write-InfoLog "Violation count: $($violations.Count)"
 
     if ($violations.Count -gt 0) {
-        Write-ErrorLog ""
+        Write-ErrorLog " "
         Write-ErrorLog "COMPLIANCE VIOLATIONS DETECTED:"
         foreach ($violation in $violations) {
             Write-ErrorLog "- $($violation.Issue) in $(Split-Path $violation.File -Leaf)"
@@ -229,8 +229,8 @@ try {
         
         exit 1
     } else {
-        Write-SuccessLog ""
-        Write-SuccessLog "✅ ALL WORKER DISPOSAL COMPLIANCE CHECKS PASSED"
+        Write-SuccessLog " "
+        Write-SuccessLog "[SUCCESS] ALL WORKER DISPOSAL COMPLIANCE CHECKS PASSED"
         Write-SuccessLog "Worker disposal verification completed successfully"
     }
     

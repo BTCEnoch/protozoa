@@ -28,10 +28,10 @@ try{
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with: { version: 8 }
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm vitest run tests/performance --reporter verbose
+      - uses: actions/setup-node@v4
+        with: { node-version: '18', cache: 'npm' }
+      - run: npm ci
+      - run: npm exec vitest run tests/performance --reporter verbose
 '@
    Add-Content -Path $ci -Value $append
   }

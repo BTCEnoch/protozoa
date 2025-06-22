@@ -66,38 +66,39 @@ try {
     Write-InfoLog "📦 You'll see live installation output below:"
     Write-Host ("=" * 60) -ForegroundColor Cyan
     
-    # First try normal pnpm install with live output
-    Write-InfoLog "🔄 Attempting standard pnpm install (live output)..."
+    # npm-only installation approach 
+    Write-InfoLog "🔄 Attempting npm install (pure npm approach)..."
     try {
         # Use direct command execution for real-time output
-        Write-Host "Running: pnpm install" -ForegroundColor Yellow
-        Invoke-Expression "pnpm install"
+        Write-Host "Running: npm ci" -ForegroundColor Yellow
+        Invoke-Expression "npm ci"
         $exitCode = $LASTEXITCODE
         
         if ($exitCode -eq 0) {
             Write-Host ("=" * 60) -ForegroundColor Green
-            Write-SuccessLog "✅ Dependencies installed successfully with pnpm"
+            Write-SuccessLog "✅ Dependencies installed successfully with npm ci"
         } else {
             Write-Host ("=" * 60) -ForegroundColor Yellow
-            Write-WarningLog "⚠️  Standard pnpm install failed (exit code: $exitCode)"
-            Write-InfoLog "🔄 Trying pnpm install with relaxed peer dependencies..."
+            Write-WarningLog "⚠️  npm ci failed (exit code: $exitCode)"
+            Write-InfoLog "🔄 Trying npm install with clean cache..."
             Write-Host ("=" * 60) -ForegroundColor Cyan
             
-            # Try with relaxed peer deps
-            Write-Host "Running: pnpm install --no-strict-peer-dependencies" -ForegroundColor Yellow
-            Invoke-Expression "pnpm install --no-strict-peer-dependencies"
+            # Try npm install with cache clean
+            Write-Host "Running: npm cache clean --force && npm install" -ForegroundColor Yellow
+            Invoke-Expression "npm cache clean --force"
+            Invoke-Expression "npm install"
             $exitCode = $LASTEXITCODE
             
             if ($exitCode -eq 0) {
                 Write-Host ("=" * 60) -ForegroundColor Green
-                Write-SuccessLog "✅ Dependencies installed successfully with relaxed peer dependencies"
+                Write-SuccessLog "✅ Dependencies installed successfully with clean npm install"
             } else {
                 Write-Host ("=" * 60) -ForegroundColor Yellow
-                Write-WarningLog "⚠️  pnpm install failed (exit code: $exitCode), trying npm fallback..."
+                Write-WarningLog "⚠️  npm install failed (exit code: $exitCode), trying legacy peer deps..."
                 Write-InfoLog "🔄 Attempting npm install with legacy peer deps (final fallback)..."
                 Write-Host ("=" * 60) -ForegroundColor Cyan
                 
-                # Final fallback to npm
+                # Final fallback with legacy peer deps
                 Write-Host "Running: npm install --legacy-peer-deps" -ForegroundColor Yellow
                 Invoke-Expression "npm install --legacy-peer-deps"
                 $exitCode = $LASTEXITCODE
@@ -106,7 +107,7 @@ try {
                 if ($exitCode -eq 0) {
                     Write-SuccessLog "✅ Dependencies installed successfully with npm legacy mode"
                 } else {
-                    Write-WarningLog "⚠️  All dependency installation methods failed (exit code: $exitCode)"
+                    Write-WarningLog "⚠️  All npm installation methods failed (exit code: $exitCode)"
                     Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
                 }
             }

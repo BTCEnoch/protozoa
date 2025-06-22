@@ -56,13 +56,14 @@ export const bundleAnalyzerService = BundleAnalyzerService.getInstance()
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
         with:
-          version: 8
+          node-version: '18'
+          cache: 'npm'
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: npm ci
       - name: Run bundle analyzer
-        run: pnpm ts-node ./src/shared/services/bundleAnalyzerService.ts
+        run: npm exec ts-node ./src/shared/services/bundleAnalyzerService.ts
       - uses: actions/upload-artifact@v3
         with:
           name: bundle-report

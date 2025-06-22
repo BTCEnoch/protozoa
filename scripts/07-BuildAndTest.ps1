@@ -40,10 +40,10 @@ try {
     }
 
     # TypeScript compilation check
-    if (Get-Command pnpm -ErrorAction SilentlyContinue) {
+    if (Get-Command npm -ErrorAction SilentlyContinue) {
         Write-InfoLog "Checking TypeScript compilation..."
         try {
-            $tscResult = pnpm exec tsc --noEmit 2>&1
+            $tscResult = npm exec tsc --noEmit 2>&1
             if ($LASTEXITCODE -eq 0) {
                 Write-SuccessLog "TypeScript compilation passed"
             } else {
@@ -65,7 +65,7 @@ try {
                 Write-InfoLog "Running tests with 60 second timeout..."
                 $testJob = Start-Job -ScriptBlock {
                     Set-Location $using:ProjectRoot
-                    & pnpm exec vitest run --reporter=basic 2>&1
+                    & npm exec vitest run --reporter=basic 2>&1
                     return $LASTEXITCODE
                 }
                 
@@ -95,7 +95,7 @@ try {
             Write-InfoLog "No test script found in package.json"
         }
     } else {
-        Write-WarningLog "pnpm not available - skipping build checks"
+        Write-WarningLog "npm not available - skipping build checks"
     }
 
     Write-SuccessLog "Build and test validation completed"

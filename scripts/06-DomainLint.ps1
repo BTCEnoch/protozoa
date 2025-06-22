@@ -66,10 +66,10 @@ try {
     }
 
     # Run ESLint if available
-    if ((Test-Path "package.json") -and (Get-Command pnpm -ErrorAction SilentlyContinue)) {
+    if ((Test-Path "package.json") -and (Get-Command npm -ErrorAction SilentlyContinue)) {
         Write-InfoLog "Running ESLint..."
         try {
-            $eslintResult = pnpm exec eslint src --ext .ts --format compact 2>&1
+            $eslintResult = npm exec eslint src --ext .ts --format compact 2>&1
             if ($LASTEXITCODE -ne 0) {
                 Write-WarningLog "ESLint found issues:"
                 Write-WarningLog $eslintResult

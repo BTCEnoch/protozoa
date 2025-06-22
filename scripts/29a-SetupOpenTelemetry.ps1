@@ -25,14 +25,9 @@ try {
     Write-StepHeader "Setup OpenTelemetry Integration (29)"
     Write-InfoLog "Installing OpenTelemetry packages and configuring tracing"
 
-    # Check for package manager
+    # npm-only package manager approach
     $packageManager = "npm"
-    if (Test-PnpmInstalled) {
-        $packageManager = "pnpm"
-        Write-InfoLog "Using pnpm for package installation"
-    } else {
-        Write-InfoLog "Using npm for package installation"
-    }
+    Write-InfoLog "Using npm for package installation (pure npm approach)"
 
     # Install OpenTelemetry packages
     $otPackages = @(

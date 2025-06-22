@@ -36,7 +36,7 @@ try {
 
     Write-SuccessLog "All configuration files regenerated successfully"
     Write-InfoLog "Next steps:"
-    Write-InfoLog "  1. Run 'pnpm install' to install updated dependencies"
+    Write-InfoLog "  1. Run 'npm install' to install updated dependencies"
     Write-InfoLog "  2. Run 'npm run type-check' to verify TypeScript compilation"
 
 } catch {

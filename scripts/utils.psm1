@@ -751,7 +751,7 @@ function Complete-InstallationPhase {
 
 # Export functions with approved verbs and aliases
 Export-ModuleMember -Function @(
-    'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
+    'Initialize-LogFile', 'Write-Log', 'Write-InfoLog', 'Write-SuccessLog', 'Write-WarningLog', 'Write-ErrorLog', 'Write-DebugLog', 'Write-StepHeader',
     'Test-NodeInstalled', 'Test-PnpmInstalled', 'Test-GitInstalled',
     'New-DirectoryTree', 'Get-DomainList', 'Get-ServiceName',
     'Write-TemplateFile', 'Invoke-ScriptWithErrorHandling', 'Test-TemplateSyntax',

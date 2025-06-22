@@ -1,0 +1,28 @@
+/**
+ * @fileoverview Particle Domain Export Index
+ * @description Central export point for particle domain components
+ * @author Protozoa Development Team
+ * @version 1.0.0
+ */
+
+// Service exports
+export { ParticleService, particleService } from "./services/ParticleService";
+export { ParticleInitService, particleInitService } from "./services/particleInitService";
+
+// Interface exports
+export type { IParticleService, ParticleConfig, ParticleInstance, ParticleSystem } from "./interfaces/IParticleService";
+export type { IParticleInitService } from "./interfaces/IParticleInitService";
+
+// Type exports - comprehensive particle system types
+export type {
+  // Core particle types
+  IParticle,
+  ParticleRole,
+  EmergentBehavior,
+  ParticleState,
+  ParticleVisuals,
+  ParticlePhysics,
+  ParticleEnergy,
+  ParticleFactoryConfig,
+  ParticleUpdateResult
+} from "./types/particle.types"; 

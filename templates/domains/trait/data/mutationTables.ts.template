@@ -1,0 +1,277 @@
+/**
+ * @fileoverview Mutation Tables and Algorithms
+ * @description Mutation probability tables and algorithms for organism trait evolution
+ * @author Protozoa Development Team
+ * @version 1.0.0
+ */
+
+import { TraitValue, TraitCategory, MutationRecord, BlockInfo } from '../types/trait.types'
+import { createServiceLogger } from '@/shared/lib/logger'
+
+const logger = createServiceLogger('MutationTables')
+
+/**
+ * Mutation intensity levels based on blockchain difficulty
+ */
+export const MUTATION_INTENSITY_LEVELS = {
+  minimal: { threshold: 0, multiplier: 0.5, description: 'Low blockchain activity' },
+  low: { threshold: 1000, multiplier: 0.8, description: 'Normal blockchain activity' },
+  moderate: { threshold: 5000, multiplier: 1.0, description: 'Moderate blockchain activity' },
+  high: { threshold: 10000, multiplier: 1.3, description: 'High blockchain activity' },
+  extreme: { threshold: 20000, multiplier: 1.8, description: 'Extreme blockchain activity' }
+} as const
+
+/**
+ * Color mutation lookup table for visual traits
+ */
+export const COLOR_MUTATION_TABLE = {
+  // Color shift patterns based on hex values
+  shift: {
+    red: { min: -30, max: 30 },
+    green: { min: -30, max: 30 },
+    blue: { min: -30, max: 30 }
+  },
+  // Predefined color mutation palettes
+  palettes: {
+    warm: ['#FF6B35', '#F7931E', '#FFD23F', '#EF4A5B', '#FF847C'],
+    cool: ['#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD'],
+    neon: ['#FF073A', '#FF9F1C', '#FFBF69', '#CBF3F0', '#2EC4B6'],
+    cosmic: ['#240046', '#3C096C', '#5A189A', '#7B2CBF', '#9D4EDD'],
+    earth: ['#2D5016', '#40582F', '#5D7A37', '#7A9C47', '#98BF56']
+  }
+}
+
+/**
+ * Numeric trait mutation algorithms
+ */
+export const NUMERIC_MUTATION_ALGORITHMS = {
+  /**
+   * Gaussian mutation with configurable standard deviation
+   */
+  gaussian: {
+    name: 'Gaussian Distribution',
+    algorithm: (value: number, intensity: number): number => {
+      const stdDev = intensity * 0.1 // 10% of intensity as standard deviation
+      const gaussian = () => {
+        let u = 0, v = 0
+        while(u === 0) u = Math.random() // Converting [0,1) to (0,1)
+        while(v === 0) v = Math.random()
+        return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
+      }
+      return value + (gaussian() * stdDev)
+    }
+  },
+
+  /**
+   * Uniform random mutation within percentage range
+   */
+  uniform: {
+    name: 'Uniform Distribution',
+    algorithm: (value: number, intensity: number): number => {
+      const range = value * (intensity * 0.2) // 20% of intensity as range
+      return value + ((Math.random() - 0.5) * 2 * range)
+    }
+  },
+
+  /**
+   * Exponential mutation for growth-based traits
+   */
+  exponential: {
+    name: 'Exponential Growth',
+    algorithm: (value: number, intensity: number): number => {
+      const factor = 1 + (intensity * 0.05 * (Math.random() - 0.5))
+      return value * Math.pow(factor, Math.random() * 2)
+    }
+  },
+
+  /**
+   * Logarithmic mutation for diminishing returns
+   */
+  logarithmic: {
+    name: 'Logarithmic Scaling',
+    algorithm: (value: number, intensity: number): number => {
+      const logFactor = Math.log(1 + intensity * Math.random())
+      return value + (logFactor * (Math.random() - 0.5) * value * 0.1)
+    }
+  }
+}
+
+/**
+ * Trait-specific mutation mappings
+ */
+export const TRAIT_MUTATION_MAPPINGS = {
+  // Visual traits
+  size: { algorithm: 'exponential', constraints: { min: 0.5, max: 3.0 } },
+  opacity: { algorithm: 'uniform', constraints: { min: 0.3, max: 1.0 } },
+  particleDensity: { algorithm: 'gaussian', constraints: { min: 50, max: 500 } },
+  glowIntensity: { algorithm: 'uniform', constraints: { min: 0.0, max: 2.0 } },
+
+  // Behavioral traits
+  speed: { algorithm: 'exponential', constraints: { min: 0.1, max: 5.0 } },
+  aggression: { algorithm: 'uniform', constraints: { min: 0.0, max: 1.0 } },
+  sociability: { algorithm: 'uniform', constraints: { min: 0.0, max: 1.0 } },
+  curiosity: { algorithm: 'gaussian', constraints: { min: 0.0, max: 1.0 } },
+  efficiency: { algorithm: 'logarithmic', constraints: { min: 0.2, max: 2.0 } },
+  adaptability: { algorithm: 'gaussian', constraints: { min: 0.1, max: 1.5 } },
+
+  // Physical traits
+  mass: { algorithm: 'exponential', constraints: { min: 0.5, max: 10.0 } },
+  collisionRadius: { algorithm: 'uniform', constraints: { min: 0.3, max: 2.5 } },
+  energyCapacity: { algorithm: 'exponential', constraints: { min: 50, max: 500 } },
+  durability: { algorithm: 'logarithmic', constraints: { min: 0.3, max: 2.0 } },
+  regeneration: { algorithm: 'uniform', constraints: { min: 0.0, max: 1.0 } },
+
+  // Evolutionary traits
+  fitness: { algorithm: 'gaussian', constraints: { min: 0.0, max: 2.0 } },
+  stability: { algorithm: 'logarithmic', constraints: { min: 0.1, max: 1.0 } },
+  reproductivity: { algorithm: 'uniform', constraints: { min: 0.0, max: 1.5 } },
+  longevity: { algorithm: 'exponential', constraints: { min: 0.5, max: 3.0 } }
+}
+
+/**
+ * Mutation table helper functions
+ */
+export const MutationTableHelpers = {
+  /**
+   * Calculate mutation intensity based on blockchain data
+   */
+  calculateMutationIntensity(blockInfo: BlockInfo): number {
+    logger.debug('Calculating mutation intensity from blockchain data')
+    
+    const difficulty = blockInfo.difficulty || 1000
+    
+    // Find appropriate intensity level
+    let intensityLevel = MUTATION_INTENSITY_LEVELS.minimal
+    
+    for (const [level, config] of Object.entries(MUTATION_INTENSITY_LEVELS)) {
+      if (difficulty >= config.threshold) {
+        intensityLevel = config
+      }
+    }
+    
+    logger.debug(`Blockchain difficulty ${difficulty} maps to ${intensityLevel.description}`)
+    return intensityLevel.multiplier
+  },
+
+  /**
+   * Apply numeric mutation using specified algorithm
+   */
+  mutateNumericTrait(
+    traitName: string, 
+    currentValue: number, 
+    intensity: number
+  ): number {
+    const mapping = TRAIT_MUTATION_MAPPINGS[traitName as keyof typeof TRAIT_MUTATION_MAPPINGS]
+    if (!mapping) {
+      logger.warn(`No mutation mapping found for trait: ${traitName}`)
+      return currentValue
+    }
+
+    const algorithm = NUMERIC_MUTATION_ALGORITHMS[mapping.algorithm as keyof typeof NUMERIC_MUTATION_ALGORITHMS]
+    if (!algorithm) {
+      logger.warn(`Unknown mutation algorithm: ${mapping.algorithm}`)
+      return currentValue
+    }
+
+    let mutatedValue = algorithm.algorithm(currentValue, intensity)
+    
+    // Apply constraints
+    if (mapping.constraints) {
+      mutatedValue = Math.max(mapping.constraints.min, 
+                             Math.min(mapping.constraints.max, mutatedValue))
+    }
+
+    logger.debug(`Mutated ${traitName}: ${currentValue} → ${mutatedValue} (${algorithm.name})`)
+    return mutatedValue
+  },
+
+  /**
+   * Apply color mutation using palette-based approach
+   */
+  mutateColorTrait(
+    currentColor: string, 
+    intensity: number,
+    preferredPalette?: keyof typeof COLOR_MUTATION_TABLE.palettes
+  ): string {
+    logger.debug(`Mutating color trait: ${currentColor}`)
+    
+    // 30% chance to select from palette, 70% chance to shift existing color
+    if (Math.random() < 0.3 && preferredPalette) {
+      const palette = COLOR_MUTATION_TABLE.palettes[preferredPalette]
+      const newColor = palette[Math.floor(Math.random() * palette.length)]
+      logger.debug(`Selected palette color: ${newColor}`)
+      return newColor
+    }
+    
+    // Color shifting approach
+    const hex = currentColor.replace('#', '')
+    const r = parseInt(hex.substr(0, 2), 16)
+    const g = parseInt(hex.substr(2, 2), 16)
+    const b = parseInt(hex.substr(4, 2), 16)
+    
+    const shiftIntensity = intensity * 30 // Scale intensity for color shifts
+    const newR = Math.max(0, Math.min(255, r + (Math.random() - 0.5) * 2 * shiftIntensity))
+    const newG = Math.max(0, Math.min(255, g + (Math.random() - 0.5) * 2 * shiftIntensity))
+    const newB = Math.max(0, Math.min(255, b + (Math.random() - 0.5) * 2 * shiftIntensity))
+    
+    const newColor = `#${Math.round(newR).toString(16).padStart(2, '0')}${Math.round(newG).toString(16).padStart(2, '0')}${Math.round(newB).toString(16).padStart(2, '0')}`
+    
+    logger.debug(`Color shift mutation: ${currentColor} → ${newColor}`)
+    return newColor
+  },
+
+  /**
+   * Create mutation record for tracking
+   */
+  createMutationRecord(
+    traitName: string,
+    oldValue: TraitValue,
+    newValue: TraitValue,
+    intensity: number,
+    blockNumber: number
+  ): MutationRecord {
+    const record: MutationRecord = {
+      traitName,
+      oldValue,
+      newValue,
+      intensity,
+      timestamp: Date.now(),
+      blockNumber,
+      algorithm: TRAIT_MUTATION_MAPPINGS[traitName as keyof typeof TRAIT_MUTATION_MAPPINGS]?.algorithm || 'unknown'
+    }
+    
+    logger.info(`Created mutation record for ${traitName}: ${oldValue} → ${newValue}`)
+    return record
+  },
+
+  /**
+   * Calculate cumulative mutation drift over generations
+   */
+  calculateMutationDrift(mutationHistory: MutationRecord[], traitName: string): number {
+    const traitMutations = mutationHistory.filter(record => record.traitName === traitName)
+    
+    if (traitMutations.length === 0) return 0
+    
+    // Calculate total drift from original value
+    let totalDrift = 0
+    for (let i = 1; i < traitMutations.length; i++) {
+      const current = typeof traitMutations[i].newValue === 'number' ? traitMutations[i].newValue as number : 0
+      const previous = typeof traitMutations[i-1].newValue === 'number' ? traitMutations[i-1].newValue as number : 0
+      totalDrift += Math.abs(current - previous)
+    }
+    
+    const averageDrift = totalDrift / traitMutations.length
+    logger.debug(`Calculated mutation drift for ${traitName}: ${averageDrift}`)
+    return averageDrift
+  }
+}
+
+/**
+ * Export mutation configuration for external use
+ */
+export const MUTATION_CONFIG = {
+  intensityLevels: MUTATION_INTENSITY_LEVELS,
+  colorTable: COLOR_MUTATION_TABLE,
+  algorithms: NUMERIC_MUTATION_ALGORITHMS,
+  mappings: TRAIT_MUTATION_MAPPINGS
+} 

@@ -10,9 +10,12 @@ Write-InfoLog "Starting complete project setup automation..."
 
 # Define script execution sequence following optimal 8-phase architecture
 $scriptSequence = @(
-    # === PHASE 0: ENVIRONMENT & FOUNDATION (10 Scripts) ===
+    # === PHASE 0: ENVIRONMENT & FOUNDATION (12 Scripts - npm-only) ===
     # Critical infrastructure - must execute first
-    @{ Phase = 0; Script = "00-InitEnvironment.ps1"; Description = "Node.js, pnpm, base environment" },
+    @{ Phase = 0; Script = "00-NpmEnvironmentSetup.ps1"; Description = "Node.js and npm-only environment setup" },
+    @{ Phase = 0; Script = "00a-NpmInstallWithProgress.ps1"; Description = "npm installation with enhanced monitoring and stall detection" },
+    @{ Phase = 0; Script = "00b-ValidateNpmEnvironment.ps1"; Description = "npm environment and package integrity validation" },
+    @{ Phase = 0; Script = "00c-CleanupLegacyPackageManagers.ps1"; Description = "Remove pnpm/yarn traces and ensure npm-only approach" },
     @{ Phase = 0; Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
     @{ Phase = 0; Script = "02-GenerateDomainStubs.ps1"; Description = "Service interfaces and stubs" },
     @{ Phase = 0; Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy cleanup" },
@@ -39,7 +42,7 @@ $scriptSequence = @(
     @{ Phase = 2; Script = "19-ConfigureAdvancedTypeScript.ps1"; Description = "Advanced TS config with path mapping" },
     @{ Phase = 2; Script = "21-ConfigureDevEnvironment.ps1"; Description = "VS Code, Prettier, dev tools" },
 
-    # === PHASE 3: CORE PROTOCOL SERVICES (8 Scripts) ===
+    # === PHASE 3: CORE PROTOCOL SERVICES (10 Scripts) ===
     # Fundamental domain services
     @{ Phase = 3; Script = "22-SetupBitcoinProtocol.ps1"; Description = "Bitcoin Ordinals protocol" },
     @{ Phase = 3; Script = "23-GenerateRNGService.ps1"; Description = "Random number generation service" },
@@ -49,14 +52,17 @@ $scriptSequence = @(
     @{ Phase = 3; Script = "26-GenerateBitcoinService.ps1"; Description = "Bitcoin blockchain service" },
     @{ Phase = 3; Script = "26a-EnhanceBitcoinServiceRetry.ps1"; Description = "Bitcoin service retry logic and rate limiting" },
     @{ Phase = 3; Script = "27-GenerateTraitService.ps1"; Description = "Trait management service" },
+    @{ Phase = 3; Script = "27b-GenerateTraitDataFiles.ps1"; Description = "Generate trait definition data files and mutation tables" },
+    @{ Phase = 3; Script = "27c-ConfigureTraitDependencyInjection.ps1"; Description = "Configure trait service dependency injection and generate comprehensive tests" },
     @{ Phase = 3; Script = "28-SetupBlockchainDataIntegration.ps1"; Description = "Real-time blockchain data" },
     @{ Phase = 3; Script = "29-SetupDataValidationLayer.ps1"; Description = "Data validation framework" },
     @{ Phase = 3; Script = "29a-SetupOpenTelemetry.ps1"; Description = "OpenTelemetry observability with Winston integration" },
 
-    # === PHASE 4: DOMAIN SERVICES (10 Scripts) ===
+    # === PHASE 4: DOMAIN SERVICES (12 Scripts) ===
     # Core entity and behavior services
     @{ Phase = 4; Script = "30-EnhanceTraitSystem.ps1"; Description = "Enhanced trait system" },
     @{ Phase = 4; Script = "31-GenerateParticleService.ps1"; Description = "Particle service (core entity)" },
+    @{ Phase = 4; Script = "31b-RefactorParticleStoreInjection.ps1"; Description = "Refactor particle service to use injected stores instead of direct imports" },
     @{ Phase = 4; Script = "32-SetupParticleLifecycleManagement.ps1"; Description = "Particle lifecycle" },
     @{ Phase = 4; Script = "32a-GenerateEvolutionEngine.ps1"; Description = "Evolution engine with mutation algorithms and trait inheritance" },
     @{ Phase = 4; Script = "33-ImplementSwarmIntelligence.ps1"; Description = "Swarm behavior" },
@@ -64,6 +70,7 @@ $scriptSequence = @(
     @{ Phase = 4; Script = "34-EnhanceFormationSystem.ps1"; Description = "Formation enhancements" },
     @{ Phase = 4; Script = "35-GenerateRenderingService.ps1"; Description = "THREE.js rendering service" },
     @{ Phase = 4; Script = "36-GenerateEffectService.ps1"; Description = "Visual effects service" },
+    @{ Phase = 4; Script = "36a-GenerateEffectDomain.ps1"; Description = "Generate complete effect domain with mutation visual hooks and GPU resource management" },
     @{ Phase = 4; Script = "37-SetupCustomShaderSystem.ps1"; Description = "Custom shader pipeline" },
     @{ Phase = 4; Script = "38-ImplementLODSystem.ps1"; Description = "Level-of-detail optimization" },
     @{ Phase = 4; Script = "39-SetupAdvancedEffectComposition.ps1"; Description = "Effect composition" },
@@ -192,9 +199,9 @@ Write-InfoLog "Results: $successCount succeeded, $failedCount failed, $missingCo
 # Detailed results
 foreach ($result in $results) {
     $status = switch ($result.Status) {
-        "SUCCESS" { "✅" }
-        "FAILED" { "❌" }
-        "MISSING" { "⚠️" }
+        "SUCCESS" { "[OK]" }
+        "FAILED" { "[FAIL]" }
+        "MISSING" { "[MISS]" }
     }
     $durationText = if ($result.Duration -gt 0) { " ($($result.Duration.ToString('F1'))s)" } else { "" }
     Write-InfoLog "  Phase $($result.Phase): $status $($result.Script)$durationText"
@@ -217,13 +224,13 @@ if ($failedCount -eq 0 -and $missingCount -eq 0) {
 
     exit 0
 } elseif ($successCount -gt 0) {
-    Write-WarningLog "⚠️ AUTOMATION PARTIALLY COMPLETED"
+            Write-WarningLog "[WARNING] AUTOMATION PARTIALLY COMPLETED"
     Write-InfoLog "Some phases succeeded, but manual intervention may be required."
     Write-InfoLog "Check the error messages above and resolve issues before proceeding."
 
     exit 1
 } else {
-    Write-ErrorLog "❌ AUTOMATION FAILED"
+            Write-ErrorLog "[ERROR] AUTOMATION FAILED"
     Write-InfoLog "Critical failures occurred. Review logs and resolve issues before retrying."
 
     exit 2

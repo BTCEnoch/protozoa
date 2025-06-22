@@ -1,0 +1,114 @@
+# Protozoa .gitignore - npm-only approach
+# Bitcoin Ordinals digital organism ecosystem
+
+# Dependencies and Node Modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# npm-only package manager approach
+# Keep npm lock file, exclude legacy package managers
+!package-lock.json
+pnpm-lock.yaml
+yarn.lock
+.pnpm-store/
+.yarn/
+.yarnrc*
+.pnpmfile.*
+
+# Build outputs
+/dist
+/build
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and Editor files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Coverage and Testing
+coverage/
+.nyc_output/
+junit.xml
+
+# Cache directories
+.npm
+.eslintcache
+.parcel-cache
+.cache/
+.temp/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variable files
+.env*
+
+# Vite
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# PowerShell automation logs
+automation.log
+automation_*.log
+npm_install_*.log
+npm_error_*.log
+
+# Bitcoin Ordinals specific
+.ordinals-cache/
+inscriptions/
+
+# Physics simulation cache
+.physics-cache/
+.particle-cache/
+
+# THREE.js compiled shaders
+.shader-cache/ 
