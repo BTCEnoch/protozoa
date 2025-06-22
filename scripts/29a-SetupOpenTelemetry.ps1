@@ -6,7 +6,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory = $false)]
-    [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
+    [string]$ProjectRoot = $PWD,
 
     [Parameter(Mandatory = $false)]
     [switch]$DryRun
@@ -29,16 +29,17 @@ try {
     $packageManager = "npm"
     Write-InfoLog "Using npm for package installation (pure npm approach)"
 
-    # Install OpenTelemetry packages
+    # Install OpenTelemetry packages with compatible versions
     $otPackages = @(
-        "@opentelemetry/api@^1.7.0",
+        "@opentelemetry/api@^1.6.0",
         "@opentelemetry/sdk-node@^0.45.0", 
         "@opentelemetry/resources@^1.17.0",
         "@opentelemetry/semantic-conventions@^1.17.0",
         "@opentelemetry/exporter-jaeger@^1.17.0",
         "@opentelemetry/exporter-zipkin@^1.17.0",
         "@opentelemetry/instrumentation-http@^0.45.0",
-        "@opentelemetry/instrumentation-fs@^0.8.0"
+        "@opentelemetry/instrumentation-fs@^0.8.0",
+        "@opentelemetry/auto-instrumentations-node@^0.40.0"
     )
 
     Write-InfoLog "Installing OpenTelemetry packages..."
@@ -46,12 +47,22 @@ try {
         $installCmd = "$packageManager add " + ($otPackages -join " ")
         Write-DebugLog "Executing: $installCmd"
         
+        # Try normal installation first
         Invoke-Expression $installCmd
         if ($LASTEXITCODE -ne 0) {
-            throw "Package installation failed with exit code $LASTEXITCODE"
+            Write-WarningLog "Standard installation failed, trying with --legacy-peer-deps"
+            $fallbackCmd = "$packageManager add --legacy-peer-deps " + ($otPackages -join " ")
+            Write-DebugLog "Executing fallback: $fallbackCmd"
+            
+            Invoke-Expression $fallbackCmd
+            if ($LASTEXITCODE -ne 0) {
+                throw "Package installation failed with exit code $LASTEXITCODE even with --legacy-peer-deps"
+            }
+            Write-SuccessLog "OpenTelemetry packages installed successfully with --legacy-peer-deps"
+        } else {
+            Write-SuccessLog "OpenTelemetry packages installed successfully"
         }
     }
-    Write-SuccessLog "OpenTelemetry packages installed successfully"
 
     # Create observability directory
     $observabilityPath = Join-Path $ProjectRoot "src/shared/observability"
