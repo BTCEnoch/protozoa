@@ -68,7 +68,7 @@ try {
     }
     
     # Copy enhanced templates
-    Write-InfoLog "🔧 Updating Bitcoin service templates..."
+    Write-InfoLog "[UPDATE] Updating Bitcoin service templates..."
     
     # Update BitcoinService template
     $bitcoinServiceTemplate = Join-Path $ProjectRoot "templates/domains/bitcoin/services/BitcoinService.ts.template"
@@ -103,8 +103,8 @@ try {
         Write-WarningLog "Bitcoin config template not found, skipping"
     }
     
-    Write-SuccessLog "🎉 Bitcoin service retry enhancement completed!"
-    Write-InfoLog "🔧 Enhancements applied:"
+    Write-SuccessLog "[SUCCESS] Bitcoin service retry enhancement completed!"
+    Write-InfoLog "[ENHANCEMENTS] Enhancements applied:"
     Write-InfoLog "  • Exponential backoff retry logic"
     Write-InfoLog "  • Circuit breaker pattern implementation"
     Write-InfoLog "  • Rate limiting enforcement"

@@ -1,33 +1,33 @@
 ﻿#!/usr/bin/env sh
 . "`$(dirname -- "`$0")/_/husky.sh"
 
-echo "🔍 Running pre-commit validation..."
+echo "[VALIDATE] Running pre-commit validation..."
 
 # Run lint-staged for incremental validation
 npx lint-staged
 
 # Run TypeScript compilation check
-echo "📝 Checking TypeScript compilation..."
+echo "[TS] Checking TypeScript compilation..."
 npx tsc --noEmit
 if [ `$? -ne 0 ]; then
-  echo "❌ TypeScript compilation failed"
+  echo "[ERROR] TypeScript compilation failed"
   exit 1
 fi
 
 # Run domain boundary validation
-echo "🏗️ Validating domain boundaries..."
+echo "[DOMAIN] Validating domain boundaries..."
 pwsh -File "./scripts/05-VerifyCompliance.ps1"
 if [ `$? -ne 0 ]; then
-  echo "❌ Domain boundary validation failed"
+  echo "[ERROR] Domain boundary validation failed"
   exit 1
 fi
 
 # Run bundle size check
-echo "📦 Checking bundle size..."
+echo "[BUILD] Checking bundle size..."
 npm run build > /dev/null 2>&1
 if [ `$? -ne 0 ]; then
-  echo "❌ Build failed - cannot validate bundle size"
+  echo "[ERROR] Build failed - cannot validate bundle size"
   exit 1
 fi
 
-echo "✅ All pre-commit validations passed!"
+echo "[SUCCESS] All pre-commit validations passed!"
