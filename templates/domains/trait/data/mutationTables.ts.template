@@ -261,7 +261,7 @@ export const MutationTableHelpers = {
       if (currentMutation && previousMutation) {
         const current = typeof currentMutation.newValue === 'number' ? currentMutation.newValue as number : 0
         const previous = typeof previousMutation.newValue === 'number' ? previousMutation.newValue as number : 0
-        totalDrift += Math.abs(current - previous)
+      totalDrift += Math.abs(current - previous)
       }
     }
     

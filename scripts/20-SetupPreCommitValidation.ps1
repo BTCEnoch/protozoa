@@ -71,17 +71,17 @@ try {
         Write-SuccessLog "Dependencies already installed: node_modules ($nodeModulesSizeMB MB)"
         Write-InfoLog "Skipping redundant dependency installation - using existing from Phase 0"
     } else {
-        # Install dependencies with real-time progress display
-        Write-InfoLog "Installing dependencies with real-time progress..."
+    # Install dependencies with real-time progress display
+    Write-InfoLog "Installing dependencies with real-time progress..."
         Write-InfoLog "[NPM] You'll see live installation output below:"
-        Write-Host ("=" * 60) -ForegroundColor Cyan
-        
-        # npm-only installation approach 
+    Write-Host ("=" * 60) -ForegroundColor Cyan
+    
+    # npm-only installation approach 
         Write-InfoLog "[NPM] Attempting npm install (pure npm approach)..."
-        try {
-            # Use direct command execution for real-time output
-            Write-Host "Running: npm ci" -ForegroundColor Yellow
-            Invoke-Expression "npm ci"
+    try {
+        # Use direct command execution for real-time output
+        Write-Host "Running: npm ci" -ForegroundColor Yellow
+        Invoke-Expression "npm ci"
         $exitCode = $LASTEXITCODE
         
         if ($exitCode -eq 0) {
@@ -122,9 +122,9 @@ try {
                 }
             }
         }
-        } catch {
-            Write-ErrorLog "Installation process failed: $($_.Exception.Message)"
-            Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
+    } catch {
+        Write-ErrorLog "Installation process failed: $($_.Exception.Message)"
+        Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
         }
     }
 

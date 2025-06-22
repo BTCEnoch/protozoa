@@ -49,7 +49,7 @@ export function SimulationCanvas() {
         // Initialize RNG with Bitcoin block data (placeholder for now)
         await rngService.initialize({
           algorithm: 'mulberry32',
-          seed: Date.now() // In production, this would be from Bitcoin block data
+          defaultSeed: Date.now() // In production, this would be from Bitcoin block data
         })
         
         // Initialize particle service
@@ -64,7 +64,6 @@ export function SimulationCanvas() {
         
         // Initialize trait service with Bitcoin block data (placeholder)
         await traitService.initialize({
-          blockData: new Uint8Array([1, 2, 3, 4, 5]), // Placeholder
           useCache: true,
           enableMutation: true
         })
@@ -80,13 +79,16 @@ export function SimulationCanvas() {
         logger.info('🧬 Creating initial particle system...')
         const particleSystem = particleService.createSystem({
           id: 'main-organisms',
+          name: 'Bitcoin Organisms',
           maxParticles: 500,
-          emissionRate: 10,
-          lifetime: 30,
-          position: new THREE.Vector3(0, 0, 0),
-          velocity: new THREE.Vector3(0, 0, 0),
-          acceleration: new THREE.Vector3(0, 0, 0),
-          material: 'standard'
+          position: { x: 0, y: 0, z: 0 },
+          bounds: {
+            min: { x: -50, y: -50, z: -50 },
+            max: { x: 50, y: 50, z: 50 }
+          },
+          defaultType: 'BASIC',
+          enablePhysics: true,
+          enableCollisions: false
         })
         
         // Spawn initial particles (organisms)

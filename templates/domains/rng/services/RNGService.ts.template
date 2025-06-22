@@ -148,7 +148,7 @@ export class RNGService implements IRNGService {
     logger.debug("🔄 Seed rehashed", { 
       newSeed, 
       chainLength: this.#state.chainLength,
-      totalRehashes: this.#metrics.rehashCount
+      totalRehashes: this.#metrics.rehashCount 
     })
   }
 

@@ -109,7 +109,7 @@ try {
     
     if (Test-Path $indexTemplate) {
         Copy-Item $indexTemplate $domainIndex -Force
-        Write-SuccessLog "Updated domain exports → $domainIndex"
+    Write-SuccessLog "Updated domain exports → $domainIndex"
     } else {
         Write-ErrorLog "Particle index template not found: $indexTemplate"
         throw "Required template missing: index.ts.template"
