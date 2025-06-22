@@ -1,46 +1,41 @@
-// src/domains/animation/services/AnimationService.ts
-// AnimationService implementation - Auto-generated stub
-// Referenced from build_design.md Section 6
+/** AnimationService Implementation */
+import { createServiceLogger, createPerformanceLogger } from '@/shared/lib/logger'
+import type { IAnimationService, AnimationConfig, AnimationState } from '@/domains/animation/interfaces/IAnimationService'
 
-import { IAnimationService } from '../types';
-import { createServiceLogger } from '@/shared/lib/logger';
-
-/**
- * AnimationService – manages animation domain operations.
- * Auto-generated stub following .cursorrules singleton pattern.
- * TODO: Implement actual logic in Phase 6.
- */
 class AnimationService implements IAnimationService {
-  static #instance: AnimationService | null = null;
-  #log = createServiceLogger('ANIMATION_SERVICE');
-
-  /**
-   * Private constructor enforces singleton pattern.
-   */
-  private constructor() {
-    this.#log.info('AnimationService initialized');
+  static #instance: AnimationService | null = null
+  #animations: Map<string, AnimationState> = new Map()
+  #log = createServiceLogger('ANIMATION_SERVICE')
+  #perf = createPerformanceLogger('ANIMATION_SERVICE')
+  private constructor () {}
+  static getInstance () {
+    return this.#instance ?? (this.#instance = new AnimationService())
   }
-
-  /**
-   * Singleton accessor - returns existing instance or creates new one.
-   */
-  public static getInstance(): AnimationService {
-    if (!AnimationService.#instance) {
-      AnimationService.#instance = new AnimationService();
-    }
-    return AnimationService.#instance;
+  startAnimation (role: string, config: AnimationConfig): void {
+    const state: AnimationState = { role, progress: 0, duration: config.duration, type: config.type }
+    this.#animations.set(role, state)
+    this.#log.info('Animation started', { role, config })
   }
-
-  // TODO: Implement interface methods here
-
-  /**
-   * Disposes of service resources and resets singleton instance.
-   */
-  public dispose(): void {
-    this.#log.info('AnimationService disposed');
-    AnimationService.#instance = null;
+  updateAnimations (delta: number): void {
+    const start = performance.now()
+    this.#animations.forEach((state, role) => {
+      state.progress += delta
+      if (state.progress >= state.duration) {
+        this.#animations.delete(role)
+        this.#log.debug('Animation completed', { role })
+      }
+    })
+    const elapsed = performance.now() - start
+    if (this.#animations.size) this.#perf.debug('Animations updated', { count: this.#animations.size, elapsed })
+  }
+  stopAll (): void {
+    const count = this.#animations.size
+    this.#animations.clear()
+    this.#log.warn('All animations stopped', { count })
+  }
+  dispose (): void {
+    this.stopAll()
+    AnimationService.#instance = null
   }
 }
-
-// Singleton export as required by .cursorrules
-export const animationService = AnimationService.getInstance();
+export const animationService = AnimationService.getInstance()

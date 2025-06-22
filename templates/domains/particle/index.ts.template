@@ -10,12 +10,11 @@ export { ParticleService, particleService } from "./services/ParticleService";
 export { ParticleInitService, particleInitService } from "./services/particleInitService";
 
 // Interface exports
-export type { IParticleService, ParticleConfig, ParticleInstance, ParticleSystem } from "./interfaces/IParticleService";
-export type { IParticleInitService } from "./interfaces/IParticleInitService";
+export type { IParticleInitService } from './interfaces/IParticleInitService'
+export type { IParticleService } from './interfaces/IParticleService'
 
-// Type exports - comprehensive particle system types
+// Type exports
 export type {
-  // Core particle types
   IParticle,
   ParticleRole,
   EmergentBehavior,
@@ -24,5 +23,12 @@ export type {
   ParticlePhysics,
   ParticleEnergy,
   ParticleFactoryConfig,
-  ParticleUpdateResult
-} from "./types/particle.types"; 
+  ParticleUpdateResult,
+} from './types/particle.types'
+
+export type {
+  ParticleInitConfig,
+  ParticleAllocationResult,
+  BatchInitOptions,
+  ParticleDistributionMetrics,
+} from './interfaces/IParticleInitService' 

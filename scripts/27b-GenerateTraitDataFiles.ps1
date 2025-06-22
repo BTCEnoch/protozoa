@@ -118,11 +118,11 @@ export {
             Write-SuccessLog "TypeScript validation passed"
         }
         else {
-            Write-WarnLog "TypeScript validation warnings (non-critical): $tscResult"
+            Write-WarningLog "TypeScript validation warnings (non-critical): $tscResult"
         }
     }
     catch {
-        Write-WarnLog "TypeScript validation could not be performed: $($_.Exception.Message)"
+        Write-WarningLog "TypeScript validation could not be performed: $($_.Exception.Message)"
     }
     finally {
         Pop-Location

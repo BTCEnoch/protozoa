@@ -145,11 +145,11 @@ export const MutationTableHelpers = {
     
     for (const [level, config] of Object.entries(MUTATION_INTENSITY_LEVELS)) {
       if (difficulty >= config.threshold) {
-        intensityLevel = config
+        intensityLevel = config as typeof MUTATION_INTENSITY_LEVELS.minimal
       }
     }
     
-    logger.debug(`Blockchain difficulty ${difficulty} maps to ${intensityLevel.description}`)
+    logger.debug(`Blockchain difficulty ${difficulty} maps to ${intensityLevel.description || 'unknown'}`)
     return intensityLevel.multiplier
   },
 
@@ -181,7 +181,7 @@ export const MutationTableHelpers = {
                              Math.min(mapping.constraints.max, mutatedValue))
     }
 
-    logger.debug(`Mutated ${traitName}: ${currentValue} → ${mutatedValue} (${algorithm.name})`)
+    logger.debug(`Mutated ${traitName}: ${currentValue} → ${mutatedValue} (${algorithm?.name || 'unknown'})`)
     return mutatedValue
   },
 
@@ -231,13 +231,13 @@ export const MutationTableHelpers = {
     blockNumber: number
   ): MutationRecord {
     const record: MutationRecord = {
-      traitName,
-      oldValue,
-      newValue,
-      intensity,
       timestamp: Date.now(),
       blockNumber,
-      algorithm: TRAIT_MUTATION_MAPPINGS[traitName as keyof typeof TRAIT_MUTATION_MAPPINGS]?.algorithm || 'unknown'
+      category: 'visual' as TraitCategory, // Default category, should be parameterized
+      traitName,
+      previousValue: oldValue,
+      newValue,
+      mutationStrength: intensity
     }
     
     logger.info(`Created mutation record for ${traitName}: ${oldValue} → ${newValue}`)
@@ -255,12 +255,17 @@ export const MutationTableHelpers = {
     // Calculate total drift from original value
     let totalDrift = 0
     for (let i = 1; i < traitMutations.length; i++) {
-      const current = typeof traitMutations[i].newValue === 'number' ? traitMutations[i].newValue as number : 0
-      const previous = typeof traitMutations[i-1].newValue === 'number' ? traitMutations[i-1].newValue as number : 0
-      totalDrift += Math.abs(current - previous)
+      const currentMutation = traitMutations[i]
+      const previousMutation = traitMutations[i-1]
+      
+      if (currentMutation && previousMutation) {
+        const current = typeof currentMutation.newValue === 'number' ? currentMutation.newValue as number : 0
+        const previous = typeof previousMutation.newValue === 'number' ? previousMutation.newValue as number : 0
+        totalDrift += Math.abs(current - previous)
+      }
     }
     
-    const averageDrift = totalDrift / traitMutations.length
+    const averageDrift = traitMutations.length > 0 ? totalDrift / traitMutations.length : 0
     logger.debug(`Calculated mutation drift for ${traitName}: ${averageDrift}`)
     return averageDrift
   }

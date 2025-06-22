@@ -15,7 +15,8 @@ import {
 import {
   ParticleSystemConfig,
   ParticleCreationData,
-  ParticleMetrics
+  ParticleMetrics,
+  ParticleType
 } from "@/domains/particle/types/particle.types";
 import { createServiceLogger } from "@/shared/lib/logger";
 
@@ -127,8 +128,11 @@ export class ParticleService implements IParticleService {
       maxParticles: systemConfig.maxParticles,
       activeParticles: 0,
       particles: [],
-      position: systemConfig.position.clone(),
-      bounds: systemConfig.bounds.clone(),
+      position: new Vector3(systemConfig.position.x, systemConfig.position.y, systemConfig.position.z),
+      bounds: {
+        min: new Vector3(systemConfig.bounds.min.x, systemConfig.bounds.min.y, systemConfig.bounds.min.z),
+        max: new Vector3(systemConfig.bounds.max.x, systemConfig.bounds.max.y, systemConfig.bounds.max.z)
+      },
       active: true,
       createdAt: Date.now()
     };
@@ -271,15 +275,19 @@ export class ParticleService implements IParticleService {
     }
 
     return {
+      totalCreated: this.#config.maxParticles! - this.#poolIndices.length,
       totalParticles,
       activeSystems,
+      activeCount: totalParticles,
       particlesUpdated: totalParticles,
       particlesRendered: totalParticles,
+      particlesPerSecond: totalParticles, // TODO: Calculate actual rate
       averageUpdateTime: 0, // TODO: Implement timing
       averageRenderTime: 0, // TODO: Implement timing
       memoryUsage: 0, // TODO: Implement memory tracking
       gpuMemoryUsage: 0, // TODO: Implement GPU memory tracking
-      poolUtilization: (this.#config.maxParticles! - this.#poolIndices.length) / this.#config.maxParticles!
+      poolUtilization: (this.#config.maxParticles! - this.#poolIndices.length) / this.#config.maxParticles!,
+      frameRateImpact: 0 // TODO: Implement frame rate monitoring
     };
   }
 
@@ -351,7 +359,7 @@ export class ParticleService implements IParticleService {
         age: 0,
         lifetime: 10,
         active: false,
-        type: "basic",
+        type: ParticleType.BASIC,
         userData: {}
       };
 
@@ -387,16 +395,29 @@ export class ParticleService implements IParticleService {
 
     // Initialize particle
     particle.id = `particle_${Date.now()}_${poolIndex}`;
-    particle.position.copy(data.position);
-    particle.velocity.copy(data.velocity || new Vector3());
-    particle.scale.copy(data.scale || new Vector3(1, 1, 1));
+    
+    // Convert IVector3 to Vector3 for THREE.js compatibility
+    particle.position.set(data.position.x, data.position.y, data.position.z);
+    
+    if (data.velocity) {
+      particle.velocity.set(data.velocity.x, data.velocity.y, data.velocity.z);
+    } else {
+      particle.velocity.set(0, 0, 0);
+    }
+    
+    if (data.scale) {
+      particle.scale.set(data.scale.x, data.scale.y, data.scale.z);
+    } else {
+      particle.scale.set(1, 1, 1);
+    }
+    
     particle.rotation = 0; // Use fixed value since rotation not in creation data
     particle.color = data.color ? { r: data.color.r, g: data.color.g, b: data.color.b } : { r: 1, g: 1, b: 1 };
     particle.opacity = 1; // Use fixed value since opacity not in creation data
     particle.age = 0;
     particle.lifetime = data.lifetime || 10;
     particle.active = true;
-    particle.type = data.type || "basic";
+    particle.type = data.type || ParticleType.BASIC;
     particle.userData = data.userData || {};
 
     return particle;

@@ -102,46 +102,18 @@ try {
         Write-ErrorLog "Service template not found: $serviceTemplate"
     }
     
-    # Update particle domain index exports
+    # Update particle domain index exports using template
     Write-InfoLog "Updating particle domain exports..."
     $domainIndex = Join-Path $particleDomain "index.ts"
-    $indexContent = @"
-/**
- * @fileoverview Particle Domain Exports
- * @module @/domains/particle
- */
-
-// Service exports
-export { ParticleInitService, particleInitService } from './services/particleInitService'
-export { ParticleService } from './services/ParticleService'
-
-// Interface exports  
-export type { IParticleInitService } from './interfaces/IParticleInitService'
-export type { IParticleService } from './interfaces/IParticleService'
-
-// Type exports
-export type { 
-  IParticle, 
-  ParticleRole, 
-  EmergentBehavior, 
-  ParticleState,
-  ParticleVisuals,
-  ParticlePhysics,
-  ParticleEnergy,
-  ParticleFactoryConfig,
-  ParticleUpdateResult
-} from './types/particle.types'
-
-export type {
-  ParticleInitConfig,
-  ParticleAllocationResult,
-  BatchInitOptions,
-  ParticleDistributionMetrics
-} from './interfaces/IParticleInitService'
-"@
+    $indexTemplate = Join-Path $ProjectRoot "templates/domains/particle/index.ts.template"
     
-    $indexContent | Set-Content -Path $domainIndex -Encoding UTF8
-    Write-SuccessLog "Updated domain exports → $domainIndex"
+    if (Test-Path $indexTemplate) {
+        Copy-Item $indexTemplate $domainIndex -Force
+        Write-SuccessLog "Updated domain exports → $domainIndex"
+    } else {
+        Write-ErrorLog "Particle index template not found: $indexTemplate"
+        throw "Required template missing: index.ts.template"
+    }
     
     # Verify TypeScript compilation
     Write-InfoLog "Verifying TypeScript compilation..."

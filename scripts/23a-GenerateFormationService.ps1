@@ -150,40 +150,18 @@ try {
         throw "Required template missing: formation.types.ts.template"
     }
     
-    # Update formation domain index exports
+    # Update formation domain index exports using template
     Write-InfoLog "Updating formation domain exports..."
     $domainIndex = Join-Path $formationDomain "index.ts"
-    $indexContent = @"
-/**
- * @fileoverview Formation Domain Exports
- * @module @/domains/formation
- */
-
-// Service exports
-export { FormationService } from './services/FormationService'
-export { formationBlendingService } from './services/formationBlendingService'
-export { dynamicFormationGenerator } from './services/dynamicFormationGenerator'
-export { formationEnhancer } from './services/formationEnhancer'
-
-// Interface exports  
-export type { IFormationService } from './interfaces/IFormationService'
-export type { IFormationBlendingService } from './interfaces/IFormationBlendingService'
-
-// Type exports
-export type { 
-  IFormationPattern,
-  IFormationGeometry,
-  FormationConfig,
-  FormationType
-} from './types/formation.types'
-
-// Data exports
-export { FORMATION_GEOMETRIES } from './data/formationGeometry'
-export { FORMATION_PATTERNS } from './data/formationPatterns'
-"@
+    $indexTemplate = Join-Path $ProjectRoot "templates/domains/formation/index.ts.template"
     
-    $indexContent | Set-Content -Path $domainIndex -Encoding UTF8
-    Write-SuccessLog "Updated domain exports -> $domainIndex"
+    if (Test-Path $indexTemplate) {
+        Copy-Item $indexTemplate $domainIndex -Force
+        Write-SuccessLog "Updated domain exports -> $domainIndex"
+    } else {
+        Write-ErrorLog "Formation index template not found: $indexTemplate"
+        throw "Required template missing: index.ts.template"
+    }
     
     # Verify TypeScript compilation
     Write-InfoLog "Verifying TypeScript compilation..."

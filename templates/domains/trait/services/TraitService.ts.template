@@ -27,6 +27,9 @@ import {
 } from "@/domains/trait/types/trait.types";
 import { createServiceLogger } from "@/shared/lib/logger";
 
+// Import logger for standalone functions
+const logger = createServiceLogger("TraitService");
+
 /**
  * Trait Service implementing advanced organism trait generation and evolution
  * Uses Bitcoin block data for deterministic yet unique trait generation
@@ -424,6 +427,12 @@ export class TraitService implements ITraitService {
     const range = this.#traitRanges.get(traitName);
     if (!range) return 1.0;
 
+    // Ensure we're working with numeric ranges only
+    if (typeof range.min !== 'number' || typeof range.max !== 'number') {
+      logger.warn(`Non-numeric range for trait ${traitName}, returning default`)
+      return 1.0;
+    }
+
     const normalizedValue = ((hash[offset % hash.length] || 500) % 1000) / 1000;
     return range.min + (normalizedValue * (range.max - range.min));
   }
@@ -521,6 +530,12 @@ export class TraitService implements ITraitService {
   #mutateNumericTrait(currentValue: number, traitName: string, variance: number): number {
     const range = this.#traitRanges.get(traitName);
     if (!range) return currentValue;
+
+    // Ensure we're working with numeric ranges only
+    if (typeof range.min !== 'number' || typeof range.max !== 'number') {
+      logger.warn(`Non-numeric range for trait ${traitName}, skipping mutation`)
+      return currentValue;
+    }
 
     const mutation = (Math.random() - 0.5) * variance * 2;
     const newValue = currentValue + mutation;

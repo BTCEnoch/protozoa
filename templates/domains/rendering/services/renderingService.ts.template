@@ -93,12 +93,17 @@ class RenderingService implements IRenderingService {
     this.#log.info('Formation applied', { patternId, positions: pattern.positions?.length })
   }
 
-  public applyEffect (effectName: string, options?: unknown): void {
+  public async applyEffect (effectName: string, options?: unknown): Promise<void> {
     if (!this.#effectService) {
       this.#err.error('EffectService unavailable', { effectName })
       return
     }
-    this.#effectService.triggerEffect(effectName, options)
+    
+    // Convert string effectName to EffectType and provide default position
+    const position = this.#camera.position.clone()
+    const config = options as any
+    
+    await this.#effectService.triggerEffect(effectName as any, position, config)
     this.#log.info('Effect triggered', { effectName })
   }
 
