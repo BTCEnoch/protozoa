@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Universal Browser-Compatible Logger
  * @description Pure browser-compatible logging service with no Node.js dependencies
  * @module @/shared/lib/logger
@@ -65,17 +65,17 @@ class UniversalLogger implements Logger {
 
   debug(message: string, meta?: any): void {
     if (!this.shouldLog('debug')) return
-    this.logWithStyle('debug', `🐛 ${message}`, meta)
+    this.logWithStyle('debug', `ðŸ› ${message}`, meta)
   }
 
   info(message: string, meta?: any): void {
     if (!this.shouldLog('info')) return
-    this.logWithStyle('info', `ℹ️ ${message}`, meta)
+    this.logWithStyle('info', `â„¹ï¸ ${message}`, meta)
   }
 
   warn(message: string, meta?: any): void {
     if (!this.shouldLog('warn')) return
-    this.logWithStyle('warn', `⚠️ ${message}`, meta)
+    this.logWithStyle('warn', `âš ï¸ ${message}`, meta)
     
     // Also use native console.warn for visibility
     try {
@@ -87,7 +87,7 @@ class UniversalLogger implements Logger {
 
   error(message: string, meta?: any): void {
     if (!this.shouldLog('error')) return
-    this.logWithStyle('error', `❌ ${message}`, meta)
+    this.logWithStyle('error', `âŒ ${message}`, meta)
     
     // Also use native console.error for visibility and stack traces
     try {
@@ -114,7 +114,7 @@ class PerformanceLogger extends UniversalLogger {
    */
   startTimer(operation: string): void {
     this.timers.set(operation, performance.now())
-    this.debug(`⏱️ Started timing: ${operation}`)
+    this.debug(`â±ï¸ Started timing: ${operation}`)
   }
 
   /**
@@ -124,7 +124,7 @@ class PerformanceLogger extends UniversalLogger {
   endTimer(operation: string): number {
     const startTime = this.timers.get(operation)
     if (!startTime) {
-      this.warn(`⏱️ No timer found for operation: ${operation}`)
+      this.warn(`â±ï¸ No timer found for operation: ${operation}`)
       return 0
     }
 
@@ -133,11 +133,11 @@ class PerformanceLogger extends UniversalLogger {
     
     // Log performance with appropriate level based on duration
     if (duration > 1000) {
-      this.warn(`⏱️ SLOW: ${operation} took ${duration.toFixed(2)}ms`)
+      this.warn(`â±ï¸ SLOW: ${operation} took ${duration.toFixed(2)}ms`)
     } else if (duration > 100) {
-      this.info(`⏱️ ${operation} took ${duration.toFixed(2)}ms`)
+      this.info(`â±ï¸ ${operation} took ${duration.toFixed(2)}ms`)
     } else {
-      this.debug(`⏱️ ${operation} took ${duration.toFixed(2)}ms`)
+      this.debug(`â±ï¸ ${operation} took ${duration.toFixed(2)}ms`)
     }
 
     return duration
@@ -150,16 +150,16 @@ class PerformanceLogger extends UniversalLogger {
     try {
       if ('memory' in performance) {
         const memory = (performance as any).memory
-        this.info('📊 Memory Usage', {
+        this.info('ðŸ“Š Memory Usage', {
           used: `${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`,
           total: `${(memory.totalJSHeapSize / 1024 / 1024).toFixed(2)}MB`,
           limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)}MB`
         })
       } else {
-        this.debug('📊 Memory info not available in this environment')
+        this.debug('ðŸ“Š Memory info not available in this environment')
       }
     } catch (error) {
-      this.debug('📊 Failed to get memory usage', error)
+      this.debug('ðŸ“Š Failed to get memory usage', error)
     }
   }
 }
@@ -243,9 +243,9 @@ export function enableDebugLogging(): void {
   try {
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem('protozoa-debug', 'true')
-      console.info('🐛 Debug logging enabled. Refresh page to apply.')
+      console.info('ðŸ› Debug logging enabled. Refresh page to apply.')
     } else {
-      console.info('🐛 Debug logging not available in this environment')
+      console.info('ðŸ› Debug logging not available in this environment')
     }
   } catch (error) {
     console.warn('Failed to enable debug logging:', error)
@@ -259,9 +259,9 @@ export function disableDebugLogging(): void {
   try {
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.removeItem('protozoa-debug')
-      console.info('🐛 Debug logging disabled. Refresh page to apply.')
+      console.info('ðŸ› Debug logging disabled. Refresh page to apply.')
     } else {
-      console.info('🐛 Debug logging not available in this environment')
+      console.info('ðŸ› Debug logging not available in this environment')
     }
   } catch (error) {
     console.warn('Failed to disable debug logging:', error)
@@ -272,15 +272,15 @@ export function disableDebugLogging(): void {
  * Initialize logging system with environment detection
  */
 export function initializeLogging(): void {
-  logger.info('🚀 Protozoa logging system initialized')
+  logger.info('ðŸš€ Protozoa logging system initialized')
   
   // Log environment info
   try {
     const env = typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV ? 'development' : 'production'
-    logger.info(`🌍 Environment: ${env}`)
+    logger.info(`ðŸŒ Environment: ${env}`)
     
     if (typeof window !== 'undefined') {
-      logger.info(`🌐 Browser: ${navigator.userAgent.split(' ').pop() || 'Unknown'}`)
+      logger.info(`ðŸŒ Browser: ${navigator.userAgent.split(' ').pop() || 'Unknown'}`)
     }
   } catch {
     logger.debug('Environment detection failed - continuing with defaults')

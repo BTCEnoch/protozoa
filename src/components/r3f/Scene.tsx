@@ -1,0 +1,145 @@
+/**
+ * React Three Fiber Scene component
+ * Provides declarative 3D scene setup with proper camera and lighting
+ * 
+ * @author Protozoa Automation Suite
+ * @generated from template
+ */
+
+import React, { Suspense, useRef } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { OrbitControls, Environment, Html, useProgress } from '@react-three/drei'
+import * as THREE from 'three'
+import { useSimulationStore } from '@/shared/state'
+import { logger } from '@/shared/lib/logger'
+
+/**
+ * Loading fallback component
+ */
+function Loader() {
+  const { progress } = useProgress()
+  return (
+    <Html center>
+      <div style={{ color: 'white', fontSize: 14 }}>
+        Loading... {progress.toFixed(0)}%
+      </div>
+    </Html>
+  )
+}
+
+/**
+ * Scene setup component
+ */
+function SceneSetup() {
+  const { camera, gl } = useThree()
+  const { backgroundColor, ambientLight } = useSimulationStore()
+
+  React.useEffect(() => {
+    // Configure renderer
+    gl.setClearColor(backgroundColor)
+    gl.shadowMap.enabled = true
+    gl.shadowMap.type = THREE.PCFSoftShadowMap
+    gl.toneMapping = THREE.ACESFilmicToneMapping
+    gl.toneMappingExposure = 1.0
+    
+    // Configure camera
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.position.set(0, 5, 10)
+      camera.lookAt(0, 0, 0)
+    }
+    
+    logger.debug('R3F scene setup completed', { backgroundColor, ambientLight })
+  }, [gl, camera, backgroundColor, ambientLight])
+
+  return (
+    <>
+      <ambientLight intensity={ambientLight} />
+      <directionalLight
+        position={[10, 10, 5]}
+        intensity={1}
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} />
+    </>
+  )
+}
+
+/**
+ * Main R3F Scene component
+ */
+export interface SceneProps {
+  children?: React.ReactNode
+  enableControls?: boolean
+  enableEnvironment?: boolean
+  enableShadows?: boolean
+  cameraPosition?: [number, number, number]
+  onCreated?: (state: any) => void
+}
+
+export function Scene({
+  children,
+  enableControls = true,
+  enableEnvironment = true,
+  enableShadows = true,
+  cameraPosition = [0, 5, 10],
+  onCreated
+}: SceneProps) {
+  const { worldSize, showWireframe } = useSimulationStore()
+
+  return (
+    <Canvas
+      shadows={enableShadows}
+      camera={{ 
+        position: cameraPosition,
+        fov: 75,
+        near: 0.1,
+        far: 1000
+      }}
+      gl={{
+        antialias: true,
+        alpha: true,
+        preserveDrawingBuffer: true
+      }}
+      onCreated={onCreated}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <Suspense fallback={<Loader />}>
+        <SceneSetup />
+        
+        {enableEnvironment && (
+          <Environment preset="city" />
+        )}
+        
+        {enableControls && (
+          <OrbitControls
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            maxPolarAngle={Math.PI / 2}
+            minDistance={2}
+            maxDistance={50}
+          />
+        )}
+        
+        {/* World bounds visualization */}
+        {showWireframe && (
+          <mesh position={[0, 0, 0]}>
+            <boxGeometry args={[worldSize.width, worldSize.height, worldSize.depth]} />
+            <meshBasicMaterial color="white" wireframe />
+          </mesh>
+        )}
+        
+        {children}
+      </Suspense>
+    </Canvas>
+  )
+}
+
+export default Scene 

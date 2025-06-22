@@ -1,0 +1,354 @@
+﻿'use client'
+import React, { useRef, useEffect, useState } from 'react'
+import * as THREE from 'three'
+import { ParticleService } from '@/domains/particle/services/ParticleService'
+import { RenderingService } from '@/domains/rendering/services/RenderingService'
+import { RNGService } from '@/domains/rng/services/RNGService'
+import { TraitService } from '@/domains/trait/services/TraitService'
+import { createServiceLogger } from '@/shared/lib/logger'
+
+/**
+ * SimulationCanvas Component
+ * @description Main THREE.js canvas component that renders Bitcoin Ordinals digital organisms
+ * @author Protozoa Development Team
+ * @version 1.0.0
+ */
+export function SimulationCanvas() {
+  const mountRef = useRef<HTMLDivElement>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [particleCount, setParticleCount] = useState(0)
+  const [fps, setFps] = useState(0)
+  
+  // Service references
+  const animationFrameRef = useRef<number>()
+  const lastFrameTimeRef = useRef<number>(0)
+  const fpsCounterRef = useRef<number>(0)
+  const fpsUpdateTimeRef = useRef<number>(0)
+  
+  const logger = createServiceLogger('SimulationCanvas')
+
+  useEffect(() => {
+    async function initializeSimulation() {
+      try {
+        logger.info('ðŸŽ® Initializing THREE.js simulation...')
+        
+        if (!mountRef.current) {
+          throw new Error('Mount point not available')
+        }
+
+        // Initialize services
+        logger.info('ðŸ”§ Initializing core services...')
+        
+        // Get singleton service instances
+        const particleService = ParticleService.getInstance()
+        const renderingService = RenderingService.getInstance()
+        const rngService = RNGService.getInstance()
+        const traitService = TraitService.getInstance()
+        
+        // Initialize RNG with Bitcoin block data (placeholder for now)
+        await rngService.initialize({
+          algorithm: 'mulberry32',
+          defaultSeed: Date.now() // In production, this would be from Bitcoin block data
+        })
+        
+        // Initialize particle service
+        await particleService.initialize({
+          maxParticles: 1000,
+          useInstancing: true,
+          useObjectPooling: true,
+          defaultMaterial: 'standard',
+          enableLOD: true,
+          cullingDistance: 100
+        })
+        
+        // Initialize trait service with Bitcoin block data (placeholder)
+        await traitService.initialize({
+          useCache: true,
+          enableMutation: true
+        })
+        
+        // Setup THREE.js renderer
+        const canvas = document.createElement('canvas')
+        mountRef.current.appendChild(canvas)
+        
+        // Initialize rendering service with canvas
+        renderingService.initialize(canvas)
+        
+        // Create initial particle system
+        logger.info('ðŸ§¬ Creating initial particle system...')
+        const particleSystem = particleService.createSystem({
+          id: 'main-organisms',
+          name: 'Bitcoin Organisms',
+          maxParticles: 500,
+          position: { x: 0, y: 0, z: 0 },
+          bounds: {
+            min: { x: -50, y: -50, z: -50 },
+            max: { x: 50, y: 50, z: 50 }
+          },
+          defaultType: 'BASIC',
+          enablePhysics: true,
+          enableCollisions: false
+        })
+        
+        // Spawn initial particles (organisms)
+        logger.info('ðŸŒ± Spawning initial organisms...')
+        for (let i = 0; i < 50; i++) {
+          const position = new THREE.Vector3(
+            (Math.random() - 0.5) * 20,
+            (Math.random() - 0.5) * 20,
+            (Math.random() - 0.5) * 20
+          )
+          
+          const velocity = new THREE.Vector3(
+            (Math.random() - 0.5) * 2,
+            (Math.random() - 0.5) * 2,
+            (Math.random() - 0.5) * 2
+          )
+          
+          particleService.spawnParticle('main-organisms', {
+            position,
+            velocity,
+            lifetime: 30 + Math.random() * 20,
+            size: 0.5 + Math.random() * 0.5,
+            color: new THREE.Color().setHSL(Math.random(), 0.7, 0.6)
+          })
+        }
+        
+        // Setup camera position
+        renderingService.camera.position.set(0, 0, 30)
+        renderingService.camera.lookAt(0, 0, 0)
+        
+        // Add some basic lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.4)
+        renderingService.scene.add(ambientLight)
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+        directionalLight.position.set(10, 10, 5)
+        renderingService.scene.add(directionalLight)
+        
+        // Start animation loop
+        startAnimationLoop(particleService, renderingService)
+        
+        setIsLoading(false)
+        logger.info('âœ… Simulation initialized successfully')
+        
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Unknown error'
+        setError(errorMsg)
+        setIsLoading(false)
+        logger.error('âŒ Failed to initialize simulation:', errorMsg)
+      }
+    }
+
+    function startAnimationLoop(particleService: ParticleService, renderingService: RenderingService) {
+      function animate(currentTime: number) {
+        const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000
+        lastFrameTimeRef.current = currentTime
+        
+        // Update FPS counter
+        fpsCounterRef.current++
+        if (currentTime - fpsUpdateTimeRef.current >= 1000) {
+          setFps(fpsCounterRef.current)
+          fpsCounterRef.current = 0
+          fpsUpdateTimeRef.current = currentTime
+        }
+        
+        // Update particles
+        particleService.update(deltaTime)
+        
+        // Update particle count
+        const systems = particleService.getSystems()
+        let totalParticles = 0
+        for (const system of systems.values()) {
+          totalParticles += system.activeParticles
+        }
+        setParticleCount(totalParticles)
+        
+        // Render scene
+        particleService.render(renderingService.scene)
+        renderingService.renderFrame(deltaTime)
+        
+        // Continue animation loop
+        animationFrameRef.current = requestAnimationFrame(animate)
+      }
+      
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    initializeSimulation()
+
+    // Cleanup function
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+      
+      // Dispose services
+      try {
+        ParticleService.getInstance().dispose()
+        logger.info('ðŸ§¹ Services disposed successfully')
+      } catch (err) {
+        logger.error('âŒ Error disposing services:', err)
+      }
+    }
+  }, [])
+
+  // Handle window resize
+  useEffect(() => {
+    function handleResize() {
+      try {
+        const renderingService = RenderingService.getInstance()
+        renderingService.camera.aspect = window.innerWidth / window.innerHeight
+        renderingService.camera.updateProjectionMatrix()
+        renderingService.renderer.setSize(window.innerWidth, window.innerHeight)
+      } catch (err) {
+        logger.warn('Error handling resize:', err)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  if (error) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        color: '#ff4444',
+        fontFamily: 'monospace',
+        textAlign: 'center',
+        padding: '20px'
+      }}>
+        <h3>ðŸŽ® Simulation Error</h3>
+        <p>Failed to initialize Bitcoin Ordinals simulation</p>
+        <pre style={{ 
+          fontSize: '10px', 
+          opacity: 0.7, 
+          marginTop: '10px',
+          background: 'rgba(255, 68, 68, 0.1)',
+          padding: '10px',
+          borderRadius: '4px',
+          maxWidth: '80%',
+          overflow: 'auto'
+        }}>
+          {error}
+        </pre>
+        <button 
+          onClick={() => window.location.reload()} 
+          style={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            background: '#ff4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontFamily: 'monospace'
+          }}
+        >
+          ðŸ”„ Reload Simulation
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#000' }}>
+      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      
+      {isLoading && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          color: '#00ff88',
+          fontFamily: 'monospace',
+          textAlign: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '3px solid rgba(0, 255, 136, 0.1)',
+            borderTop: '3px solid #00ff88',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 20px'
+          }} />
+          <div style={{ fontSize: '14px', marginBottom: '8px' }}>
+            INITIALIZING BITCOIN ORDINALS
+          </div>
+          <div style={{ fontSize: '12px', opacity: 0.7 }}>
+            Loading digital organism simulation...
+          </div>
+        </div>
+      )}
+      
+      {!isLoading && (
+        <>
+          {/* Performance HUD */}
+          <div style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            color: '#00ff88',
+            fontFamily: 'monospace',
+            fontSize: '12px',
+            background: 'rgba(0, 0, 0, 0.7)',
+            padding: '10px',
+            borderRadius: '4px',
+            zIndex: 1000
+          }}>
+            <div>ðŸ§¬ ORGANISMS: {particleCount}</div>
+            <div>ðŸ“Š FPS: {fps}</div>
+            <div>âš¡ GPU: ACTIVE</div>
+          </div>
+          
+          {/* Bitcoin Ordinals Branding */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '20px',
+            color: '#00ff88',
+            fontFamily: 'monospace',
+            fontSize: '12px',
+            opacity: 0.7,
+            zIndex: 1000
+          }}>
+            ðŸŸ  BITCOIN ORDINALS â€¢ PROTOZOA v0.1.0
+          </div>
+          
+          {/* Controls Info */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '20px',
+            color: '#ffffff',
+            fontFamily: 'monospace',
+            fontSize: '10px',
+            opacity: 0.5,
+            textAlign: 'right',
+            zIndex: 1000
+          }}>
+            <div>ðŸ–±ï¸ Mouse: Rotate View</div>
+            <div>ðŸ” Scroll: Zoom</div>
+            <div>âŒ¨ï¸ WASD: Navigate</div>
+          </div>
+        </>
+      )}
+      
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  )
+}

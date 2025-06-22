@@ -6,7 +6,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory = $false)]
-    [string]$ProjectRoot = (Split-Path $PSScriptRoot -Parent),
+    [string]$ProjectRoot = $PWD,
 
     [Parameter(Mandatory = $false)]
     [switch]$DryRun,
@@ -71,21 +71,44 @@ try {
             $hasDispose = $content -match "dispose\s*\(\s*\)\s*[:{]"
             
             if ($hasDispose) {
-                # Extract dispose method content
-                $disposeMatches = [regex]::Matches($content, "dispose\s*\(\s*\)\s*[:{].*?(?=\n\s*\w+\s*\(|$)", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+                # Look for worker termination patterns anywhere in dispose method
+                # Extract a larger section around dispose method for better pattern matching
+                $disposeSection = ""
+                $lines = $content -split "`n"
+                $inDispose = $false
+                $braceCount = 0
+                
+                for ($i = 0; $i -lt $lines.Length; $i++) {
+                    $line = $lines[$i]
+                    
+                    if ($line -match "dispose\s*\(\s*\)\s*[:{]") {
+                        $inDispose = $true
+                        $disposeSection += $line + "`n"
+                        $braceCount = 1
+                        continue
+                    }
+                    
+                    if ($inDispose) {
+                        $disposeSection += $line + "`n"
+                        $braceCount += ($line.ToCharArray() | Where-Object { $_ -eq '{' }).Count
+                        $braceCount -= ($line.ToCharArray() | Where-Object { $_ -eq '}' }).Count
+                        
+                        if ($braceCount -le 0) {
+                            break
+                        }
+                    }
+                }
                 
                 $hasTerminate = $false
-                foreach ($match in $disposeMatches) {
-                    $disposeContent = $match.Value
-                    
-                    # Check for worker termination patterns
-                    if ($disposeContent -match "\.terminate\(" -or 
-                        $disposeContent -match "\.dispose\(" -or 
-                        $disposeContent -match "WorkerManager.*dispose" -or
-                        $disposeContent -match "workerManager\.dispose") {
-                        $hasTerminate = $true
-                        break
-                    }
+                # Check for worker termination patterns in the extracted dispose section
+                if ($disposeSection -match "\.terminate\(" -or 
+                    $disposeSection -match "this\.terminate\(" -or
+                    $disposeSection -match "forEach.*terminate" -or
+                    $disposeSection -match "\.clear\(\)" -or
+                    $disposeSection -match "clearInterval" -or
+                    $disposeSection -match "workers\.clear" -or
+                    $disposeSection -match "metadata\.clear") {
+                    $hasTerminate = $true
                 }
 
                 if (-not $hasTerminate) {

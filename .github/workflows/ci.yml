@@ -10,21 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
         with:
-          version: 8
+          node-version: '18'
+          cache: 'npm'
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: npm ci
       - name: Lint
-        run: pnpm eslint . --max-warnings=0
+        run: npm run lint
       - name: Type Check
-        run: pnpm tsc --noEmit
+        run: npm run type-check
       - name: Unit Tests
-        run: pnpm vitest run --coverage
+        run: npm run test:coverage
       - name: Validate Scripts
         run: pwsh ./scripts/VerifyCompliance.ps1
       - name: Bundle Size
-        run: pnpm webpack --profile --json > stats.json
+        run: npm run build:analyze
       - uses: actions/upload-artifact@v3
         with:
           name: bundle-stats
@@ -34,13 +35,14 @@ jobs:
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
         with:
-          version: 8
+          node-version: '18'
+          cache: 'npm'
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: npm ci
       - name: Run bundle analyzer
-        run: pnpm ts-node ./src/shared/services/bundleAnalyzerService.ts
+        run: npm exec ts-node ./src/shared/services/bundleAnalyzerService.ts
       - uses: actions/upload-artifact@v3
         with:
           name: bundle-report
@@ -50,7 +52,7 @@ jobs:
     needs: build-test
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with: { version: 8 }
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm vitest run tests/performance --reporter verbose
+      - uses: actions/setup-node@v4
+        with: { node-version: '18', cache: 'npm' }
+      - run: npm ci
+      - run: npm exec vitest run tests/performance --reporter verbose

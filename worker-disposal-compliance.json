@@ -1,0 +1,22 @@
+﻿{
+    "violations":  0,
+    "workerFiles":  1,
+    "details":  {
+                    "violations":  [
+
+                                   ],
+                    "compliant":  {
+                                      "file":  "WorkerManager.ts",
+                                      "path":  "D:\\Protozoa\\src\\shared\\workers\\WorkerManager.ts"
+                                  }
+                },
+    "timestamp":  "2025-06-21 20:57:38",
+    "compliantFiles":  1,
+    "totalFiles":  32,
+    "recommendations":  [
+                            "All services with worker code MUST implement dispose() method",
+                            "dispose() method MUST call worker.terminate() or workerManager.dispose()",
+                            "Use WorkerManager for centralized worker lifecycle management",
+                            "Implement proper error handling in disposal methods"
+                        ]
+}
