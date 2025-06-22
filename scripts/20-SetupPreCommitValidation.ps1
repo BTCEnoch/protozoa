@@ -61,26 +61,36 @@ try {
         throw "Required template file missing: package.json.template"
     }
 
-    # Install dependencies with real-time progress display
-    Write-InfoLog "Installing dependencies with real-time progress..."
-    Write-InfoLog "📦 You'll see live installation output below:"
-    Write-Host ("=" * 60) -ForegroundColor Cyan
+    # Check if dependencies are already installed (likely from Phase 0)
+    Write-InfoLog "Checking if dependencies are already installed..."
+    $nodeModulesPath = Join-Path $ProjectRoot "node_modules"
     
-    # npm-only installation approach 
-    Write-InfoLog "🔄 Attempting npm install (pure npm approach)..."
-    try {
-        # Use direct command execution for real-time output
-        Write-Host "Running: npm ci" -ForegroundColor Yellow
-        Invoke-Expression "npm ci"
+    if (Test-Path $nodeModulesPath) {
+        $nodeModulesSize = (Get-ChildItem $nodeModulesPath -Recurse -File | Measure-Object -Property Length -Sum).Sum
+        $nodeModulesSizeMB = [math]::Round($nodeModulesSize / 1MB, 1)
+        Write-SuccessLog "Dependencies already installed: node_modules ($nodeModulesSizeMB MB)"
+        Write-InfoLog "Skipping redundant dependency installation - using existing from Phase 0"
+    } else {
+        # Install dependencies with real-time progress display
+        Write-InfoLog "Installing dependencies with real-time progress..."
+        Write-InfoLog "[NPM] You'll see live installation output below:"
+        Write-Host ("=" * 60) -ForegroundColor Cyan
+        
+        # npm-only installation approach 
+        Write-InfoLog "[NPM] Attempting npm install (pure npm approach)..."
+        try {
+            # Use direct command execution for real-time output
+            Write-Host "Running: npm ci" -ForegroundColor Yellow
+            Invoke-Expression "npm ci"
         $exitCode = $LASTEXITCODE
         
         if ($exitCode -eq 0) {
             Write-Host ("=" * 60) -ForegroundColor Green
-            Write-SuccessLog "✅ Dependencies installed successfully with npm ci"
+            Write-SuccessLog "[OK] Dependencies installed successfully with npm ci"
         } else {
             Write-Host ("=" * 60) -ForegroundColor Yellow
-            Write-WarningLog "⚠️  npm ci failed (exit code: $exitCode)"
-            Write-InfoLog "🔄 Trying npm install with clean cache..."
+            Write-WarningLog "[WARNING] npm ci failed (exit code: $exitCode)"
+            Write-InfoLog "[RETRY] Trying npm install with clean cache..."
             Write-Host ("=" * 60) -ForegroundColor Cyan
             
             # Try npm install with cache clean
@@ -91,11 +101,11 @@ try {
             
             if ($exitCode -eq 0) {
                 Write-Host ("=" * 60) -ForegroundColor Green
-                Write-SuccessLog "✅ Dependencies installed successfully with clean npm install"
+                Write-SuccessLog "[OK] Dependencies installed successfully with clean npm install"
             } else {
                 Write-Host ("=" * 60) -ForegroundColor Yellow
-                Write-WarningLog "⚠️  npm install failed (exit code: $exitCode), trying legacy peer deps..."
-                Write-InfoLog "🔄 Attempting npm install with legacy peer deps (final fallback)..."
+                Write-WarningLog "[WARNING] npm install failed (exit code: $exitCode), trying legacy peer deps..."
+                Write-InfoLog "[RETRY] Attempting npm install with legacy peer deps (final fallback)..."
                 Write-Host ("=" * 60) -ForegroundColor Cyan
                 
                 # Final fallback with legacy peer deps
@@ -105,16 +115,17 @@ try {
                 
                 Write-Host ("=" * 60) -ForegroundColor Cyan
                 if ($exitCode -eq 0) {
-                    Write-SuccessLog "✅ Dependencies installed successfully with npm legacy mode"
+                    Write-SuccessLog "[OK] Dependencies installed successfully with npm legacy mode"
                 } else {
-                    Write-WarningLog "⚠️  All npm installation methods failed (exit code: $exitCode)"
+                    Write-WarningLog "[WARNING] All npm installation methods failed (exit code: $exitCode)"
                     Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
                 }
             }
         }
-    } catch {
-        Write-ErrorLog "Installation process failed: $($_.Exception.Message)"
-        Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
+        } catch {
+            Write-ErrorLog "Installation process failed: $($_.Exception.Message)"
+            Write-WarningLog "Continuing setup - pre-commit hooks can work without perfect dependencies"
+        }
     }
 
     # Initialize Husky (modern approach for v9+)
@@ -140,36 +151,36 @@ try {
 #!/usr/bin/env sh
 . "`$(dirname -- "`$0")/_/husky.sh"
 
-echo "🔍 Running pre-commit validation..."
+echo "[VALIDATE] Running pre-commit validation..."
 
 # Run lint-staged for incremental validation
 npx lint-staged
 
 # Run TypeScript compilation check
-echo "📝 Checking TypeScript compilation..."
+echo "[TS] Checking TypeScript compilation..."
 npx tsc --noEmit
 if [ `$? -ne 0 ]; then
-  echo "❌ TypeScript compilation failed"
+  echo "[ERROR] TypeScript compilation failed"
   exit 1
 fi
 
 # Run domain boundary validation
-echo "🏗️ Validating domain boundaries..."
+echo "[DOMAIN] Validating domain boundaries..."
 pwsh -File "./scripts/05-VerifyCompliance.ps1"
 if [ `$? -ne 0 ]; then
-  echo "❌ Domain boundary validation failed"
+  echo "[ERROR] Domain boundary validation failed"
   exit 1
 fi
 
 # Run bundle size check
-echo "📦 Checking bundle size..."
+echo "[BUILD] Checking bundle size..."
 npm run build > /dev/null 2>&1
 if [ `$? -ne 0 ]; then
-  echo "❌ Build failed - cannot validate bundle size"
+  echo "[ERROR] Build failed - cannot validate bundle size"
   exit 1
 fi
 
-echo "✅ All pre-commit validations passed!"
+echo "[SUCCESS] All pre-commit validations passed!"
 '@
 
     Set-Content -Path $preCommitHookPath -Value $preCommitContent -Encoding UTF8

@@ -29,7 +29,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     Write-StepHeader "Bitcoin Service Retry Enhancement"
-    Write-InfoLog "₿ Enhancing Bitcoin service with retry logic and rate limiting..."
+    Write-InfoLog "[BTC] Enhancing Bitcoin service with retry logic and rate limiting..."
     
     # Validate project structure
     $bitcoinDomain = Join-Path $ProjectRoot "src/domains/bitcoin"
@@ -76,7 +76,7 @@ try {
     
     if (Test-Path $bitcoinServiceTemplate) {
         Copy-Item $bitcoinServiceTemplate $bitcoinServiceTarget -Force
-        Write-SuccessLog "✅ Updated BitcoinService with retry logic"
+        Write-SuccessLog "[OK] Updated BitcoinService with retry logic"
     } else {
         Write-ErrorLog "BitcoinService template not found: $bitcoinServiceTemplate"
     }
@@ -87,7 +87,7 @@ try {
     
     if (Test-Path $rateLimiterTemplate) {
         Copy-Item $rateLimiterTemplate $rateLimiterTarget -Force
-        Write-SuccessLog "✅ Updated rate limiter configuration"
+        Write-SuccessLog "[OK] Updated rate limiter configuration"
     } else {
         Write-WarningLog "Rate limiter template not found, skipping"
     }
@@ -98,7 +98,7 @@ try {
     
     if (Test-Path $bitcoinConfigTemplate) {
         Copy-Item $bitcoinConfigTemplate $bitcoinConfigTarget -Force
-        Write-SuccessLog "✅ Updated Bitcoin configuration"
+        Write-SuccessLog "[OK] Updated Bitcoin configuration"
     } else {
         Write-WarningLog "Bitcoin config template not found, skipping"
     }
@@ -114,7 +114,7 @@ try {
     exit 0
     
 } catch {
-    Write-ErrorLog "❌ Bitcoin service enhancement failed: $_"
+    Write-ErrorLog "[ERROR] Bitcoin service enhancement failed: $_"
     Write-DebugLog "Stack trace: $($_.ScriptStackTrace)"
     exit 1
 } 

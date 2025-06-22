@@ -1,0 +1,193 @@
+/**
+ * @fileoverview IRNGService Interface (Template)
+ * @module @/domains/rng/interfaces/IRNGService
+ * @version 2.0.0
+ */
+
+import type { 
+  RNGConfig, 
+  RNGState, 
+  RNGOptions, 
+  RNGMetrics, 
+  PurposeRNGConfig,
+  RNGValidationResult,
+  BatchRNGConfig
+} from "@/domains/rng/types/rng.types"
+
+/**
+ * Enhanced RNG Service Interface with advanced features
+ * Supports rehash chains, purpose-specific generators, and performance monitoring
+ */
+export interface IRNGService {
+  /**
+   * Initialize the RNG service with configuration
+   * @param config - Optional configuration overrides
+   */
+  initialize(config?: RNGConfig): Promise<void>
+  
+  /**
+   * Set the seed for the main RNG generator
+   * @param seed - Seed value
+   */
+  setSeed(seed: number): void
+  
+  /**
+   * Rehash the current seed to create a new seed value
+   * Implements chain length protection to prevent infinite loops
+   */
+  rehashSeed(): void
+  
+  /**
+   * Get a purpose-specific RNG generator
+   * Creates isolated RNG streams for different use cases
+   * @param purpose - Purpose identifier (e.g., 'particle-init', 'trait-mutation')
+   * @returns Dedicated RNG function for this purpose
+   */
+  getPurposeRng(purpose: string): () => number
+  
+  /**
+   * Seed the RNG from Bitcoin block data
+   * @param blockNumber - Bitcoin block number
+   */
+  seedFromBlock(blockNumber: number): Promise<void>
+  
+  /**
+   * Generate a random number between 0 and 1
+   * @returns Random float [0, 1)
+   */
+  random(): number
+  
+  /**
+   * Generate a random integer in the given range
+   * @param min - Minimum value (inclusive)
+   * @param max - Maximum value (exclusive)
+   * @returns Random integer
+   */
+  randomInt(min: number, max: number): number
+  
+  /**
+   * Generate a random float in the given range
+   * @param min - Minimum value (inclusive)
+   * @param max - Maximum value (exclusive)
+   * @returns Random float
+   */
+  randomFloat(min: number, max: number): number
+  
+  /**
+   * Generate an array of random numbers
+   * @param options - Generation options
+   * @returns Array of random numbers
+   */
+  randomArray(options: RNGOptions): number[]
+  
+  /**
+   * Get the current RNG state
+   * @returns Copy of current state
+   */
+  getState(): RNGState
+  
+  /**
+   * Set the RNG state
+   * @param state - State to restore
+   */
+  setState(state: RNGState): void
+  
+  /**
+   * Get RNG metrics and performance data
+   * @returns Current metrics
+   */
+  getMetrics(): RNGMetrics
+  
+  /**
+   * Reset RNG to default state
+   */
+  reset(): void
+  
+  /**
+   * Perform health check on RNG service
+   * @returns Service health status
+   */
+  healthCheck(): Promise<boolean>
+  
+  /**
+   * Dispose the RNG service and cleanup resources
+   */
+  dispose(): void
+}
+
+/**
+ * Extended RNG Service Interface with advanced features
+ * Optional interface for services that support additional functionality
+ */
+export interface IAdvancedRNGService extends IRNGService {
+  /**
+   * Configure purpose-specific RNG generators
+   * @param configs - Array of purpose configurations
+   */
+  configurePurposeRngs(configs: PurposeRNGConfig[]): void
+  
+  /**
+   * Validate RNG quality and randomness
+   * @param sampleSize - Number of samples to test
+   * @returns Validation results
+   */
+  validateRandomness(sampleSize?: number): Promise<RNGValidationResult>
+  
+  /**
+   * Generate large batches of random numbers efficiently
+   * @param config - Batch configuration
+   * @returns Promise resolving to generated numbers
+   */
+  generateBatch(config: BatchRNGConfig): Promise<number[][]>
+  
+  /**
+   * Export RNG state for serialization
+   * @returns Serializable state object
+   */
+  exportState(): string
+  
+  /**
+   * Import RNG state from serialized data
+   * @param serializedState - Serialized state string
+   */
+  importState(serializedState: string): void
+  
+  /**
+   * Get performance profiling data
+   * @returns Detailed performance metrics
+   */
+  getPerformanceProfile(): Record<string, any>
+  
+  /**
+   * Clear all purpose-specific generators
+   */
+  clearPurposeRngs(): void
+  
+  /**
+   * Get list of active purpose generators
+   * @returns Array of purpose identifiers
+   */
+  getActivePurposes(): string[]
+}
+
+/**
+ * Configuration interface for RNG service initialization
+ */
+export interface RNGServiceConfig extends RNGConfig {
+  /** Enable advanced features */
+  enableAdvancedFeatures?: boolean
+  
+  /** Enable performance monitoring */
+  enablePerformanceMonitoring?: boolean
+  
+  /** Enable validation checks */
+  enableValidation?: boolean
+  
+  /** Worker pool size for batch operations */
+  workerPoolSize?: number
+}
+
+/**
+ * Re-export types for convenience
+ */
+export type { RNGConfig, RNGState, RNGOptions, RNGMetrics }
