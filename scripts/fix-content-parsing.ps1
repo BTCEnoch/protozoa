@@ -11,7 +11,7 @@ param(
     [Parameter(Mandatory=$false)][string]$ScriptsRoot = (Join-Path (Split-Path $MyInvocation.MyCommand.Path -Parent) '.' )
 )
 
-Write-Host "🔧 Converting double-quoted HERE-STRING blocks across all scripts…" -ForegroundColor Cyan
+Write-Host "[UPDATE] Converting double-quoted HERE-STRING blocks across all scripts…" -ForegroundColor Cyan
 
 # Collect every PowerShell script under the target root (excluding this script itself)
 $problemScripts = Get-ChildItem -Path $ScriptsRoot -Recurse -Filter '*.ps1' |
@@ -70,12 +70,12 @@ foreach ($file in $problemScripts) {
             Write-Host "[DRY-RUN] Would fix $fixesInScript block(s) in $($file.Name)" -ForegroundColor Yellow
         } else {
             $newLines -join "`r`n" | Set-Content -Path $scriptPath -Encoding UTF8
-            Write-Host "✓ Fixed $fixesInScript block(s) in $($file.Name)" -ForegroundColor Green
+            Write-Host "[OK] Fixed $fixesInScript block(s) in $($file.Name)" -ForegroundColor Green
         }
     }
 }
 
-Write-Host "`n🎯 SUMMARY:" -ForegroundColor Cyan
+Write-Host "`n[SUMMARY] SUMMARY:" -ForegroundColor Cyan
 Write-Host "Scripts scanned   : $($problemScripts.Count)" -ForegroundColor White
 Write-Host "Scripts modified  : $scriptsModified" -ForegroundColor Green
 Write-Host "Blocks converted  : $totalFixed" -ForegroundColor Green

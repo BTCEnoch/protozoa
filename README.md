@@ -1,10 +1,10 @@
 # New-Protozoa: Bitcoin Ordinals Digital Organism Simulation
 
-**?? On-chain evolution powered by Bitcoin blockchain data**
+**[ORGANISM] On-chain evolution powered by Bitcoin blockchain data**
 
 An advanced TypeScript simulation that creates and evolves digital unicellular organisms using Bitcoin Ordinals. Each organism is uniquely seeded from Bitcoin block data, ensuring deterministic but unique traits tied to blockchain history.
 
-## ?? Quick Start
+## [QUICK START] Quick Start
 
 ```bash
 # Clone the repository
@@ -16,7 +16,7 @@ cd scripts
 powershell ./runAll.ps1
 ```
 
-## ?? Features
+## [FEATURES] Features
 
 - **Bitcoin-Seeded Evolution**: Organisms derive traits from Bitcoin block nonces and hashes
 - **Domain-Driven Architecture**: 10 isolated domains (rendering, physics, traits, etc.)
@@ -25,20 +25,20 @@ powershell ./runAll.ps1
 - **TypeScript Excellence**: 100% typed with strict compliance standards
 - **Memory-Safe**: Comprehensive resource cleanup and leak prevention
 
-## ??? Architecture
+## [ARCHITECTURE] Architecture
 
 ### Core Domains
 ```
 src/domains/
-+-- rendering/     # THREE.js scene management
-+-- animation/     # Particle movement and easing
-+-- effect/        # Visual effects triggered by Bitcoin data
-+-- trait/         # Organism characteristics from blockchain
-+-- physics/       # Particle distribution and collision
-+-- particle/      # Organism lifecycle management
-+-- formation/     # Geometric pattern arrangements
-+-- group/         # Particle clustering behavior
-+-- rng/           # Seeded randomness using Bitcoin nonces
+|-- rendering/     # THREE.js scene management
+|-- animation/     # Particle movement and easing
+|-- effect/        # Visual effects triggered by Bitcoin data
+|-- trait/         # Organism characteristics from blockchain
+|-- physics/       # Particle distribution and collision
+|-- particle/      # Organism lifecycle management
+|-- formation/     # Geometric pattern arrangements
+|-- group/         # Particle clustering behavior
+|-- rng/           # Seeded randomness using Bitcoin nonces
 +-- bitcoin/       # Blockchain data fetching with caching
 ```
 
@@ -49,24 +49,24 @@ src/domains/
 - **Winston Logging**: Comprehensive logging for debugging and performance
 - **Resource Cleanup**: Mandatory `dispose()` methods prevent memory leaks
 
-## ?? Bitcoin Integration
+## [BITCOIN] Bitcoin Integration
 
 - **Block Data API**: Fetches Bitcoin block information for trait seeding
 - **Ordinals Protocol**: Stores organism data as Bitcoin inscriptions
 - **Deterministic Traits**: Block nonces ensure reproducible organism characteristics
 - **Environment Switching**: Automatic dev/production API endpoint configuration
 
-## ?? Compliance Standards
+## [COMPLIANCE] Compliance Standards
 
 The project enforces strict architectural discipline:
 
-- ? **500-line file limit** (automatically enforced)
-- ? **Zero cross-domain imports** (domain boundary protection)
-- ? **Singleton consistency** (pattern enforcement scripts)
-- ? **Memory leak prevention** (mandatory cleanup methods)
-- ? **TypeScript strict mode** (100% type coverage)
+- [OK] **500-line file limit** (automatically enforced)
+- [OK] **Zero cross-domain imports** (domain boundary protection)
+- [OK] **Singleton consistency** (pattern enforcement scripts)
+- [OK] **Memory leak prevention** (mandatory cleanup methods)
+- [OK] **TypeScript strict mode** (100% type coverage)
 
-## ??? Automation Scripts
+## [AUTOMATION] Automation Scripts
 
 Complete PowerShell automation package in `/scripts`:
 
@@ -76,7 +76,7 @@ Complete PowerShell automation package in `/scripts`:
 - `03-MoveAndCleanCodebase.ps1` - Legacy cleanup and migration
 - `runAll.ps1` - Master orchestrator for complete setup
 
-## ?? Development Workflow
+## [WORKFLOW] Development Workflow
 
 1. **Setup**: Run automation scripts for instant project scaffolding
 2. **Implement**: Fill service stubs following domain-driven phases
@@ -84,21 +84,21 @@ Complete PowerShell automation package in `/scripts`:
 4. **Test**: Comprehensive unit and integration testing
 5. **Deploy**: Automated CI/CD with quality gates
 
-## ?? Documentation
+## [DOCS] Documentation
 
 - **Build Checklist**: 8-phase implementation roadmap
 - **Architecture Design**: Detailed service specifications
 - **Compliance Rules**: Complete `.cursorrules` standards
 - **API Integration**: Bitcoin Ordinals protocol documentation
 
-## ?? Project Status
+## [STATUS] Project Status
 
-- ? **Phase 1**: Foundation and infrastructure setup
-- ? **Phase 2-3**: Core utility and data integration domains
-- ?? **Phase 4-6**: Particle system and visual domains (in progress)
-- ? **Phase 7-8**: Automation and integration testing
+- [OK] **Phase 1**: Foundation and infrastructure setup
+- [OK] **Phase 2-3**: Core utility and data integration domains
+- [IN_PROGRESS] **Phase 4-6**: Particle system and visual domains (in progress)
+- [PENDING] **Phase 7-8**: Automation and integration testing
 
-## ?? Contributing
+## [CONTRIBUTING] Contributing
 
 This project follows strict architectural standards. Please:
 
@@ -108,10 +108,10 @@ This project follows strict architectural standards. Please:
 4. Maintain domain boundary isolation
 5. Add comprehensive logging and error handling
 
-## ?? License
+## [LICENSE] License
 
 MIT License - Build the future of on-chain digital life!
 
 ---
 
-**Ready to evolve digital organisms on the Bitcoin blockchain! ???**
+**Ready to evolve digital organisms on the Bitcoin blockchain! [ORGANISM][LIGHTNING]**

@@ -134,7 +134,7 @@ export {
     Write-InfoLog "  - src/domains/trait/data/mutationTables.ts"
     Write-InfoLog "  - Updated src/domains/trait/index.ts with data exports"
     
-    Write-InfoLog "ARCHITECTURE GAP RESOLVED: ✅ 2.4 - Trait definition data files in trait/data/"
+    Write-InfoLog "ARCHITECTURE GAP RESOLVED: [OK] 2.4 - Trait definition data files in trait/data/"
 
     exit 0
 }

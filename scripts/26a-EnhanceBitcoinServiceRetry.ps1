@@ -105,11 +105,11 @@ try {
     
     Write-SuccessLog "[SUCCESS] Bitcoin service retry enhancement completed!"
     Write-InfoLog "[ENHANCEMENTS] Enhancements applied:"
-    Write-InfoLog "  • Exponential backoff retry logic"
-    Write-InfoLog "  • Circuit breaker pattern implementation"
-    Write-InfoLog "  • Rate limiting enforcement"
-    Write-InfoLog "  • Enhanced error handling and logging"
-    Write-InfoLog "  • Fallback data mechanisms"
+    Write-InfoLog "  - Exponential backoff retry logic"
+Write-InfoLog "  - Circuit breaker pattern implementation"
+Write-InfoLog "  - Rate limiting enforcement"
+Write-InfoLog "  - Enhanced error handling and logging"
+Write-InfoLog "  - Fallback data mechanisms"
     
     exit 0
     

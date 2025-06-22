@@ -421,9 +421,9 @@ export * from './effect.types';
     Write-InfoLog "  - src/domains/effect/index.ts"
     
     Write-InfoLog "ARCHITECTURE GAPS RESOLVED:"
-    Write-InfoLog "  ✅ 2.8 - Effect presets beyond 'nebula'"
-    Write-InfoLog "  ✅ 2.8 - Mutation visual hooks (nebula_burst, type_change_transition, etc.)"
-    Write-InfoLog "  ✅ 2.8 - dispose() cleans GPU resources"
+    Write-InfoLog "  [OK] 2.8 - Effect presets beyond 'nebula'"
+Write-InfoLog "  [OK] 2.8 - Mutation visual hooks (nebula_burst, type_change_transition, etc.)"
+Write-InfoLog "  [OK] 2.8 - dispose() cleans GPU resources"
 
     exit 0
 }

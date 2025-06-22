@@ -34,7 +34,7 @@ try {
     $testResults = @()
 
     # Test 1: Validate Concern #3 - Script Dependencies
-    Write-InfoLog "🔍 Testing Concern #3: Script Dependencies Resolution"
+    Write-InfoLog "[TEST] Testing Concern #3: Script Dependencies Resolution"
 
     $concern3Tests = @(
         @{
@@ -83,16 +83,16 @@ try {
         try {
             $result = & $test.Test
             if ($result) {
-                Write-SuccessLog "  ✅ $($test.Name)"
+                Write-SuccessLog "  [OK] $($test.Name)"
                 $testResults += @{ Test = $test.Name; Status = "PASS"; Category = "Concern #3" }
             } else {
-                Write-ErrorLog "  ❌ $($test.Name)"
+                Write-ErrorLog "  [ERROR] $($test.Name)"
                 $testResults += @{ Test = $test.Name; Status = "FAIL"; Category = "Concern #3" }
                 $allTestsPassed = $false
             }
         }
         catch {
-            Write-ErrorLog "  ❌ $($test.Name) - Exception: $($_.Exception.Message)"
+            Write-ErrorLog "  [ERROR] $($test.Name) - Exception: $($_.Exception.Message)"
             $testResults += @{ Test = $test.Name; Status = "ERROR"; Category = "Concern #3" }
             $allTestsPassed = $false
         }
@@ -104,7 +104,7 @@ try {
 
     # Test 2: Validate Concern #4 - TypeScript Configuration
     Write-InfoLog "Beginning TypeScript configuration validation"
-    Write-InfoLog "🔍 Testing Concern #4: TypeScript Configuration"
+    Write-InfoLog "[TEST] Testing Concern #4: TypeScript Configuration"
 
     $concern4Tests = @(
         @{
@@ -197,16 +197,16 @@ try {
         try {
             $result = & $test.Test
             if ($result) {
-                Write-SuccessLog "  ✅ $($test.Name)"
+                Write-SuccessLog "  [OK] $($test.Name)"
                 $testResults += @{ Test = $test.Name; Status = "PASS"; Category = "Concern #4" }
             } else {
-                Write-ErrorLog "  ❌ $($test.Name)"
+                Write-ErrorLog "  [ERROR] $($test.Name)"
                 $testResults += @{ Test = $test.Name; Status = "FAIL"; Category = "Concern #4" }
                 $allTestsPassed = $false
             }
         }
         catch {
-            Write-ErrorLog "  ❌ $($test.Name) - Exception: $($_.Exception.Message)"
+            Write-ErrorLog "  [ERROR] $($test.Name) - Exception: $($_.Exception.Message)"
             $testResults += @{ Test = $test.Name; Status = "ERROR"; Category = "Concern #4" }
             $allTestsPassed = $false
         }
@@ -233,10 +233,10 @@ try {
 
     if ($allTestsPassed) {
         Write-SuccessLog "ALL VALIDATION TESTS PASSED!"
-        Write-SuccessLog "🎉 Complete validation success achieved!"
+        Write-SuccessLog "[SUCCESS] Complete validation success achieved!"
         Write-SuccessLog "Validation results summary:"
-        Write-SuccessLog "✅ Concern #3: Script Dependencies - COMPLETELY RESOLVED"
-        Write-SuccessLog "✅ Concern #4: TypeScript Configuration - COMPLETELY RESOLVED"
+        Write-SuccessLog "[OK] Concern #3: Script Dependencies - COMPLETELY RESOLVED"
+        Write-SuccessLog "[OK] Concern #4: TypeScript Configuration - COMPLETELY RESOLVED"
         Write-SuccessLog "Project setup validation completed successfully"
         Write-InfoLog "Your new-protozoa project setup is now complete and ready for development!"
         Write-InfoLog "Development environment is ready for next phase"
@@ -248,7 +248,7 @@ try {
         exit 0
     } else {
         Write-ErrorLog "Error condition occurred"
-        Write-ErrorLog "❌ VALIDATION FAILED"
+        Write-ErrorLog "[ERROR] VALIDATION FAILED"
         Write-ErrorLog "Some tests did not pass. Please review the errors above."
 
         if ($Detailed) {
@@ -256,9 +256,9 @@ try {
             Write-InfoLog "Detailed test results:"
             $testResults | ForEach-Object {
                 $status = switch ($_.Status) {
-                    "PASS" { "✅" }
-                    "FAIL" { "❌" }
-                    "ERROR" { "⚠️" }
+                    "PASS" { "[OK]" }
+                    "FAIL" { "[ERROR]" }
+                    "ERROR" { "[WARNING]" }
                 }
                 Write-InfoLog "  $status [$($_.Category)] $($_.Test)"
             }

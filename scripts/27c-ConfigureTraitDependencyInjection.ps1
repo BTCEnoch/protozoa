@@ -183,8 +183,8 @@ export function teardownTraitTestEnvironment() {
     Write-InfoLog "  - Updated src/domains/trait/index.ts with DI exports"
     
     Write-InfoLog "ARCHITECTURE GAPS RESOLVED:"
-    Write-InfoLog "  ✅ 2.4 - configureDependencies() injection of RNG + Bitcoin"
-    Write-InfoLog "  ✅ 2.4 - Comprehensive unit tests (>80% coverage)"
+    Write-InfoLog "  [OK] 2.4 - configureDependencies() injection of RNG + Bitcoin"
+Write-InfoLog "  [OK] 2.4 - Comprehensive unit tests (>80% coverage)"
 
     exit 0
 }

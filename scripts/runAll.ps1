@@ -213,7 +213,7 @@ foreach ($result in $results) {
 
 # Final status determination
 if ($failedCount -eq 0 -and $missingCount -eq 0) {
-    Write-SuccessLog "🎉 ALL AUTOMATION PHASES COMPLETED SUCCESSFULLY!"
+    Write-SuccessLog "[SUCCESS] ALL AUTOMATION PHASES COMPLETED SUCCESSFULLY!"
     Write-InfoLog "Your new-protozoa project is ready for Cursor AI implementation."
     Write-InfoLog "Processing step completed"
     Write-InfoLog "Next steps:"

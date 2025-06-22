@@ -287,7 +287,7 @@ configureAllDomainStores()
     Write-InfoLog "  - Updated src/compositionRoot.ts with store configuration"
     
     Write-InfoLog "ARCHITECTURE GAP RESOLVED:"
-    Write-InfoLog "  ✅ 2.5 - Refactor to use injected stores rather than direct imports"
+    Write-InfoLog "  [OK] 2.5 - Refactor to use injected stores rather than direct imports"
 
     exit 0
 }

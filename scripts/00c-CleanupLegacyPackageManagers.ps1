@@ -266,7 +266,7 @@ if ($cleanupResults.Issues.Count -gt 0) {
     Write-ErrorLog " "
     Write-ErrorLog "Issues during cleanup:"
     foreach ($issue in $cleanupResults.Issues) {
-        Write-ErrorLog "  • $issue"
+        Write-ErrorLog "  - $issue"
     }
 }
 

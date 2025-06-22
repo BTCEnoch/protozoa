@@ -244,7 +244,7 @@ if ($validationResults.Issues.Count -gt 0) {
     Write-ErrorLog " "
     Write-ErrorLog "Issues found ($($validationResults.Issues.Count)):"
     foreach ($issue in $validationResults.Issues) {
-        Write-ErrorLog "  • $issue"
+        Write-ErrorLog "  - $issue"
     }
 }
 
@@ -252,7 +252,7 @@ if ($validationResults.Warnings.Count -gt 0) {
     Write-WarningLog " "
     Write-WarningLog "Warnings ($($validationResults.Warnings.Count)):"
     foreach ($warning in $validationResults.Warnings) {
-        Write-WarningLog "  • $warning"
+        Write-WarningLog "  - $warning"
     }
 }
 
@@ -270,21 +270,21 @@ if ($failedChecks.Count -eq 0 -and $validationResults.Issues.Count -eq 0) {
     Write-InfoLog " "
     Write-InfoLog "Recommended actions:"
     if ('NodeJs' -in $failedChecks) {
-        Write-InfoLog "  • Install or update Node.js to v18+ from https://nodejs.org/"
+        Write-InfoLog "  - Install or update Node.js to v18+ from https://nodejs.org/"
     }
     if ('Npm' -in $failedChecks) {
-        Write-InfoLog "  • Ensure npm is properly installed (comes with Node.js)"
+        Write-InfoLog "  - Ensure npm is properly installed (comes with Node.js)"
     }
     if ('PackageJson' -in $failedChecks) {
-        Write-InfoLog "  • Fix package.json issues or restore from template"
+        Write-InfoLog "  - Fix package.json issues or restore from template"
     }
     if ('Registry' -in $failedChecks) {
-        Write-InfoLog "  • Check network connectivity and proxy settings"
+        Write-InfoLog "  - Check network connectivity and proxy settings"
     }
     if ($FixIssues) {
-        Write-InfoLog "  • Some issues were automatically fixed"
+        Write-InfoLog "  - Some issues were automatically fixed"
     } else {
-        Write-InfoLog "  • Run with -FixIssues to attempt automatic repairs"
+        Write-InfoLog "  - Run with -FixIssues to attempt automatic repairs"
     }
     exit 1
 }

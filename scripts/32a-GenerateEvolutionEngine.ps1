@@ -29,7 +29,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     Write-StepHeader "Evolution Engine Generation"
-    Write-InfoLog "🧬 Generating comprehensive evolution engine..."
+    Write-InfoLog "[ORGANISM] Generating comprehensive evolution engine..."
     
     # Validate project structure
     $traitDomain = Join-Path $ProjectRoot "src/domains/trait"
@@ -70,7 +70,7 @@ try {
     }
 
     # Create evolution engine interface
-    Write-InfoLog "🔧 Creating evolution engine interface..."
+    Write-InfoLog "[UPDATE] Creating evolution engine interface..."
     $evolutionInterface = Join-Path $interfacesDir "IEvolutionEngine.ts"
     if (-not (Test-Path $evolutionInterface)) {
         $interfaceContent = @'
@@ -95,33 +95,33 @@ export interface IEvolutionEngine {
 }
 '@
         $interfaceContent | Set-Content -Path $evolutionInterface -Encoding UTF8
-        Write-SuccessLog "✅ Created evolution engine interface"
+        Write-SuccessLog "[OK] Created evolution engine interface"
     }
     
     # Update TraitService template
-    Write-InfoLog "⚙️ Updating TraitService with evolution capabilities..."
+    Write-InfoLog "[UPDATE] Updating TraitService with evolution capabilities..."
     $traitServiceTemplate = Join-Path $ProjectRoot "templates/domains/trait/services/TraitService.ts.template"
     $traitServiceTarget = Join-Path $servicesDir "TraitService.ts"
     
     if (Test-Path $traitServiceTemplate) {
         Copy-Item $traitServiceTemplate $traitServiceTarget -Force
-        Write-SuccessLog "✅ Updated TraitService with evolution engine"
+        Write-SuccessLog "[OK] Updated TraitService with evolution engine"
     } else {
         Write-WarningLog "TraitService template not found, skipping update"
     }
     
-    Write-SuccessLog "🎉 Evolution engine generated successfully!"
-    Write-InfoLog "🔧 Components created:"
-    Write-InfoLog "  • Evolution engine interface with mutation configs"
-    Write-InfoLog "  • Enhanced TraitService with evolution capabilities"
-    Write-InfoLog "  • Mutation algorithms (gaussian, uniform, exponential)"
-    Write-InfoLog "  • Crossover and fitness evaluation systems"
-    Write-InfoLog "  • Population selection mechanisms"
+    Write-SuccessLog "[SUCCESS] Evolution engine generated successfully!"
+Write-InfoLog "[UPDATE] Components created:"
+    Write-InfoLog "  - Evolution engine interface with mutation configs"
+Write-InfoLog "  - Enhanced TraitService with evolution capabilities"
+Write-InfoLog "  - Mutation algorithms (gaussian, uniform, exponential)"
+Write-InfoLog "  - Crossover and fitness evaluation systems"
+Write-InfoLog "  - Population selection mechanisms"
     
     exit 0
     
 } catch {
-    Write-ErrorLog "❌ Evolution engine generation failed: $_"
+    Write-ErrorLog "[ERROR] Evolution engine generation failed: $_"
     Write-DebugLog "Stack trace: $($_.ScriptStackTrace)"
     exit 1
 } 
