@@ -211,7 +211,7 @@ try {
                 
                 $currentLogSizeKB = [math]::Round($currentLogSize/1KB, 1)
                 $logGrowthKB = [math]::Round($logGrowth/1KB, 1)
-                Write-InfoLog "Progress update: $elapsedSeconds seconds elapsed"
+                Write-InfoLog "Progress update: $elapsedSeconds seconds elapsed (Log: $currentLogSizeKB KB, Growth: +$logGrowthKB KB)"
                 
                 # Show recent log activity
                 $recentLines = Get-Content $installLogPath -Tail 2 -ErrorAction SilentlyContinue

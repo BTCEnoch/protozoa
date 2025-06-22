@@ -89,7 +89,7 @@ try {
             }
             catch {
                 $errorMessage = $_.Exception.Message
-                Write-WarningLog "Error installing $dependency: $errorMessage"
+                Write-WarningLog "Error installing $dependency`: $errorMessage"
             }
         }
     }

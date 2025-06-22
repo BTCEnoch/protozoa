@@ -232,7 +232,7 @@ try {
         # Test npm registry connectivity
         Write-InfoLog "Testing npm registry connectivity..."
         try {
-            $registryTest = npm ping --registry=https://registry.npmjs.org/ --silent 2>$null
+            npm ping --registry=https://registry.npmjs.org/ --silent 2>$null
             if ($LASTEXITCODE -eq 0) {
                 Write-SuccessLog "npm registry connectivity verified"
             } else {

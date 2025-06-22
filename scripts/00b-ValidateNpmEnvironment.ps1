@@ -231,12 +231,11 @@ finally {
 Write-StepHeader "npm Environment Validation Summary"
 
 $allChecks = @('NodeJs', 'Npm', 'PackageJson', 'Registry')
-$passedChecks = $allChecks | Where-Object { $validationResults.$_ -eq $true }
 $failedChecks = $allChecks | Where-Object { $validationResults.$_ -eq $false }
 
 Write-InfoLog "Validation results:"
 foreach ($check in $allChecks) {
-            $status = if ($validationResults.$check) { "[OK] PASS" } else { "[FAIL] FAIL" }
+    $status = if ($validationResults.$check) { "[OK] PASS" } else { "[FAIL] FAIL" }
     Write-InfoLog "  $check`: $status"
 }
 
@@ -266,7 +265,7 @@ if ($failedChecks.Count -eq 0 -and $validationResults.Issues.Count -eq 0) {
     Write-InfoLog "  2. Use 'npm run dev' to start development server"
     exit 0
 } else {
-            Write-ErrorLog "[ERROR] Validation failed - $($failedChecks.Count) checks failed, $($validationResults.Issues.Count) issues found"    
+    Write-ErrorLog "[ERROR] Validation failed - $($failedChecks.Count) checks failed, $($validationResults.Issues.Count) issues found"    
     Write-InfoLog " "
     Write-InfoLog "Recommended actions:"
     if ('NodeJs' -in $failedChecks) {

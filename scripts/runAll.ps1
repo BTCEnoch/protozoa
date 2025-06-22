@@ -16,6 +16,7 @@ $scriptSequence = @(
     @{ Phase = 0; Script = "00a-NpmInstallWithProgress.ps1"; Description = "npm installation with enhanced monitoring and stall detection" },
     @{ Phase = 0; Script = "00b-ValidateNpmEnvironment.ps1"; Description = "npm environment and package integrity validation" },
     @{ Phase = 0; Script = "00c-CleanupLegacyPackageManagers.ps1"; Description = "Remove pnpm/yarn traces and ensure npm-only approach" },
+    @{ Phase = 0; Script = "00d-FixRollupNativeDependencies.ps1"; Description = "Fix Rollup native dependencies for Windows development" },
     @{ Phase = 0; Script = "01-ScaffoldProjectStructure.ps1"; Description = "Domain-driven directory structure" },
     @{ Phase = 0; Script = "02-GenerateDomainStubs.ps1"; Description = "Service interfaces and stubs" },
     @{ Phase = 0; Script = "03-MoveAndCleanCodebase.ps1"; Description = "Legacy cleanup" },
