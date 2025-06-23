@@ -22,7 +22,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
     "incremental": true,
     "composite": false,
     "sourceMap": true,
@@ -34,19 +33,19 @@
       "@/domains/*": ["./src/domains/*"],
       "@/shared/*": ["./src/shared/*"],
       "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
       "@/types/*": ["./src/types/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "vite.config.ts"
-  ],
+  "include": ["src/**/*", "vite.config.ts"],
   "exclude": [
     "node_modules",
     "dist",
     "build",
     "scripts",
+    "backup",
+    "build.log",
+    "**/*.worker.ts",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",

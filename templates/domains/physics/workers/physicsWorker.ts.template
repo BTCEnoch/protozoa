@@ -11,9 +11,34 @@ self.onmessage = event => {
       break
     }
     case "calculate": {
-      // TODO: perform physics calculations on payload data
-      // Placeholder returns input unchanged
-      self.postMessage({ id, type: "result", payload })
+      // Euler integration physics calculations for particle systems
+      const { particles, deltaTime } = payload
+      if (particles && Array.isArray(particles)) {
+        const updatedParticles = particles.map(particle => {
+          // Basic Euler integration: position += velocity * deltaTime
+          const newPosition = {
+            x: particle.position.x + particle.velocity.x * deltaTime,
+            y: particle.position.y + particle.velocity.y * deltaTime,
+            z: particle.position.z + particle.velocity.z * deltaTime
+          }
+          // Apply gravity and damping forces
+          const gravity = -9.81 * deltaTime
+          const damping = 0.99
+          const newVelocity = {
+            x: particle.velocity.x * damping,
+            y: particle.velocity.y * damping + gravity,
+            z: particle.velocity.z * damping
+          }
+          return {
+            ...particle,
+            position: newPosition,
+            velocity: newVelocity
+          }
+        })
+        self.postMessage({ id, type: "result", payload: { particles: updatedParticles } })
+      } else {
+        self.postMessage({ id, type: "error", payload: "Invalid particles data" })
+      }
       break
     }
     default:

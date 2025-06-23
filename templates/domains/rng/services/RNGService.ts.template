@@ -78,6 +78,9 @@ export class RNGService implements IRNGService {
   // New: Purpose-specific RNG generators
   #purposeRngs: Map<string, () => number> = new Map()
 
+  // New: Gaussian distribution variables
+  #spareGaussian: number | null = null
+
   /* ------------------------------- Public Methods ------------------------------ */
   
   /**
@@ -120,6 +123,22 @@ export class RNGService implements IRNGService {
     this.#metrics.source = "manual"
     
     logger.debug("🎯 RNG seed set", { seed: this.#state.seed })
+  }
+
+  /**
+   * Alias for setSeed - for test compatibility
+   * @param newSeed - Seed value
+   */
+  seed(newSeed: number): void {
+    this.setSeed(newSeed)
+  }
+
+  /**
+   * Alias for setSeed - for test compatibility
+   * @param newSeed - Seed value
+   */
+  seed(newSeed: number): void {
+    this.setSeed(newSeed)
   }
 
   /**
@@ -253,6 +272,45 @@ export class RNGService implements IRNGService {
    */
   randomFloat(min: number, max: number): number {
     return this.random() * (max - min) + min
+  }
+
+  /**
+   * Generate random value using Gaussian (normal) distribution
+   * Uses Box-Muller transform for generating normally distributed values
+   * @param mean - Mean of the distribution (default: 0)
+   * @param stdDev - Standard deviation (default: 1)
+   * @returns Random value from normal distribution
+   */
+  randomGaussian(mean: number = 0, stdDev: number = 1): number {
+    // Box-Muller transform
+    if (!this.#spareGaussian) {
+      const u = this.random()
+      const v = this.random()
+      const z0 = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v)
+      const z1 = Math.sqrt(-2 * Math.log(u)) * Math.sin(2 * Math.PI * v)
+      
+      this.#spareGaussian = z1
+      return z0 * stdDev + mean
+    } else {
+      const spare = this.#spareGaussian
+      this.#spareGaussian = null
+      return spare * stdDev + mean
+    }
+  }
+
+  /**
+   * Shuffle array in-place using Fisher-Yates algorithm
+   * @param array - Array to shuffle
+   * @returns The same array (shuffled in-place)
+   */
+  shuffle<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = this.randomInt(0, i + 1)
+      const temp = array[i]!
+      array[i] = array[j]!
+      array[j] = temp
+    }
+    return array
   }
 
   /**

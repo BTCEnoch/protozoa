@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Performance benchmark configuration
  * Centralized configuration for all performance tests
  * 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Physics system performance benchmarks
  * Tests physics calculations, collision detection, and force simulations
  * 

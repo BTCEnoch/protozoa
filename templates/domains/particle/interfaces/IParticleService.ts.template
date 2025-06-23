@@ -53,6 +53,12 @@ export interface ParticleInstance {
   age: number;
   /** Particle lifetime in seconds */
   lifetime: number;
+  /** Initial lifetime for age calculations */
+  initialLifetime?: number;
+  /** Initial size for size over lifetime calculations */
+  initialSize?: number;
+  /** Size change over lifetime (0-1) */
+  sizeOverLifetime?: number;
   /** Whether particle is active */
   active: boolean;
   /** Particle type identifier */
@@ -153,6 +159,33 @@ export interface IParticleService {
    * @returns Particle service metrics
    */
   getMetrics(): ParticleMetrics;
+
+  /**
+   * Create a single particle with given configuration
+   * @param config - Particle configuration
+   * @returns Created particle instance
+   */
+  createParticle(config: ParticleCreationData): ParticleInstance | null;
+
+  /**
+   * Create multiple particles in batch
+   * @param configs - Array of particle configurations
+   * @returns Array of created particle instances
+   */
+  createParticlesBatch(configs: ParticleCreationData[]): ParticleInstance[];
+
+  /**
+   * Update a single particle's physics and lifecycle
+   * @param particle - Particle to update
+   * @param deltaTime - Time delta in seconds
+   */
+  updateParticle(particle: ParticleInstance, deltaTime: number): void;
+
+  /**
+   * Release a particle back to the object pool
+   * @param particle - Particle to release
+   */
+  releaseParticle(particle: ParticleInstance): void;
 
   /**
    * Dispose of resources and cleanup

@@ -136,6 +136,278 @@ export class PhysicsService implements IPhysicsService {
     this.#logger.info("PhysicsService disposed – singleton reset")
   }
 
+  /**
+   * Update multiple particles with physics simulation
+   * @param particles - Array of particles to update
+   * @param deltaTime - Time delta in seconds
+   */
+  updateParticles(particles: ParticlePhysics[], deltaTime: number): void {
+    const start = performance.now()
+    
+    for (const particle of particles) {
+      if (!particle) continue
+      
+      // Apply gravity
+      this.applyGravity(particle, deltaTime)
+      
+      // Update velocity with acceleration
+      particle.velocity.x += particle.acceleration.x * deltaTime
+      particle.velocity.y += particle.acceleration.y * deltaTime
+      particle.velocity.z += particle.acceleration.z * deltaTime
+      
+      // Apply damping
+      particle.velocity.multiplyScalar(this.#config.damping || 0.99)
+      
+      // Update position with velocity
+      particle.position.x += particle.velocity.x * deltaTime
+      particle.position.y += particle.velocity.y * deltaTime
+      particle.position.z += particle.velocity.z * deltaTime
+      
+      // Reset acceleration for next frame
+      particle.acceleration.set(0, 0, 0)
+    }
+    
+    this.#metrics.transformCalculations += particles.length
+    this.#updateFrameMetrics(performance.now() - start)
+    this.#logger.debug(`Updated ${particles.length} particles in ${(performance.now() - start).toFixed(2)}ms`)
+  }
+
+  /**
+   * Broad phase collision detection using spatial partitioning
+   * @param particles - Array of particles to check
+   * @returns Array of potential collision pairs
+   */
+  broadPhaseCollision(particles: ParticlePhysics[]): Array<[ParticlePhysics, ParticlePhysics]> {
+    const pairs: Array<[ParticlePhysics, ParticlePhysics]> = []
+    const start = performance.now()
+    
+    // Simple O(n²) approach for now - can be optimized with spatial structures
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i]
+        const p2 = particles[j]
+        
+        if (!p1 || !p2) continue
+        
+        const dx = p1.position.x - p2.position.x
+        const dy = p1.position.y - p2.position.y
+        const dz = p1.position.z - p2.position.z
+        const distanceSquared = dx * dx + dy * dy + dz * dz
+        const combinedRadius = (p1.radius || 1) + (p2.radius || 1)
+        
+        if (distanceSquared < combinedRadius * combinedRadius) {
+          pairs.push([p1, p2])
+        }
+      }
+    }
+    
+    this.#updateFrameMetrics(performance.now() - start)
+    return pairs
+  }
+
+  /**
+   * Calculate gravitational forces between particles
+   * @param particles - Array of particles
+   */
+  calculateGravitationalForces(particles: ParticlePhysics[]): void {
+    const G = 6.67430e-11 // Gravitational constant (scaled for simulation)
+    const start = performance.now()
+    
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i]
+        const p2 = particles[j]
+        
+        if (!p1 || !p2 || !p1.useGravity || !p2.useGravity) continue
+        
+        const dx = p2.position.x - p1.position.x
+        const dy = p2.position.y - p1.position.y
+        const dz = p2.position.z - p1.position.z
+        const distanceSquared = dx * dx + dy * dy + dz * dz
+        const distance = Math.sqrt(distanceSquared)
+        
+        if (distance > 0) {
+          const force = G * (p1.mass || 1) * (p2.mass || 1) / distanceSquared
+          const fx = (dx / distance) * force
+          const fy = (dy / distance) * force
+          const fz = (dz / distance) * force
+          
+          // Apply equal and opposite forces
+          p1.acceleration.x += fx / (p1.mass || 1)
+          p1.acceleration.y += fy / (p1.mass || 1)
+          p1.acceleration.z += fz / (p1.mass || 1)
+          
+          p2.acceleration.x -= fx / (p2.mass || 1)
+          p2.acceleration.y -= fy / (p2.mass || 1)
+          p2.acceleration.z -= fz / (p2.mass || 1)
+        }
+      }
+    }
+    
+    this.#updateFrameMetrics(performance.now() - start)
+  }
+
+  /**
+   * Create octree for spatial partitioning
+   * @param center - Center point of the octree
+   * @param size - Size of the octree
+   * @returns Simple octree structure
+   */
+  createOctree(center: Vector3, size: number): any {
+    return {
+      center: center.clone(),
+      size,
+      particles: [] as ParticlePhysics[],
+      children: null as any[] | null,
+      divided: false
+    }
+  }
+
+  /**
+   * Insert particle into octree
+   * @param octree - Octree to insert into
+   * @param particle - Particle to insert
+   */
+  insertIntoOctree(octree: any, particle: ParticlePhysics): void {
+    // Simple implementation - can be expanded
+    if (!this.#pointInBounds(particle.position, octree.center, octree.size)) {
+      return
+    }
+    
+    octree.particles.push(particle)
+  }
+
+  /**
+   * Narrow phase collision detection with detailed collision response
+   * @param pairs - Array of collision pairs from broad phase
+   */
+  narrowPhaseCollision(pairs: Array<[ParticlePhysics, ParticlePhysics]>): void {
+    const start = performance.now()
+    
+    for (const [p1, p2] of pairs) {
+      if (!p1 || !p2) continue
+      
+      const dx = p1.position.x - p2.position.x
+      const dy = p1.position.y - p2.position.y
+      const dz = p1.position.z - p2.position.z
+      const distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
+      const combinedRadius = (p1.radius || 1) + (p2.radius || 1)
+      
+      if (distance < combinedRadius && distance > 0) {
+        // Normalize collision vector
+        const nx = dx / distance
+        const ny = dy / distance
+        const nz = dz / distance
+        
+        // Separate particles
+        const overlap = combinedRadius - distance
+        const separation = overlap * 0.5
+        
+        p1.position.x += nx * separation
+        p1.position.y += ny * separation
+        p1.position.z += nz * separation
+        
+        p2.position.x -= nx * separation
+        p2.position.y -= ny * separation
+        p2.position.z -= nz * separation
+        
+        // Apply collision response (elastic collision)
+        const restitution = 0.8
+        const relativeVelocity = {
+          x: p1.velocity.x - p2.velocity.x,
+          y: p1.velocity.y - p2.velocity.y,
+          z: p1.velocity.z - p2.velocity.z
+        }
+        
+        const velocityAlongNormal = relativeVelocity.x * nx + relativeVelocity.y * ny + relativeVelocity.z * nz
+        
+        if (velocityAlongNormal > 0) continue // Objects separating
+        
+        const impulse = -(1 + restitution) * velocityAlongNormal / ((p1.mass || 1) + (p2.mass || 1))
+        
+        p1.velocity.x += impulse * (p2.mass || 1) * nx
+        p1.velocity.y += impulse * (p2.mass || 1) * ny
+        p1.velocity.z += impulse * (p2.mass || 1) * nz
+        
+        p2.velocity.x -= impulse * (p1.mass || 1) * nx
+        p2.velocity.y -= impulse * (p1.mass || 1) * ny
+        p2.velocity.z -= impulse * (p1.mass || 1) * nz
+      }
+    }
+    
+    this.#updateFrameMetrics(performance.now() - start)
+  }
+
+  /**
+   * Calculate electromagnetic forces between charged particles
+   * @param particles - Array of particles with charge property
+   */
+  calculateElectromagneticForces(particles: ParticlePhysics[]): void {
+    const k = 8.9875517923e9 // Coulomb's constant (scaled for simulation)
+    const start = performance.now()
+    
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i]
+        const p2 = particles[j]
+        
+        if (!p1 || !p2) continue
+        
+        const charge1 = (p1 as any).charge || 0
+        const charge2 = (p2 as any).charge || 0
+        
+        if (charge1 === 0 || charge2 === 0) continue
+        
+        const dx = p2.position.x - p1.position.x
+        const dy = p2.position.y - p1.position.y
+        const dz = p2.position.z - p1.position.z
+        const distanceSquared = dx * dx + dy * dy + dz * dz
+        const distance = Math.sqrt(distanceSquared)
+        
+        if (distance > 0) {
+          const force = k * charge1 * charge2 / distanceSquared
+          const fx = (dx / distance) * force
+          const fy = (dy / distance) * force
+          const fz = (dz / distance) * force
+          
+          // Apply forces (like charges repel, unlike charges attract)
+          p1.acceleration.x -= fx / (p1.mass || 1)
+          p1.acceleration.y -= fy / (p1.mass || 1)
+          p1.acceleration.z -= fz / (p1.mass || 1)
+          
+          p2.acceleration.x += fx / (p2.mass || 1)
+          p2.acceleration.y += fy / (p2.mass || 1)
+          p2.acceleration.z += fz / (p2.mass || 1)
+        }
+      }
+    }
+    
+    this.#updateFrameMetrics(performance.now() - start)
+  }
+
+  /**
+   * Query octree for particles in a region
+   * @param octree - Octree to query
+   * @param region - Query region bounds
+   * @returns Array of particles in the region
+   */
+  queryOctree(octree: any, region: { center: Vector3; size: number }): ParticlePhysics[] {
+    const result: ParticlePhysics[] = []
+    
+    // Simple implementation - check if octree intersects with query region
+    if (this.#octreeIntersects(octree, region)) {
+      result.push(...octree.particles)
+      
+      if (octree.children) {
+        for (const child of octree.children) {
+          result.push(...this.queryOctree(child, region))
+        }
+      }
+    }
+    
+    return result
+  }
+
   /* ---------------------------- private helpers --------------------------- */
   #updateFrameMetrics(frameMs: number) {
     this.#frameTimes.push(frameMs)
@@ -206,6 +478,39 @@ export class PhysicsService implements IPhysicsService {
       positions.push(new Vector3(Math.cos(phi) * r * radius, y * radius, Math.sin(phi) * r * radius))
     }
     return positions
+  }
+
+  /**
+   * Check if point is within bounds
+   * @param point - Point to check
+   * @param center - Center of bounds
+   * @param size - Size of bounds
+   * @returns True if point is within bounds
+   */
+  #pointInBounds(point: Vector3, center: Vector3, size: number): boolean {
+    const halfSize = size * 0.5
+    return (
+      point.x >= center.x - halfSize && point.x <= center.x + halfSize &&
+      point.y >= center.y - halfSize && point.y <= center.y + halfSize &&
+      point.z >= center.z - halfSize && point.z <= center.z + halfSize
+    )
+  }
+
+  /**
+   * Check if octree intersects with query region
+   * @param octree - Octree to check
+   * @param region - Query region
+   * @returns True if they intersect
+   */
+  #octreeIntersects(octree: any, region: { center: Vector3; size: number }): boolean {
+    const octreeHalfSize = octree.size * 0.5
+    const regionHalfSize = region.size * 0.5
+    
+    return (
+      Math.abs(octree.center.x - region.center.x) < octreeHalfSize + regionHalfSize &&
+      Math.abs(octree.center.y - region.center.y) < octreeHalfSize + regionHalfSize &&
+      Math.abs(octree.center.z - region.center.z) < octreeHalfSize + regionHalfSize
+    )
   }
 }
 

@@ -62,23 +62,23 @@ export function SimulationCanvas() {
         
         logger.info('🚀 Starting Bitcoin Ordinals simulation initialization...')
         
-        // Check particle service pool status before starting
-        const poolStatus = particleService.getPoolStatus()
-        logger.info('🔍 Particle pool status before initialization:', poolStatus)
-        
-        // CRITICAL FIX: Validate and fix pool corruption instead of full reset
-        const wasCorrupted = particleService.validateAndFixPool()
-        if (wasCorrupted) {
-          const fixedPoolStatus = particleService.getPoolStatus()
-          logger.info('✅ Pool corruption fixed:', fixedPoolStatus)
-        }
-        
-        // Initialize services
+        // Initialize services FIRST - this ensures proper configuration
         await particleService.initialize({
           maxParticles: 10000,
           useInstancing: true,
           useObjectPooling: true
         })
+        
+        // THEN check and validate pool status after initialization
+        const poolStatus = particleService.getPoolStatus()
+        logger.info('🔍 Particle pool status after initialization:', poolStatus)
+        
+        // CRITICAL FIX: Validate and fix pool corruption only after initialization
+        const wasCorrupted = particleService.validateAndFixPool()
+        if (wasCorrupted) {
+          const fixedPoolStatus = particleService.getPoolStatus()
+          logger.info('✅ Pool corruption fixed:', fixedPoolStatus)
+        }
         
         await rngService.initialize({
           defaultSeed: Date.now(),
@@ -98,19 +98,39 @@ export function SimulationCanvas() {
 
         // Clear any existing content from mount point
         mountRef.current.innerHTML = ''
+
+        // Initialize rendering service with the mount point directly
+        renderingService.initialize(mountRef.current)
+
+        // CRITICAL: Setup proper camera position - move camera back to see particles
+        const camera = renderingService.camera
+        camera.position.set(0, 0, 100)  // Move camera further back
+        camera.lookAt(0, 0, 0)  // Look at origin
+        logger.info('📷 Camera positioned at (0, 0, 100) looking at origin')
+
+        // CRITICAL: Add lighting to the scene - MeshStandardMaterial needs light!
+        const scene = renderingService.scene
         
-        // Create canvas for THREE.js renderer
-        const canvas = document.createElement('canvas')
-        canvas.style.width = '100%'
-        canvas.style.height = '100%'
-        canvas.style.display = 'block'
+        // Add ambient light for overall illumination
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6) // soft white light
+        scene.add(ambientLight)
         
-        // Initialize rendering service with canvas
-        renderingService.initialize(canvas)
+        // Add directional light for proper shading
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+        directionalLight.position.set(50, 50, 50)
+        directionalLight.castShadow = true
+        scene.add(directionalLight)
         
-        // CRITICAL: Attach the canvas to the DOM mount point
-        mountRef.current.appendChild(canvas)
-        logger.info('✅ THREE.js renderer canvas attached to DOM')
+        // Add point light for dynamic lighting
+        const pointLight = new THREE.PointLight(0xffffff, 0.5, 100)
+        pointLight.position.set(10, 10, 10)
+        scene.add(pointLight)
+        
+        logger.info('💡 Added lighting to scene: ambient + directional + point lights')
+
+        // CRITICAL: Attach the renderer's DOM element to our mount point
+        mountRef.current.appendChild(renderingService.renderer.domElement)
+        logger.info('🎉 THREE.js renderer canvas attached to DOM')
         
         // Create initial particle system (with existence check)
         logger.info('🧬 Creating initial particle system...')
@@ -161,23 +181,23 @@ export function SimulationCanvas() {
           let successfulSpawns = 0
           for (let i = 0; i < 50; i++) {
             const position = new THREE.Vector3(
-              (Math.random() - 0.5) * 20,
-              (Math.random() - 0.5) * 20,
-              (Math.random() - 0.5) * 20
+              (Math.random() - 0.5) * 40, // Reduced spawn range to keep particles closer to center
+              (Math.random() - 0.5) * 40,
+              (Math.random() - 0.5) * 40
             )
             
             const velocity = new THREE.Vector3(
-              (Math.random() - 0.5) * 2,
-              (Math.random() - 0.5) * 2,
-              (Math.random() - 0.5) * 2
+              (Math.random() - 0.5) * 1, // Reduced velocity for easier viewing
+              (Math.random() - 0.5) * 1,
+              (Math.random() - 0.5) * 1
             )
             
             const particleId = particleService.spawnParticle('main-organisms', {
               position,
               velocity,
               lifetime: 30 + Math.random() * 20,
-              size: 0.5 + Math.random() * 0.5,
-              color: new THREE.Color().setHSL(Math.random(), 0.7, 0.6)
+              size: 0.5 + Math.random() * 0.5, // Smaller particles! 0.5-1.0 size units
+              color: new THREE.Color().setHSL(Math.random(), 0.8, 0.7), // More vibrant colors
             })
             
             if (particleId) {
@@ -208,29 +228,12 @@ export function SimulationCanvas() {
           logger.info(`🔄 Using existing organisms (${currentParticleCount} particles)`)
         }
         
-        // Setup camera position
-        renderingService.camera.position.set(0, 0, 30)
-        renderingService.camera.lookAt(0, 0, 0)
-        
-        // Add some basic lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.4)
-        renderingService.scene.add(ambientLight)
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
-        directionalLight.position.set(10, 10, 5)
-        renderingService.scene.add(directionalLight)
-        
         // Debug: Log camera and scene info
         logger.info('🎥 Camera setup complete', {
           position: { x: renderingService.camera.position.x, y: renderingService.camera.position.y, z: renderingService.camera.position.z },
           target: { x: 0, y: 0, z: 0 },
           fov: renderingService.camera.fov,
           aspect: renderingService.camera.aspect
-        })
-        
-        logger.info('💡 Lighting setup complete', {
-          ambientLight: { color: ambientLight.color.getHex(), intensity: ambientLight.intensity },
-          directionalLight: { color: directionalLight.color.getHex(), intensity: directionalLight.intensity }
         })
         
         logger.info('🎭 Scene status', {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview TraitService Unit Tests
  * @description Comprehensive test suite for TraitService with >80% coverage
  * @author Protozoa Development Team

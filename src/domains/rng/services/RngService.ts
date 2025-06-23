@@ -4,9 +4,14 @@
  * @version 2.0.0
  */
 
-import type { IRNGService, RNGConfig, RNGState, RNGOptions } from "@/domains/rng/interfaces/IRNGService"
-import type { RNGMetrics, PRNGAlgorithm, SeedSource } from "@/domains/rng/types/rng.types"
-import { logger, perfLogger } from "@/shared/lib/logger"
+import type {
+  IRNGService,
+  RNGConfig,
+  RNGOptions,
+  RNGState,
+} from '@/domains/rng/interfaces/IRNGService'
+import type { RNGMetrics } from '@/domains/rng/types/rng.types'
+import { logger, perfLogger } from '@/shared/lib/logger'
 
 /**
  * Mulberry32 PRNG Algorithm Implementation
@@ -28,7 +33,7 @@ function mulberry32(seed: number): () => number {
  */
 export class RNGService implements IRNGService {
   private static instance: RNGService | null = null
-  
+
   /**
    * Get singleton instance of RNGService
    * @returns RNGService instance
@@ -45,26 +50,26 @@ export class RNGService implements IRNGService {
     this.#config = {
       defaultSeed: 12345,
       useBitcoinSeeding: true,
-      maxChainLength: 1000
+      maxChainLength: 1000,
     }
-    
+
     // Initialize state
     this.#state = {
       seed: 12345,
       counter: 0,
-      chainLength: 0
+      chainLength: 0,
     }
-    
+
     // Initialize metrics
     this.#metrics = {
       totalGenerated: 0,
       averageGenerationTime: 0,
-      algorithm: "mulberry32",
-      source: "manual",
-      rehashCount: 0
+      algorithm: 'mulberry32',
+      source: 'manual',
+      rehashCount: 0,
     }
-    
-    logger.info("ðŸŽ² RNGService instantiated with enhanced features")
+
+    logger.info('ðŸŽ² RNGService instantiated with enhanced features')
     this.setSeed(this.#state.seed)
   }
 
@@ -72,14 +77,17 @@ export class RNGService implements IRNGService {
   #config!: RNGConfig
   #state!: RNGState
   #metrics!: RNGMetrics
-  
+
   #prng: () => number = mulberry32(12345)
-  
+
   // New: Purpose-specific RNG generators
   #purposeRngs: Map<string, () => number> = new Map()
 
+  // New: Gaussian distribution variables
+  #spareGaussian: number | null = null
+
   /* ------------------------------- Public Methods ------------------------------ */
-  
+
   /**
    * Initialize RNG service with configuration
    * @param config - Optional configuration overrides
@@ -87,23 +95,22 @@ export class RNGService implements IRNGService {
   async initialize(config?: RNGConfig): Promise<void> {
     const timer = 'rng_initialize'
     perfLogger.startTimer(timer)
-    
+
     try {
       if (config) {
         this.#config = { ...this.#config, ...config }
-        logger.info("ðŸ”§ RNGService configuration updated", { config })
+        logger.info('ðŸ”§ RNGService configuration updated', { config })
       }
-      
+
       if (config?.defaultSeed !== undefined) {
         this.setSeed(config.defaultSeed)
       }
-      
+
       const duration = perfLogger.endTimer(timer)
-      logger.info("âœ… RNGService initialized", { duration: `${duration.toFixed(2)}ms` })
-      
+      logger.info('âœ… RNGService initialized', { duration: `${duration.toFixed(2)}ms` })
     } catch (error) {
       perfLogger.endTimer(timer)
-      logger.error("âŒ RNGService initialization failed", { error })
+      logger.error('âŒ RNGService initialization failed', { error })
       throw error
     }
   }
@@ -117,9 +124,17 @@ export class RNGService implements IRNGService {
     this.#prng = mulberry32(this.#state.seed)
     this.#state.counter = 0
     this.#state.chainLength = 0 // Reset chain length
-    this.#metrics.source = "manual"
-    
-    logger.debug("ðŸŽ¯ RNG seed set", { seed: this.#state.seed })
+    this.#metrics.source = 'manual'
+
+    logger.debug('ðŸŽ¯ RNG seed set', { seed: this.#state.seed })
+  }
+
+  /**
+   * Alias for setSeed - for test compatibility
+   * @param newSeed - Seed value
+   */
+  seed(newSeed: number): void {
+    this.setSeed(newSeed)
   }
 
   /**
@@ -128,27 +143,27 @@ export class RNGService implements IRNGService {
    */
   rehashSeed(): void {
     if (this.#state.chainLength >= (this.#config.maxChainLength || 1000)) {
-      logger.warn("âš ï¸ Rehash chain length limit reached, resetting to default seed")
+      logger.warn('âš ï¸ Rehash chain length limit reached, resetting to default seed')
       this.setSeed(this.#config.defaultSeed || 12345)
       return
     }
-    
+
     // Generate new seed from current state - ensure #prng is available
     if (!this.#prng) {
-      logger.error("âš ï¸ PRNG not initialized, resetting to default")
+      logger.error('âš ï¸ PRNG not initialized, resetting to default')
       this.setSeed(this.#config.defaultSeed || 12345)
       return
     }
-    
-    const newSeed = Math.floor(this.#prng!() * 0xFFFFFFFF)
+
+    const newSeed = Math.floor(this.#prng!() * 0xffffffff)
     this.#state.chainLength++
     this.#metrics.rehashCount++
-    
+
     this.setSeed(newSeed)
-    logger.debug("ðŸ”„ Seed rehashed", { 
-      newSeed, 
+    logger.debug('ðŸ" Seed rehashed', {
+      newSeed,
       chainLength: this.#state.chainLength,
-      totalRehashes: this.#metrics.rehashCount 
+      totalRehashes: this.#metrics.rehashCount,
     })
   }
 
@@ -164,18 +179,18 @@ export class RNGService implements IRNGService {
       const purposeHash = this.#hashString(purpose)
       const purposeSeed = (this.#state.seed ^ purposeHash) >>> 0
       const purposeRng = mulberry32(purposeSeed)
-      
+
       this.#purposeRngs.set(purpose, purposeRng)
-      logger.debug("[RNG] Purpose RNG created", { purpose, seed: purposeSeed })
+      logger.debug('[RNG] Purpose RNG created', { purpose, seed: purposeSeed })
     }
-    
+
     // [RNG] Safe retrieval with fallback
     const purposeRng = this.#purposeRngs.get(purpose)
     if (!purposeRng) {
-      logger.error("[RNG] Purpose RNG not found after creation", { purpose })
+      logger.error('[RNG] Purpose RNG not found after creation', { purpose })
       throw new Error(`Failed to create purpose RNG for: ${purpose}`)
     }
-    
+
     return purposeRng
   }
 
@@ -186,23 +201,22 @@ export class RNGService implements IRNGService {
   async seedFromBlock(blockNumber: number): Promise<void> {
     const timer = 'rng_seed_from_block'
     perfLogger.startTimer(timer)
-    
+
     try {
       // Simplified: use blockNumber as deterministic seed
       // Real implementation would fetch and hash block header
       this.setSeed(blockNumber)
-      this.#metrics.source = "bitcoin-block"
-      
+      this.#metrics.source = 'bitcoin-block'
+
       const duration = perfLogger.endTimer(timer)
-      logger.info("ðŸ”— RNG seeded from Bitcoin block", { 
-        blockNumber, 
+      logger.info('ðŸ" RNG seeded from Bitcoin block', {
+        blockNumber,
         seed: this.#state.seed,
-        duration: `${duration.toFixed(2)}ms`
+        duration: `${duration.toFixed(2)}ms`,
       })
-      
     } catch (error) {
       perfLogger.endTimer(timer)
-      logger.error("âŒ Failed to seed from Bitcoin block", { blockNumber, error })
+      logger.error('âŒ Failed to seed from Bitcoin block', { blockNumber, error })
       throw error
     }
   }
@@ -214,24 +228,24 @@ export class RNGService implements IRNGService {
   random(): number {
     const timer = 'rng_generate'
     perfLogger.startTimer(timer)
-    
+
     // Ensure PRNG is initialized
     if (!this.#prng) {
-      logger.error("âš ï¸ PRNG not initialized in random(), resetting to default")
+      logger.error('âš ï¸ PRNG not initialized in random(), resetting to default')
       this.setSeed(this.#config.defaultSeed || 12345)
     }
-    
+
     this.#state.counter++
     this.#metrics.totalGenerated++
-    
+
     const result = this.#prng!()
     const duration = perfLogger.endTimer(timer)
-    
+
     // Update average generation time
-    this.#metrics.averageGenerationTime = 
-      (this.#metrics.averageGenerationTime * (this.#metrics.totalGenerated - 1) + duration) / 
+    this.#metrics.averageGenerationTime =
+      (this.#metrics.averageGenerationTime * (this.#metrics.totalGenerated - 1) + duration) /
       this.#metrics.totalGenerated
-      
+
     return result
   }
 
@@ -256,6 +270,45 @@ export class RNGService implements IRNGService {
   }
 
   /**
+   * Generate random value using Gaussian (normal) distribution
+   * Uses Box-Muller transform for generating normally distributed values
+   * @param mean - Mean of the distribution (default: 0)
+   * @param stdDev - Standard deviation (default: 1)
+   * @returns Random value from normal distribution
+   */
+  randomGaussian(mean: number = 0, stdDev: number = 1): number {
+    // Box-Muller transform
+    if (!this.#spareGaussian) {
+      const u = this.random()
+      const v = this.random()
+      const z0 = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v)
+      const z1 = Math.sqrt(-2 * Math.log(u)) * Math.sin(2 * Math.PI * v)
+
+      this.#spareGaussian = z1
+      return z0 * stdDev + mean
+    } else {
+      const spare = this.#spareGaussian
+      this.#spareGaussian = null
+      return spare * stdDev + mean
+    }
+  }
+
+  /**
+   * Shuffle array in-place using Fisher-Yates algorithm
+   * @param array - Array to shuffle
+   * @returns The same array (shuffled in-place)
+   */
+  shuffle<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = this.randomInt(0, i + 1)
+      const temp = array[i]!
+      array[i] = array[j]!
+      array[j] = temp
+    }
+    return array
+  }
+
+  /**
    * Generate array of random numbers with optional seeding
    * @param options - Generation options
    * @returns Array of random numbers
@@ -263,21 +316,21 @@ export class RNGService implements IRNGService {
   randomArray({ min = 0, max = 1, count = 1, seed }: RNGOptions): number[] {
     const timer = 'rng_generate_array'
     perfLogger.startTimer(timer)
-    
+
     const originalSeed = this.#state.seed
     if (seed !== undefined) {
       this.setSeed(seed)
     }
-    
+
     const arr = Array.from({ length: count }, () => this.randomFloat(min, max))
-    
+
     if (seed !== undefined) {
       this.setSeed(originalSeed)
     }
-    
+
     const duration = perfLogger.endTimer(timer)
-    logger.debug("ðŸ“Š Random array generated", { count, duration: `${duration.toFixed(2)}ms` })
-    
+    logger.debug('ðŸ" Random array generated', { count, duration: `${duration.toFixed(2)}ms` })
+
     return arr
   }
 
@@ -296,8 +349,8 @@ export class RNGService implements IRNGService {
   setState(state: RNGState): void {
     this.#state = { ...state }
     this.setSeed(state.seed)
-    
-    logger.debug("ðŸ“‚ RNG state restored", { state })
+
+    logger.debug('ðŸ" RNG state restored', { state })
   }
 
   /**
@@ -318,8 +371,8 @@ export class RNGService implements IRNGService {
     this.#metrics.averageGenerationTime = 0
     this.#metrics.rehashCount = 0
     this.#purposeRngs.clear()
-    
-    logger.info("ðŸ”„ RNG service reset to default state")
+
+    logger.info('ðŸ" RNG service reset to default state')
   }
 
   /**
@@ -331,16 +384,16 @@ export class RNGService implements IRNGService {
       // Test basic functionality
       const testValue = this.random()
       const isHealthy = testValue >= 0 && testValue < 1
-      
+
       if (isHealthy) {
-        logger.debug("âœ… RNG health check passed")
+        logger.debug('âœ… RNG health check passed')
       } else {
-        logger.error("âŒ RNG health check failed - invalid random value", { testValue })
+        logger.error('âŒ RNG health check failed - invalid random value', { testValue })
       }
-      
+
       return isHealthy
     } catch (error) {
-      logger.error("âŒ RNG health check failed with error", { error })
+      logger.error('âŒ RNG health check failed with error', { error })
       return false
     }
   }
@@ -349,28 +402,28 @@ export class RNGService implements IRNGService {
    * Dispose RNG service and cleanup resources
    */
   dispose(): void {
-    logger.info("ðŸ§¹ Disposing RNG service")
-    
+    logger.info('ðŸ§¹ Disposing RNG service')
+
     // Clear purpose RNGs
     this.#purposeRngs.clear()
-    
+
     // Reset metrics
     this.#metrics = {
       totalGenerated: 0,
       averageGenerationTime: 0,
-      algorithm: "mulberry32",
-      source: "manual",
-      rehashCount: 0
+      algorithm: 'mulberry32',
+      source: 'manual',
+      rehashCount: 0,
     }
-    
+
     // Clear singleton instance
     RNGService.instance = null
-    
-    logger.info("âœ… RNG service disposed successfully")
+
+    logger.info('âœ… RNG service disposed successfully')
   }
 
   /* ------------------------------- Private Helpers ------------------------------ */
-  
+
   /**
    * Simple string hash function for purpose-specific seeding
    * @param str - String to hash
@@ -380,7 +433,7 @@ export class RNGService implements IRNGService {
     let hash = 0
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
+      hash = (hash << 5) - hash + char
       hash = hash & hash // Convert to 32-bit integer
     }
     return Math.abs(hash)

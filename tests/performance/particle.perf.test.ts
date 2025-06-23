@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Particle system performance benchmarks
  * Tests particle allocation, updates, and memory management
  * 

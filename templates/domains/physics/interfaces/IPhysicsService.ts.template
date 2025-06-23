@@ -54,4 +54,59 @@ export interface IPhysicsService {
   getMetrics(): PhysicsMetrics
   reset(): void
   dispose(): void
+  
+  /**
+   * Update multiple particles with physics simulation
+   * @param particles - Array of particles to update
+   * @param deltaTime - Time delta in seconds
+   */
+  updateParticles(particles: ParticlePhysics[], deltaTime: number): void
+  
+  /**
+   * Broad phase collision detection using spatial partitioning
+   * @param particles - Array of particles to check
+   * @returns Array of potential collision pairs
+   */
+  broadPhaseCollision(particles: ParticlePhysics[]): Array<[ParticlePhysics, ParticlePhysics]>
+  
+  /**
+   * Calculate gravitational forces between particles
+   * @param particles - Array of particles
+   */
+  calculateGravitationalForces(particles: ParticlePhysics[]): void
+  
+  /**
+   * Create octree for spatial partitioning
+   * @param center - Center point of the octree
+   * @param size - Size of the octree
+   * @returns Simple octree structure
+   */
+  createOctree(center: Vector3, size: number): any
+  
+  /**
+   * Insert particle into octree
+   * @param octree - Octree to insert into
+   * @param particle - Particle to insert
+   */
+  insertIntoOctree(octree: any, particle: ParticlePhysics): void
+  
+  /**
+   * Narrow phase collision detection with detailed collision response
+   * @param pairs - Array of collision pairs from broad phase
+   */
+  narrowPhaseCollision(pairs: Array<[ParticlePhysics, ParticlePhysics]>): void
+  
+  /**
+   * Calculate electromagnetic forces between charged particles
+   * @param particles - Array of particles with charge property
+   */
+  calculateElectromagneticForces(particles: ParticlePhysics[]): void
+  
+  /**
+   * Query octree for particles in a region
+   * @param octree - Octree to query
+   * @param region - Query region bounds
+   * @returns Array of particles in the region
+   */
+  queryOctree(octree: any, region: { center: Vector3; size: number }): ParticlePhysics[]
 }

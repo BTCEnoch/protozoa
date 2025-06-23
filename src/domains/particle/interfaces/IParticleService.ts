@@ -5,30 +5,30 @@
  * @version 1.0.0
  */
 
-import { Vector3, Scene, BufferGeometry, Material } from "three";
-import { 
-  ParticleType, 
-  ParticleSystemConfig, 
-  ParticleCreationData, 
-  ParticleMetrics 
-} from "../types/particle.types";
+import { Scene, Vector3 } from 'three'
+import {
+  ParticleCreationData,
+  ParticleMetrics,
+  ParticleSystemConfig,
+  ParticleType,
+} from '../types/particle.types'
 
 /**
  * Configuration options for Particle service initialization
  */
 export interface ParticleConfig {
   /** Maximum number of particles in the system */
-  maxParticles?: number;
+  maxParticles?: number
   /** Enable GPU instancing for performance */
-  useInstancing?: boolean;
+  useInstancing?: boolean
   /** Enable object pooling */
-  useObjectPooling?: boolean;
+  useObjectPooling?: boolean
   /** Default particle material type */
-  defaultMaterial?: string;
+  defaultMaterial?: string
   /** Enable LOD (Level of Detail) optimization */
-  enableLOD?: boolean;
+  enableLOD?: boolean
   /** Culling distance for particles */
-  cullingDistance?: number;
+  cullingDistance?: number
 }
 
 /**
@@ -36,31 +36,37 @@ export interface ParticleConfig {
  */
 export interface ParticleInstance {
   /** Unique particle identifier */
-  id: string;
+  id: string
   /** Particle position */
-  position: { x: number; y: number; z: number };
+  position: { x: number; y: number; z: number }
   /** Particle velocity */
-  velocity: { x: number; y: number; z: number };
+  velocity: { x: number; y: number; z: number }
   /** Particle scale */
-  scale: Vector3;
+  scale: Vector3
   /** Particle rotation */
-  rotation: number;
+  rotation: number
   /** Particle color (RGB) */
-  color: string;
+  color: string
   /** Particle opacity */
-  opacity: number;
+  opacity: number
   /** Particle age in seconds */
-  age: number;
+  age: number
   /** Particle lifetime in seconds */
-  lifetime: number;
+  lifetime: number
+  /** Initial lifetime for age calculations */
+  initialLifetime?: number
+  /** Initial size for size over lifetime calculations */
+  initialSize?: number
+  /** Size change over lifetime (0-1) */
+  sizeOverLifetime?: number
   /** Whether particle is active */
-  active: boolean;
+  active: boolean
   /** Particle type identifier */
-  type: ParticleType;
+  type: ParticleType
   /** Custom particle data */
-  userData: Record<string, any>;
+  userData: Record<string, any>
   /** Particle size */
-  size: number;
+  size: number
 }
 
 /**
@@ -68,26 +74,26 @@ export interface ParticleInstance {
  */
 export interface ParticleSystem {
   /** System identifier */
-  id: string;
+  id: string
   /** System name */
-  name: string;
+  name: string
   /** Maximum particles in this system */
-  maxParticles: number;
+  maxParticles: number
   /** Active particles count */
-  activeParticles: number;
+  activeParticles: number
   /** Particles array */
-  particles: ParticleInstance[];
+  particles: ParticleInstance[]
   /** System position */
-  position: Vector3;
+  position: Vector3
   /** System bounds */
   bounds: {
-    min: Vector3;
-    max: Vector3;
-  };
+    min: Vector3
+    max: Vector3
+  }
   /** Whether system is active */
-  active: boolean;
+  active: boolean
   /** System creation timestamp */
-  createdAt: number;
+  createdAt: number
 }
 
 /**
@@ -99,14 +105,14 @@ export interface IParticleService {
    * Initialize the Particle service with configuration
    * @param config - Particle service configuration
    */
-  initialize(config?: ParticleConfig): Promise<void>;
+  initialize(config?: ParticleConfig): Promise<void>
 
   /**
    * Create a new particle system
    * @param systemConfig - System configuration
    * @returns Created particle system
    */
-  createSystem(systemConfig: ParticleSystemConfig): ParticleSystem;
+  createSystem(systemConfig: ParticleSystemConfig): ParticleSystem
 
   /**
    * Add particles to a system
@@ -114,48 +120,48 @@ export interface IParticleService {
    * @param particleData - Particle creation data
    * @returns Array of created particle IDs
    */
-  addParticles(systemId: string, particleData: ParticleCreationData[]): string[];
+  addParticles(systemId: string, particleData: ParticleCreationData[]): string[]
 
   /**
    * Remove particles from a system
    * @param systemId - System identifier
    * @param particleIds - Particle IDs to remove
    */
-  removeParticles(systemId: string, particleIds: string[]): void;
+  removeParticles(systemId: string, particleIds: string[]): void
 
   /**
    * Update all particle systems
    * @param deltaTime - Time delta in seconds
    */
-  update(deltaTime: number): void;
+  update(deltaTime: number): void
 
   /**
    * Render particles to THREE.js scene
    * @param scene - THREE.js scene
    */
-  render(scene: Scene): void;
+  render(scene: Scene): void
 
   /**
    * Get particle system by ID
    * @param systemId - System identifier
    * @returns Particle system or undefined
    */
-  getSystem(systemId: string): ParticleSystem | undefined;
+  getSystem(systemId: string): ParticleSystem | undefined
 
   /**
    * Get all particle systems
    * @returns Array of all particle systems
    */
-  getAllSystems(): ParticleSystem[];
+  getAllSystems(): ParticleSystem[]
 
   /**
    * Get particle performance metrics
    * @returns Particle service metrics
    */
-  getMetrics(): ParticleMetrics;
+  getMetrics(): ParticleMetrics
 
   /**
    * Dispose of resources and cleanup
    */
-  dispose(): void;
-} 
+  dispose(): void
+}

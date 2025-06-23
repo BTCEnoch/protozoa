@@ -32,6 +32,12 @@ export interface IRNGService {
   setSeed(seed: number): void
   
   /**
+   * Alias for setSeed - for test compatibility
+   * @param newSeed - Seed value
+   */
+  seed(newSeed: number): void
+  
+  /**
    * Rehash the current seed to create a new seed value
    * Implements chain length protection to prevent infinite loops
    */
@@ -79,6 +85,21 @@ export interface IRNGService {
    * @returns Array of random numbers
    */
   randomArray(options: RNGOptions): number[]
+  
+  /**
+   * Generate random value using Gaussian (normal) distribution
+   * @param mean - Mean of the distribution (default: 0)
+   * @param stdDev - Standard deviation (default: 1)
+   * @returns Random value from normal distribution
+   */
+  randomGaussian(mean?: number, stdDev?: number): number
+  
+  /**
+   * Shuffle array in-place using Fisher-Yates algorithm
+   * @param array - Array to shuffle
+   * @returns The same array (shuffled in-place)
+   */
+  shuffle<T>(array: T[]): T[]
   
   /**
    * Get the current RNG state

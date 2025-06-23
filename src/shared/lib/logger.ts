@@ -1,39 +1,71 @@
 ﻿/**
- * @fileoverview Universal Browser-Compatible Logger
- * @description Pure browser-compatible logging service with no Node.js dependencies
+ * @fileoverview Hybrid Winston/Console Logger
+ * @description Intelligent logger that uses Winston in Node.js environments and console in browsers
  * @module @/shared/lib/logger
- * @version 2.0.0
+ * @version 3.0.0
  * @author Protozoa Development Team
  */
+
+// Dynamic Winston import for Node.js environments
+let winston: any = null
+try {
+  if (typeof window === 'undefined') {
+    winston = require('winston')
+  }
+} catch {
+  // Winston not available, will use console fallback
+}
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 
 export interface Logger {
   debug(message: string, meta?: any): void
-  info(message: string, meta?: any): void  
+  info(message: string, meta?: any): void
   warn(message: string, meta?: any): void
   error(message: string, meta?: any): void
   success(message: string, meta?: any): void
 }
 
 /**
- * Pure browser-compatible logger implementation
- * Uses console API with enhanced formatting and colors
- * No Node.js dependencies - works in all environments
+ * Hybrid logger implementation that uses Winston in Node.js and console in browsers
+ * Provides consistent API across all environments while leveraging platform capabilities
  */
-class UniversalLogger implements Logger {
+class HybridLogger implements Logger {
   private service: string
   private level: LogLevel
   private colors: Record<LogLevel, string>
+  private winstonLogger: any = null
 
   constructor(service: string, level: LogLevel = 'info') {
     this.service = service
     this.level = level
     this.colors = {
       debug: '#6B7280', // Gray
-      info: '#3B82F6',  // Blue  
-      warn: '#F59E0B',  // Orange
-      error: '#EF4444'  // Red
+      info: '#3B82F6', // Blue
+      warn: '#F59E0B', // Orange
+      error: '#EF4444', // Red
+    }
+
+    // Initialize Winston logger if available
+    if (winston) {
+      this.winstonLogger = winston.createLogger({
+        level: level,
+        format: winston.format.combine(
+          winston.format.timestamp(),
+          winston.format.errors({ stack: true }),
+          winston.format.printf((info: any) => {
+            const { timestamp, level, message, service, ...meta } = info
+            const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : ''
+            return `[${timestamp}] ${level.toUpperCase()} [${service}]: ${message}${metaStr}`
+          })
+        ),
+        defaultMeta: { service: this.service },
+        transports: [
+          new winston.transports.Console({
+            format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+          }),
+        ],
+      })
     }
   }
 
@@ -51,7 +83,7 @@ class UniversalLogger implements Logger {
   private logWithStyle(level: LogLevel, message: string, meta?: any): void {
     const formattedMessage = this.formatMessage(level, message, meta)
     const color = this.colors[level]
-    
+
     try {
       // Enhanced console logging with colors and styling
       console.log(
@@ -77,7 +109,7 @@ class UniversalLogger implements Logger {
   warn(message: string, meta?: any): void {
     if (!this.shouldLog('warn')) return
     this.logWithStyle('warn', `âš ï¸ ${message}`, meta)
-    
+
     // Also use native console.warn for visibility
     try {
       console.warn(`[${this.service}] ${message}`, meta || '')
@@ -89,12 +121,12 @@ class UniversalLogger implements Logger {
   error(message: string, meta?: any): void {
     if (!this.shouldLog('error')) return
     this.logWithStyle('error', `âŒ ${message}`, meta)
-    
+
     // Also use native console.error for visibility and stack traces
     try {
       console.error(`[${this.service}] ${message}`, meta || '')
     } catch {
-      // Fallback handled by logWithStyle above  
+      // Fallback handled by logWithStyle above
     }
   }
 
@@ -107,7 +139,7 @@ class UniversalLogger implements Logger {
 /**
  * Performance monitoring logger with timing capabilities
  */
-class PerformanceLogger extends UniversalLogger {
+class PerformanceLogger extends HybridLogger {
   private timers: Map<string, number> = new Map()
 
   constructor(service: string = 'performance') {
@@ -136,7 +168,7 @@ class PerformanceLogger extends UniversalLogger {
 
     const duration = performance.now() - startTime
     this.timers.delete(operation)
-    
+
     // Log performance with appropriate level based on duration
     if (duration > 1000) {
       this.warn(`â±ï¸ SLOW: ${operation} took ${duration.toFixed(2)}ms`)
@@ -159,7 +191,7 @@ class PerformanceLogger extends UniversalLogger {
         this.info('ðŸ“Š Memory Usage', {
           used: `${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`,
           total: `${(memory.totalJSHeapSize / 1024 / 1024).toFixed(2)}MB`,
-          limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)}MB`
+          limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)}MB`,
         })
       } else {
         this.debug('ðŸ“Š Memory info not available in this environment')
@@ -180,24 +212,24 @@ export function createServiceLogger(service: string, level?: LogLevel): Logger {
   // Determine log level from environment or parameter
   const getLogLevel = (): LogLevel => {
     if (level) return level
-    
+
     try {
       // Check for debug mode in localStorage (browser)
       if (typeof window !== 'undefined' && window.localStorage) {
         const debugMode = localStorage.getItem('protozoa-debug') === 'true'
         if (debugMode) return 'debug'
       }
-      
+
       // Check for development environment indicators
       if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
         return 'debug'
       }
-      
+
       // Check for Vite development mode
       if (typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV) {
         return 'debug'
       }
-      
+
       // Default to info level
       return 'info'
     } catch {
@@ -205,7 +237,7 @@ export function createServiceLogger(service: string, level?: LogLevel): Logger {
     }
   }
 
-  return new UniversalLogger(service, getLogLevel())
+  return new HybridLogger(service, getLogLevel())
 }
 
 /**
@@ -219,7 +251,7 @@ export function createPerformanceLogger(service: string = 'performance'): Perfor
 
 /**
  * Creates an error-specific logger
- * @param service - Service name (defaults to 'error-handler')  
+ * @param service - Service name (defaults to 'error-handler')
  * @returns Error logger instance
  */
 export function createErrorLogger(service: string = 'error-handler'): Logger {
@@ -279,12 +311,15 @@ export function disableDebugLogging(): void {
  */
 export function initializeLogging(): void {
   logger.info('ðŸš€ Protozoa logging system initialized')
-  
+
   // Log environment info
   try {
-    const env = typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV ? 'development' : 'production'
+    const env =
+      typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV
+        ? 'development'
+        : 'production'
     logger.info(`ðŸŒ Environment: ${env}`)
-    
+
     if (typeof window !== 'undefined') {
       logger.info(`ðŸŒ Browser: ${navigator.userAgent.split(' ').pop() || 'Unknown'}`)
     }

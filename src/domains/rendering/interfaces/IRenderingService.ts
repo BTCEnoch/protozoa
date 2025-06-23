@@ -3,13 +3,16 @@
  * @description Contract for THREE.js rendering operations used across the application.
  */
 
-import type { Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import type { IEffectService } from '@/domains/effect/interfaces/IEffectService'
 import type { IFormationService } from '@/domains/formation/interfaces/IFormationService'
-import type { IEffectService }    from '@/domains/effect/interfaces/IEffectService'
+import type { Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 
 export interface IRenderingService {
-  /** Attach renderer to canvas and wire optional domain dependencies */
-  initialize(canvas: HTMLCanvasElement, deps?: { formation?: IFormationService; effect?: IEffectService }): void
+  /** Attach renderer to parent container and wire optional domain dependencies */
+  initialize(
+    parentContainer: HTMLElement,
+    deps?: { formation?: IFormationService; effect?: IEffectService }
+  ): void
   /** Render one animation frame */
   renderFrame(delta: number): void
   /** Add an Object3D to the scene graph */

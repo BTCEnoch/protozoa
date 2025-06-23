@@ -297,13 +297,13 @@ export class ParticleService implements IParticleService {
       activeCount: totalParticles,
       particlesUpdated: totalParticles,
       particlesRendered: totalParticles,
-      particlesPerSecond: totalParticles, // TODO: Calculate actual rate
-      averageUpdateTime: 0, // TODO: Implement timing
-      averageRenderTime: 0, // TODO: Implement timing
-      memoryUsage: 0, // TODO: Implement memory tracking
-      gpuMemoryUsage: 0, // TODO: Implement GPU memory tracking
+      particlesPerSecond: this.#calculateParticlesPerSecond(),
+      averageUpdateTime: this.#getAverageUpdateTime(),
+      averageRenderTime: this.#getAverageRenderTime(),
+      memoryUsage: this.#getMemoryUsage(),
+      gpuMemoryUsage: this.#getGPUMemoryUsage(),
       poolUtilization: (this.#config.maxParticles! - this.#poolIndices.length) / this.#config.maxParticles!,
-      frameRateImpact: 0 // TODO: Implement frame rate monitoring
+      frameRateImpact: this.#getFrameRateImpact()
     };
   }
 
@@ -352,11 +352,76 @@ export class ParticleService implements IParticleService {
   }
 
   /**
+   * Create a single particle (test compatibility method)
+   * @param config - Particle configuration
+   * @returns Created particle instance or null
+   */
+  public createParticle(config: ParticleCreationData): ParticleInstance | null {
+    this.#logger.debug("Creating single particle", { config });
+    return this.#createParticle(config);
+  }
+
+  /**
+   * Create multiple particles in batch (test compatibility method)
+   * @param configs - Array of particle configurations
+   * @returns Array of created particle instances
+   */
+  public createParticlesBatch(configs: ParticleCreationData[]): ParticleInstance[] {
+    this.#logger.debug("Creating particle batch", { count: configs.length });
+    
+    const particles: ParticleInstance[] = [];
+    for (const config of configs) {
+      const particle = this.#createParticle(config);
+      if (particle) {
+        particles.push(particle);
+      }
+    }
+    
+    this.#logger.info("Particle batch created", { 
+      requested: configs.length, 
+      created: particles.length 
+    });
+    
+    return particles;
+  }
+
+  /**
    * Get all particle systems (convenience method)
    * @returns Map of all particle systems
    */
   public getSystems(): Map<string, ParticleSystem> {
     return this.#systems;
+  }
+
+  /**
+   * Update a single particle's physics and lifecycle
+   * @param particle - Particle to update
+   * @param deltaTime - Time delta in seconds
+   */
+  public updateParticle(particle: ParticleInstance, deltaTime: number): void {
+    if (!particle || particle.lifetime <= 0) return;
+
+    // Update position based on velocity
+    particle.position.x += particle.velocity.x * deltaTime;
+    particle.position.y += particle.velocity.y * deltaTime;
+    particle.position.z += particle.velocity.z * deltaTime;
+
+    // Update lifetime
+    particle.lifetime -= deltaTime;
+
+    // Apply basic physics (gravity, drag)
+    particle.velocity.y -= 9.81 * deltaTime; // Gravity
+    particle.velocity.x *= 0.99; // Air resistance
+    particle.velocity.y *= 0.99;
+    particle.velocity.z *= 0.99;
+  }
+
+  /**
+   * Release a particle back to the object pool
+   * @param particle - Particle to release
+   */
+  public releaseParticle(particle: ParticleInstance): void {
+    this.#returnParticleToPool(particle);
   }
 
   /**
@@ -393,6 +458,122 @@ export class ParticleService implements IParticleService {
   public setStorePersistenceEnabled(enabled: boolean): void {
     this.#logger.info("Setting store persistence enabled", { enabled });
     // Store persistence configuration can be added here
+  }
+
+  // Private performance tracking methods
+
+  #updateTimes: number[] = [];
+  #renderTimes: number[] = [];
+  #lastParticleCount: number = 0;
+  #lastTimestamp: number = Date.now();
+  #frameTimestamps: number[] = [];
+
+  /**
+   * Calculate particles processed per second
+   * @returns Particles per second rate
+   */
+  #calculateParticlesPerSecond(): number {
+    const now = Date.now();
+    const timeDelta = (now - this.#lastTimestamp) / 1000; // Convert to seconds
+    
+    if (timeDelta > 0) {
+      const totalParticles = Array.from(this.#systems.values()).reduce((sum, system) => sum + system.activeParticles, 0);
+      const particlesDelta = totalParticles - this.#lastParticleCount;
+      
+      this.#lastParticleCount = totalParticles;
+      this.#lastTimestamp = now;
+      
+      return Math.max(0, particlesDelta / timeDelta);
+    }
+    
+    return 0;
+  }
+
+  /**
+   * Get average update time from recent measurements
+   * @returns Average update time in milliseconds
+   */
+  #getAverageUpdateTime(): number {
+    if (this.#updateTimes.length === 0) return 0;
+    
+    const sum = this.#updateTimes.reduce((a, b) => a + b, 0);
+    return sum / this.#updateTimes.length;
+  }
+
+  /**
+   * Get average render time from recent measurements
+   * @returns Average render time in milliseconds
+   */
+  #getAverageRenderTime(): number {
+    if (this.#renderTimes.length === 0) return 0;
+    
+    const sum = this.#renderTimes.reduce((a, b) => a + b, 0);
+    return sum / this.#renderTimes.length;
+  }
+
+  /**
+   * Get current memory usage estimate
+   * @returns Memory usage in bytes
+   */
+  #getMemoryUsage(): number {
+    if (typeof performance !== 'undefined' && performance.memory) {
+      return performance.memory.usedJSHeapSize;
+    }
+    
+    // Fallback estimation based on particle count
+    const totalParticles = Array.from(this.#systems.values()).reduce((sum, system) => sum + system.activeParticles, 0);
+    const bytesPerParticle = 200; // Estimated memory per particle
+    return totalParticles * bytesPerParticle;
+  }
+
+  /**
+   * Get GPU memory usage estimate
+   * @returns GPU memory usage in bytes
+   */
+  #getGPUMemoryUsage(): number {
+    // Fallback estimation - WebGL memory tracking is limited
+    const totalParticles = Array.from(this.#systems.values()).reduce((sum, system) => sum + system.activeParticles, 0);
+    const gpuBytesPerParticle = 64; // Estimated GPU memory per particle
+    return totalParticles * gpuBytesPerParticle;
+  }
+
+  /**
+   * Calculate frame rate impact based on processing times
+   * @returns Frame rate impact as percentage (0-100)
+   */
+  #getFrameRateImpact(): number {
+    const targetFrameTime = 16.67; // 60 FPS target (milliseconds)
+    const averageProcessingTime = this.#getAverageUpdateTime() + this.#getAverageRenderTime();
+    
+    if (averageProcessingTime === 0) return 0;
+    
+    return Math.min(100, (averageProcessingTime / targetFrameTime) * 100);
+  }
+
+  /**
+   * Record update timing for performance metrics
+   * @param duration - Update duration in milliseconds
+   */
+  #recordUpdateTime(duration: number): void {
+    this.#updateTimes.push(duration);
+    
+    // Keep only recent measurements (last 100)
+    if (this.#updateTimes.length > 100) {
+      this.#updateTimes.shift();
+    }
+  }
+
+  /**
+   * Record render timing for performance metrics
+   * @param duration - Render duration in milliseconds
+   */
+  #recordRenderTime(duration: number): void {
+    this.#renderTimes.push(duration);
+    
+    // Keep only recent measurements (last 100)
+    if (this.#renderTimes.length > 100) {
+      this.#renderTimes.shift();
+    }
   }
 
   /**
@@ -583,16 +764,24 @@ export class ParticleService implements IParticleService {
 
   /**
    * Initialize object pool for particle instances
+   * CRITICAL: This must create exactly maxParticles entries in both arrays
    */
   #initializeObjectPool(): void {
     this.#logger.info("Initializing particle object pool", {
       maxParticles: this.#config.maxParticles
     });
 
-    this.#particlePool = [];
-    this.#poolIndices = [];
+    // CRITICAL: Clear existing pools completely before rebuilding
+    this.#particlePool.length = 0;
+    this.#poolIndices.length = 0;
 
-    for (let i = 0; i < this.#config.maxParticles!; i++) {
+    // CRITICAL: Validate maxParticles configuration
+    if (!this.#config.maxParticles || this.#config.maxParticles <= 0) {
+      throw new Error("Invalid maxParticles configuration: must be positive integer");
+    }
+
+    // Build particle pool with exact count
+    for (let i = 0; i < this.#config.maxParticles; i++) {
       const particle: ParticleInstance = {
         id: '',
         position: new Vector3(),
@@ -613,7 +802,20 @@ export class ParticleService implements IParticleService {
       this.#poolIndices.push(i);
     }
 
-    this.#logger.info("Particle object pool initialized successfully");
+    // CRITICAL: Validate pool integrity immediately after creation
+    if (this.#particlePool.length !== this.#config.maxParticles) {
+      throw new Error(`Pool creation failed: expected ${this.#config.maxParticles} particles, got ${this.#particlePool.length}`);
+    }
+
+    if (this.#poolIndices.length !== this.#config.maxParticles) {
+      throw new Error(`Index creation failed: expected ${this.#config.maxParticles} indices, got ${this.#poolIndices.length}`);
+    }
+
+    this.#logger.info("Particle object pool initialized successfully", {
+      particlePoolSize: this.#particlePool.length,
+      indexPoolSize: this.#poolIndices.length,
+      expectedSize: this.#config.maxParticles
+    });
   }
 
   /**
@@ -809,68 +1011,71 @@ export class ParticleService implements IParticleService {
    */
   #renderSystem(system: ParticleSystem, scene: Scene): void {
     // Log scene info before rendering
-    const sceneChildrenBefore = scene.children.length;
-    
+    const sceneChildrenBefore = scene.children.length
+
     // Create THREE.js objects for particles that don't have them yet
     for (const particle of system.particles) {
       if (!particle.userData.threeObject) {
-        // Create a larger, more visible sphere geometry for each particle
-        const geometry = new THREE.SphereGeometry(particle.size * 0.5, 12, 8); // Increased size and detail
-        const material = new THREE.MeshBasicMaterial({ 
+        // Create a MUCH larger, more visible sphere geometry for each particle
+        const geometry = new THREE.SphereGeometry(particle.size * 1, 16, 12) // Reasonable size - not too big
+        const material = new THREE.MeshStandardMaterial({
           color: particle.color,
           transparent: true,
-          opacity: particle.opacity
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        
+          opacity: particle.opacity,
+          metalness: 0.3,
+          roughness: 0.7,
+        })
+        const mesh = new THREE.Mesh(geometry, material)
+
         // Set initial position using individual coordinates
-        mesh.position.set(particle.position.x, particle.position.y, particle.position.z);
-        mesh.rotation.z = particle.rotation;
-        mesh.scale.copy(particle.scale);
-        
+        mesh.position.set(particle.position.x, particle.position.y, particle.position.z)
+        mesh.rotation.z = particle.rotation
+        mesh.scale.copy(particle.scale)
+
         // Store reference to THREE.js object
-        particle.userData.threeObject = mesh;
-        
+        particle.userData.threeObject = mesh
+
         // Add to scene
-        scene.add(mesh);
-        
-        this.#logger.info("🎯 Created and added THREE.js mesh to scene", {
+        scene.add(mesh)
+
+        this.#logger.info('🎯 Created and added THREE.js mesh to scene', {
           particleId: particle.id,
           position: { x: particle.position.x, y: particle.position.y, z: particle.position.z },
           color: particle.color,
           size: particle.size,
+          actualRadius: particle.size * 1, // Log the actual rendered size
           meshId: mesh.id,
-          sceneChildrenCount: scene.children.length
-        });
+          sceneChildrenCount: scene.children.length,
+        })
       } else {
         // Update existing THREE.js object
-        const mesh = particle.userData.threeObject as THREE.Mesh;
+        const mesh = particle.userData.threeObject as THREE.Mesh
         if (mesh) {
-          mesh.position.set(particle.position.x, particle.position.y, particle.position.z);
-          mesh.rotation.z = particle.rotation;
-          mesh.scale.copy(particle.scale);
-          
+          mesh.position.set(particle.position.x, particle.position.y, particle.position.z)
+          mesh.rotation.z = particle.rotation
+          mesh.scale.copy(particle.scale)
+
           // Update material properties
-          const material = mesh.material as THREE.MeshBasicMaterial;
+          const material = mesh.material as THREE.MeshStandardMaterial
           if (material) {
-            material.color.setStyle(particle.color);
-            material.opacity = particle.opacity;
+            material.color.setStyle(particle.color)
+            material.opacity = particle.opacity
           }
         }
       }
     }
-    
-    const sceneChildrenAfter = scene.children.length;
-    
-    this.#logger.info("🎬 Rendered particle system", {
+
+    const sceneChildrenAfter = scene.children.length
+
+    this.#logger.info('🎬 Rendered particle system', {
       systemId: system.id,
       particleCount: system.particles.length,
       activeParticles: system.activeParticles,
-      renderedObjects: system.particles.filter(p => p.userData.threeObject).length,
+      renderedObjects: system.particles.filter((p) => p.userData.threeObject).length,
       sceneChildrenBefore,
       sceneChildrenAfter,
-      sceneChildrenAdded: sceneChildrenAfter - sceneChildrenBefore
-    });
+      sceneChildrenAdded: sceneChildrenAfter - sceneChildrenBefore,
+    })
   }
 }
 

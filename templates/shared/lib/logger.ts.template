@@ -1,10 +1,20 @@
 /**
- * @fileoverview Universal Browser-Compatible Logger
- * @description Pure browser-compatible logging service with no Node.js dependencies
+ * @fileoverview Hybrid Winston/Console Logger
+ * @description Intelligent logger that uses Winston in Node.js environments and console in browsers
  * @module @/shared/lib/logger
- * @version 2.0.0
+ * @version 3.0.0
  * @author Protozoa Development Team
  */
+
+// Dynamic Winston import for Node.js environments
+let winston: any = null
+try {
+  if (typeof window === 'undefined') {
+    winston = require('winston')
+  }
+} catch {
+  // Winston not available, will use console fallback
+}
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 
@@ -17,14 +27,14 @@ export interface Logger {
 }
 
 /**
- * Pure browser-compatible logger implementation
- * Uses console API with enhanced formatting and colors
- * No Node.js dependencies - works in all environments
+ * Hybrid logger implementation that uses Winston in Node.js and console in browsers
+ * Provides consistent API across all environments while leveraging platform capabilities
  */
-class UniversalLogger implements Logger {
+class HybridLogger implements Logger {
   private service: string
   private level: LogLevel
   private colors: Record<LogLevel, string>
+  private winstonLogger: any = null
 
   constructor(service: string, level: LogLevel = 'info') {
     this.service = service
@@ -34,6 +44,30 @@ class UniversalLogger implements Logger {
       info: '#3B82F6',  // Blue  
       warn: '#F59E0B',  // Orange
       error: '#EF4444'  // Red
+    }
+    
+    // Initialize Winston logger if available
+    if (winston) {
+      this.winstonLogger = winston.createLogger({
+        level: level,
+        format: winston.format.combine(
+          winston.format.timestamp(),
+          winston.format.errors({ stack: true }),
+          winston.format.printf(({ timestamp, level, message, service, ...meta }) => {
+            const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : ''
+            return `[${timestamp}] ${level.toUpperCase()} [${service}]: ${message}${metaStr}`
+          })
+        ),
+        defaultMeta: { service: this.service },
+        transports: [
+          new winston.transports.Console({
+            format: winston.format.combine(
+              winston.format.colorize(),
+              winston.format.simple()
+            )
+          })
+        ]
+      })
     }
   }
 
@@ -66,48 +100,71 @@ class UniversalLogger implements Logger {
 
   debug(message: string, meta?: any): void {
     if (!this.shouldLog('debug')) return
-    this.logWithStyle('debug', `🐛 ${message}`, meta)
+    
+    if (this.winstonLogger) {
+      this.winstonLogger.debug(`🐛 ${message}`, meta)
+    } else {
+      this.logWithStyle('debug', `🐛 ${message}`, meta)
+    }
   }
 
   info(message: string, meta?: any): void {
     if (!this.shouldLog('info')) return
-    this.logWithStyle('info', `ℹ️ ${message}`, meta)
+    
+    if (this.winstonLogger) {
+      this.winstonLogger.info(`ℹ️ ${message}`, meta)
+    } else {
+      this.logWithStyle('info', `ℹ️ ${message}`, meta)
+    }
   }
 
   warn(message: string, meta?: any): void {
     if (!this.shouldLog('warn')) return
-    this.logWithStyle('warn', `⚠️ ${message}`, meta)
     
-    // Also use native console.warn for visibility
-    try {
-      console.warn(`[${this.service}] ${message}`, meta || '')
-    } catch {
-      // Fallback handled by logWithStyle above
+    if (this.winstonLogger) {
+      this.winstonLogger.warn(`⚠️ ${message}`, meta)
+    } else {
+      this.logWithStyle('warn', `⚠️ ${message}`, meta)
+      // Also use native console.warn for visibility
+      try {
+        console.warn(`[${this.service}] ${message}`, meta || '')
+      } catch {
+        // Fallback handled by logWithStyle above
+      }
     }
   }
 
   error(message: string, meta?: any): void {
     if (!this.shouldLog('error')) return
-    this.logWithStyle('error', `❌ ${message}`, meta)
     
-    // Also use native console.error for visibility and stack traces
-    try {
-      console.error(`[${this.service}] ${message}`, meta || '')
-    } catch {
-      // Fallback handled by logWithStyle above  
+    if (this.winstonLogger) {
+      this.winstonLogger.error(`❌ ${message}`, meta)
+    } else {
+      this.logWithStyle('error', `❌ ${message}`, meta)
+      // Also use native console.error for visibility and stack traces
+      try {
+        console.error(`[${this.service}] ${message}`, meta || '')
+      } catch {
+        // Fallback handled by logWithStyle above  
+      }
     }
   }
 
   success(message: string, meta?: any): void {
     if (!this.shouldLog('info')) return
-    this.logWithStyle('info', `✅ ${message}`, meta)
+    
+    if (this.winstonLogger) {
+      this.winstonLogger.info(`✅ ${message}`, meta)
+    } else {
+      this.logWithStyle('info', `✅ ${message}`, meta)
+    }
   }
 }
 
 /**
  * Performance monitoring logger with timing capabilities
  */
-class PerformanceLogger extends UniversalLogger {
+class PerformanceLogger extends HybridLogger {
   private timers: Map<string, number> = new Map()
 
   constructor(service: string = 'performance') {
@@ -205,7 +262,7 @@ export function createServiceLogger(service: string, level?: LogLevel): Logger {
     }
   }
 
-  return new UniversalLogger(service, getLogLevel())
+  return new HybridLogger(service, getLogLevel())
 }
 
 /**
