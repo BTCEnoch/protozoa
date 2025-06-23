@@ -26,7 +26,7 @@
     "composite": false,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [],
+    "types": ["node"],
     "typeRoots": ["./node_modules/@types"],
     "paths": {
       "@/*": ["./src/*"],

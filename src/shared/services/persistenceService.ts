@@ -1,0 +1,1 @@
+﻿export class PersistenceService { static getInstance() { return new PersistenceService() } async save(key: string, value: unknown) { localStorage.setItem(key, JSON.stringify(value)) } async load<T=unknown>(key: string): Promise<T|null> { const item = localStorage.getItem(key); return item ? JSON.parse(item) : null } dispose() {} }

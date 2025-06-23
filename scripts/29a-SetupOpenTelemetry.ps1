@@ -43,24 +43,47 @@ try {
     )
 
     Write-InfoLog "Installing OpenTelemetry packages..."
+    Write-InfoLog "Total packages to install: $($otPackages.Count)"
+    
     if (-not $DryRun) {
+        Write-InfoLog "Starting installation of OpenTelemetry dependencies..."
+        Write-InfoLog "This may take several minutes - installing comprehensive telemetry stack"
+        
         $installCmd = "$packageManager add " + ($otPackages -join " ")
         Write-DebugLog "Executing: $installCmd"
         
+        # Show progress for each package being installed
+        Write-InfoLog "📦 Installing packages:"
+        for ($i = 0; $i -lt $otPackages.Count; $i++) {
+            $pkg = $otPackages[$i]
+            Write-InfoLog "  [$($i+1)/$($otPackages.Count)] $pkg"
+        }
+        
+        Write-InfoLog "⏳ Running npm installation (this may take 2-3 minutes)..."
+        $installStart = Get-Date
+        
         # Try normal installation first
         Invoke-Expression $installCmd
+        $installDuration = (Get-Date) - $installStart
+        
         if ($LASTEXITCODE -ne 0) {
             Write-WarningLog "Standard installation failed, trying with --legacy-peer-deps"
+            Write-InfoLog "⚠️  Attempting fallback installation method..."
             $fallbackCmd = "$packageManager add --legacy-peer-deps " + ($otPackages -join " ")
             Write-DebugLog "Executing fallback: $fallbackCmd"
             
+            $fallbackStart = Get-Date
             Invoke-Expression $fallbackCmd
+            $fallbackDuration = (Get-Date) - $fallbackStart
+            
             if ($LASTEXITCODE -ne 0) {
                 throw "Package installation failed with exit code $LASTEXITCODE even with --legacy-peer-deps"
             }
-            Write-SuccessLog "OpenTelemetry packages installed successfully with --legacy-peer-deps"
+            Write-SuccessLog "✅ OpenTelemetry packages installed successfully with --legacy-peer-deps"
+            Write-InfoLog "📊 Installation completed in $($fallbackDuration.TotalSeconds.ToString('F1')) seconds"
         } else {
-            Write-SuccessLog "OpenTelemetry packages installed successfully"
+            Write-SuccessLog "✅ OpenTelemetry packages installed successfully"
+            Write-InfoLog "📊 Installation completed in $($installDuration.TotalSeconds.ToString('F1')) seconds"
         }
     }
 

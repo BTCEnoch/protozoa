@@ -73,10 +73,26 @@ try {
         throw "Template file missing: useParticleStore.ts.template"
     }
 
+    # Generate state index from template for proper exports
+    Write-InfoLog "Generating state index from template"
+    $stateIndexTemplate = Join-Path $ProjectRoot "templates/shared/state/index.ts.template"
+    $stateIndexPath = Join-Path $statePath "index.ts"
+    
+    if (Test-Path $stateIndexTemplate) {
+        if (-not $DryRun) {
+            Copy-Item $stateIndexTemplate $stateIndexPath -Force
+        }
+        Write-SuccessLog "State index generated from template successfully"
+    } else {
+        Write-WarningLog "State index template not found: $stateIndexTemplate"
+        Write-InfoLog "Continuing without index file - may cause import issues"
+    }
+
     Write-SuccessLog "Zustand store generation completed successfully!"
     Write-InfoLog "Generated files:"
     Write-InfoLog "  - useSimulationStore.ts (from template)"
     Write-InfoLog "  - useParticleStore.ts (from template)"
+    Write-InfoLog "  - index.ts (from template)"
     Write-InfoLog "Architecture: 100% template-driven, ZERO inline generation"
 
     exit 0
