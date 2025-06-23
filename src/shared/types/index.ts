@@ -1,4 +1,4 @@
-/** Shared types barrel export (Template) */
+﻿/** Shared types barrel export (Template) */
 
 export * from "./vectorTypes"
 export * from "./entityTypes"

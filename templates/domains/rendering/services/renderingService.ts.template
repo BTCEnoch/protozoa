@@ -116,4 +116,6 @@ class RenderingService implements IRenderingService {
   }
 }
 
+// Export both class and instance for maximum flexibility
+export { RenderingService }
 export const renderingService = RenderingService.getInstance()

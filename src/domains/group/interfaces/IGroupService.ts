@@ -1,4 +1,4 @@
-/** IGroupService */
+﻿/** IGroupService */
 export interface ParticleGroup { id: string; members: string[] }
 export interface IGroupService {
   formGroup(particleIds: string[]): ParticleGroup

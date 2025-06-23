@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Physics Service Interface Definition (Template)
  * @module @/domains/physics/interfaces/IPhysicsService
  * @version 1.0.0
@@ -31,7 +31,7 @@ export interface Transform {
   position: Vector3
   rotation: { x: number; y: number; z: number; w: number }
   scale: Vector3
-  /** Flattened 4×4 matrix elements */
+  /** Flattened 4Ã—4 matrix elements */
   matrix: Float32Array
 }
 

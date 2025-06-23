@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview IParticleInitService Interface (Template)
  * @module @/domains/particle/interfaces/IParticleInitService
  * @version 1.0.0

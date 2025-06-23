@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview EffectService Implementation
  * @description Singleton service managing particle visual effects and presets.
  */

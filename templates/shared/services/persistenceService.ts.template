@@ -279,8 +279,184 @@ export class PersistenceService implements IPersistenceService {
     return total;
   }
 
-  // Additional private methods for IndexedDB and localStorage operations would continue here...
-  // (Truncated for length - would include saveToIndexedDB, loadFromIndexedDB, etc.)
+  /**
+   * Save data to IndexedDB
+   */
+  private async saveToIndexedDB<T>(key: string, value: T, useLargeStore: boolean = false): Promise<StorageResult<T>> {
+    if (!this.db) {
+      return { success: false, error: 'IndexedDB not available' }
+    }
+
+    try {
+      const transaction = this.db.transaction([useLargeStore ? 'largeData' : 'data'], 'readwrite')
+      const store = transaction.objectStore(useLargeStore ? 'largeData' : 'data')
+      
+      await new Promise<void>((resolve, reject) => {
+        const request = store.put({ key, value, timestamp: Date.now() })
+        request.onsuccess = () => resolve()
+        request.onerror = () => reject(request.error)
+      })
+
+      return { success: true, data: value }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Save data to localStorage
+   */
+  private saveToLocalStorage<T>(key: string, serializedValue: string): StorageResult<T> {
+    try {
+      localStorage.setItem(key, serializedValue)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Load data from IndexedDB
+   */
+  private async loadFromIndexedDB<T>(key: string): Promise<StorageResult<T>> {
+    if (!this.db) {
+      return { success: false, error: 'IndexedDB not available' }
+    }
+
+    try {
+      const transaction = this.db.transaction(['data', 'largeData'], 'readonly')
+      
+      // Try regular store first
+      let store = transaction.objectStore('data')
+      let result = await new Promise<any>((resolve, reject) => {
+        const request = store.get(key)
+        request.onsuccess = () => resolve(request.result)
+        request.onerror = () => reject(request.error)
+      })
+
+      // If not found, try large data store
+      if (!result) {
+        store = transaction.objectStore('largeData')
+        result = await new Promise<any>((resolve, reject) => {
+          const request = store.get(key)
+          request.onsuccess = () => resolve(request.result)
+          request.onerror = () => reject(request.error)
+        })
+      }
+
+      if (result) {
+        return { success: true, data: result.value }
+      } else {
+        return { success: false, error: 'Key not found' }
+      }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Load data from localStorage
+   */
+  private loadFromLocalStorage<T>(key: string): StorageResult<T> {
+    try {
+      const item = localStorage.getItem(key)
+      if (item === null) {
+        return { success: false, error: 'Key not found' }
+      }
+      const data = this.deserialize<T>(item)
+      return { success: true, data }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Remove data from IndexedDB
+   */
+  private async removeFromIndexedDB(key: string): Promise<StorageResult<boolean>> {
+    if (!this.db) {
+      return { success: false, error: 'IndexedDB not available' }
+    }
+
+    try {
+      const transaction = this.db.transaction(['data', 'largeData'], 'readwrite')
+      
+      // Remove from both stores
+      const dataStore = transaction.objectStore('data')
+      const largeDataStore = transaction.objectStore('largeData')
+      
+      await Promise.all([
+        new Promise<void>((resolve, reject) => {
+          const request = dataStore.delete(key)
+          request.onsuccess = () => resolve()
+          request.onerror = () => reject(request.error)
+        }),
+        new Promise<void>((resolve, reject) => {
+          const request = largeDataStore.delete(key)
+          request.onsuccess = () => resolve()
+          request.onerror = () => reject(request.error)
+        })
+      ])
+
+      return { success: true, data: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Remove data from localStorage
+   */
+  private removeFromLocalStorage(key: string): StorageResult<boolean> {
+    try {
+      localStorage.removeItem(key)
+      return { success: true, data: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Clear all data from IndexedDB
+   */
+  private async clearIndexedDB(): Promise<StorageResult<boolean>> {
+    if (!this.db) {
+      return { success: false, error: 'IndexedDB not available' }
+    }
+
+    try {
+      const transaction = this.db.transaction(['data', 'largeData'], 'readwrite')
+      
+      await Promise.all([
+        new Promise<void>((resolve, reject) => {
+          const request = transaction.objectStore('data').clear()
+          request.onsuccess = () => resolve()
+          request.onerror = () => reject(request.error)
+        }),
+        new Promise<void>((resolve, reject) => {
+          const request = transaction.objectStore('largeData').clear()
+          request.onsuccess = () => resolve()
+          request.onerror = () => reject(request.error)
+        })
+      ])
+
+      return { success: true, data: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Clear all data from localStorage
+   */
+  private clearLocalStorage(): StorageResult<boolean> {
+    try {
+      localStorage.clear()
+      return { success: true, data: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
 
   /**
    * Dispose of resources

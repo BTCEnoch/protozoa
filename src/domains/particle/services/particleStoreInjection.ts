@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Particle Store Injection Configuration
  * @description Configures store injection for ParticleService to use injected stores rather than direct imports
  * @author Protozoa Development Team

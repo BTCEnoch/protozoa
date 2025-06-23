@@ -1,3 +1,4 @@
+import { Vector3 } from 'three'
 import { createServiceLogger } from '@/shared/lib/logger'
 import { effectService } from '@/domains/effect'
 import type { EffectLayer, IEffectComposerService } from '@/domains/effect/interfaces/IEffectComposerService'
@@ -29,7 +30,7 @@ class EffectComposerService implements IEffectComposerService {
   update (delta: number) {
     if (!this.#running) return
     this.#layers.forEach(l => {
-      effectService.triggerEffect(l.name, { ...l.params, delta, weight: l.weight })
+      effectService.triggerEffect(l.name, new Vector3(0, 0, 0))
     })
   }
   dispose () {

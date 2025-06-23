@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Physics Service Implementation (Template)
  * @module @/domains/physics/services/PhysicsService
  * @version 1.0.0
@@ -20,7 +20,7 @@ import type {
 import { createServiceLogger } from "@/shared/lib/logger"
 
 /**
- * PhysicsService – provides lightweight kinematic helpers and geometry utilities.
+ * PhysicsService â€“ provides lightweight kinematic helpers and geometry utilities.
  * Note: Complex force-field simulation is delegated to the Formation/Animation domains.
  */
 export class PhysicsService implements IPhysicsService {
@@ -133,7 +133,7 @@ export class PhysicsService implements IPhysicsService {
   dispose(): void {
     this.reset()
     PhysicsService.#instance = null
-    this.#logger.info("PhysicsService disposed – singleton reset")
+    this.#logger.info("PhysicsService disposed â€“ singleton reset")
   }
 
   /* ---------------------------- private helpers --------------------------- */

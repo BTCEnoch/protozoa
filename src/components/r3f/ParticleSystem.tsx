@@ -1,4 +1,4 @@
-/**
+﻿/**
  * React Three Fiber Particle System component
  * Declarative particle rendering using R3F patterns
  * 
@@ -7,10 +7,32 @@
  */
 
 import React, { useRef, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, extend } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useParticleStore } from '@/shared/state'
 import { logger } from '@/shared/lib/logger'
+
+// Extend Three.js elements for React Three Fiber JSX
+extend({ 
+  Mesh: THREE.Mesh,
+  InstancedMesh: THREE.InstancedMesh,
+  SphereGeometry: THREE.SphereGeometry,
+  MeshStandardMaterial: THREE.MeshStandardMaterial,
+  Group: THREE.Group
+})
+
+// Declare JSX namespace for Three.js elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      mesh: any
+      instancedMesh: any
+      sphereGeometry: any
+      meshStandardMaterial: any
+      group: any
+    }
+  }
+}
 
 /**
  * Individual particle component
@@ -30,7 +52,7 @@ export interface ParticleProps {
 
 function Particle({ particle, showWireframe }: ParticleProps) {
   const meshRef = useRef<THREE.Mesh>(null)
-  const materialRef = useRef<THREE.Material>(null)
+  const materialRef = useRef<THREE.MeshStandardMaterial>(null)
 
   useFrame((state, delta) => {
     if (!meshRef.current) return

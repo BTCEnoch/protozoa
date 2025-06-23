@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview FormationService - Main formation management service
  * @module @/domains/formation/services
  * @version 1.0.0

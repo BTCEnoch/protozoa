@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Trait Types Definition
  * @description Type definitions for organism trait management domain
  * @author Protozoa Development Team

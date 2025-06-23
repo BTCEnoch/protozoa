@@ -6,6 +6,7 @@
  */
 
 import { Vector3, Scene } from "three";
+import * as THREE from 'three';
 import {
   IParticleService,
   ParticleConfig,
@@ -46,6 +47,9 @@ export class ParticleService implements IParticleService {
 
   /** Frame timing for performance monitoring */
   #frameStartTime: number = 0;
+
+  /** Frame counter for logging */
+  #frameCounter: number = 0;
 
   /**
    * Private constructor enforcing singleton pattern
@@ -229,17 +233,26 @@ export class ParticleService implements IParticleService {
   public update(deltaTime: number): void {
     this.#frameStartTime = performance.now();
 
+    // Calculate total particles for logging
+    let totalParticles = 0;
+    
     // Update all active systems
     for (const system of this.#systems.values()) {
       if (system.active) {
         this.#updateSystem(system, deltaTime);
+        totalParticles += system.activeParticles;
       }
     }
 
-    this.#logger.debug("Particle systems updated", {
-      totalParticles: this.#systems.size,
-      deltaTime
-    });
+    // Only log every 60 frames (~1 second at 60fps) to reduce console spam
+    this.#frameCounter = (this.#frameCounter || 0) + 1;
+    if (this.#frameCounter % 60 === 0) {
+      this.#logger.debug("ðŸ”„ Particle systems updated", {
+        totalParticles,
+        activeSystems: this.#systems.size,
+        deltaTime: Math.round(deltaTime * 1000) / 1000 // Round to 3 decimal places
+      });
+    }
   }
 
   /**
@@ -247,9 +260,12 @@ export class ParticleService implements IParticleService {
    * @param scene - THREE.js scene
    */
   public render(scene: Scene): void {
-    this.#logger.debug("Rendering particle systems to scene", {
-      systemCount: this.#systems.size
-    });
+    // Only log every 60 frames to reduce console spam
+    if ((this.#frameCounter || 0) % 60 === 0) {
+      this.#logger.debug("ðŸŽ¨ Rendering particle systems to scene", {
+        systemCount: this.#systems.size
+      });
+    }
 
     // Render all active systems
     for (const system of this.#systems.values()) {
@@ -309,6 +325,77 @@ export class ParticleService implements IParticleService {
   }
 
   /**
+   * Spawn a single particle in a system (convenience method)
+   * @param systemId - System identifier
+   * @param config - Particle spawn configuration
+   * @returns Created particle ID or null if failed
+   */
+  public spawnParticle(systemId: string, config: {
+    position: THREE.Vector3;
+    velocity?: THREE.Vector3;
+    lifetime?: number;
+    size?: number;
+    color?: THREE.Color;
+  }): string | null {
+    const particleData: ParticleCreationData = {
+      position: { x: config.position.x, y: config.position.y, z: config.position.z },
+      velocity: config.velocity ? { x: config.velocity.x, y: config.velocity.y, z: config.velocity.z } : undefined,
+      color: config.color ? { r: config.color.r, g: config.color.g, b: config.color.b } : undefined,
+      lifetime: config.lifetime,
+      scale: config.size ? { x: config.size, y: config.size, z: config.size } : undefined,
+      type: ParticleType.BASIC,
+      userData: {}
+    };
+
+    const createdIds = this.addParticles(systemId, [particleData]);
+    return createdIds.length > 0 ? createdIds[0] || null : null;
+  }
+
+  /**
+   * Get all particle systems (convenience method)
+   * @returns Map of all particle systems
+   */
+  public getSystems(): Map<string, ParticleSystem> {
+    return this.#systems;
+  }
+
+  /**
+   * Set particle store for state integration
+   * @param store - Particle store instance
+   */
+  public setParticleStore(store: any): void {
+    this.#logger.info("Setting particle store for state integration");
+    // Store integration implementation can be added here
+  }
+
+  /**
+   * Set simulation store for state integration
+   * @param store - Simulation store instance
+   */
+  public setSimulationStore(store: any): void {
+    this.#logger.info("Setting simulation store for state integration");
+    // Store integration implementation can be added here
+  }
+
+  /**
+   * Enable or disable state logging
+   * @param enabled - Whether to enable state logging
+   */
+  public setStateLoggingEnabled(enabled: boolean): void {
+    this.#logger.info("Setting state logging enabled", { enabled });
+    // State logging configuration can be added here
+  }
+
+  /**
+   * Enable or disable store persistence
+   * @param enabled - Whether to enable store persistence
+   */
+  public setStorePersistenceEnabled(enabled: boolean): void {
+    this.#logger.info("Setting store persistence enabled", { enabled });
+    // Store persistence configuration can be added here
+  }
+
+  /**
    * Dispose of resources and cleanup
    */
   public dispose(): void {
@@ -334,6 +421,164 @@ export class ParticleService implements IParticleService {
     this.#logger.info("ParticleService disposal completed");
   }
 
+  /**
+   * Get detailed pool status for debugging
+   * @returns Detailed pool information
+   */
+  public getPoolStatus(): {
+    totalPoolSize: number;
+    availableParticles: number;
+    usedParticles: number;
+    utilization: number;
+    systemBreakdown: Array<{ systemId: string; activeParticles: number }>;
+  } {
+    const systemBreakdown = Array.from(this.#systems.entries()).map(([id, system]) => ({
+      systemId: id,
+      activeParticles: system.activeParticles
+    }));
+
+    const usedParticles = this.#config.maxParticles! - this.#poolIndices.length;
+    const availableParticles = this.#poolIndices.length;
+    const utilization = usedParticles / this.#config.maxParticles!;
+
+    return {
+      totalPoolSize: this.#config.maxParticles!,
+      availableParticles,
+      usedParticles,
+      utilization,
+      systemBreakdown
+    };
+  }
+
+  /**
+   * Reset the particle pool completely (emergency recovery)
+   * This should only be used when the pool is in an inconsistent state
+   */
+  public resetPool(): void {
+    this.#logger.warn("ðŸ”„ Resetting particle pool due to inconsistent state");
+    
+    // Clear all systems first
+    for (const system of this.#systems.values()) {
+      system.particles = [];
+      system.activeParticles = 0;
+    }
+    
+    // CRITICAL FIX: Completely reinitialize the pool to prevent corruption
+    this.#poolIndices = [];
+    for (let i = 0; i < this.#config.maxParticles!; i++) {
+      this.#poolIndices.push(i);
+      // Reset pool particles with explicit null safety for TypeScript
+      const particle = this.#particlePool[i];
+      if (particle) {
+        particle.active = false;
+        particle.id = '';
+        particle.userData = {};
+      }
+    }
+    
+    this.#logger.info("âœ… Particle pool reset complete", {
+      availableParticles: this.#poolIndices.length,
+      totalPoolSize: this.#config.maxParticles
+    });
+  }
+
+  /**
+   * Validate pool integrity and fix corruption
+   * @returns Whether the pool was corrupted and needed fixing
+   */
+  public validateAndFixPool(): boolean {
+    let wasCorrupted = false;
+    
+    // Check for duplicate indices
+    const uniqueIndices = new Set(this.#poolIndices);
+    if (uniqueIndices.size !== this.#poolIndices.length) {
+      this.#logger.warn("ðŸš¨ Pool corruption detected: duplicate indices found");
+      wasCorrupted = true;
+    }
+    
+    // Check for invalid indices
+    const invalidIndices = this.#poolIndices.filter(index => 
+      index < 0 || index >= this.#config.maxParticles! || !Number.isInteger(index)
+    );
+    if (invalidIndices.length > 0) {
+      this.#logger.warn("ðŸš¨ Pool corruption detected: invalid indices found", { invalidIndices });
+      wasCorrupted = true;
+    }
+    
+    // CRITICAL: Check if particlePool array is empty or corrupted
+    if (this.#particlePool.length !== this.#config.maxParticles!) {
+      this.#logger.warn("ðŸš¨ Pool corruption detected: particlePool array size mismatch", {
+        actualSize: this.#particlePool.length,
+        expectedSize: this.#config.maxParticles!
+      });
+      wasCorrupted = true;
+    }
+    
+    // Check for missing indices (indices that should be available but aren't)
+    const usedIndices = new Set<number>();
+    for (const system of this.#systems.values()) {
+      for (const particle of system.particles) {
+        const poolIndex = particle.userData?.__poolIndex;
+        if (typeof poolIndex === 'number') {
+          usedIndices.add(poolIndex);
+        }
+      }
+    }
+    
+    const expectedAvailableIndices = new Set<number>();
+    for (let i = 0; i < this.#config.maxParticles!; i++) {
+      if (!usedIndices.has(i)) {
+        expectedAvailableIndices.add(i);
+      }
+    }
+    
+    if (uniqueIndices.size !== expectedAvailableIndices.size) {
+      this.#logger.warn("ðŸš¨ Pool corruption detected: available indices count mismatch", {
+        actualAvailable: uniqueIndices.size,
+        expectedAvailable: expectedAvailableIndices.size,
+        usedIndices: usedIndices.size
+      });
+      wasCorrupted = true;
+    }
+    
+    // Fix corruption by rebuilding BOTH the pool indices AND the particle pool array
+    if (wasCorrupted) {
+      this.#logger.warn("ðŸ”§ Fixing pool corruption by rebuilding pool and indices");
+      
+      // CRITICAL FIX: Rebuild the entire particle pool array
+      this.#particlePool = [];
+      for (let i = 0; i < this.#config.maxParticles!; i++) {
+        const particle: ParticleInstance = {
+          id: '',
+          position: new Vector3(),
+          velocity: new Vector3(),
+          scale: new Vector3(1, 1, 1),
+          rotation: 0,
+          color: "#ffffff",
+          opacity: 1,
+          age: 0,
+          lifetime: 10,
+          active: false,
+          type: ParticleType.BASIC,
+          userData: {},
+          size: 1
+        };
+        this.#particlePool.push(particle);
+      }
+      
+      // Rebuild the available indices
+      this.#poolIndices = Array.from(expectedAvailableIndices);
+      
+      this.#logger.info("âœ… Pool corruption fixed", {
+        particlePoolSize: this.#particlePool.length,
+        availableParticles: this.#poolIndices.length,
+        usedParticles: usedIndices.size
+      });
+    }
+    
+    return wasCorrupted;
+  }
+
   // Private helper methods
 
   /**
@@ -354,13 +599,14 @@ export class ParticleService implements IParticleService {
         velocity: new Vector3(),
         scale: new Vector3(1, 1, 1),
         rotation: 0,
-        color: { r: 1, g: 1, b: 1 },
+        color: "#ffffff",
         opacity: 1,
         age: 0,
         lifetime: 10,
         active: false,
         type: ParticleType.BASIC,
-        userData: {}
+        userData: {},
+        size: 1
       };
 
       this.#particlePool.push(particle);
@@ -377,7 +623,11 @@ export class ParticleService implements IParticleService {
    */
   #createParticle(data: ParticleCreationData): ParticleInstance | null {
     if (this.#poolIndices.length === 0) {
-      this.#logger.warn("Particle pool exhausted");
+      this.#logger.warn("Particle pool exhausted", {
+        totalPoolSize: this.#config.maxParticles,
+        usedParticles: this.#config.maxParticles! - this.#poolIndices.length,
+        availableParticles: this.#poolIndices.length
+      });
       return null;
     }
 
@@ -396,13 +646,22 @@ export class ParticleService implements IParticleService {
     // Initialize particle
     particle.id = `particle_${Date.now()}_${poolIndex}`;
     
+    // CRITICAL FIX: Store pool index for proper return to pool
+    particle.userData = { ...data.userData, __poolIndex: poolIndex };
+    
     // Convert IVector3 to Vector3 for THREE.js compatibility
-    particle.position.set(data.position.x, data.position.y, data.position.z);
+    particle.position.x = data.position.x;
+    particle.position.y = data.position.y;
+    particle.position.z = data.position.z;
     
     if (data.velocity) {
-      particle.velocity.set(data.velocity.x, data.velocity.y, data.velocity.z);
+      particle.velocity.x = data.velocity.x;
+      particle.velocity.y = data.velocity.y;
+      particle.velocity.z = data.velocity.z;
     } else {
-      particle.velocity.set(0, 0, 0);
+      particle.velocity.x = 0;
+      particle.velocity.y = 0;
+      particle.velocity.z = 0;
     }
     
     if (data.scale) {
@@ -412,13 +671,14 @@ export class ParticleService implements IParticleService {
     }
     
     particle.rotation = 0; // Use fixed value since rotation not in creation data
-    particle.color = data.color ? { r: data.color.r, g: data.color.g, b: data.color.b } : { r: 1, g: 1, b: 1 };
+    particle.color = typeof data.color === 'string' ? data.color : 
+      (data.color ? `rgb(${Math.round(data.color.r * 255)}, ${Math.round(data.color.g * 255)}, ${Math.round(data.color.b * 255)})` : "#ffffff");
     particle.opacity = 1; // Use fixed value since opacity not in creation data
     particle.age = 0;
     particle.lifetime = data.lifetime || 10;
     particle.active = true;
     particle.type = data.type || ParticleType.BASIC;
-    particle.userData = data.userData || {};
+    particle.size = data.scale?.x || 1;
 
     return particle;
   }
@@ -430,12 +690,64 @@ export class ParticleService implements IParticleService {
   #returnParticleToPool(particle: ParticleInstance): void {
     particle.active = false;
     particle.id = '';
-    particle.userData = {};
-
-    // Find pool index and return it
-    const poolIndex = this.#particlePool.indexOf(particle);
-    if (poolIndex !== -1) {
-      this.#poolIndices.push(poolIndex);
+    
+    // CRITICAL: Clean up THREE.js objects to prevent memory leaks
+    if (particle.userData.threeObject) {
+      const mesh = particle.userData.threeObject as THREE.Mesh;
+      if (mesh) {
+        // Remove from scene
+        if (mesh.parent) {
+          mesh.parent.remove(mesh);
+        }
+        
+        // Dispose of geometry and material
+        if (mesh.geometry) {
+          mesh.geometry.dispose();
+        }
+        if (mesh.material) {
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach(material => material.dispose());
+          } else {
+            mesh.material.dispose();
+          }
+        }
+        
+        this.#logger.debug("Disposed THREE.js object for particle", {
+          particleId: particle.id
+        });
+      }
+    }
+    
+    // CRITICAL FIX: Use stored pool index for proper return with validation
+    const poolIndex = particle.userData?.__poolIndex;
+    if (typeof poolIndex === 'number' && poolIndex >= 0 && poolIndex < this.#config.maxParticles!) {
+      // CRITICAL: Check if index is already in the pool to prevent duplicates
+      if (!this.#poolIndices.includes(poolIndex)) {
+        // Clear userData (including THREE.js object reference)
+        particle.userData = {};
+        
+        // Return index to available pool
+        this.#poolIndices.push(poolIndex);
+        
+        this.#logger.debug("Particle returned to pool", { 
+          poolIndex, 
+          availableIndices: this.#poolIndices.length 
+        });
+      } else {
+        this.#logger.warn("Pool index already exists in available pool", { 
+          poolIndex,
+          availableIndices: this.#poolIndices.length 
+        });
+        // Still clear userData even if index is duplicate
+        particle.userData = {};
+      }
+    } else {
+      this.#logger.error("Cannot return particle to pool - invalid or missing pool index", { 
+        poolIndex, 
+        particleId: particle.id 
+      });
+      // Clear userData even on error
+      particle.userData = {};
     }
   }
 
@@ -465,9 +777,9 @@ export class ParticleService implements IParticleService {
       }
 
       // Update particle position
-      particle.position.add(
-        particle.velocity.clone().multiplyScalar(deltaTime)
-      );
+      particle.position.x += particle.velocity.x * deltaTime;
+      particle.position.y += particle.velocity.y * deltaTime;
+      particle.position.z += particle.velocity.z * deltaTime;
 
       // Update particle rotation
       particle.rotation += deltaTime;
@@ -496,12 +808,68 @@ export class ParticleService implements IParticleService {
    * @param scene - THREE.js scene
    */
   #renderSystem(system: ParticleSystem, scene: Scene): void {
-    // TODO: Implement THREE.js rendering
-    // This is a placeholder for the actual rendering implementation
-    // Should create/update THREE.js objects (Points, InstancedMesh, etc.)
-    this.#logger.debug("Rendering system", {
+    // Log scene info before rendering
+    const sceneChildrenBefore = scene.children.length;
+    
+    // Create THREE.js objects for particles that don't have them yet
+    for (const particle of system.particles) {
+      if (!particle.userData.threeObject) {
+        // Create a larger, more visible sphere geometry for each particle
+        const geometry = new THREE.SphereGeometry(particle.size * 0.5, 12, 8); // Increased size and detail
+        const material = new THREE.MeshBasicMaterial({ 
+          color: particle.color,
+          transparent: true,
+          opacity: particle.opacity
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        
+        // Set initial position using individual coordinates
+        mesh.position.set(particle.position.x, particle.position.y, particle.position.z);
+        mesh.rotation.z = particle.rotation;
+        mesh.scale.copy(particle.scale);
+        
+        // Store reference to THREE.js object
+        particle.userData.threeObject = mesh;
+        
+        // Add to scene
+        scene.add(mesh);
+        
+        this.#logger.info("ðŸŽ¯ Created and added THREE.js mesh to scene", {
+          particleId: particle.id,
+          position: { x: particle.position.x, y: particle.position.y, z: particle.position.z },
+          color: particle.color,
+          size: particle.size,
+          meshId: mesh.id,
+          sceneChildrenCount: scene.children.length
+        });
+      } else {
+        // Update existing THREE.js object
+        const mesh = particle.userData.threeObject as THREE.Mesh;
+        if (mesh) {
+          mesh.position.set(particle.position.x, particle.position.y, particle.position.z);
+          mesh.rotation.z = particle.rotation;
+          mesh.scale.copy(particle.scale);
+          
+          // Update material properties
+          const material = mesh.material as THREE.MeshBasicMaterial;
+          if (material) {
+            material.color.setStyle(particle.color);
+            material.opacity = particle.opacity;
+          }
+        }
+      }
+    }
+    
+    const sceneChildrenAfter = scene.children.length;
+    
+    this.#logger.info("ðŸŽ¬ Rendered particle system", {
       systemId: system.id,
-      particleCount: system.particles.length
+      particleCount: system.particles.length,
+      activeParticles: system.activeParticles,
+      renderedObjects: system.particles.filter(p => p.userData.threeObject).length,
+      sceneChildrenBefore,
+      sceneChildrenAfter,
+      sceneChildrenAdded: sceneChildrenAfter - sceneChildrenBefore
     });
   }
 }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview RNG Service Implementation (Template)
  * @module @/domains/rng/services/RNGService
  * @version 2.0.0
@@ -64,7 +64,7 @@ export class RNGService implements IRNGService {
       rehashCount: 0
     }
     
-    logger.info("🎲 RNGService instantiated with enhanced features")
+    logger.info("ðŸŽ² RNGService instantiated with enhanced features")
     this.setSeed(this.#state.seed)
   }
 
@@ -91,7 +91,7 @@ export class RNGService implements IRNGService {
     try {
       if (config) {
         this.#config = { ...this.#config, ...config }
-        logger.info("🔧 RNGService configuration updated", { config })
+        logger.info("ðŸ”§ RNGService configuration updated", { config })
       }
       
       if (config?.defaultSeed !== undefined) {
@@ -99,11 +99,11 @@ export class RNGService implements IRNGService {
       }
       
       const duration = perfLogger.endTimer(timer)
-      logger.info("✅ RNGService initialized", { duration: `${duration.toFixed(2)}ms` })
+      logger.info("âœ… RNGService initialized", { duration: `${duration.toFixed(2)}ms` })
       
     } catch (error) {
       perfLogger.endTimer(timer)
-      logger.error("❌ RNGService initialization failed", { error })
+      logger.error("âŒ RNGService initialization failed", { error })
       throw error
     }
   }
@@ -119,7 +119,7 @@ export class RNGService implements IRNGService {
     this.#state.chainLength = 0 // Reset chain length
     this.#metrics.source = "manual"
     
-    logger.debug("🎯 RNG seed set", { seed: this.#state.seed })
+    logger.debug("ðŸŽ¯ RNG seed set", { seed: this.#state.seed })
   }
 
   /**
@@ -128,14 +128,14 @@ export class RNGService implements IRNGService {
    */
   rehashSeed(): void {
     if (this.#state.chainLength >= (this.#config.maxChainLength || 1000)) {
-      logger.warn("⚠️ Rehash chain length limit reached, resetting to default seed")
+      logger.warn("âš ï¸ Rehash chain length limit reached, resetting to default seed")
       this.setSeed(this.#config.defaultSeed || 12345)
       return
     }
     
     // Generate new seed from current state - ensure #prng is available
     if (!this.#prng) {
-      logger.error("⚠️ PRNG not initialized, resetting to default")
+      logger.error("âš ï¸ PRNG not initialized, resetting to default")
       this.setSeed(this.#config.defaultSeed || 12345)
       return
     }
@@ -145,7 +145,7 @@ export class RNGService implements IRNGService {
     this.#metrics.rehashCount++
     
     this.setSeed(newSeed)
-    logger.debug("🔄 Seed rehashed", { 
+    logger.debug("ðŸ”„ Seed rehashed", { 
       newSeed, 
       chainLength: this.#state.chainLength,
       totalRehashes: this.#metrics.rehashCount 
@@ -194,7 +194,7 @@ export class RNGService implements IRNGService {
       this.#metrics.source = "bitcoin-block"
       
       const duration = perfLogger.endTimer(timer)
-      logger.info("🔗 RNG seeded from Bitcoin block", { 
+      logger.info("ðŸ”— RNG seeded from Bitcoin block", { 
         blockNumber, 
         seed: this.#state.seed,
         duration: `${duration.toFixed(2)}ms`
@@ -202,7 +202,7 @@ export class RNGService implements IRNGService {
       
     } catch (error) {
       perfLogger.endTimer(timer)
-      logger.error("❌ Failed to seed from Bitcoin block", { blockNumber, error })
+      logger.error("âŒ Failed to seed from Bitcoin block", { blockNumber, error })
       throw error
     }
   }
@@ -217,7 +217,7 @@ export class RNGService implements IRNGService {
     
     // Ensure PRNG is initialized
     if (!this.#prng) {
-      logger.error("⚠️ PRNG not initialized in random(), resetting to default")
+      logger.error("âš ï¸ PRNG not initialized in random(), resetting to default")
       this.setSeed(this.#config.defaultSeed || 12345)
     }
     
@@ -276,7 +276,7 @@ export class RNGService implements IRNGService {
     }
     
     const duration = perfLogger.endTimer(timer)
-    logger.debug("📊 Random array generated", { count, duration: `${duration.toFixed(2)}ms` })
+    logger.debug("ðŸ“Š Random array generated", { count, duration: `${duration.toFixed(2)}ms` })
     
     return arr
   }
@@ -297,7 +297,7 @@ export class RNGService implements IRNGService {
     this.#state = { ...state }
     this.setSeed(state.seed)
     
-    logger.debug("📂 RNG state restored", { state })
+    logger.debug("ðŸ“‚ RNG state restored", { state })
   }
 
   /**
@@ -319,7 +319,7 @@ export class RNGService implements IRNGService {
     this.#metrics.rehashCount = 0
     this.#purposeRngs.clear()
     
-    logger.info("🔄 RNG service reset to default state")
+    logger.info("ðŸ”„ RNG service reset to default state")
   }
 
   /**
@@ -333,14 +333,14 @@ export class RNGService implements IRNGService {
       const isHealthy = testValue >= 0 && testValue < 1
       
       if (isHealthy) {
-        logger.debug("✅ RNG health check passed")
+        logger.debug("âœ… RNG health check passed")
       } else {
-        logger.error("❌ RNG health check failed - invalid random value", { testValue })
+        logger.error("âŒ RNG health check failed - invalid random value", { testValue })
       }
       
       return isHealthy
     } catch (error) {
-      logger.error("❌ RNG health check failed with error", { error })
+      logger.error("âŒ RNG health check failed with error", { error })
       return false
     }
   }
@@ -349,7 +349,7 @@ export class RNGService implements IRNGService {
    * Dispose RNG service and cleanup resources
    */
   dispose(): void {
-    logger.info("🧹 Disposing RNG service")
+    logger.info("ðŸ§¹ Disposing RNG service")
     
     // Clear purpose RNGs
     this.#purposeRngs.clear()
@@ -366,7 +366,7 @@ export class RNGService implements IRNGService {
     // Clear singleton instance
     RNGService.instance = null
     
-    logger.info("✅ RNG service disposed successfully")
+    logger.info("âœ… RNG service disposed successfully")
   }
 
   /* ------------------------------- Private Helpers ------------------------------ */

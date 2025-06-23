@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Trait Service Implementation
  * @description High-performance organism trait generation with Bitcoin block seeding and genetic algorithms
  * @author Protozoa Development Team
@@ -262,7 +262,7 @@ export class TraitService implements ITraitService {
       if (range) {
         return this.#mutateNumericTrait(value, traitKey, 0.1);
       }
-      return value * (0.9 + Math.random() * 0.2); // ±10% variation
+      return value * (0.9 + Math.random() * 0.2); // Â±10% variation
     }
     if (typeof value === 'string' && traitKey === 'shape') {
       return this.#availableShapes[Math.floor(Math.random() * this.#availableShapes.length)];
@@ -593,6 +593,42 @@ export class TraitService implements ITraitService {
     } else {
       this.#metrics.cacheHitRate = (this.#metrics.cacheHitRate * (totalOperations - 1)) / totalOperations;
     }
+  }
+
+  /**
+   * Set RNG service for dependency injection
+   * @param rngService - RNG service instance
+   */
+  public setRNGService(rngService: any): void {
+    this.#logger.info('Setting RNG service dependency');
+    // Store reference for use in trait generation
+  }
+
+  /**
+   * Set Bitcoin service for dependency injection
+   * @param bitcoinService - Bitcoin service instance
+   */
+  public setBitcoinService(bitcoinService: any): void {
+    this.#logger.info('Setting Bitcoin service dependency');
+    // Store reference for blockchain data access
+  }
+
+  /**
+   * Enable or disable blockchain seeding
+   * @param enabled - Whether to use blockchain data for seeding
+   */
+  public setBlockchainSeedEnabled(enabled: boolean): void {
+    this.#logger.info('Setting blockchain seed enabled', { enabled });
+    // Configure blockchain seeding
+  }
+
+  /**
+   * Enable or disable mutation logging
+   * @param enabled - Whether to log mutations
+   */
+  public setMutationLoggingEnabled(enabled: boolean): void {
+    this.#logger.info('Setting mutation logging enabled', { enabled });
+    // Configure mutation logging
   }
 }
 

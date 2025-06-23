@@ -1,4 +1,4 @@
-/** Simple event bus types (Template) */
+﻿/** Simple event bus types (Template) */
 
 export type EventPayload = any
 

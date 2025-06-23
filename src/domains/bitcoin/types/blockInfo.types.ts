@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Bitcoin BlockInfo Type Definition
  * @description Standalone BlockInfo interface for external domain consumption
  */

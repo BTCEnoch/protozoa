@@ -1,4 +1,4 @@
-/** Simple in-memory rate limiter (Template) */
+﻿/** Simple in-memory rate limiter (Template) */
 export class RateLimiter {
   private requests: number[] = []
   constructor(private limit: number, private windowMs: number) {}

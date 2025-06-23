@@ -1,0 +1,127 @@
+﻿{
+  "name": "protozoa",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Bitcoin Ordinals digital organism ecosystem with physics-based particle interactions",
+  "keywords": [
+    "bitcoin",
+    "ordinals",
+    "physics",
+    "particles",
+    "three.js",
+    "react",
+    "typescript",
+    "organisms"
+  ],
+  "author": "Protozoa Development Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "packageManager": "npm@latest",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:trait": "vitest tests/domains/trait --coverage",
+    "test:particle": "vitest tests/domains/particle --coverage",
+    "test:physics": "vitest tests/domains/physics --coverage",
+    "test:performance": "vitest tests/performance --reporter=verbose",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,md}\"",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "build:analyze": "vite build --mode analyze",
+    "build:production": "tsc && vite build --mode production",
+    "clean": "rimraf dist coverage .nyc_output",
+    "clean:deps": "rimraf node_modules package-lock.json && echo 'Cleaned npm dependencies'",
+    "reinstall": "npm run clean:deps && npm install",
+    "check:npm": "npm run clean:deps && npm install --dry-run",
+    "docs": "typedoc",
+    "benchmark": "vitest run tests/performance --reporter=verbose",
+    "automation:install": "powershell -ExecutionPolicy Bypass -File scripts/00a-NpmInstallWithProgress.ps1",
+    "automation:scaffold": "powershell -ExecutionPolicy Bypass -File scripts/01-ScaffoldProjectStructure.ps1",
+    "automation:build": "powershell -ExecutionPolicy Bypass -File scripts/07-BuildAndTest.ps1"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.160.0",
+    "@react-three/fiber": "^8.15.11",
+    "@react-three/drei": "^9.92.7",
+    "zustand": "^4.4.7",
+    "winston": "^3.11.0",
+    "cross-fetch": "^4.0.0",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/three": "^0.160.0",
+    "@types/node": "^20.10.4",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vitest": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
+    "@vitest/coverage-v8": "^1.0.4",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "prettier": "^3.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "rimraf": "^5.0.5",
+    "typedoc": "^0.25.4",
+    "cross-env": "^7.0.3",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.3.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,css,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run type-check && npm run test:run"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "overrides": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.9.0"
+  }
+}

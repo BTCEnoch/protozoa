@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import React, { useEffect, useState } from 'react'
 import { SimulationCanvas } from '@/components/SimulationCanvas'
 
@@ -13,11 +13,11 @@ export default function App() {
         const { initServices } = await import('@/compositionRoot')
         await initServices()
         setServicesInitialized(true)
-        console.log('✅ Protozoa services initialized')
+        console.log('âœ… Protozoa services initialized')
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Unknown error'
         setError(errorMsg)
-        console.error('❌ Failed to initialize services:', errorMsg)
+        console.error('âŒ Failed to initialize services:', errorMsg)
       }
     }
 
@@ -38,7 +38,7 @@ export default function App() {
         textAlign: 'center',
         padding: '20px'
       }}>
-        <h2>🚫 Initialization Error</h2>
+        <h2>ðŸš« Initialization Error</h2>
         <p>Failed to start Protozoa application</p>
         <details style={{ marginTop: '20px', fontSize: '12px', opacity: 0.7 }}>
           <summary>Error Details</summary>

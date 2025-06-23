@@ -1,4 +1,4 @@
-/** Utility helpers for environment detection (Template) */
+﻿/** Utility helpers for environment detection (Template) */
 
 export type Mode = "development" | "production" | "test"
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview IFormationService interface defining formation pattern management contracts
  * @module @/domains/formation/interfaces
  * @version 1.0.0

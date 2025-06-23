@@ -484,6 +484,15 @@ export class BitcoinService implements IBitcoinService {
     // Update metrics cache hit rate
     this.#metrics.cacheHitRate = this.#cacheStats.hitRate;
   }
+
+  /**
+   * Get service configuration
+   * @returns Current service configuration
+   */
+  public getConfiguration(): BitcoinConfig {
+    this.#logger.debug('Getting Bitcoin service configuration');
+    return { ...this.#config };
+  }
 }
 
 // Export singleton instance getter

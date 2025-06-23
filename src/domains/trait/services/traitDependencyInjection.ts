@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Trait Domain Dependency Injection Configuration
  * @description Configures dependency injection for TraitService with RNG and Bitcoin services
  * @author Protozoia Development Team

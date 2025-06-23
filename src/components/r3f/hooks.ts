@@ -1,4 +1,4 @@
-/**
+﻿/**
  * React Three Fiber custom hooks
  * Provides reusable R3F functionality and integrations
  * 
@@ -6,7 +6,7 @@
  * @generated from template
  */
 
-import { useRef, useCallback } from 'react'
+import React from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useSimulationStore } from '@/shared/state'
@@ -50,8 +50,8 @@ export function useSimulation() {
  */
 export function usePerformanceMonitor() {
   const { gl } = useThree()
-  const frameCountRef = useRef(0)
-  const lastTimeRef = useRef(0)
+  const frameCountRef = React.useRef(0)
+  const lastTimeRef = React.useRef(0)
   const { updateFrameRate, updateRenderTime } = useSimulationStore()
 
   useFrame((state, delta) => {
@@ -82,14 +82,14 @@ export function usePerformanceMonitor() {
 export function useCameraControls() {
   const { camera } = useThree()
   
-  const moveTo = useCallback((position: [number, number, number], target?: [number, number, number]) => {
+  const moveTo = React.useCallback((position: [number, number, number], target?: [number, number, number]) => {
     camera.position.set(...position)
     if (target) {
       camera.lookAt(...target)
     }
   }, [camera])
 
-  const reset = useCallback(() => {
+  const reset = React.useCallback(() => {
     camera.position.set(0, 5, 10)
     camera.lookAt(0, 0, 0)
   }, [camera])
@@ -103,24 +103,26 @@ export function useCameraControls() {
 export function useSceneUtils() {
   const { scene, gl } = useThree()
   
-  const addObject = useCallback((object: THREE.Object3D) => {
+  const addObject = React.useCallback((object: THREE.Object3D) => {
     scene.add(object)
     logger.debug('Object added to R3F scene', { type: object.type })
   }, [scene])
 
-  const removeObject = useCallback((object: THREE.Object3D) => {
+  const removeObject = React.useCallback((object: THREE.Object3D) => {
     scene.remove(object)
     logger.debug('Object removed from R3F scene', { type: object.type })
   }, [scene])
 
-  const clearScene = useCallback(() => {
+  const clearScene = React.useCallback(() => {
     while (scene.children.length > 0) {
-      scene.remove(scene.children[0])
+      if (scene.children[0]) {
+        scene.remove(scene.children[0])
+      }
     }
     logger.info('R3F scene cleared')
   }, [scene])
 
-  const takeScreenshot = useCallback(() => {
+  const takeScreenshot = React.useCallback(() => {
     const dataURL = gl.domElement.toDataURL('image/png')
     logger.debug('Screenshot taken from R3F scene')
     return dataURL

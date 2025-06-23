@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Particle Store - Zustand State Management
  * @description Global state management for particle selection and UI interactions
  * @author Protozoa Development Team
@@ -8,20 +8,86 @@
 import { create } from 'zustand'
 
 /**
- * Particle UI state interface
+ * Basic particle instance interface for UI state
  */
-interface ParticleUIState { 
+export interface ParticleInstance {
+  id: string
+  position: { x: number; y: number; z: number }
+  velocity: { x: number; y: number; z: number }
+  size: number
+  color: string
+  opacity: number
+  age: number
+}
+
+/**
+ * Particle UI state interface
+ * Extended to include all particle-related properties and methods
+ */
+export interface ParticleUIState { 
   /** Currently selected particle ID */
   selected: string | null
+  /** Array of particle instances */
+  particles: ParticleInstance[]
+  /** Default particle size */
+  particleSize: number
+  /** Default particle color */
+  particleColor: string
+  /** Default particle opacity */
+  particleOpacity: number
+  /** Whether particle system is initialized */
+  isInitialized: boolean
+  
   /** Select a particle by ID */
-  select: (id: string | null) => void 
+  select: (id: string | null) => void
+  /** Add a particle to the system */
+  addParticle: (particle: ParticleInstance) => void
+  /** Remove a particle by ID */
+  removeParticle: (id: string) => void
+  /** Update particle properties */
+  updateParticle: (id: string, updates: Partial<ParticleInstance>) => void
+  /** Clear all particles */
+  clearParticles: () => void
+  /** Set particle size */
+  setParticleSize: (size: number) => void
+  /** Set particle color */
+  setParticleColor: (color: string) => void
+  /** Set particle opacity */
+  setParticleOpacity: (opacity: number) => void
+  /** Set initialization status */
+  setInitialized: (initialized: boolean) => void
 }
 
 /**
  * Particle store using Zustand v4 syntax
  * Manages global particle selection state across the application
  */
-export const useParticleStore = create<ParticleUIState>()((set) => ({
+export const useParticleStore = create<ParticleUIState>()((set, get) => ({
+  // State
   selected: null,
-  select: (id: string | null) => set({ selected: id })
+  particles: [],
+  particleSize: 1.0,
+  particleColor: '#ffffff',
+  particleOpacity: 1.0,
+  isInitialized: false,
+  
+  // Actions
+  select: (id: string | null) => set({ selected: id }),
+  addParticle: (particle: ParticleInstance) => set((state) => ({
+    particles: [...state.particles, particle]
+  })),
+  removeParticle: (id: string) => set((state) => ({
+    particles: state.particles.filter(p => p.id !== id),
+    selected: state.selected === id ? null : state.selected
+  })),
+  updateParticle: (id: string, updates: Partial<ParticleInstance>) => set((state) => ({
+    particles: state.particles.map(p => 
+      p.id === id ? { ...p, ...updates } : p
+    )
+  })),
+  clearParticles: () => set({ particles: [], selected: null }),
+  setParticleSize: (particleSize: number) => set({ particleSize }),
+  setParticleColor: (particleColor: string) => set({ particleColor }),
+  setParticleOpacity: (particleOpacity: number) => set({ particleOpacity }),
+  setInitialized: (isInitialized: boolean) => set({ isInitialized })
 }))

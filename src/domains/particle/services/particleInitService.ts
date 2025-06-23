@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview ParticleInitService Implementation (Template)
  * @module @/domains/particle/services/particleInitService
  * @version 1.0.0
@@ -124,7 +124,7 @@ export class ParticleInitService implements IParticleInitService {
         errors: []
       }
       
-      logger.info("✅ Particle allocation completed", { 
+      logger.info("âœ… Particle allocation completed", { 
         total: result.stats.totalAllocated,
         duration: `${duration.toFixed(2)}ms`
       })
@@ -133,7 +133,7 @@ export class ParticleInitService implements IParticleInitService {
       
     } catch (error) {
       perfLogger.endTimer(timer)
-      logger.error("❌ Particle allocation failed", { error })
+      logger.error("âŒ Particle allocation failed", { error })
       throw error
     }
   }
@@ -279,14 +279,14 @@ export class ParticleInitService implements IParticleInitService {
         this.#traitService !== null
         
       if (isHealthy) {
-        logger.debug("✅ ParticleInitService health check passed")
+        logger.debug("âœ… ParticleInitService health check passed")
       } else {
-        logger.error("❌ ParticleInitService health check failed")
+        logger.error("âŒ ParticleInitService health check failed")
       }
       
       return isHealthy
     } catch (error) {
-      logger.error("❌ ParticleInitService health check error", { error })
+      logger.error("âŒ ParticleInitService health check error", { error })
       return false
     }
   }
@@ -295,7 +295,7 @@ export class ParticleInitService implements IParticleInitService {
    * Dispose service and cleanup
    */
   dispose(): void {
-    logger.info("🧹 Disposing ParticleInitService")
+    logger.info("ðŸ§¹ Disposing ParticleInitService")
     
     this.#rngService = null
     this.#physicsService = null
@@ -304,7 +304,7 @@ export class ParticleInitService implements IParticleInitService {
     
     ParticleInitService.instance = null
     
-    logger.info("✅ ParticleInitService disposed")
+    logger.info("âœ… ParticleInitService disposed")
   }
 
   /* ------------------------------- Private Helpers ------------------------------- */
@@ -313,7 +313,7 @@ export class ParticleInitService implements IParticleInitService {
    * Allocate base particles (deterministic distribution)
    */
   async #allocateBaseParticles(count: number): Promise<IParticle[]> {
-    logger.debug("🎯 Allocating base particles", { count })
+    logger.debug("ðŸŽ¯ Allocating base particles", { count })
     
     const particles: IParticle[] = []
     const rolesPerType = Math.floor(count / Object.keys(ParticleRole).length)
@@ -335,7 +335,7 @@ export class ParticleInitService implements IParticleInitService {
     count: number, 
     roleWeights: Record<ParticleRole, number>
   ): Promise<IParticle[]> {
-    logger.debug("🎯 Allocating variable particles", { count })
+    logger.debug("ðŸŽ¯ Allocating variable particles", { count })
     
     const particles: IParticle[] = []
     

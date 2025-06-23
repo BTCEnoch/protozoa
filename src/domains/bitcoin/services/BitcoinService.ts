@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Bitcoin Service Implementation
  * @description High-performance Bitcoin blockchain data service with LRU caching and retry logic
  * @author Protozoa Development Team
@@ -483,6 +483,15 @@ export class BitcoinService implements IBitcoinService {
 
     // Update metrics cache hit rate
     this.#metrics.cacheHitRate = this.#cacheStats.hitRate;
+  }
+
+  /**
+   * Get service configuration
+   * @returns Current service configuration
+   */
+  public getConfiguration(): BitcoinConfig {
+    this.#logger.debug('Getting Bitcoin service configuration');
+    return { ...this.#config };
   }
 }
 

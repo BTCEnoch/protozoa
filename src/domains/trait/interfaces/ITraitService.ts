@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Trait Service Interface Definition
  * @description Defines the contract for organism trait management services
  * @author Protozoa Development Team

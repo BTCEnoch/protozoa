@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview RNG Types Definition (Template)
  * @module @/domains/rng/types/rng.types
  * @version 2.0.0

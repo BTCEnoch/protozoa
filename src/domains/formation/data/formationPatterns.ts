@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Predefined formation patterns for immediate use
  * @module @/domains/formation/data
  * @version 1.0.0

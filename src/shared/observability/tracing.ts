@@ -1,9 +1,9 @@
 ﻿/**
- * OpenTelemetry tracing configuration for Protozoa application
- * Provides comprehensive observability and performance monitoring
+ * OpenTelemetry tracing configuration for Protozoa
+ * Provides distributed tracing for performance monitoring
  * 
  * @author Protozoa Automation Suite
- * @generated 29-SetupOpenTelemetry.ps1
+ * @generated 29a-SetupOpenTelemetry.ps1
  */
 
 import { NodeSDK } from '@opentelemetry/sdk-node'
@@ -14,181 +14,114 @@ import { ZipkinExporter } from '@opentelemetry/exporter-zipkin'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { FsInstrumentation } from '@opentelemetry/instrumentation-fs'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
-import { logger } from '../lib/logger'
-
-/**
- * Tracing configuration interface
- */
-export interface TracingConfig {
-  serviceName?: string
-  serviceVersion?: string
-  environment?: string
-  jaegerEndpoint?: string
-  zipkinEndpoint?: string
-  enableConsoleExporter?: boolean
-  enableFileSystem?: boolean
-  sampleRate?: number
-}
-
-/**
- * Default tracing configuration
- */
-const defaultConfig: TracingConfig = {
-  serviceName: 'protozoa-organisms',
-  serviceVersion: '1.0.0',
-  environment: process.env.NODE_ENV || 'development',
-  jaegerEndpoint: process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
-  zipkinEndpoint: process.env.ZIPKIN_ENDPOINT || 'http://localhost:9411/api/v2/spans',
-  enableConsoleExporter: process.env.NODE_ENV === 'development',
-  enableFileSystem: false,
-  sampleRate: parseFloat(process.env.OTEL_TRACE_SAMPLE_RATE || '1.0')
-}
-
-let sdk: NodeSDK | null = null
+import { trace, SpanOptions, Attributes } from '@opentelemetry/api'
 
 /**
  * Initialize OpenTelemetry tracing
- * @param config Optional tracing configuration
  */
-export function initializeTracing(config: Partial<TracingConfig> = {}): void {
-  const finalConfig = { ...defaultConfig, ...config }
+export function initializeTracing(): void {
+  const serviceName = process.env.OTEL_SERVICE_NAME || 'protozoa-organisms'
+  const serviceVersion = process.env.OTEL_SERVICE_VERSION || '1.0.0'
+  const environment = process.env.OTEL_DEPLOYMENT_ENVIRONMENT || 'development'
+
+  // Create resource with service information
+  const resource = new Resource({
+    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+    [SemanticResourceAttributes.SERVICE_VERSION]: serviceVersion,
+    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: environment,
+  })
+
+  // Configure exporters
+  const exporters = []
   
-  try {
-    // Create resource with service information
-    const resource = new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: finalConfig.serviceName!,
-      [SemanticResourceAttributes.SERVICE_VERSION]: finalConfig.serviceVersion!,
-      [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: finalConfig.environment!,
-    })
+  // Jaeger exporter (if configured)
+  if (process.env.JAEGER_ENDPOINT) {
+    exporters.push(new JaegerExporter({
+      endpoint: process.env.JAEGER_ENDPOINT,
+    }))
+  }
+  
+  // Zipkin exporter (if configured)
+  if (process.env.ZIPKIN_ENDPOINT) {
+    exporters.push(new ZipkinExporter({
+      url: process.env.ZIPKIN_ENDPOINT,
+    }))
+  }
 
-    // Configure exporters
-    const exporters: any[] = []
+  // Configure instrumentations
+  const instrumentations = [
+    // Auto instrumentations
+    getNodeAutoInstrumentations({
+      '@opentelemetry/instrumentation-dns': {
+        enabled: false, // Disable noisy DNS instrumentation
+      },
+      '@opentelemetry/instrumentation-net': {
+        enabled: false, // Disable noisy network instrumentation
+      },
+    }),
     
-    if (finalConfig.jaegerEndpoint) {
-      exporters.push(new JaegerExporter({
-        endpoint: finalConfig.jaegerEndpoint,
-      }))
-    }
-    
-    if (finalConfig.zipkinEndpoint) {
-      exporters.push(new ZipkinExporter({
-        url: finalConfig.zipkinEndpoint,
-      }))
-    }
-
-    // Configure instrumentations
-    const instrumentations = [
-      new HttpInstrumentation({
-        requestHook: (span, request) => {
-          span.setAttributes({
-            'protozoa.request.url': request.url || 'unknown',
-            'protozoa.request.method': request.method || 'unknown'
-          })
-        }
-      }),
-      ...getNodeAutoInstrumentations({
-        '@opentelemetry/instrumentation-fs': {
-          enabled: finalConfig.enableFileSystem
-        }
-      })
-    ]
-
-    if (finalConfig.enableFileSystem) {
-      instrumentations.push(new FsInstrumentation())
-    }
-
-    // Initialize SDK
-    sdk = new NodeSDK({
-      resource,
-      traceExporter: exporters.length > 0 ? exporters[0] : undefined,
-      instrumentations,
-      sampler: {
-        shouldSample: () => ({
-          decision: Math.random() < finalConfig.sampleRate! ? 1 : 0,
-          attributes: {}
+    // Custom HTTP instrumentation with better filtering
+    new HttpInstrumentation({
+      enabled: true,
+      ignoreIncomingRequestHook: (req) => {
+        const url = req.url || ''
+        // Ignore health checks and static assets
+        return url.includes('/health') || url.includes('/static/')
+      },
+      requestHook: (span: any, request: any) => {
+        span.setAttributes({
+          'protozoa.request.type': 'http',
+          'protozoa.request.method': request.method,
         })
-      } as any
-    })
-
-    sdk.start()
+      },
+    }),
     
-    logger.info('OpenTelemetry tracing initialized', {
-      serviceName: finalConfig.serviceName,
-      environment: finalConfig.environment,
-      exporters: exporters.length,
-      sampleRate: finalConfig.sampleRate
-    })
+    // File system instrumentation for development
+    new FsInstrumentation({
+      enabled: environment === 'development',
+    }),
+  ]
 
-  } catch (error) {
-    logger.error('Failed to initialize OpenTelemetry tracing', { error })
-    throw error
-  }
+  // Initialize the SDK
+  const sdk = new NodeSDK({
+    resource,
+    instrumentations,
+  })
+
+  // Start tracing
+  sdk.start()
+  
+  console.log(`OpenTelemetry initialized for ${serviceName} v${serviceVersion}`)
 }
 
 /**
- * Shutdown tracing gracefully
- */
-export async function shutdownTracing(): Promise<void> {
-  if (sdk) {
-    try {
-      await sdk.shutdown()
-      logger.info('OpenTelemetry tracing shut down successfully')
-    } catch (error) {
-      logger.error('Error shutting down OpenTelemetry tracing', { error })
-    }
-  }
-}
-
-/**
- * Get current tracer instance
+ * Get the tracer instance
  */
 export function getTracer(name: string = 'protozoa-default') {
-  const opentelemetry = require('@opentelemetry/api')
-  return opentelemetry.trace.getTracer(name)
+  return trace.getTracer(name, '1.0.0')
 }
 
 /**
- * Create a span for a function execution
+ * Create a traced span around a function
  */
 export function withSpan<T>(
   name: string,
-  fn: () => T | Promise<T>,
-  attributes?: Record<string, string | number | boolean>
-): T | Promise<T> {
+  fn: () => T,
+  attributes?: Attributes,
+  options?: SpanOptions
+): T {
   const tracer = getTracer()
-  
-  return tracer.startActiveSpan(name, { attributes }, (span) => {
+  return tracer.startActiveSpan(name, { attributes }, (span: any) => {
     try {
       const result = fn()
-      
-      if (result instanceof Promise) {
-        return result
-          .then((value) => {
-            span.setStatus({ code: 1 }) // OK
-            span.end()
-            return value
-          })
-          .catch((error) => {
-            span.recordException(error)
-            span.setStatus({ code: 2, message: error.message }) // ERROR
-            span.end()
-            throw error
-          })
-      } else {
-        span.setStatus({ code: 1 }) // OK
-        span.end()
-        return result
-      }
+      span.setStatus({ code: 1 }) // OK
+      return result
     } catch (error) {
-      span.recordException(error)
       span.setStatus({ code: 2, message: (error as Error).message }) // ERROR
-      span.end()
+      span.recordException(error as Error)
       throw error
+    } finally {
+      span.end()
     }
   })
-}
-
-// Auto-initialize in Node.js environment
-if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
-  initializeTracing()
 }

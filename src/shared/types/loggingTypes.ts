@@ -1,4 +1,4 @@
-/** Logging & metrics types (Template) */
+﻿/** Logging & metrics types (Template) */
 
 export enum LogLevel { DEBUG = "debug", INFO = "info", WARN = "warn", ERROR = "error" }
 

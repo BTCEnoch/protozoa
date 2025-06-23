@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Physics Domain Type Definitions (Template)
  * @module @/domains/physics/types
  * @version 1.0.0

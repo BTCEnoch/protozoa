@@ -1,5 +1,5 @@
-/**
- * @fileoverview EnvironmentService (Template) – centralised env / feature flag utility.
+﻿/**
+ * @fileoverview EnvironmentService (Template) â€“ centralised env / feature flag utility.
  * @module @/shared/config/environmentService
  * @version 1.0.0
  */

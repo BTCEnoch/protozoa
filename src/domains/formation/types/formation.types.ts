@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Formation Types Definition
  * @fileoverview Comprehensive type definitions for the formation domain
  * @module @/domains/formation/types/formation.types

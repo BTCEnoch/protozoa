@@ -1,20 +1,311 @@
-﻿import { performance } from 'perf_hooks'
-import { createServiceLogger } from '@/shared/lib/logger'
+﻿/**
+ * @fileoverview PerformanceRegressionService Implementation
+ * @description Performance monitoring and regression detection service
+ * @author Protozoa Development Team
+ * @version 1.0.0
+ */
 
-export interface PerfSample{ label:string; duration:number }
+import { performance } from 'perf_hooks';
+import { createServiceLogger } from '@/shared/lib/logger';
 
-export class PerformanceRegressionService{
- static #instance:PerformanceRegressionService|null=null
- #log=createServiceLogger('PERF_REGRESSION')
- #samples:PerfSample[]=[]
- private constructor(){}
- static getInstance(){return this.#instance??(this.#instance=new PerformanceRegressionService())}
- start(label:string){return performance.now()}
- end(label:string,startTime:number){const d=performance.now()-startTime;this.#samples.push({label,duration:d});}
- report(){
-  this.#log.info('Performance samples',this.#samples)
-  return this.#samples
- }
- dispose(){this.#samples=[];PerformanceRegressionService.#instance=null}
+/**
+ * Performance sample interface
+ */
+export interface PerfSample {
+  label: string;
+  duration: number;
+  timestamp: number;
+  metadata?: Record<string, any>;
 }
-export const perfRegressionService=PerformanceRegressionService.getInstance()
+
+/**
+ * Performance baseline interface
+ */
+export interface PerfBaseline {
+  label: string;
+  averageDuration: number;
+  sampleCount: number;
+  threshold: number;
+  lastUpdated: number;
+}
+
+/**
+ * Performance regression result interface
+ */
+export interface RegressionResult {
+  label: string;
+  currentDuration: number;
+  baselineDuration: number;
+  regressionPercentage: number;
+  isRegression: boolean;
+  severity: 'low' | 'medium' | 'high';
+}
+
+/**
+ * PerformanceRegressionService implementing performance monitoring and regression detection
+ * Tracks performance metrics and detects performance regressions
+ * Follows singleton pattern for application-wide consistency
+ */
+export class PerformanceRegressionService {
+  private static instance: PerformanceRegressionService | null = null;
+  private readonly logger = createServiceLogger('PERF_REGRESSION');
+  private readonly samples: PerfSample[] = [];
+  private readonly baselines = new Map<string, PerfBaseline>();
+  private readonly activeTimers = new Map<string, number>();
+  private readonly maxSamples = 1000;
+  private readonly defaultThreshold = 0.2; // 20% regression threshold
+
+  /**
+   * Private constructor enforcing singleton pattern
+   */
+  private constructor() {
+    this.logger.info('PerformanceRegressionService initialized');
+  }
+
+  /**
+   * Get the singleton instance of PerformanceRegressionService
+   */
+  public static getInstance(): PerformanceRegressionService {
+    if (!this.instance) {
+      this.instance = new PerformanceRegressionService();
+    }
+    return this.instance;
+  }
+
+  /**
+   * Start a performance measurement
+   * @param label - Unique identifier for the measurement
+   * @param metadata - Optional metadata to include with the measurement
+   * @returns Start time for the measurement
+   */
+  public start(label: string, metadata?: Record<string, any>): number {
+    const startTime = performance.now();
+    
+    this.activeTimers.set(label, startTime);
+    
+    this.logger.debug(`Performance measurement started: ${label}`, { 
+      startTime,
+      metadata 
+    });
+    
+    return startTime;
+  }
+
+  /**
+   * End a performance measurement and record the sample
+   * @param label - Unique identifier for the measurement
+   * @param startTime - Start time from start() method (optional if using label)
+   * @param metadata - Optional metadata to include with the measurement
+   */
+  public end(label: string, startTime?: number, metadata?: Record<string, any>): number {
+    const endTime = performance.now();
+    const actualStartTime = startTime || this.activeTimers.get(label);
+    
+    if (!actualStartTime) {
+      this.logger.warn(`No start time found for performance measurement: ${label}`);
+      return 0;
+    }
+    
+    const duration = endTime - actualStartTime;
+    
+    // Record the sample
+    const sample: PerfSample = {
+      label,
+      duration,
+      timestamp: Date.now(),
+      metadata
+    };
+    
+    this.recordSample(sample);
+    
+    // Clean up active timer
+    this.activeTimers.delete(label);
+    
+    this.logger.debug(`Performance measurement completed: ${label}`, {
+      duration: Math.round(duration * 100) / 100,
+      metadata
+    });
+    
+    return duration;
+  }
+
+  /**
+   * Record a performance sample and update baselines
+   * @param sample - Performance sample to record
+   */
+  private recordSample(sample: PerfSample): void {
+    // Add to samples array
+    this.samples.push(sample);
+    
+    // Trim samples if exceeding maximum
+    if (this.samples.length > this.maxSamples) {
+      this.samples.splice(0, this.samples.length - this.maxSamples);
+    }
+    
+    // Update baseline for this label
+    this.updateBaseline(sample);
+    
+    // Check for regression
+    const regressionResult = this.checkRegression(sample);
+    if (regressionResult.isRegression) {
+      this.logger.warn(`Performance regression detected: ${sample.label}`, {
+        regression: regressionResult
+      });
+    }
+  }
+
+  /**
+   * Update baseline performance for a label
+   * @param sample - New performance sample
+   */
+  private updateBaseline(sample: PerfSample): void {
+    const existing = this.baselines.get(sample.label);
+    
+    if (!existing) {
+      // Create new baseline
+      this.baselines.set(sample.label, {
+        label: sample.label,
+        averageDuration: sample.duration,
+        sampleCount: 1,
+        threshold: this.defaultThreshold,
+        lastUpdated: Date.now()
+      });
+    } else {
+      // Update existing baseline with moving average
+      const newCount = existing.sampleCount + 1;
+      const newAverage = ((existing.averageDuration * existing.sampleCount) + sample.duration) / newCount;
+      
+      this.baselines.set(sample.label, {
+        ...existing,
+        averageDuration: newAverage,
+        sampleCount: newCount,
+        lastUpdated: Date.now()
+      });
+    }
+  }
+
+  /**
+   * Check if a sample represents a performance regression
+   * @param sample - Performance sample to check
+   * @returns Regression analysis result
+   */
+  private checkRegression(sample: PerfSample): RegressionResult {
+    const baseline = this.baselines.get(sample.label);
+    
+    if (!baseline) {
+      return {
+        label: sample.label,
+        currentDuration: sample.duration,
+        baselineDuration: 0,
+        regressionPercentage: 0,
+        isRegression: false,
+        severity: 'low'
+      };
+    }
+    
+    const regressionPercentage = (sample.duration - baseline.averageDuration) / baseline.averageDuration;
+    const isRegression = regressionPercentage > baseline.threshold;
+    
+    let severity: 'low' | 'medium' | 'high' = 'low';
+    if (regressionPercentage > 0.5) severity = 'high';
+    else if (regressionPercentage > 0.3) severity = 'medium';
+    
+    return {
+      label: sample.label,
+      currentDuration: sample.duration,
+      baselineDuration: baseline.averageDuration,
+      regressionPercentage,
+      isRegression,
+      severity
+    };
+  }
+
+  /**
+   * Get all performance samples
+   * @param label - Optional label filter
+   * @returns Array of performance samples
+   */
+  public getSamples(label?: string): PerfSample[] {
+    if (label) {
+      return this.samples.filter(sample => sample.label === label);
+    }
+    return [...this.samples];
+  }
+
+  /**
+   * Get all performance baselines
+   * @returns Map of performance baselines
+   */
+  public getBaselines(): Map<string, PerfBaseline> {
+    return new Map(this.baselines);
+  }
+
+  /**
+   * Generate performance report
+   * @returns Performance samples and baselines
+   */
+  public report(): {
+    samples: PerfSample[];
+    baselines: PerfBaseline[];
+    regressions: RegressionResult[];
+  } {
+    const recentSamples = this.samples.slice(-100); // Last 100 samples
+    const regressions = recentSamples
+      .map(sample => this.checkRegression(sample))
+      .filter(result => result.isRegression);
+    
+    const report = {
+      samples: recentSamples,
+      baselines: Array.from(this.baselines.values()),
+      regressions
+    };
+    
+    this.logger.info('Performance report generated', {
+      totalSamples: this.samples.length,
+      recentSamples: recentSamples.length,
+      baselines: this.baselines.size,
+      regressions: regressions.length
+    });
+    
+    return report;
+  }
+
+  /**
+   * Clear all performance data
+   */
+  public clear(): void {
+    this.samples.length = 0;
+    this.baselines.clear();
+    this.activeTimers.clear();
+    
+    this.logger.info('Performance data cleared');
+  }
+
+  /**
+   * Set regression threshold for a specific label
+   * @param label - Label to set threshold for
+   * @param threshold - Regression threshold (0.0 to 1.0)
+   */
+  public setThreshold(label: string, threshold: number): void {
+    const baseline = this.baselines.get(label);
+    if (baseline) {
+      this.baselines.set(label, {
+        ...baseline,
+        threshold
+      });
+      this.logger.debug(`Regression threshold updated for ${label}: ${threshold}`);
+    }
+  }
+
+  /**
+   * Dispose of service resources
+   */
+  public dispose(): void {
+    this.clear();
+    PerformanceRegressionService.instance = null;
+    this.logger.info('PerformanceRegressionService disposed');
+  }
+}
+
+// Export service instance
+export const perfRegressionService = PerformanceRegressionService.getInstance(); 

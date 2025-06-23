@@ -10,9 +10,9 @@
                                       "path":  "D:\\Protozoa\\src\\shared\\workers\\WorkerManager.ts"
                                   }
                 },
-    "timestamp":  "2025-06-22 16:52:32",
+    "timestamp":  "2025-06-22 17:05:32",
     "compliantFiles":  1,
-    "totalFiles":  30,
+    "totalFiles":  32,
     "recommendations":  [
                             "All services with worker code MUST implement dispose() method",
                             "dispose() method MUST call worker.terminate() or workerManager.dispose()",

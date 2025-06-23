@@ -38,15 +38,15 @@ export interface ParticleInstance {
   /** Unique particle identifier */
   id: string;
   /** Particle position */
-  position: Vector3;
+  position: { x: number; y: number; z: number };
   /** Particle velocity */
-  velocity: Vector3;
+  velocity: { x: number; y: number; z: number };
   /** Particle scale */
   scale: Vector3;
   /** Particle rotation */
   rotation: number;
   /** Particle color (RGB) */
-  color: { r: number; g: number; b: number };
+  color: string;
   /** Particle opacity */
   opacity: number;
   /** Particle age in seconds */
@@ -59,6 +59,8 @@ export interface ParticleInstance {
   type: ParticleType;
   /** Custom particle data */
   userData: Record<string, any>;
+  /** Particle size */
+  size: number;
 }
 
 /**

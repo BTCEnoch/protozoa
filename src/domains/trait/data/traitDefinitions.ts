@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Trait Definitions Data
  * @description Core trait definitions, ranges, and mutation probabilities for organism evolution
  * @author Protozoa Development Team

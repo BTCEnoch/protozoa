@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Particle Types Definition (Template)
  * @module @/domains/particle/types/particle.types
  * @version 1.0.0

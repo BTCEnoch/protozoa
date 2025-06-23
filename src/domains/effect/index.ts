@@ -6,8 +6,8 @@
  */
 
 // Service exports
-export { EffectService, effectService } from "./services/EffectService";
-export { EffectComposerService, effectComposerService } from "./services/EffectComposerService";
+export { effectService } from './services/EffectService'
+export { effectComposerService } from './services/EffectComposerService'
 
 // Interface exports
 export type {
@@ -18,8 +18,8 @@ export type {
   IEffectMetrics,
   IEffectHealthStatus,
   IEffectServiceConfig,
-  IEffectServiceFactory
-} from "./interfaces/IEffectService";
+  IEffectServiceFactory,
+} from './interfaces/IEffectService'
 
 // Type exports
 export type {
@@ -45,16 +45,10 @@ export type {
   EffectUpdateCallback,
   EffectCompletionCallback,
   EffectErrorCallback,
-  EffectEventCallback
-} from "./types/effect.types";
+  EffectEventCallback,
+} from './types/effect.types'
 
-export {
-  EffectState,
-  EffectPriority
-} from "./types/effect.types";
+export { EffectState, EffectPriority } from './types/effect.types'
 
 // Data exports
-export {
-  EFFECT_PRESETS,
-  MUTATION_EFFECT_MAPPINGS
-} from "./data/effectPresets";
+export { EFFECT_PRESETS, MUTATION_EFFECT_MAPPINGS } from './data/effectPresets'

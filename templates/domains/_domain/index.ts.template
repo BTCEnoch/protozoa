@@ -1,3 +1,4 @@
 /** __DOMAIN__ domain exports (Template) */
-export * from './interfaces'
-export * from './services'
+// Domain template - specific domains should implement their own exports
+// export * from './interfaces'
+// export * from './services'

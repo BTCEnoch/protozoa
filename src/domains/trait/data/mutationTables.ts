@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Mutation Tables and Algorithms
  * @description Mutation probability tables and algorithms for organism trait evolution
  * @author Protozoa Development Team
@@ -181,7 +181,7 @@ export const MutationTableHelpers = {
                              Math.min(mapping.constraints.max, mutatedValue))
     }
 
-    logger.debug(`Mutated ${traitName}: ${currentValue} → ${mutatedValue} (${algorithm?.name || 'unknown'})`)
+    logger.debug(`Mutated ${traitName}: ${currentValue} â†’ ${mutatedValue} (${algorithm?.name || 'unknown'})`)
     return mutatedValue
   },
 
@@ -200,7 +200,7 @@ export const MutationTableHelpers = {
       const palette = COLOR_MUTATION_TABLE.palettes[preferredPalette]
       const newColor = palette[Math.floor(Math.random() * palette.length)]
       logger.debug(`Selected palette color: ${newColor}`)
-      return newColor
+      return newColor || currentColor
     }
     
     // Color shifting approach
@@ -216,7 +216,7 @@ export const MutationTableHelpers = {
     
     const newColor = `#${Math.round(newR).toString(16).padStart(2, '0')}${Math.round(newG).toString(16).padStart(2, '0')}${Math.round(newB).toString(16).padStart(2, '0')}`
     
-    logger.debug(`Color shift mutation: ${currentColor} → ${newColor}`)
+    logger.debug(`Color shift mutation: ${currentColor} â†’ ${newColor}`)
     return newColor
   },
 
@@ -240,7 +240,7 @@ export const MutationTableHelpers = {
       mutationStrength: intensity
     }
     
-    logger.info(`Created mutation record for ${traitName}: ${oldValue} → ${newValue}`)
+    logger.info(`Created mutation record for ${traitName}: ${oldValue} â†’ ${newValue}`)
     return record
   },
 

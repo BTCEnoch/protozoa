@@ -1,4 +1,4 @@
-import { createServiceLogger } from '@/shared/lib/logger'
+﻿import { createServiceLogger } from '@/shared/lib/logger'
 import { rngService } from '@/domains/rng'
 import type { Vector3 } from 'three'
 

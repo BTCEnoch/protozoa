@@ -10,3 +10,34 @@ export interface IParticle extends IEntity {
   size: number
   active: boolean
 }
+
+export interface IOrganismTraits {
+  visual: {
+    size: number
+    opacity: number
+    color: string
+    glowIntensity: number
+    particleDensity: number
+  }
+  behavioral: {
+    speed: number
+    aggression: number
+    sociability: number
+    curiosity: number
+    efficiency: number
+    adaptability: number
+  }
+  physical: {
+    mass: number
+    collisionRadius: number
+    energyCapacity: number
+    durability: number
+    regeneration: number
+  }
+  evolutionary: {
+    fitness: number
+    stability: number
+    reproductivity: number
+    longevity: number
+  }
+}

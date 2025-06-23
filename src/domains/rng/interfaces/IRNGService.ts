@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview IRNGService Interface (Template)
  * @module @/domains/rng/interfaces/IRNGService
  * @version 2.0.0

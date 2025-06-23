@@ -1,4 +1,4 @@
-// Physics Web Worker (Template)
+﻿// Physics Web Worker (Template)
 // @module @/domains/physics/workers/physicsWorker
 // Note: Real implementation should handle heavy numeric physics on separate thread.
 

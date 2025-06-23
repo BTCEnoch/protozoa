@@ -13,6 +13,7 @@ export interface Logger {
   info(message: string, meta?: any): void  
   warn(message: string, meta?: any): void
   error(message: string, meta?: any): void
+  success(message: string, meta?: any): void
 }
 
 /**
@@ -95,6 +96,11 @@ class UniversalLogger implements Logger {
     } catch {
       // Fallback handled by logWithStyle above  
     }
+  }
+
+  success(message: string, meta?: any): void {
+    if (!this.shouldLog('info')) return
+    this.logWithStyle('info', `âœ… ${message}`, meta)
   }
 }
 

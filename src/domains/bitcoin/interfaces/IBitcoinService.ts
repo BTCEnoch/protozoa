@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Bitcoin Service Interface Definition
  * @description Defines the contract for Bitcoin blockchain data services
  * @author Protozoa Development Team

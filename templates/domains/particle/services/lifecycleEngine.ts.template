@@ -7,6 +7,7 @@
 
 import { Vector3, Color } from "three";
 import { particleService } from '@/domains/particle/services/ParticleService'
+import { ParticleType } from '@/domains/particle/types/particle.types'
 import { createServiceLogger } from '@/shared/lib/logger'
 import type { ILifecycleEngine } from '@/domains/particle/interfaces/ILifecycleEngine'
 import type { ParticleCreationData } from '@/domains/particle/types/particle.types'
@@ -70,7 +71,7 @@ export class LifecycleEngine implements ILifecycleEngine {
       
       for (let i = 0; i < count; i++) {
         const newParticleData: ParticleCreationData = {
-          type: baseConfig?.type || "basic",
+          type: baseConfig?.type || ParticleType.BASIC,
           position: baseConfig?.position || new Vector3(
             (Math.random() - 0.5) * 10,
             (Math.random() - 0.5) * 10,

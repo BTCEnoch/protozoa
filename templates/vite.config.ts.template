@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ jsxRuntime: 'automatic' })],
   server: { 
     port: 3000,
     host: true
@@ -36,6 +36,11 @@ export default defineConfig({
   },
   define: {
     // Ensure Node.js globals are properly handled in browser
-    global: 'globalThis'
+    global: 'globalThis',
+    'process.env': {}
+  },
+  esbuild: {
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment'
   }
 })

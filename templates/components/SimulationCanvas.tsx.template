@@ -1,11 +1,26 @@
 'use client'
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
-import { ParticleService } from '@/domains/particle/services/ParticleService'
-import { RenderingService } from '@/domains/rendering/services/RenderingService'
-import { RNGService } from '@/domains/rng/services/RNGService'
-import { TraitService } from '@/domains/trait/services/TraitService'
+import { particleService } from '@/domains/particle/services/ParticleService'
+import { renderingService } from '@/domains/rendering/services/RenderingService'
+import { rngService } from '@/domains/rng/services/RNGService'
+import { traitService } from '@/domains/trait/services/TraitService'
+import { ParticleType } from '@/domains/particle/types/particle.types'
 import { createServiceLogger } from '@/shared/lib/logger'
+
+// Declare JSX namespace for HTML elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      div: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+      h3: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>
+      p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>
+      pre: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>
+      button: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+      style: React.DetailedHTMLProps<React.StyleHTMLAttributes<HTMLStyleElement>, HTMLStyleElement>
+    }
+  }
+}
 
 /**
  * SimulationCanvas Component
@@ -25,94 +40,172 @@ export function SimulationCanvas() {
   const lastFrameTimeRef = useRef<number>(0)
   const fpsCounterRef = useRef<number>(0)
   const fpsUpdateTimeRef = useRef<number>(0)
+  const isInitializedRef = useRef<boolean>(false)
   
   const logger = createServiceLogger('SimulationCanvas')
 
+  // React effect for simulation initialization
   useEffect(() => {
+    // CRITICAL: React StrictMode protection - prevent double initialization
+    if (isInitializedRef.current) {
+      logger.warn('⚠️ [STRICTMODE] Simulation already initialized, skipping duplicate initialization')
+      return
+    }
+
+    // Immediately mark as initializing to prevent race conditions
+    isInitializedRef.current = true
+
     async function initializeSimulation() {
       try {
-        logger.info('🎮 Initializing THREE.js simulation...')
+        setIsLoading(true)
+        setError(null)
         
-        if (!mountRef.current) {
-          throw new Error('Mount point not available')
+        logger.info('🚀 Starting Bitcoin Ordinals simulation initialization...')
+        
+        // Check particle service pool status before starting
+        const poolStatus = particleService.getPoolStatus()
+        logger.info('🔍 Particle pool status before initialization:', poolStatus)
+        
+        // CRITICAL FIX: Validate and fix pool corruption instead of full reset
+        const wasCorrupted = particleService.validateAndFixPool()
+        if (wasCorrupted) {
+          const fixedPoolStatus = particleService.getPoolStatus()
+          logger.info('✅ Pool corruption fixed:', fixedPoolStatus)
         }
-
+        
         // Initialize services
-        logger.info('🔧 Initializing core services...')
-        
-        // Get singleton service instances
-        const particleService = ParticleService.getInstance()
-        const renderingService = RenderingService.getInstance()
-        const rngService = RNGService.getInstance()
-        const traitService = TraitService.getInstance()
-        
-        // Initialize RNG with Bitcoin block data (placeholder for now)
-        await rngService.initialize({
-          algorithm: 'mulberry32',
-          defaultSeed: Date.now() // In production, this would be from Bitcoin block data
+        await particleService.initialize({
+          maxParticles: 10000,
+          useInstancing: true,
+          useObjectPooling: true
         })
         
-        // Initialize particle service
-        await particleService.initialize({
-          maxParticles: 1000,
-          useInstancing: true,
-          useObjectPooling: true,
-          defaultMaterial: 'standard',
-          enableLOD: true,
-          cullingDistance: 100
+        await rngService.initialize({
+          defaultSeed: Date.now(),
+          algorithm: 'mulberry32'
         })
         
         // Initialize trait service with Bitcoin block data (placeholder)
         await traitService.initialize({
-          useCache: true,
-          enableMutation: true
+          enableInheritance: true,
+          baseMutationRate: 0.1
         })
         
-        // Setup THREE.js renderer
+        // Setup THREE.js renderer - CRITICAL FIX
+        if (!mountRef.current) {
+          throw new Error('Mount point not available')
+        }
+
+        // Clear any existing content from mount point
+        mountRef.current.innerHTML = ''
+        
+        // Create canvas for THREE.js renderer
         const canvas = document.createElement('canvas')
-        mountRef.current.appendChild(canvas)
+        canvas.style.width = '100%'
+        canvas.style.height = '100%'
+        canvas.style.display = 'block'
         
         // Initialize rendering service with canvas
         renderingService.initialize(canvas)
         
-        // Create initial particle system
-        logger.info('🧬 Creating initial particle system...')
-        const particleSystem = particleService.createSystem({
-          id: 'main-organisms',
-          name: 'Bitcoin Organisms',
-          maxParticles: 500,
-          position: { x: 0, y: 0, z: 0 },
-          bounds: {
-            min: { x: -50, y: -50, z: -50 },
-            max: { x: 50, y: 50, z: 50 }
-          },
-          defaultType: 'BASIC',
-          enablePhysics: true,
-          enableCollisions: false
-        })
+        // CRITICAL: Attach the canvas to the DOM mount point
+        mountRef.current.appendChild(canvas)
+        logger.info('✅ THREE.js renderer canvas attached to DOM')
         
-        // Spawn initial particles (organisms)
-        logger.info('🌱 Spawning initial organisms...')
-        for (let i = 0; i < 50; i++) {
-          const position = new THREE.Vector3(
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 20
-          )
-          
-          const velocity = new THREE.Vector3(
-            (Math.random() - 0.5) * 2,
-            (Math.random() - 0.5) * 2,
-            (Math.random() - 0.5) * 2
-          )
-          
-          particleService.spawnParticle('main-organisms', {
-            position,
-            velocity,
-            lifetime: 30 + Math.random() * 20,
-            size: 0.5 + Math.random() * 0.5,
-            color: new THREE.Color().setHSL(Math.random(), 0.7, 0.6)
+        // Create initial particle system (with existence check)
+        logger.info('🧬 Creating initial particle system...')
+        let particleSystem
+        try {
+          particleSystem = particleService.createSystem({
+            id: 'main-organisms',
+            name: 'Bitcoin Organisms',
+            maxParticles: 500,
+            position: { x: 0, y: 0, z: 0 },
+            bounds: {
+              min: { x: -50, y: -50, z: -50 },
+              max: { x: 50, y: 50, z: 50 }
+            },
+            defaultType: ParticleType.BASIC,
+            enablePhysics: true,
+            enableCollisions: false
           })
+        } catch (systemError) {
+          // If system already exists, get the existing one and clean it
+          logger.warn('⚠️ Particle system already exists, cleaning and reusing...')
+          const systems = particleService.getSystems()
+          particleSystem = systems.get('main-organisms')
+          if (!particleSystem) {
+            throw new Error('Failed to create or retrieve particle system')
+          }
+          
+          // Clean existing particles from the system
+          if (particleSystem.particles.length > 0) {
+            const existingIds = particleSystem.particles.map(p => p.id)
+            particleService.removeParticles('main-organisms', existingIds)
+            logger.info(`🧹 Cleaned ${existingIds.length} existing particles from system`)
+          }
+        }
+        
+        // Check pool status after system creation
+        const poolStatusAfterSystem = particleService.getPoolStatus()
+        logger.info('🔍 Particle pool status after system creation:', poolStatusAfterSystem)
+        
+        // Spawn initial particles (organisms) only if system is empty
+        const currentParticleCount = particleSystem.activeParticles || 0
+        logger.info(`🔍 Current particle count in system: ${currentParticleCount}`)
+        
+        if (currentParticleCount === 0) {
+          logger.info('🌱 Spawning initial organisms...')
+          
+          // Spawn particles one by one with detailed logging
+          let successfulSpawns = 0
+          for (let i = 0; i < 50; i++) {
+            const position = new THREE.Vector3(
+              (Math.random() - 0.5) * 20,
+              (Math.random() - 0.5) * 20,
+              (Math.random() - 0.5) * 20
+            )
+            
+            const velocity = new THREE.Vector3(
+              (Math.random() - 0.5) * 2,
+              (Math.random() - 0.5) * 2,
+              (Math.random() - 0.5) * 2
+            )
+            
+            const particleId = particleService.spawnParticle('main-organisms', {
+              position,
+              velocity,
+              lifetime: 30 + Math.random() * 20,
+              size: 0.5 + Math.random() * 0.5,
+              color: new THREE.Color().setHSL(Math.random(), 0.7, 0.6)
+            })
+            
+            if (particleId) {
+              successfulSpawns++
+            } else {
+              logger.warn(`❌ Failed to spawn particle ${i + 1}/50`)
+              // Check pool status when spawn fails
+              const poolStatus = particleService.getPoolStatus()
+              logger.warn('🔍 Pool status at failure:', poolStatus)
+            }
+            
+            // Log progress every 25 particles instead of every 10 to reduce spam
+            if ((i + 1) % 25 === 0 || i === 49) {
+              logger.info(`📊 Spawned ${successfulSpawns}/${i + 1} particles so far`)
+            }
+          }
+          
+          logger.info(`✅ Particle spawning complete: ${successfulSpawns}/50 particles created`)
+          
+          // Verify final count
+          const finalCount = particleSystem.activeParticles
+          logger.info(`🔢 Final particle count: ${finalCount}`)
+          
+          if (finalCount !== successfulSpawns) {
+            logger.warn(`⚠️ Particle count mismatch! Expected: ${successfulSpawns}, Actual: ${finalCount}`)
+          }
+        } else {
+          logger.info(`🔄 Using existing organisms (${currentParticleCount} particles)`)
         }
         
         // Setup camera position
@@ -127,9 +220,29 @@ export function SimulationCanvas() {
         directionalLight.position.set(10, 10, 5)
         renderingService.scene.add(directionalLight)
         
-        // Start animation loop
-        startAnimationLoop(particleService, renderingService)
+        // Debug: Log camera and scene info
+        logger.info('🎥 Camera setup complete', {
+          position: { x: renderingService.camera.position.x, y: renderingService.camera.position.y, z: renderingService.camera.position.z },
+          target: { x: 0, y: 0, z: 0 },
+          fov: renderingService.camera.fov,
+          aspect: renderingService.camera.aspect
+        })
         
+        logger.info('💡 Lighting setup complete', {
+          ambientLight: { color: ambientLight.color.getHex(), intensity: ambientLight.intensity },
+          directionalLight: { color: directionalLight.color.getHex(), intensity: directionalLight.intensity }
+        })
+        
+        logger.info('🎭 Scene status', {
+          sceneChildren: renderingService.scene.children.length,
+          canvasSize: { width: renderingService.renderer.domElement.width, height: renderingService.renderer.domElement.height },
+          canvasParent: !!renderingService.renderer.domElement.parentElement
+        })
+        
+        // Start animation loop
+        startAnimationLoop()
+        
+        // Mark as successfully initialized AFTER everything succeeds
         setIsLoading(false)
         logger.info('✅ Simulation initialized successfully')
         
@@ -137,11 +250,13 @@ export function SimulationCanvas() {
         const errorMsg = err instanceof Error ? err.message : 'Unknown error'
         setError(errorMsg)
         setIsLoading(false)
+        // CRITICAL: Reset initialization flag on error so retry is possible
+        isInitializedRef.current = false
         logger.error('❌ Failed to initialize simulation:', errorMsg)
       }
     }
 
-    function startAnimationLoop(particleService: ParticleService, renderingService: RenderingService) {
+    function startAnimationLoop() {
       function animate(currentTime: number) {
         const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000
         lastFrameTimeRef.current = currentTime
@@ -180,25 +295,50 @@ export function SimulationCanvas() {
 
     // Cleanup function
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
-      
-      // Dispose services
-      try {
-        ParticleService.getInstance().dispose()
-        logger.info('🧹 Services disposed successfully')
-      } catch (err) {
-        logger.error('❌ Error disposing services:', err)
+      // Only cleanup if we actually initialized
+      if (isInitializedRef.current) {
+        logger.info('🧹 Cleaning up simulation...')
+        
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current)
+        }
+        
+        // Dispose services and clean up systems
+        try {
+          // Clean up particle systems manually
+          const systems = particleService.getSystems()
+          const mainSystem = systems.get('main-organisms')
+          if (mainSystem) {
+            // Remove all particles from the system
+            const particleIds = mainSystem.particles.map(p => p.id)
+            if (particleIds.length > 0) {
+              particleService.removeParticles('main-organisms', particleIds)
+              logger.info(`🧹 Removed ${particleIds.length} particles from system`)
+            }
+            // Remove the system from the map
+            systems.delete('main-organisms')
+            logger.debug('🧹 Particle system cleaned up')
+          }
+          
+          // Dispose services
+          particleService.dispose()
+          logger.info('🧹 Services disposed successfully')
+          
+          // Reset initialization flag
+          isInitializedRef.current = false
+        } catch (err) {
+          logger.error('⚠️ Error disposing services:', err)
+          // Still reset the flag even if cleanup fails
+          isInitializedRef.current = false
+        }
       }
     }
-  }, [])
+  }, []) // Empty dependency array - only run once
 
   // Handle window resize
   useEffect(() => {
     function handleResize() {
       try {
-        const renderingService = RenderingService.getInstance()
         renderingService.camera.aspect = window.innerWidth / window.innerHeight
         renderingService.camera.updateProjectionMatrix()
         renderingService.renderer.setSize(window.innerWidth, window.innerHeight)

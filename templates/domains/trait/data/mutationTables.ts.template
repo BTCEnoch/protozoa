@@ -200,7 +200,7 @@ export const MutationTableHelpers = {
       const palette = COLOR_MUTATION_TABLE.palettes[preferredPalette]
       const newColor = palette[Math.floor(Math.random() * palette.length)]
       logger.debug(`Selected palette color: ${newColor}`)
-      return newColor
+      return newColor || currentColor
     }
     
     // Color shifting approach

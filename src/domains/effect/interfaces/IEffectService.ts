@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Effect Service Interface
  * @description Interface for managing visual effects, mutations hooks, and GPU resources
  * @author Protozoa Development Team

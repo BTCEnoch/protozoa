@@ -32,16 +32,3 @@ export type {
   BatchInitOptions,
   ParticleDistributionMetrics,
 } from './interfaces/IParticleInitService' 
-// Store Injection exports
-export {
-  ParticleStoreInjection,
-  configureParticleStores,
-  validateParticleStores,
-  getParticleStoreAccessors,
-  particleStoreInjection,
-  PARTICLE_STORE_DEFAULTS
-} from './services/particleStoreInjection';
-
-export type {
-  IParticleStoreConfig
-} from './services/particleStoreInjection';

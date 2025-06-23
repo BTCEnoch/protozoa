@@ -22,11 +22,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "incremental": true,
     "composite": false,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": ["node"],
+    "types": ["node", "react", "react-dom"],
     "typeRoots": ["./node_modules/@types"],
     "paths": {
       "@/*": ["./src/*"],

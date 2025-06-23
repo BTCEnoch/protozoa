@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { Vector3, Color, Material, Geometry, Texture } from 'three'
+import { Vector3, Color, Material, BufferGeometry, Texture } from 'three'
 
 /**
  * Effect categories for organization
@@ -157,7 +157,7 @@ export interface IEffectShaderConfig {
 export interface IEffectResource {
   id: string
   type: 'texture' | 'material' | 'geometry' | 'shader'
-  resource: Texture | Material | Geometry | string
+  resource: Texture | Material | BufferGeometry | string
   isLoaded: boolean
   size?: number // Memory footprint in bytes
 }

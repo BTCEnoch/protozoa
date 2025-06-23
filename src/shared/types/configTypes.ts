@@ -1,4 +1,4 @@
-/** Service configuration interfaces (Template) */
+﻿/** Service configuration interfaces (Template) */
 
 export interface IServiceConfig { name: string; debug: boolean; monitoring: boolean }
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Bitcoin Types Definition
  * @description Type definitions for Bitcoin blockchain integration domain
  * @author Protozoa Development Team

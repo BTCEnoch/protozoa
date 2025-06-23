@@ -1,4 +1,4 @@
-import { createServiceLogger } from '@/shared/lib/logger'
+﻿import { createServiceLogger } from '@/shared/lib/logger'
 import type { IFormationBlendingService, FormationPattern } from '@/domains/formation/interfaces/IFormationBlendingService'
 import { Vector3 } from 'three'
 

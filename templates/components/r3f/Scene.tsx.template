@@ -7,11 +7,42 @@
  */
 
 import React, { Suspense, useRef } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber'
 import { OrbitControls, Environment, Html, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 import { useSimulationStore } from '@/shared/state'
 import { logger } from '@/shared/lib/logger'
+
+// Extend Three.js elements for React Three Fiber JSX
+extend({ 
+  Mesh: THREE.Mesh,
+  BoxGeometry: THREE.BoxGeometry,
+  SphereGeometry: THREE.SphereGeometry,
+  MeshBasicMaterial: THREE.MeshBasicMaterial,
+  MeshStandardMaterial: THREE.MeshStandardMaterial,
+  AmbientLight: THREE.AmbientLight,
+  DirectionalLight: THREE.DirectionalLight,
+  PointLight: THREE.PointLight,
+  Group: THREE.Group
+})
+
+// Declare JSX namespace for Three.js elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      mesh: any
+      boxGeometry: any
+      sphereGeometry: any
+      meshBasicMaterial: any
+      meshStandardMaterial: any
+      ambientLight: any
+      directionalLight: any
+      pointLight: any
+      group: any
+      instancedMesh: any
+    }
+  }
+}
 
 /**
  * Loading fallback component
@@ -131,7 +162,7 @@ export function Scene({
         {/* World bounds visualization */}
         {showWireframe && (
           <mesh position={[0, 0, 0]}>
-            <boxGeometry args={[worldSize.width, worldSize.height, worldSize.depth]} />
+            <boxGeometry args={[worldSize, worldSize, worldSize]} />
             <meshBasicMaterial color="white" wireframe />
           </mesh>
         )}

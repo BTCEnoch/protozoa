@@ -3,7 +3,7 @@
  * Provides metrics collection and performance tracking
  * 
  * @author Protozoa Automation Suite
- * @generated 29-SetupOpenTelemetry.ps1
+ * @generated 29a-SetupOpenTelemetry.ps1
  */
 
 import { getTracer, withSpan } from './tracing'

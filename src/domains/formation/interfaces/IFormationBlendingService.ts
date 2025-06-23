@@ -1,4 +1,4 @@
-/** Formation blending service interface (Template) */
+﻿/** Formation blending service interface (Template) */
 import type { IVector3 } from '@/shared/types/vectorTypes'
 
 export interface FormationPattern { positions: IVector3[] }

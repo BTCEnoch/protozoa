@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shared State Management Exports
  * @description Centralized exports for all Zustand stores
  * @author Protozoa Automation Suite
@@ -11,4 +11,8 @@ export { useParticleStore } from './useParticleStore'
 
 // Store types (these should match the actual store interfaces)
 export type { SimulationState } from './useSimulationStore'
-export type { ParticleState } from './useParticleStore' 
+export type { ParticleUIState } from './useParticleStore'
+export type { ParticleInstance } from './useParticleStore'
+
+// Backward compatibility aliases
+export type { ParticleUIState as ParticleState } from './useParticleStore' 

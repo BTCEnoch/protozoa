@@ -1,4 +1,4 @@
-/** Bitcoin protocol configuration (Template) */
+﻿/** Bitcoin protocol configuration (Template) */
 import { EnvironmentMode } from '@/shared/config/environmentService'
 
 export interface BitcoinEndpoints { baseUrl: string; blockInfo: string; inscriptionContent: string }
