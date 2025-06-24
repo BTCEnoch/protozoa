@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
+  plugins: [react({ jsxRuntime: 'automatic' })],
+  server: { 
     port: 3000,
-    host: true,
+    host: true
   },
   resolve: {
     alias: {
@@ -15,8 +15,8 @@ export default defineConfig({
       '@/shared': path.resolve(__dirname, './src/shared'),
       '@/domains': path.resolve(__dirname, './src/domains'),
       '@/lib': path.resolve(__dirname, './src/lib'),
-      '@/types': path.resolve(__dirname, './src/types'),
-    },
+      '@/types': path.resolve(__dirname, './src/types')
+    }
   },
   build: {
     outDir: 'dist',
@@ -26,20 +26,22 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-        },
-      },
-    },
+          three: ['three', '@react-three/fiber', '@react-three/drei']
+        }
+      }
+    }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'three', '@react-three/fiber'],
+    include: ['react', 'react-dom', 'three', '@react-three/fiber']
   },
   define: {
+    USE_WORKERS: 'true',
     // Ensure Node.js globals are properly handled in browser
     global: 'globalThis',
-    'process.env': {},
+    'process.env': {}
   },
   esbuild: {
-    jsx: 'automatic',
-  },
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment'
+  }
 })

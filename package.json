@@ -74,6 +74,7 @@
     "cross-fetch": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup": "4.44.0",
     "three": "^0.160.0",
     "winston": "^3.11.0",
     "zustand": "^4.4.7"
@@ -142,6 +143,8 @@
     "@types/react-dom": "^18.2.17"
   },
   "optionalDependencies": {
+    "@rollup/rollup-win32-arm64-msvc": "4.44.0",
+    "@rollup/rollup-win32-ia32-msvc": "4.44.0",
     "@rollup/rollup-win32-x64-msvc": "^4.9.0"
   }
 }

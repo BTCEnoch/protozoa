@@ -78,14 +78,35 @@ try {
             try {
                 Write-InfoLog "Installing $dependency..."
                 $installArgs = @("install", $dependency, "--save-optional", "--no-fund", "--no-audit")
-                $process = Start-Process -FilePath "npm" -ArgumentList $installArgs -NoNewWindow -PassThru -Wait
                 
-                if ($process.ExitCode -eq 0) {
-                    Write-SuccessLog "Successfully installed $dependency"
+                # Use timeout to prevent hanging
+                $timeoutSeconds = 120  # 2 minutes max per dependency
+                $process = Start-Process -FilePath "npm" -ArgumentList $installArgs -NoNewWindow -PassThru
+                
+                # Wait with timeout
+                $finished = $process.WaitForExit($timeoutSeconds * 1000)
+                
+                if ($finished) {
+                    if ($process.ExitCode -eq 0) {
+                        Write-SuccessLog "Successfully installed $dependency"
+                    } else {
+                        $exitCode = $process.ExitCode
+                        Write-WarningLog "Failed to install $dependency (exit code: $exitCode)"
+                    }
                 } else {
-                    $exitCode = $process.ExitCode
-                    Write-WarningLog "Failed to install $dependency (exit code: $exitCode)"
+                    # Process didn't finish within timeout
+                    Write-WarningLog "Installation of $dependency timed out after $timeoutSeconds seconds"
+                    try {
+                        $process.Kill()
+                        Write-InfoLog "Terminated hanging npm process for $dependency"
+                    }
+                    catch {
+                        Write-WarningLog "Could not terminate npm process: $($_.Exception.Message)"
+                    }
                 }
+                
+                # Cleanup process object
+                $process.Dispose()
             }
             catch {
                 $errorMessage = $_.Exception.Message
@@ -105,14 +126,35 @@ try {
         # Force reinstall Rollup to ensure native dependencies are properly linked
         Write-InfoLog "Force reinstalling Rollup to ensure native dependencies..."
         $rollupReinstallArgs = @("install", "rollup", "--force", "--no-fund", "--no-audit")
-        $rollupProcess = Start-Process -FilePath "npm" -ArgumentList $rollupReinstallArgs -NoNewWindow -PassThru -Wait
         
-        if ($rollupProcess.ExitCode -eq 0) {
-            Write-SuccessLog "Rollup reinstalled successfully"
+        # Use timeout to prevent hanging
+        $timeoutSeconds = 180  # 3 minutes for Rollup reinstall
+        $rollupProcess = Start-Process -FilePath "npm" -ArgumentList $rollupReinstallArgs -NoNewWindow -PassThru
+        
+        # Wait with timeout
+        $rollupFinished = $rollupProcess.WaitForExit($timeoutSeconds * 1000)
+        
+        if ($rollupFinished) {
+            if ($rollupProcess.ExitCode -eq 0) {
+                Write-SuccessLog "Rollup reinstalled successfully"
+            } else {
+                $rollupExitCode = $rollupProcess.ExitCode
+                Write-WarningLog "Rollup reinstall had issues (exit code: $rollupExitCode)"
+            }
         } else {
-            $rollupExitCode = $rollupProcess.ExitCode
-            Write-WarningLog "Rollup reinstall had issues (exit code: $rollupExitCode)"
+            # Process didn't finish within timeout
+            Write-WarningLog "Rollup reinstall timed out after $timeoutSeconds seconds"
+            try {
+                $rollupProcess.Kill()
+                Write-InfoLog "Terminated hanging Rollup reinstall process"
+            }
+            catch {
+                Write-WarningLog "Could not terminate Rollup reinstall process: $($_.Exception.Message)"
+            }
         }
+        
+        # Cleanup process object
+        $rollupProcess.Dispose()
     }
     catch {
         Write-WarningLog "Could not reinstall Rollup: $($_.Exception.Message)"
@@ -125,19 +167,31 @@ try {
         try {
             # Clear npm cache
             $cacheArgs = @("cache", "clean", "--force")
-            $cacheProcess = Start-Process -FilePath "npm" -ArgumentList $cacheArgs -NoNewWindow -PassThru -Wait
+            $timeoutSeconds = 60  # 1 minute for cache operations
+            $cacheProcess = Start-Process -FilePath "npm" -ArgumentList $cacheArgs -NoNewWindow -PassThru
             
-            if ($cacheProcess.ExitCode -eq 0) {
+            $cacheFinished = $cacheProcess.WaitForExit($timeoutSeconds * 1000)
+            if ($cacheFinished -and $cacheProcess.ExitCode -eq 0) {
                 Write-SuccessLog "npm cache cleared successfully"
+            } elseif (-not $cacheFinished) {
+                Write-WarningLog "Cache clear timed out after $timeoutSeconds seconds"
+                try { $cacheProcess.Kill() } catch { }
             }
+            $cacheProcess.Dispose()
             
             # Rebuild native modules
             $rebuildArgs = @("rebuild")
-            $rebuildProcess = Start-Process -FilePath "npm" -ArgumentList $rebuildArgs -NoNewWindow -PassThru -Wait
+            $rebuildTimeoutSeconds = 300  # 5 minutes for rebuild
+            $rebuildProcess = Start-Process -FilePath "npm" -ArgumentList $rebuildArgs -NoNewWindow -PassThru
             
-            if ($rebuildProcess.ExitCode -eq 0) {
+            $rebuildFinished = $rebuildProcess.WaitForExit($rebuildTimeoutSeconds * 1000)
+            if ($rebuildFinished -and $rebuildProcess.ExitCode -eq 0) {
                 Write-SuccessLog "Native modules rebuilt successfully"
+            } elseif (-not $rebuildFinished) {
+                Write-WarningLog "Rebuild timed out after $rebuildTimeoutSeconds seconds"
+                try { $rebuildProcess.Kill() } catch { }
             }
+            $rebuildProcess.Dispose()
         }
         catch {
             Write-WarningLog "Cache clear/rebuild had issues: $($_.Exception.Message)"
@@ -169,13 +223,21 @@ try {
     Write-InfoLog "Testing Vite configuration loading..."
     try {
         $viteTestArgs = @("run", "build", "--dry-run")
-        $viteTestProcess = Start-Process -FilePath "npm" -ArgumentList $viteTestArgs -NoNewWindow -PassThru -Wait -RedirectStandardError "vite-test-error.log"
+        $viteTimeoutSeconds = 90  # 1.5 minutes for Vite test
+        $viteTestProcess = Start-Process -FilePath "npm" -ArgumentList $viteTestArgs -NoNewWindow -PassThru -RedirectStandardError "vite-test-error.log"
         
-        if ($viteTestProcess.ExitCode -eq 0) {
-            Write-SuccessLog "Vite configuration loads successfully"
+        $viteFinished = $viteTestProcess.WaitForExit($viteTimeoutSeconds * 1000)
+        if ($viteFinished) {
+            if ($viteTestProcess.ExitCode -eq 0) {
+                Write-SuccessLog "Vite configuration loads successfully"
+            } else {
+                Write-WarningLog "Vite configuration test failed, check vite-test-error.log for details"
+            }
         } else {
-            Write-WarningLog "Vite configuration test failed, check vite-test-error.log for details"
+            Write-WarningLog "Vite configuration test timed out after $viteTimeoutSeconds seconds"
+            try { $viteTestProcess.Kill() } catch { }
         }
+        $viteTestProcess.Dispose()
     }
     catch {
         Write-WarningLog "Could not test Vite configuration: $($_.Exception.Message)"

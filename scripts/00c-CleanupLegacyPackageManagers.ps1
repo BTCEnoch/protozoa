@@ -202,38 +202,77 @@ try {
     
     $gitignorePath = ".gitignore"
     if (Test-Path $gitignorePath) {
-        $gitignoreContent = Get-Content $gitignorePath
-        $npmOnlyEntries = @(
-            "# npm-only approach",
-            "pnpm-lock.yaml",
-            "yarn.lock", 
-            ".pnpm-store/",
-            ".yarn/",
-            "# Keep package-lock.json",
-            "!package-lock.json"
-        )
-        
-        $needsUpdate = $false
-        foreach ($entry in $npmOnlyEntries) {
-            if ($entry -notin $gitignoreContent) {
-                $needsUpdate = $true
-                break
+        try {
+            # Read existing content with retry logic
+            $retryCount = 0
+            $maxRetries = 3
+            $gitignoreContent = $null
+            
+            do {
+                try {
+                    Start-Sleep -Milliseconds (500 * $retryCount)  # Progressive delay
+                    $gitignoreContent = Get-Content $gitignorePath -ErrorAction Stop
+                    break
+                }
+                catch {
+                    $retryCount++
+                    Write-WarningLog "Attempt $retryCount/$maxRetries to read .gitignore failed: $($_.Exception.Message)"
+                    if ($retryCount -ge $maxRetries) {
+                        throw "Failed to read .gitignore after $maxRetries attempts: $($_.Exception.Message)"
+                    }
+                }
+            } while ($retryCount -lt $maxRetries)
+            
+            $npmOnlyEntries = @(
+                "# npm-only approach",
+                "pnpm-lock.yaml",
+                "yarn.lock", 
+                ".pnpm-store/",
+                ".yarn/",
+                "# Keep package-lock.json",
+                "!package-lock.json"
+            )
+            
+            $needsUpdate = $false
+            foreach ($entry in $npmOnlyEntries) {
+                if ($entry -notin $gitignoreContent) {
+                    $needsUpdate = $true
+                    break
+                }
+            }
+            
+            if ($needsUpdate -and $PSCmdlet.ShouldProcess($gitignorePath, "Update .gitignore")) {
+                $retryCount = 0
+                do {
+                    try {
+                        Start-Sleep -Milliseconds (500 * $retryCount)  # Progressive delay
+                        
+                        # Use Set-Content instead of Add-Content for better file handle management
+                        $updatedContent = $gitignoreContent + "`n# npm-only package manager entries" + $npmOnlyEntries
+                        Set-Content -Path $gitignorePath -Value $updatedContent -ErrorAction Stop
+                        
+                        Write-SuccessLog "Updated .gitignore for npm-only approach"
+                        break
+                    }
+                    catch {
+                        $retryCount++
+                        Write-WarningLog "Attempt $retryCount/$maxRetries to update .gitignore failed: $($_.Exception.Message)"
+                        if ($retryCount -ge $maxRetries) {
+                            $issue = "Failed to update .gitignore after $maxRetries attempts: $($_.Exception.Message)"
+                            $cleanupResults.Issues += $issue
+                            Write-ErrorLog $issue
+                            break
+                        }
+                    }
+                } while ($retryCount -lt $maxRetries)
+            } else {
+                Write-InfoLog ".gitignore already configured for npm-only approach"
             }
         }
-        
-        if ($needsUpdate -and $PSCmdlet.ShouldProcess($gitignorePath, "Update .gitignore")) {
-            try {
-                Add-Content -Path $gitignorePath -Value "`n# npm-only package manager entries"
-                Add-Content -Path $gitignorePath -Value $npmOnlyEntries
-                Write-SuccessLog "Updated .gitignore for npm-only approach"
-            }
-            catch {
-                $issue = "Failed to update .gitignore: $($_.Exception.Message)"
-                $cleanupResults.Issues += $issue
-                Write-ErrorLog $issue
-            }
-        } else {
-            Write-InfoLog ".gitignore already configured for npm-only approach"
+        catch {
+            $issue = "Failed to process .gitignore: $($_.Exception.Message)"
+            $cleanupResults.Issues += $issue
+            Write-ErrorLog $issue
         }
     } else {
         Write-WarningLog ".gitignore not found - consider creating one"
